@@ -1,0 +1,197 @@
+<link rel="stylesheet" type="text/css" href="/css/default/scheme.css"/>
+<div class="w">
+    <div class="breadcrumbs">		
+    	<span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/" ><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/news"><?=$this->translate('Menu_News')?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/newslist-<?=$this->data['part_level1']?>.html"><?=$this->data['name']?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><?=$this->data['title']?></span>        
+    </div>
+</div>
+<div class="w clearfix" >
+	<div class="fl shoplist">
+    	<div class="themain">
+         	<h1><?=$this->data['title']?></h1>
+         	<div class="tag">
+               来源：<span><?=$this->data['source']?></span>
+               作者：<span><?=$this->data['author']?></span>创建时间：<span><?=date('Y-m-d',$this->data['created'])?></span>
+               关键词：<span><?php 
+					$tip = explode(',',$this->data['keyword']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+					}
+			    ?></span>
+				
+             </div>
+            <div class="themain_p">
+            <?php if($this->data['image']):?>
+            <p class="ac hide">
+            <img src="<?php echo $this->data['image'];?>" width="600" height="350" alt="<?php echo $this->data['title'];?>" title="<?php echo $this->data['title'];?>">
+            </p>
+            <?php endif;?>
+            	<!--内容-->
+                <div id="share_content"><?=$this->data['content']?></div>
+            </div>
+		</div>
+   <?php if(!empty($this->solprodArray)){?>
+    <hr />
+    <div class="promianbox">
+        <div class="boxTh">			
+            <b class="fl">相关元器件</b><a href="/category" class="fr">更多<span class="iccon">&gt;&gt;</span></a>					
+         </div>
+         <?php foreach($this->solprodArray as $v){
+         
+         	$v = $this->fun->filterProduct($v);
+         	$break_price=$priceshow = $buyshow= '';$stock = 0;$show_price = 0;
+         	if($v['f_show_price_sz']){
+         		$show_price = $v['f_show_price_sz'];
+         		$stock      = $v['f_stock_sz'];
+         		$break_price = $v['f_break_price_notitle_sz'];
+         	}elseif($v['f_show_price_hk']){
+         		$show_price = $v['f_show_price_hk'];
+         		$stock      = $v['f_stock_hk'];
+         		$break_price = $v['f_break_price_notitle_hk'];
+         	}         
+         	if($v['f_show_price_sz']){
+         		//低至价格
+         		$showprice = $v['f_rmb'].number_format($v['f_lowest_price_sz'],DECIMAL);
+         		//阶梯价格
+         		$btable = $v['f_break_price_notitle_sz'];
+         	
+         	}elseif($v['f_show_price_hk']){
+         		//低至价格
+         		$showprice = $v['f_usd'].number_format($v['f_lowest_price_hk'],DECIMAL);
+         		//阶梯价格
+         		$btable = $v['f_break_price_notitle_hk'];
+         	
+         	}         	
+         	if($v['f_show_price_sz'] || $v['f_show_price_hk']){
+         		$topstyle = '';
+         		$priceshow = '<dl><dt>低至：</dt> <strong class="price"><span id="sell_price">'.$showprice.'</span></strong></dl>';
+         		$buyshow = '<a href="javascript:" onclick="buy('.$v['id'].')" class="button logclick" title="购买" rev="news_part_id" rel="'.$v['id'].'">购买</a>';
+         	}         	
+         	//Zend_Debug::dump($v);die();
+         	?>
+		<div class="boxTb "> 			
+                <div class="pdMegPic">
+                    <div class="imgmiddle">
+                        <a href="<?=$v['f_produrl']?>" title="<?=$v['part_no']?>" target="_blank" class="logclick" rev="news_part_id" rel="<?=$v['id']?>">
+                        <?php $img = ($v['part_img']) ? PRODUCTICON.$v['part_img'] : PRODUCTICON."no.gif";?>
+                        <img src="<?php echo $img;?>" height="90" alt="<?=$v['part_no']?>" title="<?=$v['part_no']?>">
+                      
+                        </a>
+                    </div>
+                    <?php if($v['datasheet']){?>
+                    <p><a href="<?=$v['datasheet']?>" target="_blank" title="<?=$v['part_no']?>"  class="logclick" rev="news_datasheet" rel="<?=$v['id']?>"><img src="images/default/download_pdf.gif" alt="download">数据手册下载</a></p>
+                    <?php } ?>
+                </div> 			
+                <div class="boxDes"> 				
+                    <div class="p-title">
+                        <a target="_blank" href="<?=$v['f_produrl']?>" title="<?=$v['part_no']?>" class="model logclick" rev="news_part_id" rel="<?=$v['id']?>"><?=$v['part_no']?></a>
+                        <a href="/pl/<?=$v['bname']?>" target="_blank" title="<?=$v['bname']?>"  class="logclick" rev="news_brand" rel="<?=$v['manufacturer']?>">
+                        	<img src="images/default/brand/<?=$v['manufacturer']?>_h.png" height="36" title="<?=$v['bname']?>" class="png_ie6">
+                        </a>
+                    </div>
+                    <div class="promianboxdl promianboxdl0">
+                    	<dl>
+                        	<dt>标准包装：</dt>
+                            <dd><?php echo ($v['mpq']) ? $v['mpq'] : "--";?></dd>
+                        </dl>
+                        <dl>
+                        	<dt>封装：</dt>
+                            <dd><?php echo ($v['supplier_device_package']) ? $v['supplier_device_package'] : "--";?></dd>
+                        </dl>
+                        <dl>
+                        	<dt>包装：</dt>
+                            <dd><?php echo ($v['packaging']) ? $v['packaging'] : "--";?></dd>
+                        </dl>
+                        <dl>
+                        	<dt>类别：</dt>
+                            <dd><a href="/list-<?=$v['part_level1']?>-<?=$v['part_level2']?>-<?=$v['part_level3']?>.html " target="_blank" title="<?php echo $v['name'];?>"  class="logclick" rev="news_category" rel="<?=$v['part_level3']?$v['part_level3']:$v['part_level2']?>"><?php echo $v['name'];?></a></dd>
+                        </dl>
+                        <dl>
+                        	<dt>无铅情况：</dt>
+                            <dd><?=$v['rohs']==1?'<img src="/images/default/RoHS.gif"  title="符合"/>':'<img src="/images/default/NO_RoHS.gif" title="不符合"/>';?></dd>
+                        </dl>
+                        <dl>
+                        	<dt>产品描述：</dt>
+                            <dd><?=$this->fun->utf_substr($v['description'],68)?></dd>
+                        </dl>
+                    </div>	
+                    <div class="promianboxdl">
+  						<?php echo $priceshow;?>
+                        <dl>
+                          <dt>最小起订量：</dt>
+                          <dd><?php echo $v['moq'];?></dd>
+                        </dl>
+                        <dl>
+                          <dt>库存：</dt>
+                          <dd><?php
+                    if(($v['f_stock_sz']+$v['f_stock_hk'])>0){echo '<font color="#469F68">现货</font>';}
+					else {echo '<font color="#FC9C30">订货</font>';}?></dd>
+                        </dl>
+                    </div>	
+                    <div class="promianboxdl promianboxBtn ">
+                        <?php if(!$v['noinquiry']){?>
+                        <a href="javascript:" onclick="openInquiry('<?php echo $v['id'];?>')" title="询价" class="button logclick" rev="news_part_id" rel="<?=$v['id']?>">询价</a>
+                        <?php }?>
+                        <?=$buyshow?>
+                    </div>	
+                            	
+                </div>			
+                <div class="clear"></div> 		            
+            </div>    
+            <?php }?>     
+    </div>
+    <?php }?>
+	</div>
+    <div class="fr rightbox">
+    	<div class="blank10"></div>
+        <div class="subhot">
+                <div class="subhot_t">
+                    <h3 class="titbg1ts" >最新资讯<em class="emtrianglerightgray5px"></em></h3>
+                </div>
+                <div class="subshop seminar">
+                <?php foreach($this->related as $row){?>
+                    <div class="w_100 ">
+                        <p><a href="/news-<?=$row['id']?>.html"  title="<?=$row['title']?>" class="logclick" rev="news" rel="<?=$row['id']?>"><?=$row['title']?></a></p>
+                        <p class="fontgray"><?=date('Y/m/d',$row['created'])?></p>
+                    </div>
+                <?php }?>
+                </div>
+            </div>
+        <!--<div class="blank10"></div>
+        <div class="Contactnow">
+             <span class="titbg1ts">联系方式</span>
+			 <ul>
+             	<li><b>销售电话：</b>(86) 400-626-1616</li>
+                <li><b>技术支持电话：</b>(86) 400-626-1616</li>
+                <li><b>技术支持邮箱：</b><a href="#">Icec@icec.com</a></li>
+                <li><b>技术支持论坛：</b><a href="#" target="_blank">http://bbs.icec.com</a></li>
+             </ul>
+        </div>-->
+        
+    </div>
+
+
+</div>
+
+
+<div class="clr"></div> 
+<!-- 划词分享 -->
+<script type="text/javascript">
+(function(){
+  window.rmwbShareConf = {
+    pageWidth : 960, //网页宽度，用于定位左侧固定漂浮按钮的位置
+    contentId : 'share_content' //正文内容id，用于划词分享
+  };
+  var s = document.createElement('script');
+  s.src = '/js/jsplug/sharetowb/share.js';
+  document.getElementsByTagName('head')[0].appendChild(s);
+})();
+</script>
+<!-- /划词分享 --> 
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=5&amp;pos=right&amp;uid=784927" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"bdTop":205,'bdText':'#IC易站#向大家分享IC易站里的关于<?=$this->sem['name']?>方向的技术研讨会：<?=$this->sem['title']?>'};
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+</script>
+<!-- Baidu Button END -->

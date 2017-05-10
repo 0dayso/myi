@@ -1,0 +1,51 @@
+<link rel="stylesheet" type="text/css" href="/css/default/buyprocess.css" />
+<!--content-->
+<?php
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$currencyArr = array('RMB'=>'RMB','USD'=>'USD','HKD'=>'HKD');
+?>
+<div class="w lh Order ">
+	<div class="Order_details">
+    <table cellpadding="0" cellspacing="0" class="tableorder table">
+        <caption>感谢您的惠顾，询价单已经提交成功！</caption>
+        <thead>
+            <tr>
+                <th>询价编号</th>
+                <th>交货地</th>
+                <th>结算货币</th>
+                <th>询价说明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                 <td class="fontblue"><?=$this->inq['inq_number']?></td>
+                <td><?=$deliveryArr[$this->inq['delivery']]?></td>
+                <td><?=$currencyArr[$this->inq['currency']]?></td>
+                <td><?=$this->inq['remark']?></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <table cellpadding="0" cellspacing="0" class="order-tip table">
+        <tbody><tr>
+        <td align="left" style="border-bottom:0">
+        <h2>提示：</h2>
+        <p>1.您提交的询价单我们会及时处理，处理结果会以邮件形式通知您。</p>
+        <p>2.您询价单后续处理情况，可以进入<a href="/center/inquiry"><?=$this->translate('Menu_MyInquiry')?></a>实时查看。</p>
+        </td>
+        </tr>
+        </tbody>
+   </table>
+        <div class="order-oprate">
+       
+         <div class="bg_cart">
+            <div class="fl">
+                <a href="/"><em></em><?=$this->translate('Menu_Home');?></a>
+            </div>
+            <div class="fr">
+                <a href="/center/inquiry" class="button"><?=$this->translate('Menu_MyInquiry')?></a>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

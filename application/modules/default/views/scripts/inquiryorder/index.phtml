@@ -1,0 +1,222 @@
+<link rel="stylesheet" type="text/css" href="/css/default/buyprocess.css" />
+<?php
+$deliveryArr = array('SZ'=>'国内','HK'=>'香港');
+$currencyArr = array('RMB'=>'人民币 RMB','USD'=>'美元 USD','HKD'=>'港币 HKD');
+?>
+<div id="header" class="w">
+  <div id="logo"><a hidefocus="true" href="/"><img alt="IC易站" src="/images/default/logo.jpg"></a></div>
+  <h1>询价下单</h1>
+</div>
+<!--content-->
+<form id='thisform' name="thisform" action='' method='post'>
+<input type="hidden" name="inqkey" value="<?=$this->inqkey?>" />
+<!--registerted-->
+<div class="w buyprocess inquirystep">
+	<div class="registerline"></div>
+    <div class="steps step-1">
+        <ol>
+            <li>询价下单</li>
+            <li>填写核对信息单</li>
+            <li>成功提交订单</li>
+        </ol>
+    </div>
+</div>
+<div class="w lh">
+  <div class="Shopping_cart 1h">
+    <h1>请选择产品下单</h1>
+    <div class="tipfree"><img src="/images/default/car_icon.gif" alt="car_icon"><b class="fontgreen">购物满(RMB<?=$this->freermb?>, USD<?=$this->freeusd?>, HKD<?=$this->freehkd?>)免运费及包装费</b></div>
+        <table border="0" cellpadding="0" cellspacing="0" class="shopbox table ">
+      <tbody>
+      <tr>
+        <th><input type="checkbox" name="allbox" id="allbox" onclick="selectall(this);" checked="checked"/>
+        <label for="allbox">全选</label></th>
+        <th>型号</th>
+        <th>品牌</th>
+        <th>参考交期</th>
+        <th>标准包装</th>
+        <th>实际价格</th>
+        <th>购买数量</th>
+        <th>小计</th>
+        <th>报价单</th>
+      </tr>
+     	<?php 
+	  $pricetotal=0;$can_num = 0;
+	  foreach($this->inquiry['detaile'] as $k=>$item){
+		  $pricetmp = $item['pmpq']*$item['result_price'];
+		  $pricetotal += $pricetmp;
+		  $priceid   = 'price_'.$item['id'];
+		  $inputid   = 'multiple_'.$item['id'];
+		  $allnumid  = 'allnum_'.$item['id'];
+		  $xiaoji    = 'xiaoji_'.$item['id'];
+		  if ($item['result_price'] > 0 && $item['expiration_time'] > time ()) {
+			$can_num++;
+	  ?>
+      <tr>
+        <td width="60px"><input type="checkbox" name="checkItem[]" value="<?=$item['id']?>" onclick="selectone(this,'<?=$pricetmp?>','<?=$item['pmpq'];?>','<?=$inputid?>')" checked="checked"/></td>
+        <td width="150px"><div class="productinfop"><?php if($item['part_id']){ ?>
+                            <a href="/item-0-0-<?=$item['part_id'];?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank"><b><?=$item['part_no']?></b></a><?php }else{
+							echo '<a>'.$item['part_no'].'</a>';}?></div></td>
+        <td><?=$item['brand'];?></td>
+        <td><?=($item['lead_time']?$item['lead_time']:'--')?></td>
+        <td><?=($item['mpq']?$item['mpq']:'')?></td>
+        <td><span id="<?=$priceid;?>"><?=$item['result_price'];?></span></td>
+        <td align="left" style="padding-left:3px">
+    <input type="text" id="<?=$inputid?>" name="multiple[<?=$item['id']?>]" value="1" size="2" onkeyup="changeNum.multiple('#<?=$inputid;?>','#<?=$allnumid;?>','#<?=$xiaoji;?>','<?=$item['pmpq'];?>','<?=$item['result_price'];?>')"/> * <?=$item['pmpq'];?> = <span id="<?=$allnumid;?>"><?=$item['pmpq'];?></span></td>
+        <td><span id="<?=$xiaoji;?>"><?=number_format($pricetmp,DECIMAL);?></span></td>
+        <?php if($can_num==1){?>
+       <td rowspan="<?=$can_num?>" class="tabledownload" valign="middle"><a href="#" onclick="pdfaction()" title="报价单"><img src="/images/default/download_pdf.gif"></a></td>
+        <?php }?>
+       </tr>
+      <?php
+	         }
+		 }//end foreach
+	  ?>
+       <tr>
+       	<td colspan="10" align="left" valign="center"   height="30" style="background:#f9f9f9">
+            <div class="leftp fl">
+
+                <p>交货地：<b><?=$deliveryArr[$this->inquiry['delivery']]?></b><p>
+                <p>结算货币：<b class="en"><?=$this->inquiry['currency']?></b></p>
+            </div>
+            <div class="rightp fr">               
+                <p>总计(不含运费及包装费)：<b class="price"><?=$this->inquiry['currency']?><span id='total_price'><?=number_format($pricetotal,DECIMAL);?></span></b></p>
+            </div>
+        </td>
+       </tr>
+       </tbody></table>
+        <div class="bg_cart">
+            <div class="fl">
+                <a href="/center/inquiry"><em></em><?=$this->translate('Menu_MyInquiry')?></a>
+            </div>
+            <div class="fr" id="buyaction">
+               <a href="#" onclick="tijiaaction();" class="button">去结算</a>
+            </div>
+        </div>
+
+      </div>
+</div>
+</form>
+<script type="text/javascript">
+function tijiaaction(){
+	var getChkboxs=document.getElementsByName("checkItem[]");
+	var cansub = false;
+	var items = '<?=rawurlencode($this->inqkey)?>';
+	for (var i=getChkboxs.length-1;i>=0;i--)
+	{
+		if(getChkboxs[i].checked==true){
+		   if(cansub == false) cansub = true;
+		   items += '_'+getChkboxs[i].value;
+	    }
+	}
+	if(cansub){
+	 
+	  formId = document.getElementById('thisform');
+	  formId.target="_self"
+	  formId.action = "/inquiryorder/chooseinfocheck?key=<?=$this->pdfkey?>&items="+items;
+      formId.submit();
+	}else{
+	   alert('请至少选择一件产品。');return;
+	}
+}
+function pdfaction(){
+	var getChkboxs=document.getElementsByName("checkItem[]");
+	var canpdf = false;
+	var items = '<?=$this->inqkey?>';
+	for (var i=getChkboxs.length-1;i>=0;i--)
+	{
+		if(getChkboxs[i].checked==true){
+		   if(canpdf == false) canpdf = true;
+		   items += '_'+getChkboxs[i].value;
+	    }
+	}
+	if(canpdf == false){
+	   alert('请至少选择一件产品。');return;
+	}else{
+	  formId = document.getElementById('thisform');
+	  formId.target="_blank"
+	  formId.action = "/inquiryorder/createpdf?pdfkey=<?=$this->pdfkey?>&items="+items;
+      formId.submit();
+	}
+}
+//SelectAll
+function selectall(obj){
+     var getChkboxs=document.getElementsByName("checkItem[]");
+	 var allbox=document.getElementById('allbox').checked;
+	 if(allbox)
+	 {
+	    for (var i=getChkboxs.length-1;i>=0;i--)
+	    {
+		   getChkboxs[i].checked = true;
+	    }
+	 }else
+	 {
+	 	for (var i=getChkboxs.length-1;i>=0;i--)
+	    {
+		   getChkboxs[i].checked = false;
+	    }
+	 }
+	 jisuan();
+}
+//SelectOne
+function selectone(obj,pricetmp,number,id){
+    
+    /*if(obj.checked==false) document.getElementById(id).disabled="disabled";
+	else  document.getElementById(id).disabled="";*/
+
+	var getChkboxs=document.getElementsByName("checkItem[]");
+	var allchecked = true;
+	for (var i=getChkboxs.length-1;i>=0;i--)
+	{
+		if(getChkboxs[i].checked==false){
+		   
+		   allchecked = false;
+	    }
+	 }
+	document.getElementById('allbox').checked=allchecked;
+	jisuan();
+}
+var changeNum={
+	reg:function(x,allnum){
+	if(x=='') {
+document.getElementById("buyaction").innerHTML=' <a href="javascript:;" onclick="alert(\'请输入数量\');"  class="button">去结算</a';
+	$(allnum).html('0');
+	return true;
+	}else {
+	  document.getElementById("buyaction").innerHTML='<a href="javascript:;" onclick="tijiaaction()"  class="button">去结算</a>';
+	}
+	return new RegExp("^[1-9]\\d*$").test(x);
+	},
+	multiple:function(input,allnum,xiaoji,mpq,price){
+		var x = $(input).val();
+		if (!this.reg(x,allnum)){
+			alert("请输入正确的数量！");
+			$(input).val(1);
+			$(allnum).html(mpq);
+
+			$(xiaoji).html(number_format(total));
+			$(input).focus();
+		}else{
+			if(x=='') {$(input).focus();return;};
+			$(allnum).html(x*mpq);
+			$(xiaoji).html(number_format(parseFloat(x*mpq)*parseFloat(price)));
+		}
+		jisuan();
+	}
+}
+function jisuan()
+{
+    var allprice = 0;
+	var getChkboxs=document.getElementsByName("checkItem[]");
+	for (var i=getChkboxs.length-1;i>=0;i--)
+	{
+		if(getChkboxs[i].checked)
+		{
+			id = getChkboxs[i].value;
+			var price  = parseFloat(document.getElementById('price_'+id).innerHTML);
+			var allnum = parseFloat(document.getElementById('allnum_'+id).innerHTML);
+			allprice +=price*allnum;
+		}
+	}
+	document.getElementById("total_price").innerHTML = number_format(allprice);
+}
+</script>

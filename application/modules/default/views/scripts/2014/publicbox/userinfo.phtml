@@ -1,0 +1,32 @@
+<div class="prompt"> 
+<span class="fl"><a href="/center" target="_top" class="name"><strong><?=$_SESSION['userInfo']['unameSession'];?></strong></a></span> 
+<span style="color:#ff6600"><ins class="jficon" style="vertical-align:middle;"></ins>积分：<?=$this->myscore?$this->myscore:'0'?></span>
+<span class="fr">
+<?php if(isset($_SESSION['userInfo']['unameSession'])){?>
+<a href="/user/logout" style="cursor:pointer;" title="点击退出登录" class="fontgray">退出</a>
+<?php }else{?>
+<a href="/user/login?url=/center">登录</a> | <a href="/user/register">注册</a></span>
+<?php }?>
+</span> </div>
+<div class="uclist" >
+  <div class="fl"> <b>在线订单</b>
+    <ul class="fore1 ">
+      <li><a href="/center/order?type=wpay">待付款(<span <?=$this->onlinesoinfo['wpay']==0?'':'class="fontred"'?>><?=$this->onlinesoinfo['wpay']?></span>)</a>
+      </li>
+      <li><a href="/center/order?type=rec">待收货(<span <?=$this->onlinesoinfo['rec']==0?'':'class="fontred"'?>><?=$this->onlinesoinfo['rec']?></span>)</a></li>
+    </ul>
+  </div>
+  <div class="fl"> <b>询价订单</b>
+    <ul class="fore1 ">
+      <li><a href="/center/inqorder?type=wpay">待付款(<span <?=$this->inqsoinfo['wpay']==0?'':'class="fontred"'?>><?=$this->inqsoinfo['wpay']?></span>)</a></li>
+      <li><a href="/center/inqorder?type=over">待付余款(<span  <?=$this->inqsoinfo['over']==0?'':'class="fontred"'?>><?=$this->inqsoinfo['over']?></span>)</a></li>
+      <li><a href="/center/inqorder?type=rec">待收货(<span  <?=$this->inqsoinfo['rec']==0?'':'class="fontred"'?>><?=$this->inqsoinfo['rec']?></span>)</a></li>
+    </ul>
+  </div>
+  <div class="fr"> <b>我的询价</b>
+    <ul class="fore1 ">
+      <li><a href="/center/inquiry?type=wait">待报价(<span <?=$this->inqinfo['wait']==0?'':'class="fontred"'?>><?=$this->inqinfo['wait']?></span>)</a></li>
+      <li><a href="/center/inquiry?type=already">待下单(<span <?=$this->inqinfo['already']==0?'':'class="fontred"'?>><?=$this->inqinfo['already']?></span>)</a></li>
+    </ul>
+  </div>
+</div>

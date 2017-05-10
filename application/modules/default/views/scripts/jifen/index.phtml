@@ -1,0 +1,154 @@
+<?php echo $this->render('jifen/menu.phtml');?>
+<!-------------------------------------------------活动主体------------------------------------------------->
+<div class="con-full pos-re">
+	<div class="full-banner"></div>
+	<div class="full-menu">
+    	<div class="w w-menu">
+        	<ul>
+                 <li class="fore1 on" data-hover="w-menuli_hover"><s></s><a href="#no3box" title="50000分以上的礼品"><b>1F</b>50000<small>分以上</small></a></li>
+                 <li class="fore2" data-hover="w-menuli_hover"><s></s><a href="#no2box" title="10000-50000分的礼品"><b>2F</b>10000-50000<small>分</small></a></li>
+                <li class="fore3 " data-hover="w-menuli_hover"><s></s><a href="#no1box" title="10000分以下的礼品"><b>3F</b> 10000<small>分以下</small></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="w">
+    	<div class="jfhomebox no1box clearfix pos-re" id="no3box">
+        	<div class="jihomeboxtit"></div>
+            <div class="titmore"><a href="/jifen/list?in=50000-" >更多<b class="fonts_gt">&gt;&gt;</b></a></div>
+            <ul class="shop_lastest clearfix">
+               <?php foreach($this->gift3 as $k=>$v){?>
+                <li class="s1_mod" data-hover="s1_mod_hover">
+                    <div class="s1_mod_c">
+                    <div class="s1_pic">
+                        <img src="/upload/default/gift/<?=$v['images']?>"  width="309" height="255" >
+                    </div>
+                    <div class="s1_info">
+                    	<span class="s1_info_name clearfix fl"><?=$v['name']?></span>
+                        <span class="s1_info_jifen clearfix fl">
+                        	<span>换购积分：</span><span class="font20 fontbold"><?=$v['score']?></span><br />
+                        	<del>市场价：¥<?=number_format($v['market_price'],2)?></del>
+                        </span>
+                        <span class="s1_info_btn clearfix fl">
+                        <?php if($this->myscore<$v['score'] && isset($_SESSION['userInfo']['unameSession'])){?>
+                        <a href="javascript:;" onClick="openbox('/jifen/alertbox?t=noscore')" class="font20" >立即兑换</a>
+						<?php }else{?>
+                        <a href="javascript:;" onClick="exchange('<?=$v['id']?>')" class="font20" >立即兑换</a>
+                        <?php }?></span>
+                    </div>
+                    <?php if($k<2) echo '<div class="s1_new"></div>';
+					else echo '<div class="s1_tuijian"></div>';?>
+                    </div>
+                    <div class="sl_shadow"></div>
+                </li>
+                <?php }?>
+            </ul>
+        </div>
+        <div class="jfhomebox no2box clearfix pos-re" id="no2box">
+        	<div class="jihomeboxtit"></div>
+            <div class="titmore"><a href="/jifen/list?in=10000-50000" >更多<b class="fonts_gt">&gt;&gt;</b></a></div>
+            <ul class="shop_lastest clearfix">
+                <?php foreach($this->gift2 as $k=>$v){?>
+                <li class="s1_mod" data-hover="s1_mod_hover">
+                    <div class="s1_mod_c">
+                    <div class="s1_pic">
+                        <img src="/upload/default/gift/<?=$v['images']?>"  width="309" height="255" >
+                    </div>
+                    <div class="s1_info">
+                    	<span class="s1_info_name clearfix fl"><?=$v['name']?></span>
+                        <span class="s1_info_jifen clearfix fl">
+                        	<span>换购积分：</span><span class="font20 fontbold"><?=$v['score']?></span><br />
+                        	<del>市场价：¥<?=number_format($v['market_price'],2)?></del>
+                        </span>
+                        <span class="s1_info_btn clearfix fl">
+                        <?php if($this->myscore<$v['score'] && isset($_SESSION['userInfo']['unameSession'])){?>
+                        <a href="javascript:;" onClick="openbox('/jifen/alertbox?t=noscore')" class="font20" >立即兑换</a>
+						<?php }else{?>
+                        <a href="javascript:;" onClick="exchange('<?=$v['id']?>')" class="font20" >立即兑换</a>
+                        <?php }?></span>
+                    </div>
+                    <?php if($k<2) echo '<div class="s1_new"></div>';
+					else echo '<div class="s1_tuijian"></div>';?>
+                    </div>
+                    <div class="sl_shadow"></div>
+                </li>
+                <?php }?>
+            </ul>
+        </div>
+        <div class="jfhomebox no3box clearfix pos-re" id="no1box">
+        	<div class="jihomeboxtit"></div>
+             <div class="titmore"><a href="/jifen/list?in=0-10000" >更多<b class="fonts_gt">&gt;&gt;</b></a></div>
+            <ul class="shop_lastest clearfix">
+            	<?php foreach($this->gift1 as $k=>$v){?>
+                <li class="s1_mod" data-hover="s1_mod_hover">
+                    <div class="s1_mod_c">
+                    <div class="s1_pic">
+                        <img src="/upload/default/gift/<?=$v['images']?>"  width="309" height="255" >
+                    </div>
+                    <div class="s1_info">
+                    	<span class="s1_info_name clearfix fl"><?=$v['name']?></span>
+                        <span class="s1_info_jifen clearfix fl">
+                        	<span>换购积分：</span><span class="font20 fontbold"><?=$v['score']?></span><br />
+                        	<del>市场价：¥<?=number_format($v['market_price'],2)?></del>
+                        </span>
+                        <span class="s1_info_btn clearfix fl">
+                        <?php if($this->myscore<$v['score'] && isset($_SESSION['userInfo']['unameSession'])){?>
+                        <a href="javascript:;" onClick="openbox('/jifen/alertbox?t=noscore')" class="font20" >立即兑换</a>
+						<?php }else{?>
+                        <a href="javascript:;" onClick="exchange('<?=$v['id']?>')" class="font20" >立即兑换</a>
+                        <?php }?>
+                        </span>
+                    </div>
+                    <?php if($k<2) echo '<div class="s1_new"></div>';
+					else echo '<div class="s1_tuijian"></div>';?>
+                    </div>
+                    <div class="sl_shadow"></div>
+                </li>
+                <?php }?>
+            </ul>
+        </div>
+        <div class="jfhomebox clearfix jibox pos-re">
+            <div class="titmore"></div>
+            <div class="jflist fl">
+            	<div class="jflist_t">最新兑换记录</div>
+                <div class="jflist_con">
+                	<table cellpadding="0" cellspacing="0" border="0" class="jflist_table">
+                    	<tr>
+                        	<th>时间</th>
+                            <th>用户</th>
+                            <th>分值</th>
+                            <th>礼品</th>
+                        </tr>
+                  <?php foreach($this->exchangelist as $arr){?>
+                     <tr>
+                        	<td><?=date("Y/m/d",$arr['created'])?></td>
+                            <td><span  title="<?=$arr['uname']?>"><?=$this->fun->utf_substr($arr['uname'],10)?></span></td>
+                            <td><?=$arr['score']?></td>
+                            <td><?=$arr['giftname']?></td>
+                        </tr>
+                 <?php }?>
+                    </table>
+                </div>
+            </div>
+            <div class="jfno fr">
+            	<div class="jfno_t">积分排行榜</div>
+                <div class="jfno_con">
+                	<div class="jfnolist pos-re">
+                    	<div class="tricon"></div>
+                        <div class="listtitle clearfix">
+                            <span class="listname">用户名</span>
+                            <span class="listhour">分值</span>
+                        </div>
+                        <ul>
+                        <?php foreach($this->jifenlist as $k=>$arr){?>
+                        <li><i class="jfno_icon jfno_icon<?=($k<4?($k+1):'4')?>"><?=($k+1)?></i>
+                        <span class="jfno_name" title="<?=$arr['uname']?>"><?=$this->fun->utf_substr($arr['uname'],8)?></span>
+                        <span class="jfno_num"><?=$arr['score']?></span></li>
+                    <?php }?>  
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="clr"></div>
+        </div>
+    </div>
+</div>

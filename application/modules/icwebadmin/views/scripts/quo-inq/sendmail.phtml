@@ -1,0 +1,51 @@
+<?php
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$unitArr = array('HK'=>'香港','SZ'=>'国内');
+?>
+<div class="popup" style="width:600px;">
+    <div class="popup-header">
+    <h2>发邮件</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a>
+     </div>
+    <div class="popup-body">
+		<div class="passopen passopen0">
+            <dl class="PublicDl Emailtypedl">
+                <dt><em>*</em>邮件类型：</dt>
+                <dd>
+                    <input type="radio" name="rdtype" value="1" checked="checked">
+                    <label>联系不上客户邮件</label>
+                </dd>
+                <dd class="zhuyi">说明：此邮件是用于客户填写的联系方式有误，我们电话联系不上客户，发邮件通知客户主动联系我们。</dd>
+            </dl>
+
+            <div class="clear"></div>
+            
+        </div>
+        <div class="clear"></div>
+		<div class="bottombutton" id="sendmailid">
+                <input type="button" onclick="sendmailtouser('<?=$this->id?>')" value="发 送" class="btnabig">
+            </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<script type="text/javascript">
+//联系不上客户发邮件
+function sendmailtouser(id){
+var subtmp = document.getElementById("sendmailid");
+subtmp.innerHTML = '<input type="button" class="btnabig" value="提交中..."/>';
+	$.ajax({
+            url: '/icwebadmin/QuoInq/sendmailtouser/id/'+id,
+            data: {'id':id},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    alert(arr.message);
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+				subtmp.innerHTML = '<input type="button" onclick="sendmailtouser(\'<?=$this->id?>\')" value="发 送" class="btnabig">';
+            }
+	 });
+}
+</script>

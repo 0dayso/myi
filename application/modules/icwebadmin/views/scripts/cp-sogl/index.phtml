@@ -1,0 +1,136 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?>
+  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                        <a href="<?php echo $this->addurl;?>" >添加+</a>
+                        
+                    
+ <?php }?></h1>
+ 
+ <div id="message_sess" style="display:none" class="message_sess">
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div>
+</div>
+<?php if (count($this->messages)) : ?>
+<div class="alert fade in">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+<?php foreach ($this->messages as $message) : ?>
+    <p class="message"><strong><?php echo $this->escape($message); ?></strong></p>
+<?php endforeach; ?>
+ </div>
+<?php endif; ?>      
+
+<form id="myform"  class="form-search" name="myform" action="" method="get">
+<label>标题：</label>
+<div class="input-append">
+  <input type="text" name="searchtitle" class="search-query ac_input" style="width:300px"  value="<?=$this->searchtitle?>" autocomplete="off"/>
+</div>
+<input type="submit" class="btn" value="查 找"/>
+</form>
+
+
+<table class="producttable table"  border="0" style="margin-top:-1px;">
+                <thead>
+                <tr>
+                <th width="5%">编号</th>  
+                <th width="10%">方案编号</th>                
+                <th width="20%">方案名称</th>
+                <th width="10%">标签</th>
+                <th width="10%">作者</th>
+                <th width="10%">来源</th>
+                <th width="10%">应用分类</th>
+                <th width="5%">文档</th>
+                
+                <th width="5%">首页推荐</th>
+                <th width="5%">状态</th>
+                <th width="20%">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+				<?php foreach($this->datas  as $data) : ?>
+				<tr>
+                <td><?php echo $data['id'];?></td>
+				<td><?php echo $data['solution_no'];?></td>
+				<td><a href="<?php echo $this->fronturl.$data['id'];?>" class="colorbox" target="_blank" title="查看方案"><?php echo $data['title'];//echo $inquiry->product;?></a></td>
+                <td><?php echo $data['tags'];?></td>
+                <td><?php echo $data['author'];?></td>
+				<td><?php echo $data['source'];?></td>
+                <td><?php echo $data['appname1'];//echo $inquiry->user;?></td>
+				<td><?php if( $data['datasheet']){ ?>
+					<a href="<?php echo $data['datasheet']; ?>" target="_blank">文档</a>
+				<?php } ?>
+				</td>
+                <td><?php if($data['home']==1) {?> 
+                <a href="javascript:;" onclick="changehome(<?=$data['id']?>,0)" title="取消推荐"><font color="#006600">是</font></a>
+				<?php }else {?>
+                <a href="javascript:;" onclick="changehome(<?=$data['id']?>,1)" title="推荐"><font color="#FF0000">否</font></font></a>
+                <?php }?>
+                </td>
+                <td><?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID))
+				{if($data['status']==1) {?> 
+                <a href="javascript:;" onclick="changestatus(<?=$data['id']?>,0)" title="点击下线"><font color="#006600">已上线</font></a>
+				<?php }else {?>
+                <a href="javascript:;" onclick="changestatus(<?=$data['id']?>,1)" title="点击上线"><font color="#FF0000">已下线</font></font></a>
+                <?php }}?>
+                </td>
+				<td>
+				<a href="<?php echo $this->url(array('controller'=>'CpSogl', 'action'=>'edit', 'id'=>$data['id']));?>" target="_blank" class="gbqfb">编辑</a> 
+                <a href="<?php echo $this->url(array('controller'=>'CpSogl', 'action'=>'cgal', 'id'=>$data['id']));?>" target="_blank" class="gbqfb">编辑成功案例</a> 
+                <a href="<?php echo $this->url(array('controller'=>'CpSogl', 'action'=>'sjwd', 'id'=>$data['id']));?>" target="_blank" class="gbqfb">编辑设计文档</a>  
+                <a href="<?php echo $this->url(array('controller'=>'CpSogl', 'action'=>'jszq', 'id'=>$data['id']));?>" target="_blank" class="gbqfb">编辑技术支持</a> 
+				</td>
+				</tr>
+				<?php endforeach; ?>
+                </tbody>
+            </table>      
+         <div class="pagination divpage" >
+            <?=$this->page_bar;?>
+        </div>
+</div>
+<script type="text/javascript">
+function createhtml(){
+	$.ajax({
+            url: '/icwebadmin/CpSogl/createhtml',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   alert(arr.message);
+            }
+	  });
+	
+}
+function changestatus(id,status)
+{
+	 $.ajax({
+            url: '/icwebadmin/CpSogl/changestatus',
+            data: {'id':id,'status':status},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    document.getElementById('message_sess').style.display = "block";
+	            document.getElementById('alert_message').innerHTML = arr.message;
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+}
+function changehome(id,homevalue)
+{
+	 $.ajax({
+            url: '/icwebadmin/CpSogl/changehome',
+            data: {'id':id,'homevalue':homevalue},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    document.getElementById('message_sess').style.display = "block";
+	            document.getElementById('alert_message').innerHTML = arr.message;
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+}
+</script>

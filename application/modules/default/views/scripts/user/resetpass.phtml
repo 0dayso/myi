@@ -1,0 +1,79 @@
+<link href="/css/default/register.css" media="screen" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/js/jsplug/formvalidator/css/validationEngine.jquery.css" media="screen" type="text/css"/>
+<link rel="stylesheet" href="/js/jsplug/formvalidator/css/template.css" media="screen" type="text/css"/>
+<script src="/js/jsplug/formvalidator/js/jquery.validationEngine-en.js" type="text/javascript"></script>
+<script src="/js/jsplug/formvalidator/js/jquery.validationEngine.js" type="text/javascript"></script>
+<script language="javascript">	
+		$(document).ready(function() {
+			$("#formID").validationEngine()
+		});
+</script>
+<div id="header" class="w">
+    <div id="logo"><a hidefocus="true" href="/"><img alt="IC易站" src="/images/default/logo.jpg"></a></div>
+    <h1>找回密码</h1>
+</div>
+<form id="formID" method="post" action="">
+<div class="w forgotpassword">
+	<div class="registerline"></div>
+    <div class="steps step-2">
+        <ol>
+            <li>验证身份</li>
+            <li>重置密码</li>
+            <li>完成</li>
+        </ol>
+    </div>
+    <div class="RG_mbox fl lh">
+    	
+        <div class="fl step2">
+            <p>系统已经将验证码发送到<b><?php echo $this->email;?></b></p>     
+        </div>
+        
+        <div class="item ">
+            <div class="ltext fl">
+                <em>*</em>新密码：
+            </div>
+            <div class="fl">
+            <input type="password" name="password1" id="password1" value="" class="validate[required,length[6,25]] reinput fl" />
+            </div>
+        </div>
+         <div class="item ">
+            <div class="ltext fl">
+                <em>*</em>确认密码：
+            </div>
+            <div class="fl">
+                <input type="password" name="password2" id="password2" value="" class="validate[required,confirm[password1]] reinput fl" />
+            </div>
+        </div>
+        <div class="item ">
+            <div class="ltext fl">
+                <em>*</em>验证码：
+            </div>
+            <div class="fl">
+               <input class="validate[required] reinput fl" type="text" value="<?=$this->key?>" name="keycode" id="keycode" />
+            </div>
+        </div>
+        <div class="item ">
+            <div class="ltext fl">                
+                &nbsp;
+            </div>
+            <div class="fl">
+                <input type="submit"  class="button"  value="提 交"/>
+            </div>
+        </div>
+    </div>
+	<div class="rtip fr">
+    	<h2>IC易站欢迎您！</h2>
+        <p>IC易站 —— 一站式的电子元器件电子商务交易平台！ 全程设计链、供应链支持，为您提供产品、技术、服务、知识等专业服务！</p>
+    </div>
+</div>
+</form>
+<script language="javascript">
+<?php if(!empty($this->passwordMess)){?>
+var password=document.getElementById("password1");
+$.validationEngine.buildPrompt(password,"<?php echo $this->passwordMess;?>","error");
+<?php }?>
+<?php if(!empty($this->keycodeMess)){?>
+var keycode=document.getElementById("keycode");
+$.validationEngine.buildPrompt(keycode,"<?php echo $this->keycodeMess;?>","error");
+<?php }?>
+</script>

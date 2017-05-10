@@ -1,0 +1,33 @@
+<?php if(isset($_SESSION['userInfo']['unameSession'])){?>
+<div class="rightsav login_ok"><!--登录后加上样式 login_ok-->
+<div class="ibox ">
+    <ul>
+        
+        <?php if($this->jifenview<=0){?>
+         <li class="ibox_qiandao_on qiandao_on"><a href="javascript:void(0);" title="签到"><i></i>已签到<br /><em>(<?=$this->top['jifenviewnum']?>)</em></a></li>
+        <?php }else{?>
+       <li class="ibox_qiandao_on "><a href="javascript:void(0);" target="_self" onclick="registr()" title="签到"><i></i>签到</a></li>
+        <?php }?>
+        <li class="ibox_liulan_on"><a href="#" title="浏览"><i></i>已浏览<br /><em>(<?=$this->top['viewpagenum']?>)</em></a></li>
+        <li class="ibox_fenxiang_on"><a href="#" title="分享"><i></i>已分享<br /><em>(<?=$this->top['sharenum']?>)</em></a></li>
+        <li class="ibox_yaoqing_on"><a href="#" title="邀请"><i></i>已邀请<br /><em>(<?=$this->top['invitenum']?>)</em></a></li>
+    </ul>
+</div>
+<?php }else{?>
+<div class="rightsav">
+<div class="ibox ">
+    <ul>
+        <li class="ibox_qiandao"><a href="javascript:;" onClick="openlogin()" title="签到"><i></i>签到</a></li>
+        <li class="ibox_liulan"><a href="javascript:;" onClick="openlogin()" title="浏览"><i></i>浏览</a></li>
+        <li class="ibox_fenxiang"><a href="javascript:;" onClick="openlogin()" title="分享"><i></i>分享</a></li>
+        <li class="ibox_yaoqing"><a href="javascript:;" onClick="openlogin()" title="邀请"><i></i>邀请</a></li>
+    </ul>
+</div>
+<?php }?>
+<div class="gototop" ><a href="#" class="">回到顶部</a></div>
+</div>
+<script type="text/javascript">
+if (screen.width < 1280) {
+  $(".rightsav").css("display","none");
+}
+</script>

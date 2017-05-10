@@ -1,0 +1,279 @@
+<?php header('Content-Type: text/html; charset=utf-8'); ?>
+<script type="text/javascript">
+$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+//ajax应用分类分页
+	 function ajaxpage(url){
+	 	 $("#search_info").load(url);
+		 scrollTo(0,150);  
+	 }
+</script>
+<style type="text/css">
+.tabletrf9{ background:#fafafa}
+.table{ width:100%;  text-align:center; float:left; border:1px solid #ddd;  }
+.table td{ border-top:1px solid #ddd; padding:5px;}
+.table th{background:#eee; padding:8px 0 !important; color:#666;font-weight:normal;}
+.table td p,.listtable td p{ text-align:left}
+.borleft{ border-left:1px solid #ddd;}
+.borright{ border-right:1px solid #ddd;}
+.listtable{ width:100%;  text-align:center; float:left; border:0px solid #ddd; border-bottom:0}
+.listtable th{background:#d9d9d9;border-bottom:0px dotted #ddd;padding:8px 15px 8px 0; color:#666;font-weight:normal; }
+.listtable td{padding:8px 15px 8px 0;  border-bottom:1px dotted #ddd;}
+.listtable .model{ font-size:12px !important;}
+.listtable .tabelbtn{ margin-right:-15px;  float:left}
+.listtable .model{ margin-left:0px;  float:left}
+.listtable .fontorange,.listtable .fontgreen{ text-align:center}
+
+.nodata {padding: 0; height: 65px; line-height:65px; text-align:center; border:1px solid #e8d9aa; margin-top:10px;background:#fff9c9;border-top: solid 1px #ddd;vertical-align: middle; font-size:16px;}
+</style>
+<link rel="stylesheet" type="text/css" href="/css/default/directory.css"/>
+
+
+<div class="clearfix ld">
+	<?php if(!empty($this->allProd)){?>
+    <table cellpadding="0" cellspacing="0" class="listtable">
+    	<tbody>
+        <tr>
+        	<th width="18%">型号</th>
+            <th width="10%">品牌</th>
+            <th width="15%">产品描述</th>
+            <th width="10%">数据文档</th>
+            <th width="10%">应用笔记</th>
+            <th width="7%">库存</th>
+            <th width="15%">阶梯价格</th>
+            <th width="13%">操作</th>
+        </tr>
+        <?php 
+        foreach($this->allProd as $k=>$prod){
+			$prod = $this->fun->filterProduct($prod);
+			$break_price='';$stock = 0;$show_price = 0;
+			if($prod['f_show_price_sz']){
+			    $show_price = $prod['f_show_price_sz'];
+				$stock      = $prod['f_stock_sz'];
+				$break_price = $prod['f_break_price_notitle_sz'];
+			}elseif($prod['f_show_price_hk']){
+			    $show_price = $prod['f_show_price_hk'];
+				$stock      = $prod['f_stock_hk'];
+				$break_price = $prod['f_break_price_notitle_hk'];
+			}elseif($prod['f_break_price_notitle_sz']){
+				$break_price = $prod['f_break_price_notitle_sz'];
+			}elseif($prod['f_break_price_notitle_hk']){
+				$break_price = $prod['f_break_price_notitle_hk'];
+			}
+			$bgclass='';
+			if($k%2==1) $bgclass = 'class="tabletrf9"';
+		?>
+        <tr <?=$bgclass?>>
+        	<td align="left" >
+            <a href="<?=$prod['f_produrl']?>" class=" fontb fontwei fontblue logclick" title="<?=$prod['part_no']?>" target="_blank"  rev="search_part_id" rel="<?=$prod['id']?>">
+			<?=str_ireplace($this->keyword,'<em>'.strtoupper($this->keyword).'</em>',$prod['part_no']);?></a>
+            </td>
+            <td><?=$prod['bname']?></td>
+            <td align="left"><p title="<?=$prod['description']?>"><?=$this->fun->utf_substr($prod['description'],68)?></p></td>
+            <td>
+            <?php if($prod['datasheet']) {
+	        $dsarr = explode('<>',$prod['datasheet']);
+			$dsstr = $dsarr[0]?$dsarr[0]:$dsarr[1];
+			     $datasheet_name = $datasheet = '';
+    			 $tmparr = explode('()',$dsstr);
+				 if(count($tmparr)==2){
+				 	$datasheet_name = $tmparr[0];
+					$datasheet      = $tmparr[1];
+				 }else{
+				 	$datasheet_name = '数据文档';
+					$datasheet      = $tmparr[0];
+				 }
+				
+				 ?>
+                <!--<?=$datasheet_name?><br />-->
+            <a href="<?=$datasheet?>" target="_blank" title="<?=$prodarr['part_no'].$datasheet_name;?>"  class="logclick" rev="prodderails_datasheet" rel="<?=$this->prodarr['id']?>"><i class="icon_pdf"></i></a>
+            <?php }else echo '--';?>
+            </td>
+            <td>
+            <a href="<?=$prod['f_produrl']?>" target="_blank"><i class="icon_download"></i></a></td>
+            <td>
+           <?php
+                    if(($prod['f_stock_sz']+$prod['f_stock_hk'])>0){echo '<font color="#469F68">现货</font>';}
+					else {echo '<font color="#FC9C30">订货</font>';}?>
+            </td>
+
+            <td><div class="price_btn_table"><?=($show_price?$break_price:'--')?></div></td>
+            <td ><div class="tabelbtn">
+            
+            <?php if($show_price){?><a href="javascript:" onclick="buy('<?=$prod['id']?>')"  class="gbqfb logclick" title="购买"  rev="search_part_id" rel="<?=$prod['id']?>"><i class="i_buy_s"></i>在线购买</a><br/>
+            <?php }?>
+            
+            <?php if($prod['samples'] && $prod['sample_stock']>0){?>
+                <a href="javascript:;" class="gbqfbbig_h" onclick="appSamples('<?=$this->fun->encryptVerification($prod['id'])?>')" title="我要申请">免费样片</a><br/><?php }?>
+                
+            <?php if(!$prod['noinquiry']){?>
+                 <a href="javascript:" onclick="openInquiry('<?=$prod['id']?>')" class="gbqfb logclick" title="询价"  rev="search_part_id" rel="<?=$prod['id']?>"><i class="i_xun_s"></i>批量询价</a><br/>
+            <?php }?>
+            </div>
+            </td>
+        </tr>
+        <?php } ?>
+        </tbody>
+        </table>
+    <div class="pagination fr"><?=$this->page_bar;?></div>
+    
+    <br/>
+     <table cellspacing="0" cellpadding="0" class="table nodatatable">
+       <tbody>
+           <tr>
+              <td width="120" align="right" style="border-top:0"></td>
+                    <td width="210" align="left" style="border-top:0">
+              			<a onclick="window.external.AddSearchProvider('<?='http://'.$_SERVER['HTTP_HOST']?>/index/opensearch'); return false;" href="javascript:;" class="logclick" rev="searchplugin" rel="" title="点击添加搜索插件">添加IC易站搜索插件</a>，这样会让您更快使用到IC易站的搜索服务。
+                    </td>
+      </tr>
+     </tbody></table>
+    
+    <?php }else{ //if(empty($this->allProd)){?>
+     <div class="nodata" style="font-size:16px;"><strong>很抱歉，没有找到任何<em><?=$this->keyword?></em>相关搜索结果。您可以提交型号，我们会尽快帮你寻找！</strong></div>    
+           <form id='searchform' name="searchform" action='' method='post'>
+           <input type="hidden" name="type" value="2" />
+            <?php  
+	       if($this->reUser['mobile'] && $this->reUser['tel'])
+		   	  $contact = $this->reUser['mobile'].';'.$this->reUser['tel'];
+		   elseif($this->reUser['mobile'])
+		      $contact = $this->reUser['mobile'];
+		    else $contact = $this->reUser['tel'];
+	      ?>
+          	<div class="divtitbg1ts">
+            <span class="titbg1ts">提交产品型号</span>
+            <table cellpadding="0" cellspacing="0" class="table nodatatable">
+                <tbody>
+                <tr>
+                    <td width="120" style="border-top:0" align="right">上线通知：</td>
+                    <td width="210" align="left" style="border-top:0">
+              			<input type="checkbox" name="notice" id="notice" value="1" checked="checked"/>
+                    </td>
+                    <td style="border-top:0"></td>
+                </tr>
+                <tr>
+                    <td width="120" style="border-top:0" align="right">型号：</td>
+                    <td width="210" align="left" style="border-top:0"><?=$this->keyword?></td>
+                    <td style="border-top:0"><div id="part_noTip"></div></td>
+                </tr>
+                <tr>
+                    <td width="120" style="border-top:0" align="right"><em>*</em>品牌：</td>
+                    <td width="210" align="left" style="border-top:0">
+              			<select id="brand" name="brand" onchange="showother(this.value)" style="width:210px;">
+                        <option value=''>请选择品牌</option>
+                        <?php foreach($this->allbrand as $k=>$v){
+						    $sel = '';if($_SESSION['brand']==$v['name']) $sel='selected="selected"';
+			                echo "<option value='".$v['name']."' $sel>".$v['name']."</option>";
+		                }?>
+                        <option value="Other">其它</option>
+                        </select>
+                        <div id="brand_other_div"></div>
+                    </td>
+                    <td style="border-top:0"><div id="brandTip"></div></td>
+                </tr>
+                
+                <tr>
+                    <td width="120" align="right"><em>*</em>联系人：</td>
+                    <td width="210" align="left">
+                       <input type="text" name="contact_name" id="contact_name" style="width:200px;" class="nreg_input" value="<?=$this->reUser['truename']?>"/>
+              
+                    </td>
+                    <td><div id="contact_nameTip"></div></td>
+                </tr>
+                <tr>
+                    <td width="120" align="right"><em>*</em>联系方式：</td>
+                    <td width="210" align="left">
+                         <input type="text" name="contact" id="contact"  style="width:200px;" class="nreg_input" value="<?=$contact?>"/>
+              
+                    </td>
+                    <td><div id="contactTip"></div></td>
+                </tr>
+              
+              <tr>
+                <td align="right">说明：</td>
+                <td align="left">
+               <textarea name="explanation" id="explanation" rows="5" cols="27"></textarea>
+                </td><td></td>
+              </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td align="left">
+                  <div id="baojiabtn">
+                  <input type="button" title="提交" value="提交" onclick="tijiaoaction()" class="button bigbutton"/>
+                  </div>
+                  </td>
+                </tr>
+            </tbody></table>
+            
+            </div>
+		</form>
+
+<script type="text/javascript">
+		
+function tijiaoaction(){
+	$.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   if(arr.code==100){
+			   	  $.openPopupLayer({
+		             name: "loginBox",
+		             target: "login_box"
+	              });
+			   }else if(arr.code==200){
+			   	   window.location.href ="/user/verification";
+			   }else{
+			   	   //提交
+				   var notice = 0;
+			       var notice_checked = $("#notice").attr("checked");
+	               if(notice_checked=='checked'){notice=1;}
+				   var brand = $("#brand").val();
+				   var brand_other = '';
+				   if(brand=='Other'){
+				   	   brand_other = $("#brand_other").val();
+					   if(brand_other=='' || typeof(brand_other)=="undefined") {alert('请填写其它品牌名称');$("#brand_other").focus();return;}
+				   }else{
+				   	   if(brand=='' || typeof(brand)=="undefined") {alert('请选择品牌');return;}
+				   }
+				   var contact_name = $("#contact_name").val();
+				   if(contact_name=='' || typeof(contact_name)=="undefined") {alert('请填写联系人');$("#contact_name").focus();return;}
+				   var contact = $("#contact").val();
+				   if(contact=='' || typeof(contact)=="undefined") {alert('请填写联系方式');$("#contact").focus();return;}
+				   var explanation = $("#explanation").val();
+				   
+				    //提交
+					 var subtmp = document.getElementById("baojiabtn");
+					 subtmp.innerHTML = '<input type="button" value="提 交 中..." class="button bigbutton">';
+					 $.ajax({
+							url: '/search/noproduct',
+							data: {'part_no':'<?=$this->keyword?>','notice':notice,'brand':brand,'brand_other':brand_other,'contact_name':contact_name,'contact':contact,'explanation':explanation},
+							type: 'post',
+							dataType: 'json',
+							success: function(arr) {
+							    alert(arr.message);
+								subtmp.innerHTML ='<input type="button" title="提交" value="提交" onclick="tijiaoaction()" class="button bigbutton"/>';
+							}
+					});
+			   }
+            }
+    });
+}
+</script>
+<?php } //if(empty($this->allProd)){?>
+</div>
+<script language="javascript">
+//选择其它
+function showother(value){
+    var obj = document.getElementById("brand_other_div");
+	if(value=='Other'){
+		obj.innerHTML='<input  type="text" name="brand_other" id="brand_other" style="width:200px;" class="nreg_input"/>';
+		document.getElementById("brand_other").focus();
+	}else{
+	    obj.innerHTML='';
+	}
+}
+</script>

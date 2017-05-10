@@ -1,0 +1,77 @@
+<?php
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$unitArr = array('HK'=>'香港','SZ'=>'国内');
+$rdtypeArr = array('1'=>'RFQ','2'=>'Budgetary','5'=>'BPPRFQ');
+$oa_price_source_arr = array('1'=>'老订单老价格 ','2'=>'新订单新价格 ','3'=>'需要降价(在说明描述写理由)');
+?>
+
+<div class="popup" style="width:950px;">
+    <div class="popup-header">
+        <h2>PMSC询价历史  OA BQ#：<?=$this->inqhistory['oa_rfqnumber']?></h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a>
+    </div>
+    <div class="popup-body">
+        <div class=" overflowh">
+            <div class="passopen passopen0">
+                    <dl class="PublicDl">
+                        <dt>询价类型：</dt>
+                        <dd><label><?=$rdtypeArr[$this->inqhistory['oa_rdtype']]?></label>
+                        </dd>
+                    </dl>
+                    <dl class="PublicDl">
+                        <dt>客户中文名：</dt>
+                        <dd><?=($this->oauser['client_cname']?$this->oauser['client_cname']:$this->user['companyname']);?>
+                        </dd>
+                    </dl>
+                    <dl class="PublicDl">
+                        <dt>交易类型：</dt>
+                        <dd>
+                           <?=($this->inqhistory['delivery']=='SZ'?'境内':'境外')?>
+                        </dd>
+                    </dl>
+                    <div class="clear"></div>  
+                </div>
+   <table cellpadding="0" border="0" cellspacing="0" class="tablelistPrice">
+      <tr>
+                    <th width="110">型号</th>
+                    <th>品牌</th> 
+                    <th>询价<br>数量</th>
+                    <th><span class="oaline">(OA)产品线</span></th>
+                    <th width="60">(按年)<br>预测量</th>
+                    <th width="60">目标单价<br/>(<?=($this->inqhistory['currency'])?>)</th>
+                    <th>价格来源</th>
+                    <th>说明描述</th>
+                    <th class="bggreen">PMSC报价<br/>(<?=$this->inqhistory['currency']?>)</th>
+                    <th class="bggreen">有效期</th>
+                    <th class="bggreen">回复备注</th>
+                    <th class="bggreen" width="50">报价<br/>专员</th>
+                  </tr>
+     <?php 
+	    foreach($this->inqhistory['detaile'] as $k=>$vd){?>
+		<td><?php if($vd['part_id']){ ?>
+        <a href="/proddetails?partid=<?=$vd['part_id'];?>" target="_blank"><?=$vd['part_no']?></a><?php }else echo $vd['part_no'];?>
+        </td>
+        <td><?=$vd['brand']?></td>
+        <td><?=$vd['number']?></td>
+        <td>
+		<?php $oaname = '--';foreach($this->oaproductline as $v){
+		        if($v['oa_id']==$vd['oa_productline']) $oaname = $v['oa_name'];?>
+		<?php }
+		      echo $oaname;
+		?>
+        </td>
+        <td><?=($vd['oa_forecast']?$vd['oa_forecast']:'--')?></td>
+        <td><span class="price"><?=($vd['oa_target_price']>0?$vd['oa_target_price']:'--')?></span></td>
+        <td><?=$vd['oa_price_source']?$oa_price_source_arr[$vd['oa_price_source']]:'--'?></td>
+        <td><?=$vd['ic_inqd_remark']?$vd['ic_inqd_remark']:'--'?></td>
+        <td><span class="price"><?=$vd['oa_result_price']>0?$vd['oa_result_price']:'--'?></span></td>
+        <td><?=($vd['oa_expiration_time']?date("Y-m-d",$vd['oa_expiration_time']):'--')?></td>
+        <td><?=$vd['oa_inqd_remark']?$vd['oa_inqd_remark']:'--'?></td>
+        <td><?=$vd['oa_pmsc_name']?$vd['oa_pmsc_name']:'--'?></td>
+       </tr>
+       <?php }?>
+       </table>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

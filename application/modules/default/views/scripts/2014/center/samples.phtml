@@ -1,0 +1,146 @@
+<!--content-->
+
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/myself2013.css"/>
+<link rel="stylesheet" type="text/css" href="/css/default/myself<?=$_SESSION['new_version']?>.css"/>
+
+<link href="/js/jsplug/persontooltip/popup.css" media="all" rel="stylesheet" type="text/css"/>
+<script src="/js/jsplug/persontooltip/popup.js" type="text/javascript"></script>
+
+<script type="text/javascript" language="javascript"> center_css();</script>
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a  class="focs">我的IC易站</a>&nbsp;&nbsp;»&nbsp;&nbsp;<a  >样片申请</a>
+  </div>
+</div>
+
+<div class="blank10"></div>
+<div class="w clearfix ourbox">
+        <!--左边导航-->
+        <?php echo $this->render('center/leftmenu.phtml');?>
+	<div class="fr u_right msg24">
+
+     <div class="col_main" id="onlineorder">
+            <h1>样片申请</h1>
+            <div class="tiporder fontorange">提示：详细真实的公司、项目信息和在IC易站下过订单有助于样片申请通过。</div>
+            <div class="order_tab_head">
+           <ul>
+          <li <?=$this->type=='proc'?'class="on"':''?>><a href="?type=proc" style="width:120px;">处理中<em>(<?=$this->procnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='already'?'class="on"':''?>><a href="?type=already" style="width:120px;">已完成<em>(<?=$this->alreadynum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='cancel'?'class="on"':''?>><a href="?type=cancel" style="width:120px;">审核不通<em>(<?=$this->cancelnum?>)</em><b class="blank3"></b></a></li>
+          </ul>
+            </div> 
+            <div class="table_box ivcoice " >
+                <table class="vac_table table" cellpadding="0" cellspacing="0">   
+                <thead>    
+                    <tr> 	 	 	 	 	 	 	
+                      <th width="80"><b>项目名称</b></th>
+                      <th width="50"><b>项目应用</b></th>
+                      <th width="50" align="left"><b>联系人</b></th>
+                      <th width="100" align="left"><b>项目预计</b></th>
+                      <th width="150"><b>收货信息</b></th>
+                      <th width="50"><b>申请说明</b></th>
+					 <!--<?php if(in_array($this->type,array('already','cancel'))){?>
+                        <th width="50"><b>审批说明</b></th>
+                      <?php }?>-->
+                      <th width="100"><b>申请样片</b></th>
+                      
+                    </tr>   
+                </thead>            
+                <tbody>  
+            <?php if(empty($this->applyall)){echo '<tr><td colspan="8">暂无记录</td></tr>';}
+		  	else{
+				foreach($this->applyall as $key=>$v){
+				$bg='';
+				if($key%2==1) $bg = 'class="tabletrf9"';
+		    ?>
+			  <tr <?=$bg?>>
+         		  <td align="center"><?=$v['projectname']?></td>
+                  <td align="center"><?=$v['projectapp']?></td>
+                  <td align="left"><?=$v['engineer']?><br/><?=$v['contact']?></td>
+                  <td align="left"><!--测试周期：<?=$v['testcycle']?><br/>-->年用量：<?=$v['amount']?$v['amount']:'--'?><br/>批量生产日期：<?=$v['productiondate']?$v['productiondate']:'--'?><br/></td>
+                  <td align="center"><a href="javascript:" class="tipa desshow">
+                                <b class="tipicon"></b>
+                                    <div class="bubblebox heiauto " style="width:200px;">
+                                        <div class="uparrow"></div>
+                                        <div class="popbox">
+                                           <div class="popcon clearfix" style="text-align:left; width:190px;">
+                                               <p><?=$v['sname'].'；'.$this->fun->createAddress($v['province'],$v['city'],$v['area'],$v['address'])."；".$v['mobile']." ".$v['tel']?></p>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                </a>
+                                <?php if($v['status']=='301'){?>
+                                <a href="javascript:" rel="<?=$v['id']?>,<?=$v['salesnumber']?>" rev="/order/courier" title="查看物流" class="button personPopupTrigger" >查看物流</a>
+                     <div class="transfer" id="personPopupContainer<?=$v['id']?>" style="display:none;position: absolute; z-index:2000">
+                         <div class="uparrow"></div>
+                         <div class="popbox">
+                              <div id="personPopupContent<?=$v['id']?>"></div>
+                         </div>
+                      </div>
+                                <?php }?>
+                                </td>
+                  <td align="center"><a href="javascript:" class="tipa desshow">
+                                <b class="tipicon"></b>
+                                    <div class="bubblebox heiauto " style="width:200px;">
+                                        <div class="uparrow"></div>
+                                        <div class="popbox">
+                                           <div class="popcon clearfix" style="text-align:left; width:190px;">
+                                               <p><?=$v['instructions']?$v['instructions']:'--'?></p>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                </a></td>
+                 <?php if(in_array($this->type,array('already','cancel'))){?>
+                       <!-- <td><a href="javascript:" class="tipa desshow">
+                                <b class="tipicon"></b>
+                                    <div class="bubblebox heiauto " style="width:200px;">
+                                        <div class="uparrow"></div>
+                                        <div class="popbox">
+                                           <div class="popcon clearfix" style="text-align:left; width:190px;">
+                                               <p><?php if($this->type=='cancel') echo $v['remark'];?></p>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                </a></td>-->
+                  <?php }?>
+                  <td align="left">
+                  <table width="100%"><tr><td>型号</td><td>品牌</td><td>数量</td><!--<td>备注</td>--></tr>
+                  <?php 
+                  foreach($v['detailed'] as $darr){
+                    echo '<tr><td>'.$darr['part_no'].'</td><td>'.$darr['brandname'].'</td><td>申请数：'.$darr['applynum'].'<br/>批准数：<font color="#006600">'.$darr['approvenum'].'</font></td><td>';
+					 /*if($darr['d_remark']) {echo '<td><a href="javascript:" class="tipa desshow">
+                                <b class="tipicon"></b>
+                                    <div class="bubblebox heiauto " style="width:200px;">
+                                        <div class="uparrow"></div>
+                                        <div class="popbox">
+                                           <div class="popcon clearfix" style="text-align:left; width:190px;">
+                                              <p>'.$darr['d_remark'].'</p>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                </a></td>';
+					 }else echo '<td>&nbsp;</td>';*/
+					 echo '</tr>';
+                  }
+                  ?></table> 
+                  </td>
+                  
+              </tr>
+		<?php }}?>
+                </tbody>         
+                </table>
+            </div>
+            <div class="pagination fr"> <?=$this->page_bar;?></div>
+        </div>
+   </div>
+</div>
+<div class="clr"></div>
+<script type="text/javascript">
+function cancel(id)
+{
+	 $.openPopupLayer({
+        name:'cancelBox',
+        url:'/jifen/cancel?id='+id
+    });
+}
+</script>

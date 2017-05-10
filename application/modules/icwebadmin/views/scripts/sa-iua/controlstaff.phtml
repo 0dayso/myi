@@ -1,0 +1,53 @@
+<?php $statistics = explode(",",$this->StaffInfo['statistics']);?>
+
+<div class="popup" style="width:800px">
+  <div class="popup-header">
+    <h2>编辑拥有用户权限</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+  <div class="popup-body">
+    <table width="700" bgcolor="#FFFFCC" >
+      <tr>
+        <td width="126" align="right"><font color="#666600"><b>用户： </b></font></td>
+        <td colspan="3" align="left"><?=$this->StaffInfo['staff_id']?></td>
+      </tr>
+      <tr>
+        <td width="126" align="right"><font color="#666600"><b>姓名： </b></font></td>
+        <td colspan="3" align="left"><?=$this->StaffInfo['lastname'].$this->StaffInfo['firstname']?></td>
+      </tr>
+      <tr>
+        <td width="126" align="right" ><font color="#666600"><b>拥有用户权限: </b></font></td>
+        <td colspan="3"  align="left"><table width="100%">
+            <tr>
+            <tr>
+              <td><textarea name="control_staff" id="control_staff" rows="3" style="width:350px;"><?=$this->StaffInfo['control_staff']?></textarea>
+    <br/><font color="#FF0000">说明：多个staffid以逗号隔开；用于用户、询价、订单等。</font></td>
+            </tr>
+          </table></td>
+      </tr>
+      <tr height="50px">
+        <td colspan="4" align="center"><input type="button"  value="更新" onclick="editstatistics()"/></td>
+      </tr>
+    </table>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+function editstatistics()
+{
+	var control_staff = document.getElementById('control_staff').value;
+	$.ajax({
+            url: '<?=$this->indexurl?>/controlstaff',
+            data: {'staff_id':'<?=$this->StaffInfo['staff_id']?>','control_staff':control_staff},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  $.closePopupLayer('box');
+				  showMainInfo('<?=$this->StaffInfo['staff_id']?>');
+               }else{
+			      alert(arr.message);
+			   }
+			}
+	});
+}
+</script>

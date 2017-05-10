@@ -1,0 +1,240 @@
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 添加研讨会 <a href="<?=$this->indexurl?>">返回&gt;&gt;</a> </h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+                  <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+                  <div id="alert_message"></div>
+                </div>
+
+          <?php if (isset($_SESSION['messages'])) : ?>
+          <div class="alert fade in">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p>
+          </div>
+          <?php endif; ?> 
+<form id="thisform" class="form-horizontal validate-form" style="text-align:left" method="post" action="<?php echo $this->addurl;?>" enctype="multipart/form-data">
+  <div class="control-group">
+    <label class="control-label" for="contents">立即上线</label>
+    <div class="controls">
+     <input type="checkbox" name="status" value="1" <?=$this->processData['status']==1?'checked':''?> >
+    </div>
+  </div>
+   <div class="control-group">
+    <label class="control-label" for="contents">推荐到首页</label>
+    <div class="controls">
+     <input type="checkbox" name="home" value="1" <?=$this->processData['home']==1?'checked':''?> >
+    </div>
+  </div> 
+  <div class="control-group">
+    <label class="control-label" for="title"><em>*</em>类型</label>
+    <div class="controls">
+      <input type="radio" name="type" id="type_art" value="art" onclick="showvdo(this)" <?=$this->processData['type']=='art'?'checked':''?>/>
+      <label for="type_art" style="color:#339900"><b>文章报道</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="radio" name="type" id="type_vdo" value="vdo" onclick="showvdo(this)"  <?=$this->processData['type']=='vdo'?'checked':''?>/>
+      <label for="type_vdo" style="color:#CC3333"><b>在线视频</b></label>
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <label class="control-label" for="title"><em>*</em>标题</label>
+    <div class="controls">
+      <input type="text" id="title" name="title" class="required" title="required" style="width:500px;" value="<?=$this->processData['title']?>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="author"><em>*</em>作者</label>
+    <div class="controls">
+      <input type="text" id="author" placeholder=""  name="author" value="<?=$this->processData['author']?>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="source"><em>*</em>来源</label>
+    <div class="controls">
+      <input type="text" id="source" placeholder=""  name="source" value="<?=$this->processData['source']?>">
+    </div>
+  </div>  
+  <div class="control-group">
+    <label class="control-label" for="semi_level1"><em>*</em>应用分类</label>
+    <div class="controls">
+      <span id="app_level1_Span">
+        <select id="app_level1" name="app_level1"><option value="">请选择一级分类</option></select>
+        </span>
+        <span id="app_level2_Span">
+         <select id="app_level2" name="app_level2"><option value="">请选择二级分类</option></select>
+        </span>
+    </div>
+  </div>    
+ 
+ <div class="control-group">
+    <label class="control-label" for="keyword"><em>*</em>关键字</label>
+    <div class="controls">
+      <input  id="keyword"  name="keyword"  type="text" value="<?=$this->processData['keyword']?>">
+    </div>
+  </div>   
+  <div class="control-group">
+    <label class="control-label" for="description"><em>*</em>研讨会简介</label>
+    <div class="controls">
+      <textarea  id="description"  name="description" rows="3"  style="width:500px;"><?=$this->processData['description']?></textarea>
+    </div>
+  </div>       
+  <div class="control-group">
+    <label class="control-label" for="contents"><em>*</em>研讨会详细描述</label>
+    <div class="controls">
+      <textarea name="content" id="content" rows="10" class="kindeditor span9"><?php echo $this->processData['content'];?></textarea>
+    </div>
+  </div>     
+  <div id="more_info" style="display:<?=$this->processData['type']=='vdo'?'block':'none'?>" >
+  	<div class="control-group">
+    <label class="control-label" for="keyword">品牌</label>
+    <div class="controls">
+      <select name="brand_id" id="brand_id"  class="input-medium" onchange="selectbrand(this)">
+        <option value="">请选择品牌</option>
+        <?php foreach($this->brand as $bd){?>
+        <option value="<?=$bd['id']?>" <?=$bd['id']==$this->processData['brand_id']?'selected':''?>><?=$bd['name']?></option>
+        <?php }?>
+        </select>
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="keyword"><em>*</em>公司名</label>
+    <div class="controls">
+       <input  id="company"  name="company"  type="text"  value="<?=$this->processData['company']?>">
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="keyword">公司网址</label>
+    <div class="controls">
+       <input  id="com_url"  name="com_url"  type="text" value="<?=$this->processData['com_url']?>" >
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="keyword"><em>*</em>公司log</label>
+    <div class="controls">
+        <input type="hidden" id="com_log" name="com_log" value="<?=$this->processData['com_log']?>" />
+        <input type="button" id="com_log_box"  value="选择图片" />
+        <img src="<?=$this->processData['com_log']?>" id="show_com_log"  width="80" height="80" alt="company log"/>
+    </div>
+    </div>
+     <div class="control-group">
+    <label class="control-label" for="description"><em>*</em>公司简介</label>
+    <div class="controls">
+      <textarea  id="com_profile"  name="com_profile" rows="3"  style="width:500px;"><?=$this->processData['com_profile']?></textarea>
+    </div>
+  </div> 
+     
+     <div class="control-group">
+    <label class="control-label" for="keyword">演讲嘉宾</label>
+    <div class="controls">
+       <input  id="speaker"  name="speaker"  type="text" value="<?=$this->processData['speaker']?>" >
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="keyword">演讲嘉宾职位</label>
+    <div class="controls">
+       <input  id="spe_post"  name="spe_post"  type="text"  value="<?=$this->processData['spe_post']?>">
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="keyword">演讲嘉宾公司</label>
+    <div class="controls">
+       <input  id="spe_com"  name="spe_com"  type="text" value="<?=$this->processData['spe_com']?>">
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="keyword">演讲嘉宾头像</label>
+    <div class="controls">
+        <input type="hidden" id="spe_head" name="spe_head" value="<?=$this->processData['spe_head']?>" />
+        <input type="button" id="spe_head_box"  value="选择图片" />
+        <img src="<?=$this->processData['spe_head']?>" id="show_spe_head"  width="80" height="80" alt="speaker head"/>
+    </div>
+    </div>
+     <div class="control-group">
+    <label class="control-label" for="description">演讲嘉宾简介</label>
+    <div class="controls">
+      <textarea  id="spe_profile"  name="spe_profile" rows="3"  style="width:500px;"><?=$this->processData['spe_profile']?></textarea>
+    </div>
+  </div> 
+  	 <div class="control-group">
+    <label class="control-label" for="description"><em>*</em>视频文件</label>
+    <div class="controls"><input type="file" name="vido_file" /><font color="#FF0000">提示：只允许上传.zip文件。</font></div>
+   </div> 
+  </div><!--<div id="more_info">-->
+  
+  <!--微博-->
+  <?php echo $this->render('common/weibo.phtml');?>
+  
+  <div class="control-group">
+    <div class="controls">
+      <input type="submit" value="添加" class="btn" />
+    </div>
+  </div>
+</form>
+        <br>
+      <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+KindEditor.ready(function(K) {
+			var editor =  K.create('#content', {
+		     allowFileManager : true
+	       });
+		    //公司log
+			var com_log_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplodimg?part=upload/default/seminar/company/log/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/seminar/company/log/'
+			});
+			K('#com_log_box').click(function() {
+				com_log_editor.loadPlugin('image', function() {
+					com_log_editor.plugin.imageDialog({
+						imageUrl : K('#com_log').val(),
+						clickFn : function(url, title, width, height, border, align) {
+							K('#com_log').val(url);
+							K('#show_com_log').attr("src",url);
+							com_log_editor.hideDialog();
+						}
+					});
+				});
+			});
+			 //演讲嘉宾头像
+			var spe_head_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplodimg?part=upload/default/seminar/speaker/head/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/seminar/speaker/head/'
+			});
+			K('#spe_head_box').click(function() {
+				spe_head_editor.loadPlugin('image', function() {
+					spe_head_editor.plugin.imageDialog({
+						imageUrl : K('#spe_head').val(),
+						clickFn : function(url, title, width, height, border, align) {
+							K('#spe_head').val(url);
+							K('#show_spe_head').attr("src",url);
+							spe_head_editor.hideDialog();
+						}
+					});
+				});
+			});
+});
+function selectbrand(obj){
+	
+}
+function onloadapp(app_level1,app_level2)
+{
+	$("#app_level1_Span").load("/icwebadmin/common/getapp1?app_level1="+app_level1);
+	if(app_level1)
+	   $("#app_level2_Span").load("/icwebadmin/common/getapp2?app_level1="+app_level1+"&app_level2="+app_level2);
+}
+function selectapp1(){
+	var app_level1=$("#app_level1").val();
+	$("#app_level2_Span").load("/icwebadmin/common/getapp2?app_level1="+app_level1);
+}
+onloadapp('<?=$this->processData['app_level1']?>','<?=$this->processData['app_level2']?>');
+function showvdo(obj){
+	if(obj.value=='vdo'){
+		$("#more_info").css("display","block");
+	}else{
+		$("#more_info").css("display","none");
+	}
+}
+</script>

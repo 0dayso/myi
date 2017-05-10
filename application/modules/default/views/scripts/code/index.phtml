@@ -1,0 +1,85 @@
+<link rel="stylesheet" type="text/css" href="css/default/scheme.css"/>
+<div class="w">
+    <div class="breadcrumbs">		
+    	<span>您当前的位置：</span><a href="/" title="首页">首页</a>&nbsp;&nbsp;»&nbsp;&nbsp;<span>代码库</span>        
+    </div>
+</div>
+
+<div class="w clearfix ld " >
+
+<div class="listleftmenu">
+    <h1><a href="/code">代码分类</a></h1>	
+    <ul class="schemeleft">
+    <ul class="schemeleft">
+        <?php foreach($this->app as $sem){?>
+            <li <?php if($this->selectid==$sem['id']) echo 'class="on"';?>><span class="fore<?=$sem['id']?>"></span><s></s><a href="/codelist-<?=$sem['id']?>.html" title="<?=$sem['name']?>" class="logclick" rev="webinarlist" rel="<?=$sem['id']?>"><?=$sem['name']?></a></li>
+            <?php }?>
+    </ul>
+   </ul>
+</div>
+
+<div class="listright fr schemelist">
+	<div class="w_100">
+    	<p class="tipnothing hide">暂无数据</p>
+        <div class="codetj" id="pushinfo"><img src="/images/default/ajax-loader-s.gif">
+        </div>
+        <a href="javascript:;" class="changebtn" onClick="rf();">换一换</a>
+		<script type="text/javascript">
+			$(function(){
+                rf();
+            })
+			function rf(){
+			     $("#pushinfo").html('<img src="/images/default/ajax-loader-s.gif">');
+				$("#pushinfo").load("/code/push");
+			}
+		</script>
+        <div class="clr"></div>
+        <div id="soft-list">
+	        <div class="tit">
+            	<h2>代码库</h2>
+                <ul class="stabl clearfix">
+                    <?php 
+					$url = 'code';
+					if($this->selectid){
+						$url = "codelist-".$this->selectid.".html";
+					}?>
+                    <li <?=($this->o!='m'?'class="on fore"':'class="fore"')?>><a href="<?=$url?>">最新代码</a></li>
+                    <li <?=($this->o=='m'?'class="on"':'')?>><a href="<?=$url?>?o=m">最多下载</a></li>
+                </ul>
+            </div>
+	        <ul class="softCont">
+              <?php if(empty($this->all)) echo '<li>
+                <div class="sinfo">
+                  <div>
+                    <p class="fontgray">暂无记录</p>
+                  </div>
+                </div>
+              </li>';else{?>
+              <?php foreach($this->all as $arr){?>
+              <li>
+                <div class="baseinfo">
+                  <h3><a href="/code-<?=$arr['id']?>.html" target="_blank"><?=$arr['title']?></a></h3>
+                  <?=$arr['spendpoints']?'<span class="money">'.$arr['spendpoints'].'</span>':'<span class="fontorange">免费</span>'?>
+                </div>
+                <div class="sinfo">
+                  <div>
+                  	<p><span>开发环境：<?=$arr['dep_environment']?></span>
+                    <span class="fontgray">|</span>
+                    <span>创建时间：<?=date("Y-m-d",$arr['created'])?></span>
+                    <span class="fontgray">|</span>
+                    <span>大小：<?=$this->fun->format_bytes(filesize($arr['annexpath']))?></span><span class="fontgray">|</span>
+                    <span>下载次数：<?=$arr['downloadnumber']?></span></p>
+                    <p class="fontgray"><?=$arr['description']?></p>
+                  </div>
+                </div>
+                <a href="javascript:;" onClick="downloadcode('<?=$this->fun->encryptVerification($arr['id'])?>')" class="downBtn">立即下载</a>
+              </li>
+              <?php }?>
+              <?php }?>
+             </ul>
+	    </div>
+	</div>
+    <div class="pagination fr"><?=$this->page_bar?>
+    </div>
+</div>
+</div>

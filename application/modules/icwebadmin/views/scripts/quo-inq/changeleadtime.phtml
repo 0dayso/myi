@@ -1,0 +1,70 @@
+<div class="popup" style="width:400px;" >
+    <div class="popup-header">
+        <h2>修改产品标准交期：</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('changeLeadtime');" title="关闭" class="dialogBoxClose">关闭</a>
+    </div>
+    <div class="popup-body">
+    <div class="overflowh">
+    <table  cellpadding="0" border="0" cellspacing="0" class="jiaoqi">
+      <tbody><tr height="35">
+        <td align="right" width="100px">型号：</td>
+        <td style="font-weight:bold"><?=$this->prodinfo['part_no']?></td>
+      </tr>
+      <tr height="35">
+       <td align="right">品牌：</td>
+       <td style="font-weight:bold"><?=$this->prodinfo['brand']?></td>
+      </tr>
+      <tr height="35">
+       <td align="right">原标准交期：</td>
+       <td style="font-weight:bold"><?php echo $this->inqdinfo['inq_lead_time']?$this->inqdinfo['inq_lead_time']:$this->prodinfo['lead_time']?></td>
+      </tr>
+      
+      <tr>
+       <td  height="35" align="right"><em>*</em>更改标准交期：</td>
+       <td>
+       <input type="text" style="width:150px;"  name="lead_time" id="lead_time"  onkeyup="<?=ISLEADTIME?>" value=""/>
+        <select  name="lead_time_2" id="lead_time_2">
+            <option value="工作日">工作日</option>
+        	<option value="周">周</option>
+        </select>
+       </td>  
+    </tr>
+    <tr>
+      	<td align="right"  height="35" valign="top">现有交期模板：</td>
+        <td>
+        <p><label><input type="radio" name="radio" value="2-3" class="delivery_placeradio" >国内有货国内交货</label><em class="fontorange">&nbsp;&nbsp;2-3个工作日</em></p>
+     <p><label><input type="radio" name="radio" value="4-8"  class="delivery_placeradio" >香港有货国内交货</label><em class="fontorange">&nbsp;&nbsp;4-8个工作日</em></p>
+     <p><label><input type="radio" name="radio" value="2-3"  class="delivery_placeradio">香港有货香港交货</label><em class="fontorange">&nbsp;&nbsp;2-3个工作日</em></p>
+		</td>
+      </tr></tbody></table>
+        </div>
+        <div class="pbtn" id="baojiabtn"><input type="button" onclick="changeleadtimeAction()" value="保 存" class="btnabig"></div>
+        <div class="clear"></div>
+    </div>
+</div>
+<script type="text/javascript">
+$(".delivery_placeradio").click(function(){
+	document.getElementById('lead_time').value=this.value;
+});
+function changeleadtimeAction() {
+   
+   var lead_time = document.getElementById('lead_time').value;
+   if(lead_time=='') {alert('请输入标准交期');document.getElementById('lead_time').focus();return;}
+   var lead_time_2 = document.getElementById('lead_time_2').value;
+   lead_time +=lead_time_2;
+
+    $.ajax({
+		url: '/icwebadmin/QuoInq/changeleadtime',
+		data: {'id':'<?=$this->prodinfo['id']?>','inqdid':'<?=$this->inqdinfo['id']?>','lead_time':lead_time,'old_lead_time':'<?=$this->prodinfo['lead_time']?>'},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0){
+			   document.getElementById('leadtime_'+<?=$this->prodinfo['id']?>).innerHTML = lead_time;
+			   $.closePopupLayer('changeLeadtime');
+            }
+		}
+	});
+}
+</script>

@@ -1,0 +1,10 @@
+<div class="dBox p15"  style="border:0">
+    <div class="dBoxTitleS">热门代码库</div>
+    <div class="dBoxConS">
+      <ul class="pmListS">
+       <?php foreach($this->hotArr as $k=>$hotarr){?>
+        <li><i class="icon-s icon-s4"></i><a href="/code-<?=$hotarr['id']?>.html"  title="<?=$hotarr['title']?>" onclick="logclickaction($(this))" rev="hotpord_solution" rel="<?=$hotarr['id']?>"><?=$this->fun->utf_substr($hotarr['title'],23)?></a></li>
+        <?php }?>
+      </ul>
+    </div>
+  </div>

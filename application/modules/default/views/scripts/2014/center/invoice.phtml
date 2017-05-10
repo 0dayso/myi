@@ -1,0 +1,86 @@
+<!--content-->
+<?php $paytypearr = array('transfer'=>'银行转账','online'=>'在线支付','cod'=>'货到付款','mts'=>'款到发货');
+$statusarr = array('101'=>'<font color="#FF0000">审核中</font>','201'=>'<font color="009944">通过</font>','202'=>'<font color="#FF0000">不通过</font>');
+?>
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/myself2013.css"/>
+<link rel="stylesheet" type="text/css" href="/css/default/myself<?=$_SESSION['new_version']?>.css"/>
+<script type="text/javascript" language="javascript"> center_css();</script>
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a  class="focs">我的IC易站</a>&nbsp;&nbsp;»&nbsp;&nbsp;<a><?=$this->translate('Menu_MyInvoice')?></a>
+  </div>
+</div>
+
+<div class="blank10"></div>
+<div class="w clearfix ourbox">
+        <!--左边导航-->
+        <?php echo $this->render('center/leftmenu.phtml');?>
+	<div class="fr u_right msg24">
+
+     <div class="col_main" id="onlineorder">
+            <h1><?=$this->translate('Menu_MyInvoice')?></h1>
+            <div class="tiporder fontorange">注意：申请开发票有效时间是<strong class="fontred"><?=INVOICE_DAY?>天</strong>之内；如果还没发货发票随货寄出；如果已经发货以快递方式寄出，邮费为到付。</div>
+            <div class="order_tab_head">
+                <ul>
+                    <li <?=$this->type=='no'?'class="on"':''?>><a href="/center/invoice" style="width:120px;">未开发票订单<em>(<?=$this->nototal?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='pass'?'class="on"':''?>><a href="/center/invoice?type=pass" style="width:120px;">申请通过<em>(<?=$this->passtotal?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='nopass'?'class="on"':''?>><a href="/center/invoice?type=nopass" style="width:120px;">申请不通过<em>(<?=$this->nopasstotal?>)</em><b class="blank3"></b></a></li>
+                </ul>
+            </div> 
+            <div class="table_box ivcoice " >
+                <table class="vac_table table" cellpadding="0" cellspacing="0">   
+                <thead>    
+                    <tr>
+                        <th width="120">订单号</th>
+                        <th width="120">订单商品</th>
+                        <th width="60">订单金额</th>
+                        <th width="60">支付类型</th>
+                        <th width="60">收货人</th>
+                        <th width="90">下单时间</th>
+                        <th width="60">状态</th>
+                        <th width="70" class="lrb">&nbsp;</th>
+                    </tr>   
+                </thead>            
+                <tbody>  
+                   <?php if(empty($this->invoiceso)){echo '<tr><td colspan="8">暂无记录</td></tr>';}
+		  	else{
+				foreach($this->invoiceso as $key=>$sodata){
+				$bg='';$url='#';
+				if($key%2==1) $bg = 'class="tabletrf9"';
+				if($sodata['so_type']==100) $url = '/order/view?salesnumber='.$sodata['salesnumber'];
+				elseif($sodata['so_type']==110) $url = '/inquiryorder/view?salesnumber='.$sodata['salesnumber'];
+		   ?>
+			  <tr <?=$bg?>>
+              <td><a href="<?=$url?>" title="查看订单详细" target="_blank"><?=$sodata['salesnumber']?></a>
+              </td>
+              <td><?php $partnos = explode(',',$sodata['partnos']);
+				 foreach($partnos as $k=>$part_no){?>
+                <p class="model"><?=$part_no?></p><?php }?></td>
+              <td class="fontred fontwei fontb"><?=$sodata['currency'].number_format($sodata['total'],DECIMAL)?></td>
+              <td class="fontGray"><?=$paytypearr[$sodata['paytype']];?></td>
+              <td class="fontGray"><?=$sodata['consignee'];?></td>
+              <td class="fontGray"><?=date('Y-m-d H:i:s',$sodata['created'])?></td>
+              <td><?=isset($sodata['iastatus'])?$statusarr[$sodata['iastatus']]:'';?></td>
+              <td style="border-right:0" class="tablebtn">
+              <?php 
+			  if($sodata['iastatus']){
+			  ?>
+              <a href="<?=$this->url(array('controller'=>'center', 'action'=>'viewinvoice', 'salesnumber'=>$sodata['salesnumber'],'sotype'=>$sodata['so_type']))?>">查看</a>
+              <?php
+			  }elseif($sodata['created'] >= strtotime("-".INVOICE_DAY." day")){?>
+                  <a href="<?=$this->url(array('controller'=>'center', 'action'=>'applyinvoice', 'salesnumber'=>$sodata['salesnumber'],'sotype'=>$sodata['so_type']))?>" class="button">申请开发票</a>
+              <?php }else{ echo '<font color="#FF0000">已过期</font>';}?>
+              </td>
+            </tr>
+		  <?php		
+				}
+			}
+		  ?>
+                </tbody>         
+                </table>
+            </div>
+            <div class="pagination fr"> <?=$this->page_bar;?></div>
+        </div>
+   </div>
+</div>
+<div class="clr"></div>

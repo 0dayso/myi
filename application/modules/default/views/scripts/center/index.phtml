@@ -1,0 +1,203 @@
+<!--content-->
+<script type="text/javascript" src="/js/jsplug/boxstscroll/slider.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/default/myself.css"/>
+
+<div class="w">
+  <div class="breadcrumbs"> <span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/" ><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><?=$this->translate('Menu_Center')?></span> </div>
+</div>
+<div class="blank10"></div>
+<div class="w clearfix ">
+  <?php echo $this->render('center/leftmenu.phtml');?>
+  <div class="fr u_right msg24">
+    <div class="Crbox">
+      <!--欢迎信息-->
+      <div class="myselfbox fl">
+        <div class="Crtitle">
+          <h3 class="fl"><?=$this->usrinfo['uname']?>，欢迎回来！</h3>
+          <span class="fr fontgray">最后登录时间：<?=date("Y-m-d H:i:s",$this->usrinfo['lasttime'])?>
+          最后登录IP：<?=$this->usrinfo['lastip']?>
+          </span> </div>
+          
+          <div class="account" style="height:60px">  
+                <?php 
+				    $all_total = array();
+				    if($this->inqsoinfo['total']){
+				       foreach($this->inqsoinfo['total'] as $currency=>$i_total){
+					   	  $all_total[$currency] +=$i_total;
+				 	   }
+				    }
+					if($this->onlinesoinfo['total']){
+				        foreach($this->onlinesoinfo['total'] as $currency=>$o_total){
+					   	  $all_total[$currency] +=$o_total;
+				 	   }
+				    }
+					if(empty($all_total)){
+						echo '<dl><dt>您的采购总金额：</dt><dd class="price"><strong>0.00</strong></dd></dl>
+						<dl><dt>&nbsp;</dt><dd>您还没采购记录！<a href="/">马上去采购</a></dd></dl>';
+					}else{
+						$i=1;
+					   foreach($all_total as  $currency=>$total){
+						echo '<dl><dt>'.($i?'您的采购总金额：':'&nbsp;').'</dt><dd class="price"><strong>'.$currency.' '.number_format($total,DECIMAL).'</strong></dd></dl>';
+						$i=0;
+					   }
+					}
+				?>
+                <dl><dt>您的总积分：</dt><dd class="price"><strong><?=$this->usrinfo['score']?>分</strong>
+                <a href="/jifen" title="去兑换礼品">去兑换礼品</a>
+                </dd></dl>
+                </div>
+               <div class="acco-safe account">
+				<dl><dt>账户资料完整性：</dt>
+					<?php 
+					if($this->usrinfo['detailed']==1) echo '<dd><i class="ir icon-s-02"></i><b class="okrenz"></b></dd>';
+					
+					else echo '<dd><i class="ir icon-s-01"></i></dd><dd style="margin-top:3px">您的企业资料还没填写！<a href="/center/info?type=2">马上填写</a></dd>';
+					?>
+                    </dl>
+                </div>
+                
+        <div class="IN_cbox">
+           
+          <div class="oinfo">
+          
+            
+            <dl class="fore">
+              <dt>在线订单：</dt>
+              <dd><a class="flk-03" href="/center/order?type=wpay">待付款(<span <?=$this->onlinesoinfo['wpay']==0?'':'class="fontred"'?>>
+                <?=$this->onlinesoinfo['wpay']?>
+                </span>)</a></dd>
+              <dd><a class="flk-03" href="/center/order?type=rec">待收货(<span <?=$this->onlinesoinfo['rec']==0?'':'class="fontred"'?>>
+                <?=$this->onlinesoinfo['rec']?>
+                </span>)</a></dd>
+            </dl>
+            <dl class="fore">
+              <dt>询价订单：</dt>
+              <dd><a class="flk-03" href="/center/inqorder?type=wpay">待付款(<span <?=$this->inqsoinfo['wpay']==0?'':'class="fontred"'?>>
+                <?=$this->inqsoinfo['wpay']?>
+                </span>)</a></dd>
+              <dd><a class="flk-03" href="/center/inqorder?type=over">待付余款(<span  <?=$this->inqsoinfo['over']==0?'':'class="fontred"'?>>
+                <?=$this->inqsoinfo['over']?>
+                </span>)</a></dd>
+              <dd><a class="flk-03" href="/center/inqorder?type=rec">待收货(<span  <?=$this->inqsoinfo['rec']==0?'':'class="fontred"'?>>
+                <?=$this->inqsoinfo['rec']?>
+                </span>)</a></dd>
+            </dl>
+          </div>
+        </div>
+        <div class="IN_cbox">
+          <div class="oinfo">
+            <dl class="fore">
+              <dt>我的询价：</dt>
+              <dd><a class="flk-03" href="/center/inquiry?type=wait">待报价(<span <?=$this->inqinfo['wait']==0?'':'class="fontred"'?>>
+                <?=$this->inqinfo['wait']?>
+                </span>)</a></dd>
+              <dd><a class="flk-03" href="/center/inquiry?type=already">待下单(<span <?=$this->inqinfo['already']==0?'':'class="fontred"'?>>
+                <?=$this->inqinfo['already']?>
+                </span>)</a></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+      
+      		<?php if($this->usrinfo['detailed']==1 && $this->usrinfo['department']){?>
+                <div class="coubox  fr ">
+					<div class="titbg1ts">专属客户经理</div>
+					<div class="IN_myinfo ">						
+						<div class="uphoto "><img src="/upload/admin/head/<?=$this->usrinfo['head']?>"  />
+                        <div class="infolist">
+                        	<!--<p><strong class="fontorange"><?=$this->usrinfo['uname']?></strong> 您好：</p>--><p>您好，我是IC易站<!--<?=$this->usrinfo['department']?>部门-->的 <strong><?=$this->usrinfo['lastname'].$this->usrinfo['firstname']?></strong>，是您的专属客户经理，有任何问题可以联系我，我会竭诚为你服务！</p>
+                            
+						</div>
+					</div>
+                    <div class="infolistdl">
+                           <dl>
+                               <dt>固&nbsp;&nbsp;话：</dt>
+                                <dd><?=$this->usrinfo['tel']?>&nbsp;</dd>
+                            </dl>
+                            <dl>
+                               <dt>手&nbsp;&nbsp;机：</dt>
+                                <dd><?=$this->usrinfo['phone']?>&nbsp;</dd>
+                            </dl>
+                            <dl>
+                            	<dt>Email：</dt>
+                                <dd><a href="mailto:<?=$this->usrinfo['email']?>" title="<?=$this->usrinfo['email']?>"><?=$this->usrinfo['email']?></a>&nbsp;</dd>
+                            </dl></div>
+                         </div>
+				</div>
+           <?php }else{?>
+           		<div class="coubox  fr ">
+					<div class="titbg1ts">客服经理</div>
+					<div class="IN_myinfo ">						
+						<div class="uphoto ">
+							<img src="/upload/admin/head/<?=$this->usrinfo['head']?>"  /><div class="infolist">
+                        	<!--<p><strong class="fontorange"><?=$this->usrinfo['uname']?></strong> 您好：</p>--><p>您好，我是IC易站客服经理<strong><?=$this->usrinfo['lastname'].$this->usrinfo['firstname']?></strong>，请<a href="/center/info?type=2">完善企业资料</a>，完善后我们会为您的安排一个专属客户经理，为您提供更优质服务！如需帮助可联系我，谢谢。</p>
+                            </div>      
+						</div>
+						<div class="infolistdl">
+                            <dl>
+                            	<dt>固&nbsp;&nbsp;话：</dt>
+                                <dd><?=$this->usrinfo['tel']?>&nbsp;</dd>
+                            </dl>
+                            <dl>
+                               <dt>手&nbsp;&nbsp;机：</dt>
+                                <dd><?=$this->usrinfo['phone']?>&nbsp;</dd>
+                            </dl>
+                            <dl>
+                            	<dt>Email：</dt>
+                                <dd><a href="mailto:<?=$this->usrinfo['email']?>" title="<?=$this->usrinfo['email']?>"><?=$this->usrinfo['email']?></a>&nbsp;</dd>
+                            </dl>
+                            </div>
+					</div>
+				</div>
+           <?php }?>
+      <div class="clr"></div>
+    </div>
+    <div class=" order "  >
+      <div class="A_order">
+        <div class="numberbox"> <em class="emtrianglebottom5px"></em>
+          <p>热销商品推荐</p>
+        </div>
+        <div class="scrolllist otherbox" id="scroll1"> 
+         <a class="leftbtn fl abtn aleft" href="#left" title="左移"></a>
+         <div class="imglist_w otherA"><ul style="left: 0px;">
+         
+              <?php for($i=0;$i<count($this->hotpord);$i++){
+		  				$rec_prod = $this->hotpord[$i];
+						
+		        ?>
+              <li>
+                <div class="other1" >
+                  <div class="fl"><a href="/item-b<?=$rec_prod['manufacturer']?>-<?=($rec_prod['part_level3']?$rec_prod['part_level3']:$rec_prod['part_level2'])?>-<?=$rec_prod['id']?>-<?=$this->fun->filterUrl($rec_prod['part_no'])?>.html" title="<?=$rec_prod['part_no']?>" target="_blank" class="logclick"  rev="center_part_id" rel="<?=$rec_prod['id']?>"> <img src="<?=PRODUCTICON.($rec_prod['part_img']==''?'no.gif':$rec_prod['part_img'])?>" width="50" height="50"/></a></div>
+                  <div class="fl ml10 ">
+                    <p><a href="/item-b<?=$rec_prod['manufacturer']?>-<?=($rec_prod['part_level3']?$rec_prod['part_level3']:$rec_prod['part_level2'])?>-<?=$rec_prod['id']?>-<?=$this->fun->filterUrl($rec_prod['part_no'])?>.html" title="<?=$rec_prod['part_no']?>" target="_blank" class="model logclick"  rev="center_part_id" rel="<?=$rec_prod['id']?>">
+                      <?=$this->fun->utf_substr($rec_prod['part_no'],11)?>
+                      </a></p>
+                    <p>
+                      <?=$rec_prod['pname']?>
+                    </p>
+                    <p>
+                      <?=$rec_prod['name']?>
+                    </p>
+                  </div>
+                </div>
+              </li>
+              <?php }?>
+          </ul>
+        </div>
+        <a title="右移" href="#right" class="rightbtn fr abtn aright agrayright"></a>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$("#scroll1").xslider({
+			unitdisplayed:4,
+			movelength:1,
+			unitlen:200,
+			autoscroll:4000
+		});
+		
+	})
+</script>

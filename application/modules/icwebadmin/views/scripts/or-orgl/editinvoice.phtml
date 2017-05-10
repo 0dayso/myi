@@ -1,0 +1,100 @@
+<div id="myHiddenDiv">
+  <div class="popup" style="width:770px;">
+    <div class="popup-header">
+    <h2>修改订单发票信息：</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+     <!-- 需要填写的区域-->
+      <table border="0" cellpadding="1" width="770px"> 
+        <?php if($this->invoice['type']==1){?>
+        <tr height="35px">
+          <td align="right">发票抬头：</td>
+          <td><input type="text" value="<?=$this->invoice['name']?>" id="taitouname" name="taitouname" class="w-150"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">发票内容：</td>
+          <td><label><input type="radio" name="contype" value="1" <?=$this->invoice['contype']==1?'checked="checked"':''?> >明细</label>
+              <label><input type="radio" name="contype" value="2" <?=$this->invoice['contype']==2?'checked="checked"':''?>>电子元件</label>
+              <label><input type="radio" name="contype" value="3" <?=$this->invoice['contype']==3?'checked="checked"':''?>>耗材</label></td>
+        </tr>
+        <?php }elseif($this->invoice['type']==2){?>
+        <tr height="35px">
+          <td align="right">单位名称：</td>
+          <td><input type="text" value="<?=$this->invoice['name']?>" id="dwname" name="dwname" class="w-200"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">纳税人识别号：</td>
+          <td><input type="text" value="<?=$this->invoice['identifier']?>" id="identifier" name="identifier" class="w-200"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">注册地址：</td>
+          <td><input type="text" value="<?=$this->invoice['regaddress']?>" id="regaddress" name="regaddress" class="w-200"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">注册电话：</td>
+          <td><input type="text" value="<?=$this->invoice['regphone']?>" id="regphone" name="regphone" class="w-200"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">开户银行：</td>
+          <td><input type="text" value="<?=$this->invoice['bank']?>" id="bank" name="bank" class="w-200"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">银行帐户：</td>
+          <td><input type="text" value="<?=$this->invoice['account']?>" id="account" name="account" class="w-200"></td>
+        </tr>
+        <?php }?>
+        <tr><td>&nbsp;</td>
+          <td><input type="button"  class="btnabig"  value="确认修改" onclick="editinvoice()"/></td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script language="javascript">
+function editinvoice(){
+    var type = '<?=$this->invoice['type']?>';
+	var taitouname = '';
+	var contype  ='';
+	var dwname ='';
+	var identifier = '';
+	var regaddress = '';
+	var regphone = '';
+	var bank = '';
+	var account = '';
+	if(type==1){
+		taitouname = document.getElementById('taitouname').value;
+		var contype_obj = document.getElementsByName("contype");
+	    for (var i=contype_obj.length-1;i>=0;i--)
+	    {
+		    if(contype_obj[i].checked)  contype = contype_obj[i].value;
+        }
+		if(taitouname==''){alert('请填写发票抬头');return;}
+		if(contype==''){alert('请选择发票内容');return;}
+	}else if(type==2){
+	    dwname = document.getElementById('dwname').value;
+		if(dwname==''){alert('请填写单位名称');return;}
+		identifier = document.getElementById('identifier').value;
+		if(identifier==''){alert('请填写纳税人识别号');return;}
+		regaddress = document.getElementById('regaddress').value;
+		if(regaddress==''){alert('请填写注册地址');return;}
+		regphone = document.getElementById('regphone').value;
+		if(regphone==''){alert('请填写注册电话');return;}
+		bank = document.getElementById('bank').value;
+		if(bank==''){alert('请填写开户银行');return;}
+		account = document.getElementById('account').value;
+		if(account==''){alert('请填写银行帐户');return;}
+	}else {alert('发票信息错误');return;}
+	$.ajax({
+            url: '<?=$this->indexurl?>/editinvoice',
+            data: {'invoiceid':'<?=$this->invoice['id']?>','type':type,'taitouname':taitouname,'taitouname':taitouname,'contype':contype,'dwname':dwname,'identifier':identifier,'regaddress':regaddress,'regphone':regphone,'bank':bank,'account':account},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+				alert(arr.message);
+				if(arr.code == 0) {location.reload();}
+            }
+	});
+}
+
+</script>

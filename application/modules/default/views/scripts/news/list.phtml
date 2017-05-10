@@ -1,0 +1,66 @@
+<link rel="stylesheet" type="text/css" href="/css/default/scheme.css"/>
+<div class="w">
+    <div class="breadcrumbs">		
+    	<span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/" ><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/news" ><?=$this->translate('Menu_News')?></a> 
+        <?php foreach($this->semLevel1 as $sem){
+        	  	 if($this->selectid==$sem['id']) echo '&nbsp;&nbsp;»&nbsp;&nbsp;<span>'.$sem['name'].'</span>';
+			  }
+	    ?>     
+    </div>
+</div>
+
+<div class="w clearfix ld " >
+
+<div class="listleftmenu">
+    <h1><a href="/news">资讯分类</a></h1>
+	<ul class="schemeleft">
+        <?php foreach($this->semLevel1 as $sem){?>
+            <li <?php if($this->selectid==$sem['id']) echo 'class="on"';?>><span class="fore<?=$sem['id']?>"></span><s></s><a href="/newslist-<?=$sem['id']?>.html"  class="logclick" rev="newslist" rel="<?=$sem['id']?>"><?=$sem['name']?></a></li>
+            <?php }?>
+    </ul>
+
+</div>
+
+<div class="listright fr schemelist news">
+	<div class="w_100">
+    	<?php if(empty($this->records)){?>
+        <div class="tipnothing">没有记录</div> 
+        <?php }else{
+			foreach($this->records as $sol){?>
+         <article class="posts">
+            <h2><a href="/news-<?=$sol['id']?>.html"  title="<?=$sol['title']?>" class="logclick" rev="news" rel="<?=$sol['id']?>"><?=$sol['title']?></a></h2>
+            <div class="postmeta">
+                <span>来源：</span><?=$sol['source']?>
+                <span class="ml10">作者：</span><?=$sol['author']?>
+                <span class="ml10">关键词：</span><?php 
+					$tip = explode(',',$sol['keyword']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+				 }?>
+				
+            </div>
+            <div class="row">
+            <?php if($sol['image']){?>
+            	<div class="post-thumb">
+            	<img src="<?php echo $sol['image'];?>" alt ="<?php echo $sol['title'];?>" title="<?php echo $sol['title'];?>" width="200" height="125">
+            	</div>
+            	<div class="post-cont">
+                <p><?=$sol['description']?></p>
+                </div>
+               <?php }else{?>
+                <p><?=$sol['description']?></p>
+               <?php }?>
+            </div>
+            <div class="read_more">
+                <span class="fontgray">创建时间：<?=date('Y-m-d',$sol['created'])?></span>
+                <a class="redbutton fr" href="/news-<?=$sol['id']?>.html"  title="<?=$sol['title']?>" class="logclick" rev="news" rel="<?=$sol['id']?>">查看更多</a>
+            </div>
+        </article>
+        <hr />
+       <?php }}?>
+	</div>
+    <div class="pagination fr"><?=$this->page_bar;?></div>
+</div>
+</div>
+
+<div class="clr"></div>

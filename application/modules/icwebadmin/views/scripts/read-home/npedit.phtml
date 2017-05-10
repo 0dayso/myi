@@ -1,0 +1,35 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 编辑精品 • 新品 <a href="/icwebadmin/ReadHome/newprod">返回&gt;&gt;</a></h1>
+  <div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+ </div>
+<?php if (isset($_SESSION['messages'])) : ?><div class="alert fade in">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+    <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p></div><?php endif; ?>
+
+	  <!-- 需要填写的区域-->
+      <form class="form-horizontal form-validate" style="text-align:left" method="post" action="/icwebadmin/ReadHome/npedit/">
+            <div class="control-group">
+              <label class="control-label" for="contents">品牌ID:</label>
+              <div class="controls">
+                <input type="text" name="bandid" value="<?=$this->bandid?>" />
+              </div>
+            </div>
+            <?php foreach($this->hotarr as $v){?>
+            <input type="hidden" name="id[]" value="<?=$v['id']?>" />
+            <div class="control-group">
+              <label class="control-label" for="contents">产品ID:</label>
+              <div class="controls">
+                <input type="text" name="comid_<?=$v['id']?>" value="<?=$v['comid']?>" >
+              </div>
+            </div>
+            <?php }?>
+            <div class="control-group">
+              <div class="controls">
+                <input type="submit" class="btn" value="更 新">
+              </div>
+            </div>
+          </form>
+      <!-- 结束区域-->
+</div>

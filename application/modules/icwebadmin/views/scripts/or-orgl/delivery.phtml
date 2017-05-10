@@ -1,0 +1,65 @@
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+    <h2>确认收货：<?=$this->sonum?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('deliveryBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+    
+      <!-- 需要填写的区域-->
+      <table width="740px" border="0" cellpadding="1">
+        <tr>
+         <td height="10" colspan="3" align="center">
+         <div id="message_sess_son" style="display:none" class="message_sess">
+         <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span>
+         <span id="alert_message_son"></span>
+         </div></td>
+         </tr>
+        <tr bgcolor="#334159" height="30px" style="color:#FFFFFF; font-weight:bold; float:Arial, Helvetica, sans-serif">
+          <td>快递公司</td>
+          <td>快递单号</td>
+        </tr>
+        <tr bgcolor="#CCCCCC" align="center">
+        <input type="hidden" name="soid" id="soid" value="<?=$this->sonid?>">
+          <td><select name="courier" id="courier"> 
+                 <option value="">请选择快递公司</option> 
+                 <?php foreach($this->courier as $v){?>
+                 <option value="<?=$v['id']?>"><?=$v['name']?></option> 
+                 <?php }?>
+               </select></td>
+          <td><input type="text" name="cou_number" id="cou_number" size="40" value=""/></td>
+         
+        </tr>
+        <tr>
+          <td align="center" colspan="2"><input type="button"  class="btnabig"  value="确认" onclick="add()"/>
+          </td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+function add()
+{
+	var soid = document.getElementById('soid').value;
+    var courier    = document.getElementById('courier').value;
+	var cou_number  = document.getElementById('cou_number').value;
+	if(courier=='') {alert('请选择快递公司');return;}
+	if(cou_number=='') {alert('请填入快递号');return;}
+	$.ajax({
+            url: '<?php echo $this->deliveryurl;?>',
+            data: {'soid':soid,'courier':courier,'cou_number':cou_number},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  location.reload();
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			}
+	});
+}
+</script>

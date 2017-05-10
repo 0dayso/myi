@@ -1,0 +1,140 @@
+<style type="text/css">
+.tablenew2014{border:1px #ddd solid;}
+.tablenew2014 th{ background:#006ffa; border:1px solid #fff; line-height:18px; padding:5px 0}
+.tablenew2014 tr:hover{ background:#96bfe8}
+.tablenew2014 td{ text-indent:5px;border:1px solid #ddd}
+.trbg{ background:#e1eeff}
+</style>
+	<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?></h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onClick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+      
+      <form id="myform"  class="form-search" name="myform" action="" method="get">
+      <label><input type="radio"  name="type" value="day"  <?=($this->type=='day'?'checked="checked"':'')?> >单位（日）</label>
+      <label><input type="radio"  name="type" value="week" <?=($this->type=='week'?'checked="checked"':'')?> >单位（周）</label>
+      <label><input type="radio"  name="type" value="month" <?=($this->type=='month'?'checked="checked"':'')?>>单位（月）</label>
+      
+    <label>开始时间：</label>
+    <input type="text"  style="width:80px;" name="sdata" value="<?=$this->sdata?>" onClick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+    <label>结束时间：</label>
+    <input type="text"  style="width:80px;" name="edata" value="<?=$this->edata?>" onClick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+&nbsp;
+    <input type="submit" class="btn" value="确 定"/>
+  </form>
+      
+      <h2>在线订单</h2>
+      <table cellspacing="0" cellpadding="0" border="1" align="center"  class="tablenew2014">
+      <tr height="20" bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;">
+      <th width="300" >日期</th>
+      <th width="200" >人民币（RMB）</th>
+      <th width="200" >美元（USD）</th>
+      <th width="200" >总计（RMB）</th>
+      </tr>
+      <?php
+	   $k = $rmb = $usd = $all =  0;
+	   foreach($this->orderstrend['online'] as $d=>$v){
+	   
+	   if($k%2==0) $b = 'class="trbg"';else $b='';
+	   $k++;
+	   ?>
+        <tr <?=$b?>><td><?=$d?></td>
+        <td><?=number_format($v['RMB'],0)?></td>
+        <td><?=number_format($v['USD'],0)?></td>
+        <td><?=number_format($v['ALL'],0)?></td></tr>
+      <?php }?>
+     
+      </table>
+      
+      <script type="text/javascript">
+/*$(function () {
+        $('#container').highcharts({
+            chart: {
+                zoomType: 'xy'
+            },
+            title: {
+                text: 'Average Monthly Temperature and Rainfall in Tokyo'
+            },
+            subtitle: {
+                text: 'Source: WorldClimate.com'
+            },
+            xAxis: [{
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    format: '{value}°C',
+                    style: {
+                        color: '#89A54E'
+                    }
+                },
+                title: {
+                    text: 'Temperature',
+                    style: {
+                        color: '#89A54E'
+                    }
+                }
+            }, { // Secondary yAxis
+                title: {
+                    text: 'Rainfall',
+                    style: {
+                        color: '#4572A7'
+                    }
+                },
+                labels: {
+                    format: '{value} mm',
+                    style: {
+                        color: '#4572A7'
+                    }
+                },
+                opposite: true
+            }],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                x: 120,
+                verticalAlign: 'top',
+                y: 100,
+                floating: true,
+                backgroundColor: '#FFFFFF'
+            },
+            series: [{
+                name: 'Rainfall',
+                color: '#4572A7',
+                type: 'column',
+                yAxis: 1,
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+                tooltip: {
+                    valueSuffix: ' mm'
+                }
+    
+            }, {
+                name: 'Temperature',
+                color: '#89A54E',
+                type: 'spline',
+                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+                tooltip: {
+                    valueSuffix: '°C'
+                }
+            }]
+        });
+    });
+    
+*/
+		</script>
+	</head>
+	<body>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<!--<script src="/js/jsplug/highcharts/highcharts.js"></script>
+<script src="/js/jsplug/highcharts/modules/exporting.js"></script>
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>-->
+      <br/>
+      <!-- 结束区域-->
+	</div>

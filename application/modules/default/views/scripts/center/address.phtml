@@ -1,0 +1,190 @@
+<!--content-->
+<link rel="stylesheet" type="text/css" href="/css/default/myself.css"/>
+<div class="w">
+  <div class="breadcrumbs"> <span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/"><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/center"><?=$this->translate('Menu_Center')?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><?=$this->translate('Menu_MyAddress')?></span> </div>
+</div>
+<div class="blank10"></div>
+<div class="w clearfix ">
+  <!--左边导航-->
+ <?php echo $this->render('center/leftmenu.phtml');?>
+  <div class="fr u_right msg24">
+    <div class="<?php if(isset($_SESSION['postsess']['error'])){if($_SESSION['postsess']['error']>0) echo "error";
+	elseif($_SESSION['postsess']['message']) echo "ok";}?>" id="message"> <?php echo $_SESSION['postsess']['message'];unset($_SESSION['postsess']);?></div>
+    <div class="col_main" id="onlineorder">
+      <div class="order_tab_head">
+        <ul>
+          <li class="on"><span  id="title">新增收货地址</span></li>
+        </ul>
+      </div>
+      <div class="table_box " >
+        <div class="add_address">
+          <form id='addressform' name="addressform" action='' method='post'>
+            <input type="hidden" name="type"  id="type" value="change" />
+            <input type="hidden" name="tmp" id="tmp" value="add" />
+            <input type="hidden" name="addid" id="addid" value="" />
+            <dl>
+              <dt><em>*</em>收&nbsp;货&nbsp;人&nbsp;：</dt>
+              <dd>
+                <input type="text"  name="shrname" id="shrname" class="input120"/>
+                <div id="shrnameTip" style="position:absolute; top:0; left:220px;"></div>
+              </dd>
+            </dl>
+            <dl>
+              <dt><em>*</em>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：</dt>
+              <dd>
+                <table>
+                  <tr>
+                    <td><span id="provinceSpan">
+                      <select id="province" name="province">
+                        <option value="">请选择省</option>
+                      </select>
+                      </span> <span id="citySpan">
+                      <select id="city" name="city">
+                        <option value="">请选择市</option>
+                      </select>
+                      </span> <span id="areaSpan" style="position:relative;">
+                      <select id="area" name="area">
+                        <option value="">请选择区</option>
+                      </select>
+                      </span></td>
+                    <td><input type="hidden" id="areatmp" name="areatmp" value=""/>
+                      <div id="areatmpTip"></div></td>
+                  </tr>
+                </table>
+              </dd>
+            </dl>
+            <dl>
+              <dt><em>*</em>详细地址：</dt>
+              <dd>
+                <input type="text" name="address" id="address" class="input120" style=" width:340px"/>
+                <div id="addressTip" style="position:absolute; top:0; left:350px;"></div>
+              </dd>
+            </dl>
+            <dl>
+              <dt>邮政编码：</dt>
+              <dd>
+                <input type="text" class="input120" name="zipcode" id="zipcode"/>
+                <div id="zipcodeTip" style="position:absolute; top:0; left:220px;"></div>
+              </dd>
+            </dl>
+            <dl>
+              <dt>公司名称：</dt>
+              <dd>
+                <input type="text" class="input120"  style="width:340px;" name="companyname" id="companyname" value="<?php echo $this->myinfo['companyname'];?>"/>
+              </dd>
+            </dl>
+            <dl>
+              <dt>入&nbsp;仓&nbsp;号&nbsp;：</dt>
+              <dd>
+                <input type="text" class="input120" name="warehousing" id="warehousing"/>
+              </dd>
+            </dl>
+            <dl>
+              <dt><em>*</em>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：</dt>
+              <dd>
+                <input type="text" class="input120" name="mobile" id="mobile"/>
+                或者 <span>固定电话：</span>
+                <input type="text" class="input120" name="tel" id="tel"/>
+                <span class="fontred" id="phomemsg"></span></dd>
+            </dl>
+            <dl>
+              <dt>设为默认：</dt>
+              <dd>
+                <input type="checkbox" name="default" id="default" value="1"/>
+              </dd>
+            </dl>
+            <dl>
+              <dt>&nbsp;</dt>
+              <dd>
+                <input type="submit"  value="保存" class="button"/>
+              </dd>
+            </dl>
+          </form>
+          <div class="clr"></div>
+        </div>
+      </div>
+      <h1>我的收货地址<em>(<?php echo count($this->addressArr);?>)</em><span class="fontgray">注：最多保存20个地址</span></h1>
+      <div class="table_box address " >
+        <table class="vac_table table" cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+              <th>收货人</th>
+              <th>所在地区</th>
+              <th>详细地址</th>
+              <th>公司名称</th>
+              <th>入仓号</th>
+              <th>手机/电话</th>
+              <th></th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+					   if(count($this->addressArr)>0){
+					   foreach($this->addressArr as $k=>$address){
+					   $bgclass='';
+						if($k%2==1) $bgclass = 'class="tabletrf9"';
+					   ?>
+            <tr <?=$bgclass?>>
+              <td><?php echo $address['name'];?></td>
+              <td><?php echo $address['province']." ".$address['city']." ".$address['area'];?></td>
+              <td><?php echo $address['address']?></td>
+              <td><?php echo $address['companyname']?></td>
+              <td><?php echo $address['warehousing']?></td>
+              <td><?php echo $address['mobile'];?><br/>
+                <?php echo $address['tel'];?> </td>
+              <td><?php if($address['default']==1) echo '默认地址';
+							else echo '<a href="javascript:" class="fontblue mr5" onclick="defaultaction('.$address['id'].')">设为默认</a>';
+							?>
+              </td>
+              <td><a href="#CA"  onclick="editchange(<?php echo $address['id'];?>)" class="fontblue mr5">编辑</a>| <a href="javascript:" class="fontblue ml5" onclick="deleteaction(<?php echo $address['id'];?>)">删除</a></td>
+            </tr>
+            <?php }}else echo '<tr><td colspan="7"><center>暂无记录</center></td></tr>';?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clr"></div>
+<script src="/js/jsplug/formcheck/formValidator-4.1.1.js" type="text/javascript"></script>
+<script src="/js/jsplug/formcheck/formValidatorRegex.js" type="text/javascript"></script>
+<script src="/js/default/address.js" type="text/javascript"></script>
+<script type="text/javascript">
+function editchange(id){
+	$.ajax({
+           url: '/center/getaddress',
+            data: {'id':id},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+        document.getElementById("title").innerHTML = '修改收货地址';
+        document.getElementById("tmp").value = 'edit';
+	    document.getElementById("addid").value = id;
+		document.getElementById("shrname").value = arr.re.name;
+		$("#provinceSpan").load("/common/getprovince?provinceid="+arr.re.province);
+		$("#citySpan").load("/common/getcity?provinceid="+arr.re.province+"&cityid="+arr.re.city);
+		$("#areaSpan").load("/common/getarea?cityid="+arr.re.city+"&areaid="+arr.re.area);
+		document.getElementById("areatmp").value = arr.re.area;
+		document.getElementById("address").value = arr.re.address;
+		document.getElementById("zipcode").value = arr.re.zipcode;
+		document.getElementById("mobile").value = arr.re.mobile;
+		document.getElementById("tel").value = arr.re.tel;
+		document.getElementById("companyname").value = arr.re.companyname;
+		document.getElementById("warehousing").value = arr.re.warehousing;
+		if(arr.redefault==1){
+			document.getElementById("default").checked = true;
+		}else document.getElementById("default").checked = false;
+                }
+            }
+	});
+}
+//加载城市和地区
+onloadadd('','','');
+setTimeout('hidMessage()',3000);
+function hidMessage(){
+	document.getElementById("message").style.display = 'none';
+}
+</script>

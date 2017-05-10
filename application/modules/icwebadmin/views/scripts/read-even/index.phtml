@@ -1,0 +1,81 @@
+<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?>
+    <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                        <a href="<?php echo $this->addurl;?>" >添加+</a>
+ <?php }?></h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+      <table class="table ordertable"  border="0" style=" margin-top:-1px;">
+                <thead>
+                <tr>
+                <th width="100">编号</th>
+                <th>标题</th>
+                <th>logo</th>
+                <th>menu</th>
+                <th width="130">Head Title</th>
+                <th width="130">description</th>
+                <th width="100">keyword</th>
+                <th>添加日期</th>
+                <th>状态</th>
+                <th width="70">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+				<?php 
+				foreach($this->data as $data) : ?>
+				<tr>
+                <td><a href="/event/<?php echo $data['eventnumber'];?>" target="_blank" title="查看"><?php echo $data['eventnumber'];?></a></td>
+				<td><?php echo $data['title'];?></td>
+                <td><?php if($data['logbar']==1) echo '<font color="#006600">是</font>';else echo '<font color="#FF0000">否</font>';?></td>
+                <td><?php if($data['menu']==1) echo '<font color="#006600">是</font>';else echo '<font color="#FF0000">否</font>';?></td>
+				<td><span title="<?=$data['headtitle']?>"><?=$data['headtitle']?></span></td>
+				<td><span title="<?=$data['description']?>"><?=$data['description']?></span></td>
+				<td><span title="<?=$data['keywords']?>"><?=$data['keywords']?></span></td>
+				<td><?php echo date('Y-m-d H:i:s',$data['created']);//echo $inquiry->user;?></td>
+                <td><?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID))
+				{if($data['status']==1) {?> 
+                <a href="javascript:;" onclick="changestatus(<?=$data['id']?>,0)" title="点击下线"><font color="#006600">已上线</font></a>
+				<?php }else {?>
+                <a href="javascript:;" onclick="changestatus(<?=$data['id']?>,1)" title="点击上线"><font color="#FF0000">已下线</font></a>
+                <?php }}?>
+                </td>
+                <td><?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                        <p style="margin-bottom:2px;"><a href="<?php echo $this->editurl;?>/eventnumber/<?php echo $data['eventnumber'];?>"  class="gbqfbb">编辑</a></p>
+                        <p style="margin-bottom:2px;"><a href="<?php echo $this->filemanagerurl;?>/eventnumber/<?php echo $data['eventnumber'];?>"  class="gbqfbb">编辑文件</a></p>
+                        
+                        <p style="margin-bottom:2px;"><a href="javascript:;" onclick="openbox('/icwebadmin/ReadEven/editdata/id/<?=$data['id'];?>')"  class="gbqfbb">编辑数据</a></p>
+                        <?php if($this->mycommon->checkA($this->Staff_Area_ID)){?>
+                        <p style="margin-bottom:2px;"><a href="javascript:;"  onclick="openbox('/icwebadmin/ReadEven/editcode/id/<?=$data['id'];?>')" class="gbqfbb">编辑代码</a></p>
+                        <?php }?>
+ <?php }?>
+ </td>
+				</tr>
+				<?php endforeach ; ?>
+                </tbody>
+            </table>      
+         <div class="pagination divpage" >
+            <?=$this->page_bar;?>
+        </div>  
+      <!-- 结束区域-->
+	</div>
+    <script type="text/javascript">
+function changestatus(id,status)
+{
+	 $.ajax({
+            url: '/icwebadmin/ReadEven/changestatus',
+            data: {'id':id,'status':status},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    document.getElementById('message_sess').style.display = "block";
+	            document.getElementById('alert_message').innerHTML = arr.message;
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+}</script>

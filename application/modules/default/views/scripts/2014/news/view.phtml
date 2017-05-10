@@ -1,0 +1,70 @@
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/se2013.css"/>
+
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <?php if($this->data['news_type_id']==1){?>
+    <a href="/market"class="focs">行业新闻</a> &nbsp;&nbsp;»&nbsp;&nbsp; 
+    <a href="/marketlist-<?=$this->data['news_type_id']?>.html"><?=$this->data['name']?></a> &nbsp;&nbsp;»&nbsp;&nbsp; 
+    <?php }elseif($this->data['news_type_id']==2){?>
+    <a href="/news"class="focs">产品资讯</a> &nbsp;&nbsp;»&nbsp;&nbsp; 
+    <a href="/newslist-<?=$this->data['news_type_id']?>.html"><?=$this->data['name']?></a> &nbsp;&nbsp;»&nbsp;&nbsp; 
+    <?php }else{?>
+     <a href="/company"class="focs">企业动态</a> &nbsp;&nbsp;»&nbsp;&nbsp; 
+    <?php }?>
+    <span title=""><?=$this->data['title']?></span>
+  </span></div>
+</div><span>
+
+<div class="w clearfix news_detal">
+
+	<div class="layout rigybg" >
+        <div class="shoplist fl">
+    	<div class="themain">
+        	<span class="ifotip2013"><em><?=date('Y-m-d',$this->data['created'])?></em><i></i></span>
+         	<h1><?=$this->data['title']?></h1>
+         	<div class="postmeta">                
+                 来源：<span><?=$this->data['source']?></span>	<span class="fontgray">|</span>  			
+                作者：<span><?=$this->data['author']?></span> <span class="fontgray">|</span>                 
+                <span class="ml10">标签：</span><?php 
+					$tip = explode(',',$this->data['keyword']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+					}
+			    ?>       
+            </div>
+            <div class="themain_p">
+			<!--内容-->
+                <div id="share_content"><?=$this->data['content']?></div>
+            </div>
+		</div>
+
+		</div>                
+        <div class="fr righttuij">
+            <div id="hotsearch"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
+            <div id="hotsolution"></div>
+            <div id="hotnews"></div>
+            <div id="hotwebinar"></div>
+            <div id="htocode"></div>
+            </div>
+        <div class="clr"></div>
+    </div>
+
+</div>
+
+<script language="javascript">
+	$(function(){
+	
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+		$("#hotsearch").load("/publicbox/hotsearch");
+		$("#hotsolution").load("/publicbox/hotsolution");
+		$("#hotnews").load("/publicbox/hotnews");
+		$("#hotwebinar").load("/publicbox/hotwebinar");
+		$("#htocode").load("/publicbox/htocode");
+	})
+</script>

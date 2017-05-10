@@ -1,0 +1,138 @@
+<!--菜单-->
+
+<script type="text/javascript">
+$(function(){
+	//商品分类下拉菜单
+	$('.catelist2013 .catelist2013item').hover(function(){
+		$(this).addClass('active');
+		$(this).find('.product_wrap2013').show();
+		var topvar = 0;
+		var h = $(this).find('.product_wrap2013').height();
+		var h2 = h/2;
+		var ftop   = $(this).offset().top;
+		var ttop = $('.catelist2013item').offset();
+		topvar = ftop-ttop.top-h2/2;
+		if(topvar<0) topvar = 0;
+		else {var dtop = topvar+h;
+		 var catelist2013h = $('.catelist2013').height();
+		 if(dtop>catelist2013h) topvar = topvar - (dtop-catelist2013h)+2;
+		}
+		$(this).find('.product_wrap2013').css("top",topvar); 
+	},function(){
+		$(this).removeClass('active');
+		$(this).find('.product_wrap2013').hide();
+	});
+	<?php if($_SESSION['menu']!='index'){?>
+	$('.categorys2013_good').hover(function(){
+		$(this).find('.catelist2013').slideDown();
+		$(this).find(".categorys2013_icon").removeClass("categorys2013_arrowdown");
+		$(this).find(".categorys2013_icon").addClass("categorys2013_arrowup");		
+	},function(){
+		$(this).find('.catelist2013').hide();
+		$(this).find(".categorys2013_icon").removeClass("categorys2013_arrowup");
+		$(this).find(".categorys2013_icon").addClass("categorys2013_arrowdown");	
+	});
+	<?php }?>
+	$('#newshudi').hover(function(){
+
+		$(this).find(".navigation_sub").removeClass("hide");
+	
+	},function(){
+
+		$(this).find(".navigation_sub").addClass("hide");	
+	});
+	
+});
+</script>
+
+<div id="newmenu2013" class="newmenu201312">
+  <div class="w pos-re sleter" >
+    <div class="categorys2013">
+      <div class="categorys2013_good">
+        <div class="categorys2013_t">
+          <div class="categorys2013_c">产品分类</div>
+          <i class="categorys2013_icon <?=$_SESSION['menu']!='index'?'categorys2013_arrowdown':'categorys2013_arrowup'?>"></i> </div>		
+        <div class="catelist2013 homemenu201312" style="display:<?=$_SESSION['menu']!='index'?'none':'block'?>;">
+          
+          <?php foreach($this->first as $farr){
+				$fid = $farr['id'];
+				?>
+          <div class="catelist2013item">
+            <div class="product2013">
+              <h3><a href="/list-<?=$farr['id']?>.html" onclick="logclickaction($(this))" class="nav" rev="mainmenu_category" rel="<?=$farr['id']?>"><?=$farr['name']?></a></h3>
+              <s></s> </div>
+            <div class="product_wrap2013 pos01" >
+              <div class="fl">
+							<div class="show_sort2013">
+								<div class="menudl2013">
+								<?php   
+								  foreach($this->second[$fid] as $k=>$sarr){
+								  $sid = $sarr['id'];
+								  ?>
+								<dl <?=(count($this->second[$fid])==($k+1)?'class="last"':'')?>>
+									<dt><a href="/list-<?=$fid?>-<?=$sid?>.html" onclick="logclickaction($(this))" rev="mainmenu_category" rel="<?=$sid?>"><?=$sarr['name']?></a></dt>
+									<dd>
+										<ul>
+										<?php  foreach($this->third[$sid] as $tarr){
+										 $tid=$tarr['id'];
+										 ?>
+											<li><a href="/list-<?=$fid?>-<?=$sid?>-<?=$tid?>.html"  onclick="logclickaction($(this))" rev="mainmenu_category" rel="<?=$tid?>"><?=$tarr['name']?></a></li>
+									   <?php }?>
+										</ul>
+									</dd>
+								</dl>
+								<?php }//end foreach($this->second[$fid] as $sarr){?>
+								</div>
+								<?php 
+							  $cbarnd = $this->categorybarnd[$fid];
+								if($cbarnd){
+							  ?>
+								<div class="menubrand2013">
+									<h3>推荐品牌</h3>
+									<ul>
+									<?php foreach($cbarnd as $cbarndarr){?>
+									  <li><a href="/pl/<?=$cbarndarr['name']?>"  onclick="logclickaction($(this))" rev="mainmenu_brand" rel="<?=$tid?>"><img src="/images/default/brand/<?=$cbarndarr['comid']?>_h.png"></a></li>
+									  <?php }?>
+									</ul>
+								</div>
+							   <?php }?>
+							</div>
+						</div>
+            </div>
+          </div>
+          <?php }?>
+          
+          
+        </div>
+      </div>
+    </div>
+    <ul id="navul201312">
+      <li class=" <?php if($_SESSION['menu']=='index') echo 'on';?>" ><a href="/" >首页</a></li>
+      <li class=" <?php if($_SESSION['menu']=='brand') echo 'on';?>" ><a href="/brand" >品牌列表</a></li>
+      <li class=" <?php if($_SESSION['menu']=='category' || $_SESSION['menu']=='product') echo 'on';?>" ><a href="/category" class="fore_s">产品目录</a></li>
+      <li class=" <?php if($_SESSION['menu']=='applications') echo 'on';?> " ><a href="/solution" class="fore_s">应用方案</a></li>
+      <!--<li class=" <?php if($_SESSION['menu']=='news') echo 'on';?>" ><a href="/news" class="fore_s">产品资讯</a></li>-->
+      
+      <li class=" icon_t <?php if($_SESSION['menu']=='news') echo 'on';?>" id="newshudi">
+      <a class="fore_s">新闻速递  <i><em></em><span></span></i></a>
+        <div class="navigation_sub hide">
+            <ul>
+                <li><a href="/news"><span class="link_inner">产品资讯</span></a></li>  
+                <li><a href="/market"><span class="link_inner">行业新闻</span></a></li>  
+                <li><a href="/company"><span class="link_inner">企业动态</span></a></li>  
+            </ul> 
+        </div>     
+     </li>
+      
+      <li class=" addaada <?php if($_SESSION['menu']=='seminar') echo 'on';?> " ><a href="/webinarlist" class="fore_b">技术研讨会</a></li>
+      <li class=" pos-re  <?php if($_SESSION['menu']=='appcode') echo 'on';?>" ><a href="/code" class="fore_b" >代码库</a></li>
+      <li class=" <?php if($_SESSION['menu']=='bom') echo 'on';?>" ><a href="/bompurchase" class="fore_s">BOM采购</a></li>
+      <li class="  <?php if($_SESSION['menu']=='jifen') echo 'on';?>"><a href="/jifen" class="fore_s" >积分商城</a></li>
+      <li class="  <?php if($_SESSION['menu']=='samples') echo 'on';?>"><a href="/samples" class="fore_s">样片中心</a></li>
+      <li class="  last  <?php if($_SESSION['menu']=='lab') echo 'on';?>"><a href="/lab" class="fore_s" style="color:#ffea00; font-weight:800; line-height:42px">开放实验室</a></li>
+      <!--<li class="  last  <?php if($_SESSION['menu']=='nanxunindex') echo 'on';?>"><a href="/event/201308012" class="fore_s">难寻器件</a></li>-->
+    </ul>
+   
+  </div>
+  <div class="menushadow2013"></div>
+</div>

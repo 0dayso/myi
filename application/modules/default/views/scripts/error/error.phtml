@@ -1,0 +1,29 @@
+<div class="w mt10 clearfix">
+<div class="w errorbox">
+    <div class="fl"><img src="/images/default/notfound.gif"  alt="error"/></div>
+    <div class="fr errorcon">
+        <h1>很抱歉，访问出现错误！</h1>
+        <p>您访问的页面不存在或链接错误。</p>
+        <p class="errorpa"><a href="/"><?=$this->translate('Menu_Home');?></a> | <a href="javascript:;" onclick="javascript:history.go(-1);">返回</a></p>
+    </div>
+    <div class="clr"></div>
+    <div class="blank20"></div>
+</div>
+  
+  <?php if (isset($this->exception)): ?>
+  
+  <h3>Exception information:</h3>
+  <p>
+      <b>Message:</b> <?php echo $this->exception->getMessage() ?>
+  </p>
+
+  <h3>Stack trace:</h3>
+  <pre><?php echo $this->exception->getTraceAsString() ?>
+  </pre>
+
+  <h3>Request Parameters:</h3>
+  <pre><?php echo $this->escape(var_export($this->request->getParams(), true)) ?>
+  </pre>
+
+  <?php endif ?>
+</div>

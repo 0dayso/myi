@@ -1,0 +1,70 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?>  <?php if($this->mycommon->checkA($this->Staff_Area_ID)){?>
+                      <a href="#add" onClick="openadd()"><font color="#CCCCCC">添加+</font></a>
+                      <?php }?></h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  
+
+          <?php if (count($this->messages)) : ?>
+          <div class="alert fade in" style="text-align:left">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <?php foreach ($this->messages as $message) : ?>
+            <p class="message"><strong><?php echo $this->escape($message); ?></strong></p>
+            <?php endforeach; ?>
+          </div>
+          <?php endif; ?>
+          <table class="table table-hover"  border="0" style=" margin-top:-1px;">
+            <thead>
+              <tr>
+                <th>更新用户</th>
+                <th>更新时间</th>
+                <th>汇率对换</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach($this->rateArr as $rate) : ?>
+              <tr>
+                <td><?php echo $rate['modified_by'];?></td>
+                <td><?php echo date('Y-m-d H:i:s',$rate['modified'] );?></td>
+                <td><?php echo $rate['currency'].' : '.$rate['to_currency'].' = 1 : ';?> <?php echo '<input type="text" name="result" class="input-mini" value="'.$rate['rate_value'].'">
+				<a class="btn btn-small update-result" href="'.$this->editurl.'/id/'.$rate['id'].'">更新</a>';?></td>
+              </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+          <div class="pagination divpage mt10 fr" >
+            <?=$this->page_bar;?>
+          </div>
+          <br>
+          <!-- 结束区域-->
+</div>
+    <script type="text/javascript">
+$(function(){
+	$('.update-result').click(function(){
+		var number = $(this).parent().children('input').val();
+		var target = $(this).parent();
+		$.ajax({
+			  url: this.href,
+			  data: {result:number},
+			  type: 'post',
+              dataType: 'json',
+			  success: function(arr){
+				 document.getElementById('message_sess').style.display = "block";
+	             document.getElementById('alert_message').innerHTML = arr.message;
+				  location.reload();
+			  },
+		});
+		return false;
+});
+})
+function openadd()
+{
+	$.openPopupLayer({
+        name:'addBox',
+        url:'<?php echo $this->addurl;?>'
+    });
+}
+</script>

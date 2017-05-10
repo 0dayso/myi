@@ -1,0 +1,40 @@
+<!--购买 弹出框-->
+<div class="pop pop_shopbox"  style="top:250px" >
+	<div class="popbox">
+    	<div class="poptit1">
+            <input type="button" title="关闭"  class="closebtn" onclick="$.closePopupLayer('cartshowBox')">
+        </div>
+        <div class="popcon clearfix">
+        	<h3><img src="/images/default/cart.jpg" />该商品已成功放入购物车</h3>
+            <p class="spbbtndiv"><a href="javascript:" onClick="$.closePopupLayer('cartshowBox')">&laquo;继续购物</a>
+            <a class="abutton" href="/cart" >去购物车结算</a></p>
+            <div class="poptable">
+              <table border="0" cellpadding="0" cellspacing="0" class="table ">
+                  <tbody>
+                  <tr>
+                    <th width="160">型号</th>
+                    <th width="80">品牌</th>
+                    <th width="65">购买数量</th>
+                    <th width="50">单价</th>
+                    <th width="65">小计</th>
+                  </tr>
+                   <?php
+					foreach($this->items as $item){
+						if(is_array($item)){
+					?>
+                  <tr>
+                    <td align="center"><a href="/item-0-0-<?=$item['pord_id'];?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank"><?=$item['part_no'];?></a></td>
+                    <td align="center"><?=$item['options']['brand'];?></td>
+                    <td align="center"><?=$item['qty'];?></td>
+                    <td align="center"><?=$item['unit'].number_format($item['byprice'],DECIMAL);?></td>
+                    <td align="center"><?=$item['unit'].number_format($item['qty']*$item['byprice'],DECIMAL);?></td>
+                  </tr>
+                  <?php }//end if(is_array($item))
+                     }//end foreach
+                  ?>
+                  </tbody>
+              </table>    
+            </div>        
+   		 </div>
+    </div>
+</div>

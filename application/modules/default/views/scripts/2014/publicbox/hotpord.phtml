@@ -1,0 +1,49 @@
+<div class="subhot  pos-re">
+            	<h2>热卖产品</h2>
+                <a href="/pl/<?=$this->brandname?>" target="_blank" title="<?=$this->brandname?>" onclick="logclickaction($(this))" rev="hotpord_brand" rel="<?=$this->bandid?>"  class="hotbrandimg"><img src="/images/default/brand/<?=$this->bandid?>_h.png" title="<?=$this->brandname?>"></a>
+                <div class="subshop">
+ 						
+    				<?php for($i=0;$i<count($this->hotArr);$i++){
+                     $data = $this->fun->filterProduct($this->hotArr[$i]);
+                     $break_price='';$stock = 0;$show_price = 0;
+                    if($data['f_show_price_sz']){
+                        $show_price = $data['f_show_price_sz'];
+                        $stock      = $data['f_stock_sz'];
+                        $showprice = $data['f_rmb'].number_format($data['f_lowest_price_sz'],DECIMAL); 
+                        $break_price = $data['f_break_price_notitle_sz'];
+                    }elseif($data['f_show_price_hk']){
+                        $show_price = $data['f_show_price_hk'];
+                        $stock      = $data['f_stock_hk'];
+                        $showprice = $data['f_usd'].number_format($data['f_lowest_price_hk'],DECIMAL); 
+                        $break_price = $data['f_break_price_notitle_hk'];
+                    }
+                     if(($data['f_stock_sz']+$data['f_stock_hk'])>0){
+                         $goodsprice_title = '<strong class="fontorange">现货</strong>';
+                     }else{
+                         $goodsprice_title = '<strong class="">订货</strong>';
+                     }
+                     if($show_price){		
+                         $goodsprice = '<div class="icon_t">低至：<span class="priceti">'.$showprice.'<i><em></em><span></span></i></span><div class="pprice201312_detail">'.$break_price.'</div></div>';
+                     }else{
+                        $goodsprice = '';
+                     }
+                  ?>
+                  <div class="por_box2013 item ">
+                  <a href="<?=$data['f_produrl']?>" title="<?=$data['part_no']?>" class="s-img logclick" rev="related_part_id" rel="<?=$data['id']?>" target="_blank"><img alt="img" src="<?=PRODUCTICON.($data['part_img']==''?'no.gif':$data['part_img'])?>"  title="<?=$data['part_no']?>"></a>
+                            <div class="pbox201312">
+                                <div class="spot201312"></div>
+                                <div class="pmodel201312">
+                                <a href="<?=$data['f_produrl']?>"  title="<?=$data['part_no']?>" class="logclick" rev="related_part_id" rel="<?=$data['id']?>" target="_blank"><?=$this->fun->utf_substr(($data['part_no']),11,'...')?></a></div>
+                                <div class="ptip201312"><?=$goodsprice_title?>-<a href="/list-<?=$data['part_level1']?>-<?=$data['part_level2']?>-<?=$data['part_level3']?>.html" target="_blank"><?=($data['cname3']==''?$data['cname2']:$data['cname3'])?></a></div>
+                                <div class="pprice201312">
+                                    <?=$goodsprice?>
+                                </div>
+                            </div>
+                        </div>
+                  <?php }//end foreach($this->relevance as $i=>$prod)?> 	
+                        
+                        
+                        
+                </div>
+                
+            </div>

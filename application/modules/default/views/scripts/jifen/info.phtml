@@ -1,0 +1,67 @@
+<div class="popnew jfpop">
+  <div class="popnew-tit"> <span class="popnew-tit_t">填写中奖个人资料</span>
+    <input type="button" title="关闭" class="popnew-closebtn" onclick="$.closePopupLayer('box')">
+  </div>
+  <div class="popnew-con" style="background-color:#FFFFFF;">
+    
+    <div class="tip fontorange font14"></div>
+    <div class="jfpop_con">
+      <div class="jfpop_dl">
+        <dl>
+          <dt><em>*</em>收货人：</dt>
+          <dd><input type="text" name="name" id="name" style="width:400px;"/></dd>
+        </dl>
+        <dl>
+          <dt><em>*</em>联系电话：</dt>
+          <dd><input type="text" name="tel" id="tel" style="width:400px;"/></dd>
+        </dl>
+        <dl>
+          <dt><em>*</em>收货地址：</dt>
+          <dd>
+            <textarea name="add" id="add" rows="3" style="width:400px;"></textarea>
+          </dd>
+        </dl>
+        <dl>
+          <dt>&nbsp;</dt>
+          <dd> 
+          <span id="tijiaobut"><a class="btnok-new" href="javascript:;" onclick="subinfo()">提交</a></span>
+        </dl>
+      </div>
+    </div><div class="clr"></div>
+  </div>
+</div>
+<script type="text/javascript">
+//添加兑换
+function subinfo(){
+     var name = $('#name').val();
+     if(name=='' || typeof(name)=="undefined") {
+	      alert('请填写收货人');return;
+     }
+	  var tel = $('#tel').val();
+     if(tel=='' || typeof(tel)=="undefined") {
+	      alert('请填联系电话');return;
+     }
+	  var add = $('#add').val();
+     if(add=='' || typeof(add)=="undefined") {
+	      alert('请填写收货地址');return;
+     }
+
+	 var subtmp=document.getElementById("tijiaobut");
+	 subtmp.innerHTML = '<a class="btnok-new" href="javascript:;">提交中...</a>';
+	 $.ajax({
+            url: '/jifen/info',
+            data: {'id':'<?=$this->id?>','name':name,'tel':tel,'add':add},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    alert(arr.message);
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }else{
+				   subtmp.innerHTML ='<a class="btnok-new" href="javascript:;" onclick="subinfo()">提交</a>';
+				}
+            }
+	});
+}
+</script>

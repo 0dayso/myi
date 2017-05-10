@@ -1,0 +1,348 @@
+@charset "UTF-8";
+
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height:1;
+}
+
+
+
+a {
+    margin:0;
+    padding:0;
+    border:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+
+
+input, select {
+    vertical-align:middle;
+}
+
+/* Base
+---------------------------------------------------------------------*/
+
+body {
+	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+	line-height:1.5;
+	font-size:12px;
+	background-color:#f2f2f2;
+	color:#666;
+	margin:0 auto;
+}
+a {
+	outline:none;
+	color:#2A7AD2
+}
+h1,h2,h3,h4,h5,h6 {
+	color:#4D5762;
+	position:relative;
+	word-spacing:-0.1em;
+}
+h4,h5,h6 {
+	font-weight:bold;
+}
+h1,h2 {
+	line-height:28px;
+	margin-bottom:18px;
+}
+h1,h2,h3,h4,h5 {
+	margin-top:18px;
+}
+h3,h4,h5,h6 {
+	line-height:18px;
+	margin-bottom:10px;
+}
+h1 {
+	font-size:28px;
+}
+h2 {
+	font-size:21px;
+}
+h3 {
+	font-size:18px;
+}
+h4 {
+	font-size:16px;
+}
+h5 {
+	font-size:14px;
+}
+h6 {
+	font-size:12px;
+}
+b,strong,caption,th,thead,dt,legend {
+	font-weight:bold;
+}
+cite,dfn,em,i {
+	font-style: italic;
+}
+code,kbd,samp,pre,tt,var,.code {
+	/*font-family:"Consolas","Courier New",Courier,mono;*/
+	font-family:Monaco,"Panic Sans","Lucida Console","Courier New",Courier,monospace,sans-serif;
+}
+.code {
+	background-color:#EAEFF4;
+	color:#069;
+	overflow:auto;
+	padding:2px 6px;
+}
+.code span {
+	color:#E9584C;
+}
+p {
+	word-spacing:0.125em;
+	hyphenate:auto;
+	hyphenate-lines:3;
+	margin-top:1em;
+}
+p+p {
+}
+pre {
+	white-space:pre;
+}
+del {
+	text-decoration:line-through;
+}
+mark {
+	background:rgba(255,255,0,0.4);
+	padding:0 .25em;
+}
+ins {
+	color:#f00;
+}
+small,sup,sub {
+	font-size:90%;
+}
+big,.big {
+	font-size:120% !important;
+	line-height:120%;
+}
+abbr,acronym {
+	font-size:85%;
+	text-transform:uppercase;
+	letter-spacing:.1em;
+}
+abbr[title],acronym[title],dfn[title] {
+	border-bottom:1px dotted #ccc;
+	cursor:help;
+}
+hr {
+	border:none;
+	background:#ddd;
+	width:100%;
+}
+ul,ol {
+	padding-left:1.5em; /* Good browsers style ul elements like this https://developer.mozilla.org/en/Consistent%5FList%5FIndentation */
+}
+ul {
+	list-style:disc outside;
+}
+ol {
+	list-style:decimal outside;
+}
+ol ol li {
+	list-style-type:lower-alpha;
+}
+ul,ol,dl,dialog {
+	margin-top:1em;
+	margin-bottom:1em;
+}
+li ul,li ol,ul ul,ol ol,dl dd {
+	margin-top:0;
+	margin-bottom:0;
+	margin-left:0;
+}
+button {
+	cursor:pointer;
+}
+
+
+
+
+form {
+	overflow:auto;
+}
+input:focus,textarea:focus,select:focus {
+	outline-width:0; /* No outline border for Safary */
+}
+input[type="text"],input[type="password"],input[type="select"],input[type="search"],input[type="file"],textarea,select {
+	border-color:#C4C4C4 #E9E9E9 #E9E9E9 #C4C4C4;
+	border-style:solid;
+	border-width:1px;
+	padding:4px;
+	color:#777;
+}
+textarea {
+	line-height:18px;
+	overflow:auto;
+	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+textarea.small {
+	height:5.5em;
+}
+textarea.medium {
+	height:10em;
+}
+textarea.large {
+	height:20em;
+}
+input.half,select.half,textarea.half {
+	width:50%;
+}
+input.full,select.full,textarea.full {
+	width:97%;
+}
+input.title {
+	font-size:20px;
+}
+input[type="submit"],input[type="reset"],input[type="button"] {
+	margin-bottom:0;
+}
+input:focus,textarea:focus {
+	-moz-box-shadow:0 1px 1px rgba(196,196,196,0.5);
+	-webkit-box-shadow:0 1px 1px rgba(196,196,196,0.5);
+	box-shadow:0 1px 1px rgba(196,196,196,0.5);
+	-webkit-focus-ring-color:none;
+	border-color:#c4c4c4;
+	background-color:#FFFFF0;
+}
+fieldset {
+	border:0 none;
+	border-top:1px solid #ddd;
+	margin:10px 0;
+	padding:10px 0;
+	position:relative;
+}
+legend {
+	background:#fff;
+	color:#93BB3A;
+	font-weight:bold;
+	padding:0 6px 0 0;
+}
+label {
+	font-size:12px;
+	text-transform:uppercase;
+	font-weight:bold;
+}
+label.required:before {
+	content:"*";
+	color:red;
+	font-family:"Lucida Grande",Verdana,Arial,Helvetica,sans-serif;
+}
+
+
+
+/* Wrappers & headers
+---------------------------------------------------------------------*/
+.wrapper-top {
+	margin:0 auto;
+	text-align:left;
+	width:100%;
+	position:relative;
+	background:#fff;
+	padding:20px 0 30px;
+	border-bottom:3px solid #f00
+	
+}
+.wrapper-top .logo {
+	margin:0 auto;
+	width:800px;
+
+
+
+}
+.wrapper-login {
+	width: 350px;
+	margin:0 auto;
+	text-align:left;
+	position:relative; 
+	padding:20px 0 50px;
+	
+}
+
+
+/* Footers
+---------------------------------------------------------------------*/
+
+#bottom {
+	background-color:#F2F2F2;
+	border-top:4px solid #D9D9D9;
+	color:#999;
+	float:left;
+	font-size:11px;
+	width:100%;
+	background:-webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.2, rgb(242,242,242)),
+		color-stop(0.8, rgb(254,254,254))
+	);
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(242,242,242) 20%,
+		rgb(254,254,254) 80%
+	);
+	padding-bottom:2em;
+}
+
+#bottom p{
+	clear:both;
+	text-align:center;
+	margin-bottom:24px;
+	padding-top:12px;
+	text-shadow:1px 1px 0 #fff;
+}
+
+
+/* Buttons
+---------------------------------------------------------------------*/
+
+.btn {
+	display: inline-block;
+	padding: 8px 13px;
+	font-size:14px;
+	color: #fff !important;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 12px;
+	font-family: Tahoma, Arial, sans-serif;
+	position: relative;
+	cursor: pointer;
+	background:#f00;
+	border:1px solid #f00 !important;
+	margin-top:10px
+}
+.btn:hover, .btn:focus, .btn:active {
+	border:1px solid #333 !important;
+	background:#333;
+	opacity:0.9;
+	-khtml-opacity: .9;
+}
+
+

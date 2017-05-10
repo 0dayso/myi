@@ -1,0 +1,121 @@
+<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?> 
+     <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                        <a href="<?php echo $this->addurl;?>" >添加+</a>
+     <?php }?></h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+      <div class="fr u_right">
+    <div class="tab_con ">
+        <table class="tableanew" border="0" cellspacing="0" cellpadding="0"  width="100%"  >
+            <tr>
+                <th width="60">图片</th>
+                <th width="150">礼品</th>
+                <th width="50">类型</th>
+                <th width="100">类别</th>
+                <th width="50">价格</th>
+                <th width="50">消费积分</th>
+                <th width="50">总库存</th>
+                <th width="80">被占用库存</th>
+                <th width="50">剩余库存</th>
+                <th width="80">添加日期</th>
+                <th width="80">状态</th>
+                 <th width="80">首页</th>
+                <th width="100" align="center">操作</th>
+            </tr>
+             <?php 
+				if(empty($this->giftall)){?>
+                <tr>
+                  <td colspan="9"><center> 暂无记录。</center></td>
+                </tr>
+                <?php }else{
+			   foreach($this->giftall as $k=>$v){
+				?>
+              <tr valign="top">
+                <td align="left"><img src="/upload/default/gift/<?=$v['images']?>"  width="60" height="60"/></td>
+                <td align="left"><a  href="/jifen-<?=$v['id']?>.html" target="_blank" title="查看礼品"><?=$v['name']?></a></td>
+                <td align="center"><?=$v['type']==1?'实物':'虚拟物品'?></td>
+                <td align="center"><?=$v['cname']?></td>
+                <td align="center">￥<?=$v['market_price']?></td>
+                <td align="center"><?=$v['score']?></td>
+                <td align="center"><?=$v['stock']?></td>
+                <td align="center"><?=$v['stock_cover']?>
+				<?php if($v['stock_cover']>0){
+					echo '<a href="/icwebadmin/GiftDhgl" target="_blank">去处理&gt;&gt;</a>';
+				}
+				?></td>
+                <td align="center"><?=($v['stock']-$v['stock_cover'])?>
+                
+                </td>
+                <td align="center"><?=($v['created']?date('Y/m/d',$v['created']):'--')?></td>
+                <td align="center">
+				<?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID))
+				{if($v['status']==1) {?> 
+                <a href="javascript:;" onclick="changestatus(<?=$v['id']?>,0)" title="点击下线"><font color="#006600">已上线</font></a>
+				<?php }else {?>
+                <a href="javascript:;" onclick="changestatus(<?=$v['id']?>,1)" title="点击上线"><font color="#FF0000">已下线</font></font></a>
+                <?php }}?>
+                </td>
+                <td><?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID))
+				{if($v['home']==1) {?> 
+                <a href="javascript:;" onclick="changehome(<?=$v['id']?>,0)" title="取消推荐"><font color="#006600">是</font></a>
+				<?php }else {?>
+                <a href="javascript:;" onclick="changehome(<?=$v['id']?>,1)" title="推荐"><font color="#FF0000">否</font></font></a>
+                <?php }}?>
+                </td>
+                <td>
+                <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+              	<p><a class="gbqfb" href="/icwebadmin/GiftLpgl/edit/id/<?=$v['id']?>">编辑</a></p>
+                <?php }?>
+                </td>
+            </tr>
+		<?php }
+		}?> 
+        </table>
+    <div class="pagination divpage">
+       <?=$this->page_bar;?>
+  </div>
+</div>
+
+</div>
+ <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+function changestatus(id,status)
+{
+	 $.ajax({
+            url: '/icwebadmin/GiftLpgl/changestatus',
+            data: {'id':id,'status':status},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	document.getElementById('message_sess').style.display = "block";
+	            document.getElementById('alert_message').innerHTML = arr.message;
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+}
+function changehome(id,homevalue)
+{
+	 $.ajax({
+            url: '/icwebadmin/GiftLpgl/changehome',
+            data: {'id':id,'homevalue':homevalue},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    document.getElementById('message_sess').style.display = "block";
+	            document.getElementById('alert_message').innerHTML = arr.message;
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+}
+</script>

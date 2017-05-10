@@ -1,0 +1,253 @@
+
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/myself2013.css"/>
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+
+<!---------------------------------------------------------------------我的IC易站 开始--------------------------------------------------------------------->
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a  class="focs">我的IC易站</a>
+  </div>
+</div>
+
+<div class="blank10"></div>
+<div class="w clearfix ourbox"> 
+	<?php echo $this->render('center/leftmenu.phtml');?>
+    <div class="mymainbox">
+    	<div class="w_100 mymainboxup">
+   		 <div class="mymainboxleft">
+             <div class="ourmain_1">
+                <h2><?=$this->usrinfo['uname']?>，欢迎回来！</h2>
+                <span class="tips">最后登录时间：<?=date("Y-m-d H:i:s",$this->usrinfo['lasttime'])?><br /> 
+                最后登录IP：<?=$this->usrinfo['lastip']?></span>
+             </div>
+             <div class="ourmian2">
+                <dl>
+                    <dt>账户资料完整性：</dt>
+                    <dd>
+                    <?php 
+					if($this->usrinfo['detailed']==1) echo '<i class="ir icon-s-02"></i><b class="okrenz"></b>';
+					
+					else echo '<i class="ir icon-s-01"></i><a href="/center/info?type=2">马上填写企业资料</a>';
+					?>
+                    <!--<span class="tips">完善企业资料可获得奖励<strong class="integration">+100</strong>积分</span>--></dd>
+                </dl>
+                <dl>
+                    <dt>您的采购总金额：</dt>
+                    <dd class="price">
+                    <?php 
+				    $all_total = array();
+				    if($this->inqsoinfo['total']){
+				       foreach($this->inqsoinfo['total'] as $currency=>$i_total){
+					   	  $all_total[$currency] +=$i_total;
+				 	   }
+				    }
+					if($this->onlinesoinfo['total']){
+				        foreach($this->onlinesoinfo['total'] as $currency=>$o_total){
+					   	  $all_total[$currency] +=$o_total;
+				 	   }
+				    }
+					if(empty($all_total)){
+						echo '<strong>您还没采购记录！<a href="/">马上去采购</a></strong>';
+					}else{
+						$i=1;
+					   foreach($all_total as  $currency=>$total){
+						echo '<strong><span>'.$currency.'</span>'.number_format($total,DECIMAL).'</strong>';
+						$i=0;
+					   }
+					}
+				?>
+                   </dd>
+                </dl>
+                <dl>
+                    <dt>我的积分：</dt>
+                    <dd><span style="color:#ff6600"><ins class="jficon" style="vertical-align:middle;"></ins>
+					<?=$this->usrinfo['score']?></span></dd>
+                </dl>
+                <div class="integrationbtns"><a href="/jifen" title="去兑换礼品">去积分商城看看</a></div>
+             </div>
+             <div class="ourmain_3 boxshadow_h">
+                <dl class="fore1">
+                    <dt>在线订单：</dt>
+                    <dd><a class="flk-03" href="/center/order?type=wpay">待付款(<span <?=$this->onlinesoinfo['wpay']==0?'':'class="fontred"'?>><?=$this->onlinesoinfo['wpay']?></span>)</a></dd>
+                    <dd><a class="flk-03" href="/center/order?type=rec">待收货(<span <?=$this->onlinesoinfo['rec']==0?'':'class="fontred"'?>><?=$this->onlinesoinfo['rec']?></span>)</a></dd>
+                </dl>
+                <dl class="fore2">
+                    <dt>询价订单：</dt>
+                    <dd><a class="flk-03" href="/center/inqorder?type=wpay">待付款(<span <?=$this->inqsoinfo['wpay']==0?'':'class="fontred"'?>><?=$this->inqsoinfo['wpay']?></span>)</a></dd>
+                    <dd><a class="flk-03" href="/center/inqorder?type=over">待付余款(<span  <?=$this->inqsoinfo['over']==0?'':'class="fontred"'?>><?=$this->inqsoinfo['over']?></span>)</a></dd>
+                    <dd><a class="flk-03" href="/center/inqorder?type=rec">待收货(<span  <?=$this->inqsoinfo['rec']==0?'':'class="fontred"'?>><?=$this->inqsoinfo['rec']?></span>)</a></dd>
+                </dl>
+             </div>
+             <div class="ourmain_3 boxshadow_h">
+                <dl class="fore1">
+                    <dt>我的询价：</dt>
+                    <dd><a class="flk-03" href="/center/inquiry?type=wait">待报价(<span <?=$this->inqinfo['wait']==0?'':'class="fontred"'?>><?=$this->inqinfo['wait']?></span>)</a></dd>
+                    <dd><a class="flk-03" href="/center/inquiry?type=already">待下单(<span <?=$this->inqinfo['already']==0?'':'class="fontred"'?>><?=$this->inqinfo['already']?></span>)</a></dd>
+                </dl>
+             </div>
+         </div>
+         <div class="mymainboxright ">
+         	<span class="mymainboxtriangle"></span>
+            
+            
+            <?php if($this->usrinfo['detailed']==1 && $this->usrinfo['department']){?>
+  <div class="ourmain_4">
+                <div class="uphoto ">
+                    <img src="/upload/admin/head/<?=$this->usrinfo['head']?>"  />
+                    <div class="infolist">
+                    <p>您好，我是IC易站客服经理&nbsp;<b><?=$this->usrinfo['lastname'].$this->usrinfo['firstname']?></b>&nbsp;，是您的专属客户经理，有任何问题可以联系我，我会竭诚为你服务！
+    </p>
+                    </div>
+                </div>
+                <div class="infolistdl">
+                                <dl>
+                                    <dt>电&nbsp;&nbsp;话：</dt>
+                                    <dd><?=$this->usrinfo['phone']?></dd>
+                                </dl>
+                                <dl>
+                                    <dt>固&nbsp;&nbsp;话：</dt>
+                                    <dd><?=$this->usrinfo['tel']?></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Email：</dt>
+                                    <dd><a href="mailto:<?=$this->usrinfo['email']?>" title="<?=$this->usrinfo['email']?>"><?=$this->usrinfo['email']?></a></dd>
+                                </dl>
+                                </div>
+            </div>
+           <?php }else{?>
+ <div class="ourmain_4">
+                <div class="uphoto ">
+                    <img src="/upload/admin/head/<?=$this->usrinfo['head']?>"  />
+                    <div class="infolist">
+                    <p>您好，我是IC易站客服经理&nbsp;<b><?=$this->usrinfo['lastname'].$this->usrinfo['firstname']?></b>&nbsp;，请<a href="/center/info?type=2">完善企业资料</a>，完善后我们会为您的安排一个专属客户经理，为您提供更优质服务！如需帮助可联系我，谢谢。
+    </p>
+                    </div>
+                </div>
+                <div class="infolistdl">
+                                <dl>
+                                    <dt>电&nbsp;&nbsp;话：</dt>
+                                    <dd><?=$this->usrinfo['phone']?></dd>
+                                </dl>
+                                <dl>
+                                    <dt>固&nbsp;&nbsp;话：</dt>
+                                    <dd><?=$this->usrinfo['tel']?></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Email：</dt>
+                                    <dd><a href="mailto:<?=$this->usrinfo['email']?>" title="<?=$this->usrinfo['email']?>"><?=$this->usrinfo['email']?></a></dd>
+                                </dl>
+                                </div>
+            </div>
+           <?php }?>
+            <div class="ourmain_5">
+                <div class="commonoperate ibox">
+                	<ul>
+                    	<li class="ibox_shangchuang"><a href="/center/order?type=wpay"><i></i>上传<br />水单</a></li>
+                        <li class="ibox_xiadan"><a href="/center/inquiry?type=already"><i></i>一键<br />下单</a></li>
+                        <li class="ibox_xunjia"><a href="/category"><i></i>快速<br />询价</a></li>
+                        <li class="ibox_fapiao"><a href="/center/invoice"><i></i>申请<br />发票</a></li>
+                    </ul>
+                </div>
+            </div>
+         </div>
+        </div>
+        <!--<div class="w_100">
+        	<div class="ourmian6">
+        		<h3>我能兑换些什么</h3>
+                <div class="tipmore"><a href="#">更多</a></div>
+                <ul class=" clearfix ourmian6jifen">
+                    <li class="s1_mod boxshadow_h" data-hover="s1_mod_hover">
+        <div class="s1_mod_c">
+        <div class="s1_pic">
+            <img src="../Event/jf_03/img/gift/iphone5s.jpg" >
+        </div>
+        <div class="s1_info">
+            <span class="s1_info_name clearfix fl">华为 荣耀四核 爱享版 U9508 3G手机 WCDMA/GSM 2G RAM</span>
+            <span class="s1_info_jifen clearfix fl">
+                <span>换购积分：</span><span class="font20 fontbold">33760</span><br>
+                <del>市场价：¥1,688.00</del>
+            </span>
+            <span class="s1_info_btn clearfix fl">
+                                    <a href="javascript:;" onclick="exchange('12')" class="font20">立即兑换</a>
+            </span>
+        </div>
+        <div class="s1_new"></div>                    </div>
+        <div class="sl_shadow"></div>
+    </li>
+                    <li class="s1_mod boxshadow_h" data-hover="s1_mod_hover">
+        <div class="s1_mod_c">
+        <div class="s1_pic">
+            <img src="../Event/jf_03/img/gift/canon600d.jpg">
+        </div>
+        <div class="s1_info">
+            <span class="s1_info_name clearfix fl">康佳（KONKA） LED32E330C 32英寸 高清窄边电视</span>
+            <span class="s1_info_jifen clearfix fl">
+                <span>换购积分：</span><span class="font20 fontbold">22500</span><br>
+                <del>市场价：¥1,498.00</del>
+            </span>
+            <span class="s1_info_btn clearfix fl">
+                                    <a href="javascript:;" onclick="exchange('13')" class="font20">立即兑换</a>
+            </span>
+        </div>
+        <div class="s1_new"></div>                    </div>
+        <div class="sl_shadow"></div>
+    </li>
+                    <li class="s1_mod boxshadow_h" data-hover="s1_mod_hover" style="margin-right:0">
+        <div class="s1_mod_c">
+        <div class="s1_pic">
+            <img src="../Event/jf_03/img/gift/kanjie_led.jpg" >
+        </div>
+        <div class="s1_info">
+            <span class="s1_info_name clearfix fl">苹果（Apple） iPad mini MD531CH/A 7.9英寸平板电脑 </span>
+            <span class="s1_info_jifen clearfix fl">
+                <span>换购积分：</span><span class="font20 fontbold">49960</span><br>
+                <del>市场价：¥2,498.00</del>
+            </span>
+            <span class="s1_info_btn clearfix fl">
+                                    <a href="javascript:;" onclick="exchange('8')" class="font20">立即兑换</a>
+            </span>
+        </div>
+        <div class="s1_tuijian"></div>                    </div>
+        <div class="sl_shadow"></div>
+    </li>
+    				<li class="s1_mod boxshadow_h" data-hover="s1_mod_hover" style="margin:0 0 0 10px">
+        <div class="s1_mod_c">
+        <div class="s1_pic">
+            <img src="../Event/jf_03/img/gift/canon600d.jpg">
+        </div>
+        <div class="s1_info">
+            <span class="s1_info_name clearfix fl">康佳（KONKA） LED32E330C 32英寸 高清窄边电视</span>
+            <span class="s1_info_jifen clearfix fl">
+                <span>换购积分：</span><span class="font20 fontbold">22500</span><br>
+                <del>市场价：¥1,498.00</del>
+            </span>
+            <span class="s1_info_btn clearfix fl">
+                                    <a href="javascript:;" onclick="exchange('13')" class="font20">立即兑换</a>
+            </span>
+        </div>
+        <div class="s1_new"></div>                    </div>
+        <div class="sl_shadow"></div>
+    </li>
+                </ul>               
+            </div>
+        </div>-->
+        <div class="w_100">
+    		<div class="ourmian7" >
+                <h3>热卖推荐</h3>
+                <div class="h_change fl"><!--点击的过程中加上 onchick-->
+                    <a href="javascript:;" onclick="rfhotRecommend()" ytag="20000"><i class="i_change">&nbsp;</i><b>换一批</b></a>
+                </div>
+                <div class="hotRecommend_A" id="hotRecommend_show"><img src="/images/admin/ajax-loader.gif" /></div>
+            </div>
+        </div>
+    </div>
+	
+  </div>
+</div>
+<script language="javascript">
+    $(function(){rfhotRecommend();})
+	function rfhotRecommend(){
+		$("#hotRecommend_show").html('<img src="/images/admin/ajax-loader.gif" />');
+		$("#hotRecommend_show").load("/publicbox/hotrecommend");
+	}
+</script>

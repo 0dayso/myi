@@ -1,0 +1,39 @@
+<style>
+.info{ margin-left:10px;}
+</style>
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+    <h2>查看物流信息：<?=$this->salesnumber?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('courierBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body" style="width:550px;">
+      <p>录入人员：<b><?=($this->rearray['lastname']?$this->rearray['lastname'].$this->rearray['firstname']:'--')?></b></p>
+      <p>发货时间：<b><?=($this->rearray['created']?date('Y/m/d H:i:s',$this->rearray['created']):'--')?></b></p>
+      <!-- 需要填写的区域-->
+	  <?php if($this->rearray['cou_number']){?>
+      <b><?=$this->rearray['name']?>运单【<?=$this->rearray['cou_number']?>】的跟踪信息</b><br/>
+      <div id="courier"><img src="/images/admin/ajax-loader.gif" /></div>
+      <?php }else{?>
+      	<b><?=$this->rearray['track']?$this->rearray['track']:'暂无物流跟踪信息'?></b>
+      <?php }?>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function getcourier(){
+	$.ajax({
+            url: '/icwebadmin/OrOrgl/ajaxcourier',
+            data: {'cou_number':'<?=$this->rearray['cou_number']?>','sonid':'<?=$this->rearray['so_id']?>','salesnumber':'<?=$this->rearray['salesnumber']?>'},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+	            document.getElementById('courier').innerHTML = arr.courier;
+            },
+		   timeout:6000
+	});
+}
+ <?php if($this->rearray['cou_number']){?>
+getcourier();
+<?php }?>
+</script>

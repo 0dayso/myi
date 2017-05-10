@@ -1,0 +1,135 @@
+<?php 
+// 状态
+$statusArr = array (
+		'1' => '<font color="#FF0000">待报价</font>',
+		'2' => '<font color="#009944">已报价</font>',
+		'3' => '<font color="#FF912F">议价审核中</font>',
+		'4' => '<font color="#FF912F">审核不通过</font>',
+		'5' => '<font color="#FF912F">已下单</font>',
+		'6' => '<font color="#FF912F">成功下单</font>'
+);
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+?>
+
+<div class="pop pop_inquiry" id="pop_inquiry"  style="  width:900px; overflow:hidden; ">
+<div class="popbox">
+  <div class="poptit"> <span class="titbg1ts">询价历史</span>
+    <input type="button" class="closebtn" onclick="$.closePopupLayer('inquiryBox')" title="关闭" >
+  </div>
+  <div class="popcon clearfix">
+        <?php 
+		foreach($this->inquiry as $key=>$v){
+				$detaile = $v['detaile'];
+		?>
+        <div class="tml_container">
+        <div class="tml_poster">
+        <div class="feed_arrow">
+          <div class="arrow_i"></div>
+          <div class="arrow_bg"></div>
+          <div class="arrow_dot"></div>
+        </div>
+        <div class="date_days"><?=date('Y-m-d H:i',$v['created'])?></div>
+        <div id="show_inquiry_1" class="subtal">
+          <?php if($key==0){?>
+          <table cellpadding="0" cellspacing="0" border="0" class="table fourtdtable">
+            <tr>
+              <td width="70px" align="right">询价编号:</td>
+              <td align="left"><span class="number"><?=$v['inq_number']?></span></td>
+              <td width="70px" align="right">交货地:</td>
+              <td align="left"><?=$deliveryArr[$v['delivery']]?></td>
+              <td width="70px" align="right">结算货币:</td>
+              <td align="left"><span class="en"><?=$v['currency']?></span></td>
+            </tr>
+            <tr>
+              <td align="right">状态:</td>
+              <td align="left"><?=$statusArr[$v['status']]?></td>
+              <td align="right">报价日期:</td>
+              <td align="left"><?=$v['modified']==0?'':date('Y-m-d H:i',$v['modified'])?></td>
+              <td align="right">回复留言:</td>
+              <td align="left"><?=$v['result_remark']?></td>
+            </tr>
+            <tr>
+              <td align="right">询价说明:</td>
+              <td align="left" colspan="5"><?=$v['remark']?></td>
+            </tr>
+          </table>
+          <?php }else{?>
+          <table cellpadding="0" cellspacing="0" border="0" class="table fourtdtable">
+            <tr>
+              <td align="right">再议价状态:</td>
+              <td align="left"><?=$statusArr[$v['status']]?></td>
+              <td align="right">报价日期:</td>
+              <td align="left"><?=$v['modified']==0?'':date('Y-m-d H:i',$v['modified'])?></td>
+              <td align="right">回复留言:</td>
+              <td align="left"><?=$v['result_remark']?></td>
+            </tr>
+            <tr>
+              <td align="right">询价说明:</td>
+              <td align="left" colspan="5"><?=$v['remark']?></td>
+            </tr>
+          </table>
+          <?php }?>
+          <div class="openprice">
+            <table width="100%" cellspacing="0" cellpadding="0" class="subtablei">
+              <tbody>
+                <tr>
+                  <th>型号</th>
+                  <th>品牌</th>
+                  <th>标准交期</th>
+                  <th>标准包装</th>
+                  <th>采购数量</th>
+                  <th>年用量</th>
+                  <th>目标单价</th>
+                  <th class="ourreply">订单最少起订量</th>
+                  <th class="ourreply">IC易站报价</th>
+                  <th class="ourreply">有效期</th>
+                  <th class="ourreply">备注</th>
+                </tr>
+                 <?php foreach($detaile as $k=>$dv){?>		  
+                 <tr>
+                  <td width="150"><a href="/item-0-0-<?=$dv['part_id'];?>-<?=$this->fun->filterUrl($dv['part_no'])?>.html" target="_blank"><?=$dv['part_no'];?></a></td>
+                  <td><?=$dv['inq_lead_time']?$dv['inq_lead_time']:$dv['lead_time']?></td>
+                  <td><?=$dv['brand']?></td>
+                  <td><?=$dv['mpq']?></td>
+                  <td><?=$dv['number']?></td>
+                  <td><?=$dv['expected_amount']?></td>
+                  <td><?=$dv['price']?></td>
+                  <td class="ourreply"><?=$dv['pmpq']==0?'':$dv['pmpq']?></td>
+                  <td class="ourreply"><?=$dv['result_price']==0?'':$dv['result_price'];?></td>
+                  <td class="ourreply"><?php if($dv['expiration_time']<time() && $dv['expiration_time']>0){?>
+                              <font color="#FF0000"><?=date('Y-m-d',$dv['expiration_time']);?></font>
+                              <?php }else{ echo $dv['expiration_time']==0?'':'<font color="009944">'.date('Y-m-d',$dv['expiration_time']).'</font>';}?></td>
+                  <td class="ourreply">
+                   <?php if($dv['result_remark']){?>
+                    <a href="javascript:" class="tipa"><b class="tipicon"></b>
+                    <div class="bubblebox autobox hide">
+                      <div class="uparrow"></div>
+                      <div class="popbox">
+                        <div class="popcon clearfix" >
+                          <p><?=$dv['result_remark']?></p>
+                        </div>
+                      </div>
+                    </div></a><?php }else echo '--';?>
+                    </td>
+                </tr>
+                <?php }?>
+              </tbody>
+            </table>
+          </div>
+          </div> </div>
+          <?php }?>
+     
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    //查看备注
+	var tab = $(".tipa");
+	tab.hover(function(){
+		$(this).find(".autobox").removeClass("hide");
+	},function(){
+		$(this).find(".autobox").addClass("hide");
+	});
+})
+</script>

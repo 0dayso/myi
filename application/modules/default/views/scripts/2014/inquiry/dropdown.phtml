@@ -1,0 +1,47 @@
+<?php if($this->items['total_items']<1){?>
+ <div class="hoverbox2013_tip boxshadow ">暂时没有询价产品，赶紧询价吧</div>
+ <?php }else{?>
+<div class="hoverbox2013 boxshadow ">
+  <table border="0" cellpadding="0" cellspacing="0" class="hoverbox_table2013" >
+    <tbody>
+      <tr>
+         <th width="160">型号</th>
+        <th width="40">品牌</th>
+        <th width="90">查考交期</th>
+        <th width="80">购买数量</th>
+        <th width="80">目标单价</th>
+        <th width="50">&nbsp;</th>
+      </tr>
+    </tbody>
+  </table>
+  <div class="hoverbox2013_tablecon ">
+    <table border="0" cellpadding="0" cellspacing="0" class="hoverbox_table2013">
+      <tbody>
+       <?php
+			foreach($this->items as $item){
+				if(is_array($item)){
+			?>
+      <tr>
+        <td width="160">
+            <p><a href="/item-0-0-<?=$item['id'];?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank" class="model"><?=$item['part_no'];?></a></p>
+          </td>
+        <td width="60"><?=$item['options']['brand'];?></td>
+        <td width="80"><?=$item['options']['lead_time'];?></td>
+        <td width="80"><?=$item['hope_number'];?></td>
+        <td width="70"><?=$item['hope_price'];?></td>
+        <td width="50"><a href="javascript:" onclick="delectinquiry('<?=$item['rowid']?>')"  class="fblue">删除</a></td>
+      </tr>
+      <?php }//end if(is_array($item))
+		 }//end foreach
+	  ?>
+      </tbody>
+    </table>
+  </div>
+  <div class="bottomtable ">
+    <p>共<b class="fontred"><?=$this->items['total_items']?></b>件产品 <a  href="/inquiry" class="btnok-new">去提交询价</a></p>
+  </div>
+</div>
+<?php }?>
+<script type="text/javascript">
+$(".inquirynumber").html('<?=($this->items['total_items'])?>');
+</script>

@@ -1,0 +1,103 @@
+<?php 
+$property = array('enduser'=>'终端用户','merchant'=>'贸易商');
+?>
+<div class="pop pop_bargaining"  style="width:550px;">
+  <div class="popbox">
+    <div class="poptit"> 
+    <span class="titbg1ts">申请获取更多方案资料</span>
+      <input type="button" title="关闭"  class="closebtn" onClick="$.closePopupLayer('applyappruleBox')"/>
+    </div>
+    <div class="popcon clearfix msg24">
+      <div id="again_div" class="pop_bargaining_table">
+      <table cellpadding="0" cellspacing="0" class="table bomtable">
+            <tbody>
+                <tr>
+                  <td align="right">公司名称：</td>
+                  <td align="left"><?=$this->myinfo['companyname']?></td>
+                </tr>
+                <tr>
+                  <td align="right">公司性质：</td>
+                  <td align="left"><?=$property[$this->myinfo['property']]?></td>
+                </tr>
+                <tr>
+                  <td align="right">行业领域：</td>
+                  <td align="left"><?=($this->myinfo['industry']?$this->myinfo['appname']:$this->myinfo['personaldesc'])?></td>
+                </tr>
+                <tr>
+                  <td align="right">联系人：</td>
+                  <td align="left"><?=$this->myinfo['truename']?></td>
+                </tr>
+                <tr>
+                  <td align="right">部门：</td>
+                  <td align="left"><?=$this->myinfo['department']?></td>
+                </tr>
+                <tr>
+                  <td align="right">联系电话：</td>
+                  <td align="left"><?=$this->myinfo['tel']?></td>
+                </tr>
+                <tr>
+                  <td align="right">手机：</td>
+                  <td align="left"><?=$this->myinfo['mobile']?></td>
+                </tr>
+                <tr>
+                  <td align="right">传真：</td>
+                  <td align="left"><?=$this->myinfo['fax']?></td>
+                </tr>
+                <tr>
+                  <td align="right">地址：</td>
+                  <td align="left"><?=$this->fun->createAddress($this->myinfo['province'],$this->myinfo['city'],$this->myinfo['area'],$this->myinfo['address'])?></td>
+                </tr>
+                <tr><td>&nbsp;</td><td align="left"><font color="#FF0000">提示：请确认您的信息，准确的信息将有助于快速通过审核</font></td></tr>
+                <tr>
+                  <td align="right">申请备注：</td>
+                  <td align="left"><textarea name="explanation" id="explanation" rows="3" cols="30"></textarea></td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td align="left"><input type="button" onClick="subaction()" value="提交申请"  class="button"/>
+                  &nbsp;&nbsp;
+                  <input type="button" onClick="editcominfo()" value="修改企业信息"  class="button"/>
+                  </td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function editcominfo()
+{
+	$.closePopupLayer('applyappruleBox');
+	$.openPopupLayer({
+	 name: "companyinfoBox",
+	 url: "/center/companyinfo?opbox=applyappruleBox&opurl=/applications/applyapprule&opcancel=1&key=<?=$this->appkey?>"
+	});
+}
+function subaction(){
+var explanation = $("#explanation").val();
+$.ajax({
+	url: '/applications/applyapprule',
+	data: {'key':'<?=$this->appkey?>','explanation':explanation},
+	type: 'post',
+	dataType: 'json',
+	success: function(arr) {
+		if(arr.code==0)
+		{
+			alert(arr.message);
+			location.reload();
+		}else{
+		   if(arr.code==400)
+		   {
+				$.openPopupLayer({
+				 name: "companyinfoBox",
+				 url: "/center/companyinfo"
+				});
+			}else{
+				alert(arr.message);
+			}
+		}
+	}
+});
+}
+</script>

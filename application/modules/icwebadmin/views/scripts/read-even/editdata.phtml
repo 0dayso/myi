@@ -1,0 +1,35 @@
+<div class="popup" style="width:850px;" >
+    <div class="popup-header">
+        <h2>编辑数据：</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('box');removenotsupport();" title="关闭" class="dialogBoxClose">关闭</a>
+    </div>
+    <div class="popup-body">
+    <table  cellpadding="0" border="0" cellspacing="0">
+      <tbody>
+    <tr>
+    <td  valign="top" align="right">数据：</td>
+    <td><textarea name="data" id="data" style="width:730px; height:400px; font-size:16px"><?=$this->even['data']?></textarea>
+    </td>
+    </tr>
+    </tbody></table>
+        <div class="pbtn" id="baojiabtn2"><input type="button" onClick="editdataAction()" value="提 交" class="btnabig"></div>
+        <div class="clear"></div>
+    </div>
+</div>
+<script type="text/javascript">
+function editdataAction() {
+    var data = document.getElementById('data').value;
+	$.ajax({
+		url: '/icwebadmin/ReadEven/editdata',
+		data: {'id':'<?=$this->even['id'];?>','data':data},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0){
+				  location.reload();
+             }
+		}
+	});
+}
+</script>

@@ -1,0 +1,281 @@
+<!--content-->
+<?php 
+$statusarr = array('101'=>'<p class="orange_payment">待付款</p>',
+'201'=>'<p class="orange_shipments">待发货</p>',
+'202'=>'<p class="orange_harvest">待确认收货</p>',
+'301'=>'<p class="green_ok">已完成</p>',
+'302'=>'<p class="green_evaluate">已评价</p>',
+'401'=>'<p class="gray_cancel">订单被取消</p>',
+'501'=>'<p class="gray_return">退款</p>',
+'502'=>'<p class="gray_returngoods">退货退款</p>');
+//301代表待评价，第一阶段没有评价功能
+$paytypearr = array('transfer'=>'银行转账','online'=>'在线支付','coupon'=>'优惠券兑换');
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$wuliuarr = array('202','301','302');
+$type = array('spot'=>'现货','order'=>'订货');
+$currency = array('RMB'=>'￥','USD'=>'$','HKD'=>'HK$');
+$delivery_type = array('1'=>'国内快递','2'=>'公司配送','3'=>'上门自取');
+?>
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/myself2013.css"/>
+<link rel="stylesheet" type="text/css" href="/css/default/myself<?=$_SESSION['new_version']?>.css"/>
+
+<link href="/js/jsplug/persontooltip/popup.css" media="all" rel="stylesheet" type="text/css"/>
+<script src="/js/jsplug/persontooltip/popup.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript"> 
+center_css();
+</script>
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a  class="focs">我的IC易站</a>&nbsp;&nbsp;»&nbsp;&nbsp;<a  ><?=$this->translate('Menu_MyOrder')?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<span>在线订单</span> 
+  </div>
+</div>
+
+
+<div class="blank10"></div>
+<div class="w clearfix ourbox">
+        <!--左边导航-->
+    <?php echo $this->render('center/leftmenu.phtml');?>
+
+	<div class="fr u_right msg24">
+     <div class="<?php if(isset($_SESSION['postsess']['code'])){if($_SESSION['postsess']['code']>0) echo "error";else echo "ok";}?>" id="message"> <?php if(isset($_SESSION['postsess']['message'])) {echo $_SESSION['postsess']['message'];unset($_SESSION['postsess']);}?></div>
+     
+    <div class="Switching w_100" >
+    	<ul>
+        	<li class="on"><a href="/center/order">在线订单(<?=$this->onlineSoNum?>)</a><em class="emtrianglebottom5px"></em></li>
+            <li><a href="/center/inqorder">询价订单(<?=$this->inqSoNum?>)</a><em class="emtrianglebottom5px"></em></li>
+        </ul>
+     </div>
+     	<div class="col_main">
+            <h1 style="display:none">在线订单</h1>
+            <div class="tiporder fontorange">注意：银行转账订单请您在<b class="fontred">48小时</b>之内转账、在线支付订单请您在<b class="fontred">24小时</b>之内支付，否则订单可能会被取消。</div>
+            <div class="order_tab_head">
+                <ul>
+                	 <li <?php if($this->type=='') echo 'class="on"';?>><a href="/center/order">全部订单<em>(<?=$this->allnum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='wpay') echo 'class="on"';?>><a href="/center/order?type=wpay">待付款<em>(<?=$this->wpaynum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='send') echo 'class="on"';?>><a href="/center/order?type=send">待发货<em>(<?=$this->sendnum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='rec') echo 'class="on"';?>><a href="/center/order?type=rec">待收货<em>(<?=$this->recnum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='eva') echo 'class="on"';?>><a href="/center/order?type=eva">已完成<em>(<?=$this->evanum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='can') echo 'class="on"';?>><a href="/center/order?type=can">已取消<em>(<?=$this->cannum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='not') echo 'class="on"';?>><a href="/center/order?type=not">审核未通过<em>(<?=$this->notnum?>)</em><b class="blank3"></b></a></li>
+            </div>
+            
+            <div class="table_box order" >
+            <?php  if(empty($this->salesorder)){?>
+            		<div class="nodata">暂无记录</div> 
+            <?php }else{
+				 foreach($this->salesorder as $k=>$sodata){
+				 $zindx = 800 - $k;
+ 			?>
+                <div class="A_order" style="z-index:<?=$zindx?>">
+                    <div class="numberbox">
+                    	<em class="emtrianglebottom5px"></em>
+                        <p>订单号：<a href="/order/view?salesnumber=<?=$sodata['salesnumber']?>" class="number" title="查看订单详细" target="_blank"><b><?=$sodata['salesnumber']?></b></a><span class="time">下单时间：<?=date('Y-m-d H:i:s',$sodata['created'])?></span></p>  								
+               <div class="orderbtn">
+                <?php if($sodata['status']=='401' && $sodata['back_status']!=102 ){?>
+               <!-- <a href="javascript:" onclick="resOrder('<?=$sodata['id']?>','<?=$sodata['salesnumber']?>')"  class="fontGray">恢复订单</a><br/>-->
+                <?php }?>
+                
+				
+
+                <?php if($sodata['status']=='101' && $sodata['paytype']=='online'  && $sodata['back_status']!=102 ){?>
+                <a href="javascript:" onClick="canOrder('<?=$sodata['id']?>','<?=$sodata['salesnumber']?>')"  class="fontGray">取消订单</a>
+                <a href="/payment/orderpay?salesnumber=<?=$sodata['salesnumber']?>" class="button" target="_blank">立即支付</a>
+                <?php }elseif($sodata['status']=='101' && $sodata['paytype']=='transfer'  && $sodata['back_status']!=102 ){
+				 if(empty($sodata['receipt'])){?>
+                   <a href="javascript:" onClick="canOrder('<?=$sodata['id']?>','<?=$sodata['salesnumber']?>')"  class="fontGray">取消订单</a>
+                 <?php }?>
+                
+				<?php if($sodata['status']=='101' && $sodata['back_status']!=102  && $sodata['paytype']=='transfer'){?> 
+                <a href="javascript:" onClick="transfer('<?=$sodata['salesnumber']?>')" class="button"> 
+				<?php if(!empty($sodata['receipt']) && file_exists(UP_RECEIPT.$sodata['receipt'])) echo '重传转账凭证'; else echo '上传转账凭证';?></a>
+               <?php }
+			    }?>
+                
+                 <?php if(!in_array($sodata['status'],array(401,501,502)) && $sodata['back_status']!=102){?>
+                                <a href="<?php echo $this->url(array('controller'=>'order', 'action'=>'digitalcontract', 'key'=>md5(session_id()),'item'=>$this->fun->encryptVerification($sodata['salesnumber'])))?>" target="_blank"  class="button">合同</a>
+                <?php }?>
+                
+                <?php if($sodata['status']=='201' && $sodata['back_status']!=102 && $sodata['paytype']=='transfer' ){?>
+                <a href="javascript:" onClick="transfer('<?=$sodata['salesnumber']?>')" class="button"> 
+				<?php if(!empty($sodata['receipt']) && file_exists(UP_RECEIPT.$sodata['receipt'])) echo '重传转账凭证'; else echo '上传转账凭证';?></a>
+                <?php }?>
+                
+                <?php if($sodata['paytype']=='transfer' && !in_array($sodata['status'],$wuliuarr) && $sodata['back_status']!=102){?>
+                <a href="javascript:" rel="<?=$sodata['id']?>,<?=$sodata['salesnumber']?>" rev="/order/transfer" title="转账信息" class="button personPopupTrigger" >转账信息</a>
+                  <div class="bubblebox transfer" id="personPopupContainer<?=$sodata['id']?>" style="display:none">
+                         <div class="uparrow"></div>
+                         <div class="popbox">
+                              <div id="personPopupContent<?=$sodata['id']?>"></div>
+                         </div>
+                  </div>
+                <?php }?>
+                
+                <?php if(in_array($sodata['status'],array('201','202')) && $sodata['back_status']==202){?>
+                <span id="receiptbot"><a href="javascript:" onClick="receipt('<?=$sodata['id']?>','<?=$sodata['salesnumber']?>')" class="button">确认收货</a></span>
+                <?php }?>
+                <?php if(in_array($sodata['status'],$wuliuarr)){?>
+                <!--<span style="position:relative">-->
+                <a href="javascript:" rel="<?=$sodata['id']?>,<?=$sodata['salesnumber']?>" rev="/order/courier" title="查看物流" class="button personPopupTrigger" >查看物流</a>
+                  <div class="bubblebox transfer" id="personPopupContainer<?=$sodata['id']?>" style="display:none">
+                         <div class="uparrow"></div>
+                         <div class="popbox">
+                              <div id="personPopupContent<?=$sodata['id']?>"></div>
+                         </div>
+                  </div>
+                <!--</span>-->
+                <?php }?>
+                  </div>	
+                </div>
+                    <table class="vac_table table" cellpadding="0" cellspacing="0">   
+                        <thead>    
+                            <tr>
+                               <th width="18%">订单商品</th>
+                                <th width="8%">交货地</th>
+                                <th width="8%">货物情况</th>
+                                <th width="8%">发货方式</th>
+                                <th width="10%">订单金额</th>
+                                <th width="10%">支付类型</th>
+                                <th width="15%">订单状态<?php if($sodata['back_status']==102  || in_array($sodata['status'],array(501,502))){
+				 if($sodata['admin_notes']){?>
+          						<a href="javascript:" class="tipa desshow"><?=$this->fun->utf_substr($result_remark,20)?>
+                                <b class="tipicon"></b>
+                                    <div class="bubblebox heiauto " style="width:200px;">
+                                        <div class="uparrow"></div>
+                                        <div class="popbox">
+                                           <div class="popcon clearfix" style="text-align:left; width:190px;">
+                                               <p><?php echo $sodata['admin_notes'];?></p>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                </a>
+                <?php } 
+				}?></th>
+                            </tr>   
+                        </thead>            
+                        <tbody>  
+                            <tr>
+                              <td class="modeltable" align="center">
+                              	<?php $partnos = explode(',',$sodata['partnos']);
+				 foreach($partnos as $k=>$part_no){?>
+                <p class="model"><?=$part_no?></p>
+                <?php }?>
+                              </td>
+                              <td><?=$deliveryArr[$sodata['delivery_place']]?></td>
+                              <td><?=$type[$sodata['shipments']]?></td>
+                              <td><?=$delivery_type[$sodata['delivery_type']]?></td>
+                              <td class="price"><?=$currency[$sodata['currency']].number_format($sodata['total'],DECIMAL)?></td>
+                              <td ><?=$paytypearr[$sodata['paytype']];?></td>
+                              <td>
+							  <div class="order_status">
+							  <?php if($sodata['back_status']!=102){echo $statusarr[$sodata['status']];}
+							  else {
+							     echo '<p class="gray_no">审核不通过</p>';
+							  }
+							  ?>
+                              </div>
+                              </td>
+                            </tr>  
+                        </tbody>         
+                        </table>                              
+                </div>
+                 <?php }}?> 
+                  <div class="pagination fr"> <?=$this->page_bar;?></div>            
+            </div>
+        </div>
+  </div>
+</div>
+<div class="clr"></div>
+
+<script type="text/javascript" src="/js/jsplug/AjaxFileUploader/ajaxfileupload.js"></script>
+<script type="text/javascript">
+//取消订单
+function canOrder(id,salesnumber){
+
+	$.ajax({
+            url: '/order/cancel',
+            data: {'id':id,'salesnumber':salesnumber},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }else{
+				    alert(arr.message);
+				}
+            }
+	 });
+
+}
+//恢复订单
+function resOrder(id,salesnumber){
+	$.ajax({
+            url: '/order/restoration',
+            data: {'id':id,'salesnumber':salesnumber},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }else{
+				    alert(arr.message);
+				}
+            }
+	});
+}
+//删除订单
+function delOrder(id,salesnumber){
+if(confirm('你确定删除订单：'+salesnumber+'？'))
+ {
+	$.ajax({
+            url: '/order/delete',
+            data: {'id':id,'salesnumber':salesnumber},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }else{
+				    alert(arr.message);
+				}
+            }
+	});
+  }
+}
+//上传回执单
+function transfer(salesnumber){
+	$.openPopupLayer({
+		name: "transferBox",
+		url: "/center/transfer?salesnumber="+salesnumber+'&ordertype=online'
+	});
+}
+
+//确认收货
+function receipt(id,salesnumber){
+if(confirm('你确定订单：'+salesnumber+'已经收货？'))
+ {
+   $("#receiptbot").html('<a href="javascript:" class="button">确认中...</a>');
+	$.ajax({
+            url: '/order/receipt',
+            data: {'id':id,'salesnumber':salesnumber},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }else{
+				    alert(arr.message);
+					$("#receiptbot").html('<a href="javascript:" onclick="receipt(\''+id+'\',\''+salesnumber+'\')" class="button">确认收货</a>');
+				}
+            }
+	});
+  }
+}
+setTimeout('hidMessage()',3000);
+function hidMessage(){
+	document.getElementById("message").style.display = 'none';
+}
+</script>

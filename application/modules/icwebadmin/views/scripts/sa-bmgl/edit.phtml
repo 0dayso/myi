@@ -1,0 +1,57 @@
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+    <h2>编辑部门</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('addBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+      <!-- 需要填写的区域-->
+
+      <table width="100%" border="0" cellpadding="1">
+        <tr>
+         <td height="10" colspan="3" align="center">
+         <div id="message_sess_son" style="display:none" class="message_sess">
+         <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span>
+         <span id="alert_message_son"></span></div></td>
+         </tr>
+        <tr bgcolor="#334159" height="30px">
+          <td><div align="center"><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">部门编号</font></strong><font color="#FF0000">*必须2-4个大写字母</font></div></td>
+          <td><div align="center"><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">部门名称</font></strong></div></td>
+        </tr>
+        <tr bgcolor="#CCCCCC" align="center">
+          <td><input type="text" name="Department_ID" id="Department_ID" value="<?php echo $this->Department_ID;?>" readonly="readonly"/>
+          </td>
+          <td><input type="text" name="Department" id="Department" size="40" value="<?php echo $this->Department;?>"/>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" colspan="2"><input type="button"  value="编辑" onclick="editDep()"/>
+          </td>
+        </tr>
+      </table>
+
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+function editDep()
+{
+    var Department_ID = document.getElementById('Department_ID').value;
+	var Department    = document.getElementById('Department').value;
+	$.ajax({
+            url: '<?php echo $this->editurl;?>',
+            data: {'Department_ID':Department_ID,'Department':Department},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  location.reload();
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			}
+	});
+}
+</script>

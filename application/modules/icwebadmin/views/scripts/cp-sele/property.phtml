@@ -1,0 +1,21 @@
+
+	<div class="conmian">
+	<h1><a href="<?=$this->indexurl;?>"><?php echo $this->AreaTitle;?></a> -> 属性管理</h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+      <h3><a href="javascript:;" onclick="openbox('<?=$this->indexurl?>/addproperty')">+添加属性</a></h3>
+      <table border="1" width="80%">
+      <tr bgcolor="<?=$bg?>">
+        <td>
+            <?php  foreach($this->property as $parr){?>
+                <b><a href="<?=$this->propertyvalueurl?>/pid/<?=$parr['id']?>"  <?=$parr['status']?'':'style="color:#FF0000"'?>><?=$parr['cname']?></a></b>&nbsp;|&nbsp;
+			 <?php }?>
+        </td>
+      </tr>
+      </table>
+      <br/>
+      <!-- 结束区域-->
+	</div>

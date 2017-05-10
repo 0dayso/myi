@@ -1,0 +1,150 @@
+
+	<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?></h1>
+    <form id="myform"  name="myform" class="form-search"  action="" >
+<label>请输入产品型号：</label>
+<div class="input-append">
+  <input type="text" class="search-query ac_input" id="partno" style="width:350px"  value="<?=$this->partno?>" name="partno" autocomplete="off"/>
+</div>
+<input type="submit" class="btn" value="查 找"/>   
+
+</form>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+<div id="DivContent">
+<div align="left" id="DivAlert" style="line-height: 27px; clear: both;"><font color="red">温馨提示：</font>Material Group(物料特殊属性提醒)为HIL为出口管制类产品，ALO为分货物料，HM为虎门仓库，CB 代表拆包库存(仅供参考) </div>
+   
+<?php
+if(!$this->atspart){ if($this->partno){?>
+    <table border="1" style="border-collapse:collapse;font-size: 12px;border:1px #999 solid;padding-top:0px;" cellpadding="0" cellspacing="0" width="90%" align="center">
+  <tbody><tr bgcolor="#CCCCFF" style="line-height:25px;">
+    <td style=" font-weight:bold">型号：<?=$this->partno?>没有查询结果，可能IC易站的型号名称与SAP的型号名称有点不同，你可以尝试修改型号再试试。</td>
+  </tr></tbody></table>
+<?php 
+}
+}else{foreach($this->atspart as $atsarray){
+?>
+<table border="1" style="border-collapse:collapse;font-size: 12px;border:1px #999 solid;padding-top:0px;" cellpadding="0" cellspacing="0" width="90%" align="center">
+  <tbody><tr bgcolor="#CCCCFF" style="line-height:25px;">
+    <th style="border:1px #999 solid;border-top:0px;">Part#</th>
+    <th style="border:1px #999 solid;border-top:0px;">P/L</th>
+    <th style="border:1px #999 solid;border-top:0px;">Material Group</th>
+    <th colspan="2" style="border:1px #999 solid;border-top:0px;" width="100">L/T</th>
+    <th style="border:1px #999 solid;border-top:0px;">MOQ</th>
+    <th style="border:1px #999 solid;border-top:0px;">MPQ</th>
+    <th colspan="4" style="border:1px #999 solid;border-top:0px;">Customer Statistics</th>
+  </tr>
+  </tbody><tbody>
+    <tr style="line-height:25px;border:1px #999 solid;">
+      <td style="border:1px #999 solid;">
+        <div style="padding-left:5px;">
+          <font color="red"><?=$atsarray['Matnr']?></font>
+        </div>
+      </td>
+      <td align="center" style="border:1px #999 solid;"><?=$atsarray['Wgbez']?></td>
+      <td align="center" style="border:1px #999 solid;"><?=$atsarray['Group']?></td>
+      <td colspan="2" align="center" style="border:1px #999 solid;"><?=$atsarray['Zeinr']?></td>
+      <td align="center" style="border:1px #999 solid;"><?=$atsarray['Aumng']?></td>
+      <td align="center" style="border:1px #999 solid;"><?=$atsarray['Scmng']?></td>
+      <td colspan="4" align="center" style="border:1px #999 solid;"><?=$atsarray['Customer']?></td>
+    </tr>
+    <tr bgcolor="#CCCCCC" style="line-height:25px;">
+      <th bgcolor="#ffffff" style="border:0px;" rowspan="2"></th>
+      <th rowspan="2" style="border:1px #999 solid;">Location</th>
+      <th rowspan="2" style="border:1px #999 solid;">Total Stock</th>
+      <th colspan="2" style="border:1px #999 solid;">ATS</th>
+      <th rowspan="2" style="border:1px #999 solid;">SO Cover</th>
+      <th rowspan="2" style="border:1px #999 solid;">K/A Reserved</th>
+      <th rowspan="2" style="border:1px #999 solid;">PO Backlog</th>
+      <th rowspan="2" style="border:1px #999 solid;">K/A PO Backlog</th>
+      <th style="border:1px #999 solid;">BPP Rejoin</th>
+      <th style="border:1px #999 solid;">BPP R/S</th>
+    </tr>
+    <tr bgcolor="#CCCCCC" style="line-height:25px;" align="center">
+      <td style="border:1px #999 solid;">Total</td>
+      <td style="border:1px #999 solid;"><em>CB</em></td>
+      <td style="border:1px #999 solid;">BPP Stock</td>
+      <td style="border:1px #999 solid;">BPP SOQ</td>
+    </tr>
+    <tr style="line-height:25px;">
+      <th style="border:0px;"></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['HKStockList']['Location']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['HKStockList']['TotalStock']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['HKStockList']['ATS']?></th>
+      <th style="border:1px #999 solid;"><em><?=$atsarray['HKStockList']['CB']?></em></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['HKStockList']['SOCover']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['HKStockList']['KAReserved']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['HKStockList']['PoBacklog']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['HKStockList']['KAPoBacklog']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['HKStockList']['Region']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['HKStockList']['MinPrice']?></th>
+    </tr>
+    <tr style="line-height:25px;display:none;" title1="HK_Lgort">
+      <th style="border:0px;"></th>
+      <th style="border:1px #999 solid;">
+        <span style="padding-left:12px;font-size:8pt;">HK</span>
+      </th>
+      <td style="border:0px;border-top:1px #999 solid;border-bottom:1px #999 solid;">
+        <div align="center">0</div>
+      </td>
+      <td colspan="8" style="border-bottom:0px;"></td>
+    </tr>
+    <tr style="line-height:25px;display:none;" title1="HK_HMLgort">
+      <th style="border:0px;"></th>
+      <th style="border:1px #999 solid;">
+        <span style="padding-left:16px;font-size:8pt;">HM</span>
+      </th>
+      <td style="border:0px;border-top:1px #999 solid;border-bottom:1px #999 solid;">
+        <div align="center">0</div>
+      </td>
+      <td colspan="8" style="border-top:0px;"></td>
+    </tr>
+    <tr style="line-height:25px;">
+      <th style="border:0px;"></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['SZStockList']['Location']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['SZStockList']['TotalStock']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['SZStockList']['ATS']?></th>
+      <th style="border:1px #999 solid;"><em><?=$atsarray['SZStockList']['CB']?></em></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['SZStockList']['SOCover']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['SZStockList']['KAReserved']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['SZStockList']['PoBacklog']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['SZStockList']['KAPoBacklog']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['SZStockList']['Region']?></th>
+      <th style="border:1px #999 solid;"><?=$atsarray['SZStockList']['MinPrice']?></th>
+    </tr>
+    <tr style="line-height:25px;display:none;" title1="SZ_Lgort">
+      <th style="border:0px;"></th>
+      <th style="border:1px #999 solid;">
+        <span style="padding-left:12px;font-size:8pt;">
+                SZ
+              </span>
+      </th>
+      <td style="border:0px;border-top:1px #999 solid;border-bottom:1px #999 solid;">
+        <div align="center">74</div>
+      </td>
+      <td colspan="8" style="border-bottom:0px;"></td>
+    </tr>
+    <tr style="line-height:25px;display:none;" title1="SZ_HMLgort">
+      <th style="border:0px;"></th>
+      <th style="border:1px #999 solid;">
+        <span style="padding-left:16px;font-size:8pt;">
+                HM
+              </span>
+      </th>
+      <td style="border:0px;border-top:1px #999 solid;border-bottom:1px #999 solid;">
+        <div align="center">0</div>
+      </td>
+      <td colspan="8" style="border-top:0px;"></td>
+    </tr>
+  </tbody>
+</table> 
+<br/><br/>
+<?php }
+}?>
+<br/>
+</div>
+      <!-- 结束区域-->
+	</div>

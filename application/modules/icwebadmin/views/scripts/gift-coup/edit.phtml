@@ -1,0 +1,184 @@
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+      <h2>编辑优惠券：<?=$this->coupon['code']?></h2>
+      <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+      <!-- 需要填写的区域-->
+      <table width="100%" border="0" cellpadding="1">
+        <tr>
+          <td height="10" colspan="3" align="center"><div id="message_sess_son" style="display:none" class="message_sess"> <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span> <span id="alert_message_son"></span> </div></td>
+        </tr>
+        <tr>
+          <td colspan="2"><table bgcolor="#CCCCCC" width="100%">
+              <tr height="30">
+                <td width="126" align="right"><font color="#666600"><b>类型<em>*</em>: </b></font></td>
+                <td colspan="3"  align="left">
+                <label><input type="radio" value="1" name="couptype" class="couptype" <?=($this->coupon['type']==1?'checked="checked"':'')?> />型号数量优惠券</label>
+                <label><input type="radio" value="2" name="couptype" class="couptype" <?=($this->coupon['type']==2?'checked="checked"':'')?>/>通用金额优惠券</label>
+                <label><input type="radio" value="3" name="couptype" class="couptype" <?=($this->coupon['type']==3?'checked="checked"':'')?>/>品牌金额优惠券</label>
+                </td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><font color="#666600"><b>用户名: </b></font></td>
+                <td colspan="3"  align="left">
+                <input type="text" name="uname" id="uname"  value="<?=$this->coupon['uname']?>" readonly="readonly"/></td>
+              </tr>
+               <tr>
+                <td width="126" align="right"><font color="#666600"><b>Email: </b></font></td>
+                <td colspan="3"  align="left">
+                <input type="text" name="email" id="email"  value="<?=$this->coupon['email']?>" readonly="readonly"/></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><font color="#666600"><b>开始时间<em>*</em>: </b></font></td>
+                <td align="left" colspan="3"><input type="text" name="start_date" id='start_date' style="width:160px;" onclick="WdatePicker({startDate:'<?=date("Y-m-d",$this->coupon['start_date'])?>',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" title="点击选择日期" value="<?=date("Y-m-d",$this->coupon['start_date'])?>"></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><font color="#666600"><b>结束时间<em>*</em>: </b></font></td>
+                <td align="left" colspan="3"><input type="text" name="end_date" id='end_date' style="width:160px;" onclick="WdatePicker({startDate:'<?=date("Y-m-d",$this->coupon['end_date'])?>',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" title="点击选择日期" value="<?=date("Y-m-d",$this->coupon['end_date'])?>"></td>
+              </tr>
+              <tr>
+              <td colspan="4">
+              		<div id="type_1">
+                    <table>
+                    	<tr>
+                        <td width="126" align="right"><font color="#666600"><b>品牌<em>*</em>: </b></font></td>
+                        <td align="left" colspan="3"><select name="brand_id" id="brand_id"  class="input-medium">
+        						<?php foreach($this->brand as $bd){?>
+        						<option value="<?=$bd['id']?>" <?=($this->coupon['manufacturer']==$bd['id']?'selected="selected"':'')?> ><?=$bd['name']?></option><?php }?></select></td>
+                        </tr>
+                        
+                        <tr>
+                        <td width="126" align="right"><font color="#666600"><b>产品型号<em>*</em>: </b></font></td>
+                        <td align="left" colspan="3"><input type="text" name="part_no" id="part_no" value="<?=$this->coupon['part_no']?>"/></td>
+                        </tr>
+                        </tr>
+                        <tr>
+                        <td width="126" align="right"><font color="#666600"><b>兑换数量<em>*</em>: </b></font></td>
+                        <td align="left" colspan="3"><input type="text" name="buy_number" id="buy_number" onkeyup="<?=ISNUMBER?>" value="<?=$this->coupon['buy_number']?>"/></td>
+                        </tr>
+                    </table>
+                    </div>
+                    <div id="type_2" style="display:none">
+                    <table>
+                        <tr>
+                        <td width="126" align="right"><font color="#666600"><b>抵扣金额(RMB)<em>*</em>: </b></font></td>
+                        <td align="left" colspan="3"><input type="text" name="money_rmb" id="money_rmb" onkeyup="<?=DECIMAL?>" value="<?=$this->coupon['money_rmb']?>"/></td>
+                        </tr>
+                    </table>
+                    </div>
+                    <div id="type_3" style="display:none">
+                    <table>
+                        <tr>
+                        <td width="126" align="right"><font color="#666600"><b>品牌<em>*</em>: </b></font></td>
+                        <td align="left" colspan="3"><select name="brand_id_2" id="brand_id_2"  class="input-medium">
+        						<?php foreach($this->brand as $bd){?>
+        						<option value="<?=$bd['id']?>" <?=($this->coupon['brand_id']==$bd['id']?'selected="selected"':'')?>><?=$bd['name']?></option><?php }?></select></td>
+                        </tr>
+                    </table>
+                    </div>
+              </td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><font color="#666600"><b>原因<em>*</em>: </b></font></td>
+                <td colspan="3"  align="left">
+                <textarea name="remark" id="remark" rows="3" cols="50"><?=$this->coupon['remark']?></textarea></td>
+              </tr>
+              <tr>
+                <td align="center" colspan="2"><span id="orderbtn"><input type="button"  value="编辑" onclick="addaction()" class="btnabig"/></span>
+                </td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+$(function(){
+		//优惠券种类
+        $(".couptype").click(function(){
+			if(this.value==1){
+				$("#type_1").css("display","block");
+				$("#type_2").css("display","none");
+				$("#type_3").css("display","none");
+			}else if(this.value==2){
+				$("#type_1").css("display","none");
+				$("#type_2").css("display","block");
+				$("#type_3").css("display","none");
+			}else if(this.value==3){
+				$("#type_1").css("display","none");
+				$("#type_2").css("display","block");
+				$("#type_3").css("display","block");
+			}
+        });
+		<?php if($this->coupon['type']==1){?>
+				$("#type_1").css("display","block");
+				$("#type_2").css("display","none");
+				$("#type_3").css("display","none");
+		<?php }?>
+		<?php if($this->coupon['type']==2){?>
+				$("#type_1").css("display","none");
+				$("#type_2").css("display","block");
+				$("#type_3").css("display","none");
+		<?php }?>
+		<?php if($this->coupon['type']==3){?>
+				$("#type_1").css("display","none");
+				$("#type_2").css("display","block");
+				$("#type_3").css("display","block");
+		<?php }?>
+})
+function addaction()
+{
+	var couptype_obj = document.getElementsByName("couptype");
+	var couptype  ='';
+	for (var i=couptype_obj.length-1;i>=0;i--)
+	{
+		if(couptype_obj[i].checked)  couptype = couptype_obj[i].value;
+    }
+	var uname        = document.getElementById('uname').value;
+	var part_no    = document.getElementById('part_no').value;
+	var buy_number = document.getElementById('buy_number').value;
+	var start_date = document.getElementById('start_date').value;
+	var end_date   = document.getElementById('end_date').value;
+	var money_rmb  = document.getElementById('money_rmb').value;
+	var brand_id   = document.getElementById('brand_id').value;
+	var brand_id_2 = document.getElementById('brand_id_2').value;
+	if(uname == '')        {alert("请填入用户名");document.getElementById('uname').focus();return;}
+	if(start_date == '') {alert("请选择开始日期");document.getElementById('start_date').focus();return;}
+	if(end_date == '')   {alert("请选择结束日期");document.getElementById('end_date').focus();return;}
+	if(start_date>end_date){alert("开始日期必须小于结束日期");document.getElementById('start_date').focus();return;}
+	if(couptype==1){
+	    if(part_no == '')    {alert("请填入产品型号");document.getElementById('part_no').focus();return;}
+	    if(buy_number == '') {alert("请填入兑换数量");document.getElementById('buy_number').focus();return;}
+	}else if(couptype==2){
+		if(money_rmb == '')  {alert("请填入抵扣金额");document.getElementById('money_rmb').focus();return;}
+	}else if(couptype==3){
+	    if(money_rmb == '') {alert("请填入抵扣金额");document.getElementById('money_rmb').focus();return;}
+		if(brand_id_2 == '') {alert("请填入品牌ID");document.getElementById('brand_id').focus();return;}
+	}else{
+		alert("类型错误");return;
+	}
+	var remark = document.getElementById('remark').value;
+	if(remark == '') {alert("请填写原因");document.getElementById('remark').focus();return;}
+	 var subtmp = document.getElementById("orderbtn");
+	     subtmp.innerHTML = '<input type="button"  value="提交中..." class="btnabig"/>';
+	$.ajax({
+            url: '<?=$this->editurl?>',
+            data: {'id':'<?=$this->coupon['id']?>','couptype':couptype,'uname':uname,'part_no':part_no,'buy_number':buy_number,'money_rmb':money_rmb,'brand_id':brand_id,'brand_id_2':brand_id_2,'start_date':start_date,'end_date':end_date,'remark':remark},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  location.reload();
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			   subtmp.innerHTML = '<input type="button"  value="编辑" onclick="addaction()" class="btnabig"/>';
+			}
+	});
+}
+</script>

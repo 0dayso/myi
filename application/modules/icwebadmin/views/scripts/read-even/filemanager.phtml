@@ -1,0 +1,17 @@
+<div class="conmian">
+  <h1><a href="<?=$this->indexurl?>"><?php echo $this->AreaTitle;?></a> -> 编辑文件：<?php echo $this->processData['title'];?> </h1>
+   <?php if (isset($_SESSION['messages'])&&$_SESSION['messages']) : ?>
+          <div class="alert fade in">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p>
+          </div>
+          <?php endif; ?> 
+  <div style="width:900px;height:600px; margin-bottom:5px; margin-top:5px;"><?php echo $this->filemanager;?></div>
+  <h2>批量上传：<font color="#FF0000">提示：只允许上传.zip文件。</font></h2>
+  <form id="thisform" class="form-horizontal validate-form" style="text-align:left" method="post" action="" enctype="multipart/form-data">
+  <input type="hidden" name="eventnumber" value="<?=$this->eventnumber?>" />
+  <input type="file" name="file_zip" />
+  <input type="submit" value="提交" class="btn" />
+  </form>
+  <!-- 结束区域-->
+</div>

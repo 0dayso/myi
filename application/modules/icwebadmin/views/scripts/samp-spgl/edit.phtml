@@ -1,0 +1,48 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 修改 <a href="<?=$this->indexurl?>">返回&gt;&gt;</a> </h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+                  <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+                  <div id="alert_message"></div>
+                </div>
+
+          <?php if (isset($_SESSION['messages'])) : ?>
+          <div class="alert fade in">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p>
+          </div>
+          <?php endif; ?>
+          <form class="form-horizontal form-validate" style="text-align:left" method="post" action="<?php echo $this->editurl;?>?id=<?=$this->sparr['id']?>" >
+            <input type="hidden" name="id" value="<?=$this->sparr['id']?>" />
+ 			<div class="control-group">
+              <label class="control-label" for="solution_no">样片型号：</label>
+              <div class="controls">
+                <?=$this->sparr['part_no']?>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="solution_no">型号品牌：</label>
+              <div class="controls">
+                <?=$this->sparr['brandname']?>
+              </div>
+            </div>
+             <div class="control-group">
+              <label class="control-label" for="title">推荐头部</label>
+              <div class="controls">
+              <input type="checkbox" name="hot_top" value="1" <?=$this->sparr['hot_top']==1?'checked':''?> >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="title">替换产品id</label>
+              <div class="controls">
+                <input type="text" id="part_id" name="part_id" class="required" value="<?=$this->sparr['part_id']?>"  >
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <input type="submit" class="btn" value="编 辑">
+              </div>
+            </div>
+          </form>
+          <br>
+          <!-- 结束区域-->
+</div>

@@ -1,0 +1,247 @@
+@charset "utf-8";
+/* CSS Document */
+
+.steps {width: 980px;height: 28px;background:url(../img/buy.jpg) no-repeat 0 0; margin-bottom:10px;}
+.inquirystep .steps{ background:url(../img/inquirystep.jpg) no-repeat 0 0}
+.steps li {display: inline;float: left;width: 33%;height: 28px;line-height: 28px;text-indent: -9999em;}
+.step-1,.inquirystep .step-2{background-position: 0 0px;}
+.step-2,.inquirystep .step-2{background-position: 0 -28px;}
+.step-3,.inquirystep .step-3{background-position: 0 -56px;}
+
+
+/*我的购物车*/
+.Shopping_cart { width:100%; position:relative}
+.Shopping_cart h1{  color:#f00; font-size:18px; padding:5px 0 5px 0; position:relative}
+.Shopping_cart h1 img{ margin-right:3px; }
+.tipfree{ position:absolute; top:5px; right:0;}
+.tipfree img{ margin-right:2px; height:13px; vertical-align:middle;margin-top:1px;*margin-bottom:-1px;}
+.shopbox{ border-top:2px solid #f00;  border-bottom:0;}
+.Shopping_cart .shopbox{ border-bottom:1px solid #ddd;}
+.shopbox th{  padding:10px 0; font-size:12px;}
+.shopbox .leftp a,.shopbox .leftp input{ margin:0 5px;}
+.shopbox .leftp input{ vertical-align:middle;margin-top:-1px; margin-bottom:0px;}
+.shopbox .rightp p{ float:right; margin-left:10px; display:inline}
+.shopbox .rightp label{ font-size:14px; font-weight:bold; margin-right:10px;}
+.shopbox .leftp p{ float:left; margin-right:10px;}
+.shopbox .rightp .price{ font-size:22px; line-height:24px }
+
+.shopbox .price{ text-align:left}
+.productinfo{ text-align:left;width:300px;}
+.productinfo img{ float:left; height:50px; padding:5px; width:60px; }
+.productinfo .productinfop{ float:left; width:230px; }
+.productinfo p{ margin-bottom:2px; line-height:16px}
+
+/*购买数量*/
+.add_sub{ width:205px; overflow:hidden; position:relative; height:20px; line-height:20px ;  }
+.add_sub .addspan{  width:55px; height:20px; }
+.add_sub .addspan span{text-align:right; width:47px}
+.add_sub .add_sub_btn{ width:78px; }
+.add_sub .results{ width:70px; height:21px; float:left }
+.add_sub .results span{ width:15px; background:#fff}
+.add_sub .results .textlong{ width:40px; background:#eee; height:16px}
+.add_sub input,.add_sub span{ float:left;}
+.add_sub_btn .textshort{ width:30px; margin:0 3px; height:16px}
+.add_sub_btn1{ width:170px !important; text-align:right; padding-left:30px}
+.add_sub_btn1 .textshort{ width:100px;*width:90px;margin:0 3px}
+.btn_sub,.btn_and{ width:15px; height:20px;cursor:pointer; font-weight:bold; background:#999; color:#fff; border:0;}
+.btn_sub:hover,.btn_and:hover{ background:#333}
+
+
+
+.bg_cart{ width:978px; height:35px; background:#eee; border:1px solid #ddd; margin:10px 0; float:left; position:relative}
+.bg_cart .fl{ margin-top:9px}
+.bg_cart em{ background:url(../img/newsprites.gif) -59px -351px no-repeat;display: inline-block;width: 11px;height: 11px;overflow: hidden; border:0; margin-left: 15px;margin-right:5px; float:left; margin-top:4px}
+.bg_cart a.button{  position:absolute; top:-1px; right:-1px; font-size:16px; padding:9px 25px; _padding:9px 10px; _width:80px;}
+
+.Order h1{ padding:5px 0 10px 0}
+.Order_details{  border:1px solid #ddd; margin-bottom:15px;}
+
+/*确认订单左右布局*/
+/*.order_info_row{line-height:21px;padding:10px 0 5px;zoom:1;border-bottom:1px solid #ddd}
+.order_info_row:after{content:'';display:block;clear:both;height:0;visibility:hidden}
+.order_info_row_left{float:left;width:90px;padding-left:10px;font-size:12px;font-weight:bold;line-height:37px;}
+.order_info_row_right{float:left;width:850px;cursor:default; }
+
+.order_info_row_right .mod_pipe{position:relative;height:auto;overflow:hidden;_zoom:1;margin-bottom:5px;padding:7px;border:1px solid #fff}
+.order_info_row_right .mod_pipe_active{background-color:#F1EDEC}
+.order_info_row_right .mod_pipe_active .person_info_detail{font-weight:bold; }
+.order_info_row_right .mod_pipe_active .tips{font-weight:bold}
+.order_info_row_right .mod_pipe_active .edit{font-weight:normal}
+.order_info_row_right .mod_pipe div{float:left;padding-right:15px;zoom:1;overflow:hidden}
+.order_info_row_right .mod_pipe .person_info_detail{width:620px}
+.order_info_row_right .mod_pipe .edit{position:absolute;right:0;color:#D5D5D5;width:170px;text-align:left;padding-right:5px;}
+.order_info_row_right .mod_pipe .edit a{ margin-right:5px;}
+.order_info_row_right .choose{ width:10px;}
+.order_info_row_right .choose input{ margin-top:3px;margin-top:4px \9;}
+.order_info_row_right .name{width:70px;height:auto;overflow:hidden;text-overflow:ellipsis;word-break:keep-all;white-space:nowrap}
+.order_info_row_right .mod_pipe .name{padding-right:10px}
+.order_info_row_right .mod_pipe .num{padding-right:10px}
+.payment span{ font-weight:normal}
+
+
+
+
+.add_address{ width:100%; display:inline-block;float:left; background:#F1EDEC;  padding:10px 0}
+.add_address dl{ width:100%;  padding:6px 0; display:inline;}
+.add_address dl:hover{ background:#f9f9f9;}
+.add_address dt{ float:left; width:120px; vertical-align:middle;  text-align:right;color:#666}
+.add_address dt em{ margin-right:5px; }
+.add_address dd{position:relative;} 
+.add_address dd select{ margin-right:5px;}
+.add_address dd input{ border:1px solid #ccc;margin-right:5px;}
+.add_address dd span{ color:#666}
+.add_address dd b{ font-weight:normal; color:#1a66b3;}
+.add_address .button{ border:0 !important; padding:5px }
+
+
+.online_show{ display:inline-block;float:left; padding-left:35px; margin-bottom:10px; width:95%; overflow:hidden}
+.online_show p{ line-height:24px; margin-bottom:5px;}
+
+.choosepayment{ width:100%;}
+
+
+.invoice{ overflow:hidden; padding:7px;}
+.invoice .choose{ float:left; width:25px;}
+.invoice .payment{ float:left; width:200px;}
+
+.invoice_con{width:600px; border:1px solid #ddd; margin-bottom:10px;background:#fff; padding:0 1px; margin-left:35px; }
+.invoice_con dl{ float:left;background:#F1EDEC;border-top:1px solid #fff;border-bottom:1px solid #ddd;  padding:2px 0 }
+.invoice_con dl:hover{ background:#f9f9f9}
+.invoice_con dt{float:left; height:28px; line-height:28px;_padding-top:3px; text-indent:10px; width:100px; }
+.invoice_con dd{ float:left; height:28px; vertical-align:middle; width:490px;padding-left:10px;  position:relative;}
+
+.invoice_con input,.invoice_con label{ float:left;}
+.invoice_con input[type="text"]{ margin:3px 5px 0 0;}
+.invoice_con input[type="radio"]{ margin:7px 2px 0 0; *margin:3px 2px 0 0;}
+.invoice_con label,.shipment_con label{ margin-right:15px;}
+.invoice_con .button{ margin-top:3px; font-size:14px; font-family:"微软雅黑"; padding:0 5px 2px;}
+
+.invoice_info{ padding:10px;}
+.invoice_info p{ line-height:24px;}
+*/
+
+
+/*---------------------------------------------------确认订单信息---------------------------------------------------*/
+/*订单提交成功*/
+.tableorder,.order-oprate .bg_cart,.pay-detail{ width:800px; margin:15px auto; float:none !important}
+.tableorder caption{ font-size:24px; font-weight:bold; color:#f00;font-family:"微软雅黑"; line-height:65px;}
+.tableorder th{ padding:8px 0}
+.tableorder td{ border-top:1px solid #ddd; padding:6px 0}
+.order-tip{width:800px; margin:5px auto;float:none !important; text-align:left; border:1px solid #e8d9aa; }
+.order-tip p{ margin:5px 20px; color:#9d801a; font-size:14px; line-height:24px;}
+.order-tip a{ margin:0 3px;}
+.order-tip table{ border:0}
+.order-tip td{ border-top:0px solid #fffbdd !important;border-bottom:0px solid #eee7b1; background:#fff9c9;  text-indent:6px}
+.order-tip h2{ text-indent:10px; color:#9d801a }
+.order-tip .fontorange{ text-indent:70px;}
+.order-tip .fontorange span{ float:none; }
+.order-oprate .button{ background:#f00;}
+.order-oprate .button:hover{ background:#333;}
+.pay-detail{ text-align:center}
+.pay-detail .button{ font-size:16px; padding:8px 20px;}
+
+
+
+
+
+/*支付*/
+.paymentnow{  width:800px; margin:0 auto; border:1px solid #ddd; margin-bottom:10px }
+.paymentnow h3{ background:#f1edec; padding:5px 0; margin-bottom:20px; text-indent:5px}
+.bank-list,.thirdpayment {overflow: hidden; padding-left:5px;}
+.bank-list li {cursor: pointer;float: left;width: 159px;margin-bottom:20px;height: 30px; vertical-align:middle}
+.bank-list li input{ float:left; margin:10px 5px 0 0}
+.bank-list .icon,.choosepayment .icon {float:left; background-image:url(../img/bankicon.png);display: inline-block;height: 30px;width: 120px;background-repeat: no-repeat;}
+.ICBC {background-position: 0 -40px;}
+.CMB {background-position: 0 -80px;}
+.CCB {background-position: 0 -320px;}
+.BOC {background-position: 0 -520px;}
+.ABC {background-position: 0 -480px;}
+.COMM {background-position: 0 -600px;}
+.PSBC {background-position: 0 -400px;}
+.CEB {background-position: 0 -440px;}
+.SPDB {background-position: 0 -360px;}
+.GDB {background-position: 0 -280px;}
+.CITIC {background-position: 0 -200px;}
+
+.CIB {background-position: 0 -3365px;}
+.SDB {background-position: 0 -240px;}
+.CMBC {background-position: 0 -120px;}
+.BJBANK {background-position: 0 -3240px;}
+.HZCB {background-position: 0 -760px;}
+.SHBANK {background-position: 0 -840px;}
+
+.BJRCB {background-position: 0 -2640px;}
+.SPABANK {background-position: 0 -1880px}
+.FDB {background-position: 0 -1320px;}
+.WZCB {background-position: 0 -1720px;}
+.NBBANK {background-position: 0 -1240px;}
+.ICBCBTB  {background-position: 0 -3844px;}
+.CCBBTB  {background-position: 0 -3879px;}
+.SPDBBTB {background-position: 0 -3923px;}
+.ABCBTB {background-position: 0 -3968px;}
+.paymentbtn{ margin-top:10px; text-align:center; border-top:1px solid #ddd;}
+.paymentbtn .button{ padding:8px 20px; font-size:14px; margin:10px 0;}
+
+
+/*核对信息单*/
+.lines{ border-bottom:1px dotted #ddd; padding-bottom:15px}
+.Order_details h2{ margin:5px 0 10px 0; float:left; width:100%;}
+.Order_details h2 span{ float:left;}
+.Order_details h2 a{ font-size:12px; font-weight:normal; float:left}
+#div_consignee,#div_shipment,#div_payment,#div_cartItems{ margin:10px auto; width:920px ;  overflow:hidden}
+.ok,.addresslist{  margin-bottom:5px; padding-left:20px; line-height:24px; float:left; width:100%; }
+.addresslist .addbtn{ font-weight:bold;}
+.addresslist p{float:left; width:100%; padding:2px 5px 5px}
+.addresslist b{ margin-right:0px;}
+.addresslist .phover{ background:#f9f9f9; }
+.addresslist input,.addresslist label{ float:left}
+.addresslist .addresslist_c{ float:right; width:100px; color:#ddd}
+.addresslist .addresslist_c a{ margin:0 3px;}
+.addresslist input{ margin:5px 5px 0 0; float:left; }
+.add_address,.invoice_box{ width:850px; display:inline-block;  background:#fafafa;margin-left:20px; float:left; }
+.add_address dl{ width:100%; margin-left:20px; padding:5px 0; display:inline}
+.add_address dt{ float:left; width:90px; font-size:12px; text-align:right;color:#666; padding-right:10px;}
+.add_address dt em{ margin-right:5px;}
+.add_address dd{position:relative;} 
+.add_address dd select{ margin-right:5px;}
+.add_address dd input{ /*border:1px solid #ccc;*/ margin-right:5px;}/*input为radio时有边*/
+.add_address dd span{ color:#666}
+.add_address dd b{ font-weight:normal; color:#1a66b3;}
+.add_address p{ margin-left:120px; padding:5px 0 10px ; float:left; display:inline}
+.add_address .button{ padding:5px; *padding:3px 2px 2px; *width:130px;}
+
+.delivery_type{ border:none !important}
+
+.openpayment{ padding-left:20px;}
+.openpayment .add_address{margin:0; width:600px;}
+.openpayment img{ margin-bottom:10px}
+
+/*我要开发票*/
+.invoice{ margin:10px auto; width:920px; }
+
+.invoice_box{ border:0px solid #eee; background:#fafafa}
+
+.invoice_tit{ width:100%; float:left; background:#e9e9e9;}
+.invoice_tit p{ float:left; margin-left:10px; height:30px; line-height:30px}
+
+
+.invoice_con{width:100%; float:left}
+.invoice_con dl{ float:left;width:100%; border-bottom:0px solid #fff; padding:5px 0 }
+.invoice_con dt{float:left; text-indent:10px; width:100px; }
+.invoice_con dd{ float:left; padding-left:10px;  position:relative;}
+
+.invoice_con dl:hover{ background:#fff;}
+
+.invoicetipinfo{ line-height:24px; padding:10px;}
+
+
+/*支付方式*/
+.shipment_con{ padding-bottom:10px;_padding-bottom:0px; width:94%;  display:inline; float:left;}
+
+/*合并订单*/
+.mergerorder{ width:680px;float:left; position:relative; border:1px solid #ddd; background:#ffffff; padding:10px;}
+.mergerorder .tipinfo{ top:10px;}
+
+
+.mergerorder .one{ padding-left:20px; margin-top:10px;overflow:hidden; }
+.mergerorder .address{ float:right; width:450px; }

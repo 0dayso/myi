@@ -1,0 +1,68 @@
+<div class="popup" style="width:600px;margin:10px 100px" >
+    <div class="popup-header">
+        <h2>请选择不支持报价原因：</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('notsupport');removenotsupport();" title="关闭" class="dialogBoxClose">关闭</a>
+    </div>
+    <div class="popup-body">
+    <table  cellpadding="0" border="0" cellspacing="0">
+      <tbody>
+      <tr>
+       <td valign="top" width="70px" align="right"><em>*</em>原因：</td>
+       <td>
+	    <?php foreach($this->inqreason as $inqreason){?>
+            <label style="color:#339900">
+            <input type="radio" name="reasons"  value="<?=$inqreason['id']?>" <?=($inqreason['id']==$this->inqinfo['reasons']?'checked="checked"':'')?> onClick="showremark('<?=$inqreason['remark']?>')" />
+            <b><?=$inqreason['name']?></b></label><br/>
+        <?php }?>
+       </td>  
+    </tr>
+    <tr>
+    <td  valign="top" align="right"><em>*</em>报价说明：<br/>(针对客户)</td>
+    <td><textarea name="result_remark_2" id="result_remark_2" rows="3" style="width:350px;"><?=$this->inqinfo['result_remark']?></textarea>
+    <br/><font color="#FF0000">说明：报价说是对客户说的，请填写清楚。</font>
+    </td>
+    </tr>
+    </tbody></table>
+        <div class="pbtn" id="baojiabtn2"><input type="button" onClick="edit2Action()" value="提 交 报 价" class="btnabig"></div>
+        <div class="clear"></div>
+    </div>
+</div>
+<script type="text/javascript">
+//不支持报价
+function showremark(remark){
+    remark =  remark.replace(/^\s*/g,"");
+	$("#result_remark_2").val(remark);
+}
+function edit2Action() {
+	   var reasons='';
+	   var status='';
+	   var reasonsobj = document.getElementsByName("reasons");
+	   for(i=0;i<reasonsobj.length;i++){
+	   if(reasonsobj[i].checked){
+	       reasons = reasonsobj[i].value;
+	       break;
+	     }
+	   }
+	   if(reasons==''){alert('请选择原因');document.getElementById('reasons').focus();return;}
+	   
+	   var result_remark_2 = document.getElementById('result_remark_2').value;
+	   if(result_remark_2==''){alert('请输入报价说明');document.getElementById('result_remark').focus();return;}
+
+	   var subtmp = document.getElementById("baojiabtn2");
+	   subtmp.innerHTML = '<input type="button" class="btnabig" value="提交中..."/>';
+	   $.ajax({
+		url: '<?=$this->editurl;?>',
+		data: {'id':'<?=$this->id;?>','status':2,'reasons':reasons,'result_remark':result_remark_2},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0){
+				  location.reload();
+             }
+			subtmp.innerHTML = '<button type="button" class="btnabig" onclick="edit2Action()">提 交 报 价</button>';
+		}
+		});
+		
+}
+</script>

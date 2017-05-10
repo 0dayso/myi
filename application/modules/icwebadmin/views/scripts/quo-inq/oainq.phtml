@@ -1,0 +1,343 @@
+<?php
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$unitArr = array('HK'=>'香港','SZ'=>'国内');
+?>
+
+<div class="popup" style="width:900px;margin:10px 100px">
+    <div class="popup-header">
+        <h2>填写PMSC询价单：</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a>
+    </div>
+    <div class="popup-body">
+        <div class=" overflowh">
+            <div class="passopen passopen0">
+                    <dl class="PublicDl">
+                        <dt><em>*</em>询价类型：</dt>
+                        <dd><label><input type="radio" name="rdtype" value="1" class="rdtype" <?php if($this->inqhistory[0]['oa_rdtype']==1) echo 'checked="checked"';?> >RFQ</label>
+                        </dd>
+        				<dd>
+                        <label><input type="radio" id="rdtype_2" name="rdtype" value="2" class="rdtype" <?php if($this->inqhistory[0]['oa_rdtype']==2 || empty($this->inqhistory[0]['oa_rdtype'])) echo 'checked="checked"';?>>Budgetary</label>
+                        </dd>
+                        <dd>
+                        <label><input type="radio" name="rdtype" value="5" class="rdtype" <?php if($this->inqhistory[0]['oa_rdtype']==5) echo 'checked="checked"';?>>BPPRFQ</label>
+                        </dd>
+                    </dl>
+                    <dl class="PublicDl">
+                        <dt>交易类型：</dt>
+                        <dd>
+                            <?=($this->inqhistory[0]['delivery']=='SZ'?'境内':'境外')?>
+                        </dd>
+                    </dl>
+                    <dl class="PublicDl">
+                        <dt>公司名：</dt>
+                        <dd>
+                            <?=($this->user['companyname']);?>
+                            &nbsp;&nbsp;<a class="gbqfbb" href="javascript:;" onclick="openbox2('/icwebadmin/UsUsgl/updateuser/uid/<?=$this->user['uid']?>')" title="修改客户信息">修改公司名</a>
+                            
+                        </dd>
+                    </dl>
+                    <dl class="PublicDl">
+                        <dt>&nbsp;</dt>
+                        <dd>
+                            <font color="#FF0000">提示：提交报价前，请确认客户公司名为营业执照上全称，否则提交报价后或注册OA客户后将无法修改。
+</font>
+                        </dd>
+                    </dl>
+                    
+                    <?php if(isset($this->oa_employee) && $this->oa_employee){?>
+                      <dl class="PublicDl">
+                        <dt><em>*</em>销售代表：</dt>
+                        <dd>
+                            <select name="oa_sales" id="oa_sales">
+              <?php $oa_sales_select = '';foreach($this->oa_employee as $dv){?>
+              <option value="<?=$dv['oa_id']?>" 
+		   <?php if($this->oauser['up_oa_sales']==$dv['oa_id']){echo 'selected="selected"';$oa_sales_select=1;}
+		         elseif($_SESSION['staff_sess']['lastname'].$_SESSION['staff_sess']['firstname']==$dv['oa_name'] && !$oa_sales_select){echo 'selected="selected"';}
+				 ?>>
+              <?=$dv['oa_name']?>
+              </option>
+              <?php }?>
+            </select>
+                        </dd>
+                    </dl>
+      <?php }else echo '<input type="hidden" name="oa_sales" id="oa_sales" value="" />';?> 
+                    
+                    <div class="clear"></div>
+                    
+                </div>
+                <?php 
+	foreach($this->inqhistory as $key=>$v){
+		$detaile = $v['detaile'];
+		if($key==0){
+	?>
+   <table cellpadding="0" border="0" cellspacing="0" class="tablelistPrice">
+      <tr>
+                    <th>选择</th>
+                    <th width="110">型号</th>
+                    <th>品牌</th> 
+                    <th>询价<br>数量</th>
+                    <th><span class="oaline" style="display:<?=($this->inqhistory[0]['oa_rdtype']==5?'none':'block')?>">(OA)产品线<em>*</em></span></th>
+                    <th width="60"><em>*</em>(按年)<br/>预测量</th>
+                    <th width="60"><em>*</em>目标单价<br/>(<?=($this->inqhistory[0]['currency'])?>)</th>
+                    <th><em>*</em>价格来源</th>
+                    <th><em>*</em>说明描述<br/>(不超过500个字)</th>
+                  </tr>
+      <input type="hidden" name="son_id" id="son_id" value="<?=$v['id'];?>" >
+      <?php foreach($detaile as $k=>$vd){?>
+		<input type="hidden" name="det_id" value="<?=$vd['id'];?>" >
+        <tr align="center">
+        <td><input type="checkbox" name="pmscinq" value="1" checked="checked" title="选择此型号是否向PMSC询价"/></td>
+        <td><div class="productNO"><?php if($vd['part_id']){ ?>
+        <a href="/proddetails?partid=<?=$vd['part_id'];?>" target="_blank"><?=$vd['part_no']?></a><?php }else echo $vd['part_no'];?>
+        <?php if($vd['staged']) echo '<sup><span class="sup_SALE HOT">特卖</span></sup>';?>
+        </div>
+        </td>
+        <td><?=$vd['brand']?></td>
+        <td><?=$vd['number']?></td>
+        <td><span class="oaline" style="display:<?=($this->inqhistory[0]['oa_rdtype']==5?'none':'block')?>"><select name='oa_productline'><option value=''>请选择</option>
+		<?php foreach($this->oaproductline as $v){
+		  if($v['oa_id']){
+		?>
+        <option value='<?=$v['oa_id'].'<>'.$v['oa_name']?>' <?php if($v['oa_id']==$vd['oa_productline']) echo 'selected="selected"';
+		elseif($vd['oa_name']==$v['oa_name'])echo 'selected="selected"';?> >
+		<?=$v['oa_name']?></option>
+		<?php }
+		}?>
+        <option value='<?='0<>'.$vd['brand']?>' <?php if($vd['oa_productline']=='0') echo 'selected="selected"';?> >BPPRFQ</option>
+        </select></span>
+        </td>
+        <td><input type="text" class="input-small" name="oa_forecast" value="<?=($vd['oa_forecast']?$vd['oa_forecast']:$vd['expected_amount'])?>" onkeyup="<?=ISNUMBER?>" /></td>
+        <td><input type="text" class="input-small" onkeyup="<?=ISFLOAT?>" name="oa_target_price" value="<?=($vd['oa_target_price']?$vd['oa_target_price']:$vd['price'])?>"/></td>
+        <td align="left">
+        <label><input type="radio" name="oa_price_source_<?=$k;?>" value="1" <?=($vd['oa_price_source']==1?'checked="checked"':'')?>>老订单老价格</label>
+        <br/>
+        <label>
+        <input type="radio" name="oa_price_source_<?=$k;?>" value="2"  <?php if(!$vd['oa_price_source'] || $vd['oa_price_source']==2) echo 'checked="checked"';?> >新订单新价格 </label>
+        <br/>
+        <label>
+        <input type="radio" name="oa_price_source_<?=$k;?>" value="3"  <?=($vd['oa_price_source']==3?'checked="checked"':'')?>>需要降价(在说明描述写理由)</label>
+        </td>
+        <td>
+        <textarea name="ic_inqd_remark" rows="6" cols="10" class="input-small"><?=$vd['ic_inqd_remark']?></textarea>
+        </td>
+       </tr>
+       <?php }?>
+       </table>
+	<?php }else{?>
+        <a href="javascript:;" onclick="showh_history()">查看历史询价记录&gt;&gt;</a><br/>
+        <div  style="display:none" id="show_history">
+		<table class="tab_tb" border="0">
+            <thead>
+            <th width="100">询价说明</th>
+            <th width="80">询价日期</th>
+            <th width="100">回复留言</th>
+            <th width="80">报价日期</th>
+            </thead>
+             <tr class="hover_tr bgf9">
+              <td width="100"><?=$v['remark']?></td>
+              <td width="100"><?=date('Y-m-d H:i',$v['created'])?></td>
+              <td width="100"><?=$v['result_remark']?></td>
+              <td><?=$v['modified']==0?'':date('Y-m-d H:i',$v['modified'])?></td>
+            </tr>
+            <tr id="tr_show_inquiry_1" style="display: table-row;" rel="1" class="hover_tr bgf9 tr_show_inquiry hover_tr_color">
+              <td colspan="8"><table width="100%" cellspacing="0" cellpadding="0">
+                  <tbody><tr>
+                    <td colspan="8"><div id="show_inquiry_1" class="subtal"><div class="up"></div>
+                        <table width="100%" cellspacing="0" cellpadding="0" class="subtablei">
+                          <tbody><tr>
+                            <th>型号</th>
+                            <th>品牌</th>
+                            <th>参考交期</th>
+                            <th>标准包装</th>
+                            <th>采购数量</th>
+                            <th>年用量</th>
+                            <th>目标单价</th>
+                            <th>订单最少起订量</th>
+
+                            <th>IC易站报价</th>
+                            <th>有效期</th>
+                          </tr>
+                          <?php foreach($detaile as $dv){?>
+                          	<tr>
+                            <td width="150"><?php if($vd['part_id']){ ?>
+                            <a href="/proddetails?partid=<?=$vd['part_id'];?>" target="_blank"><?=$vd['part_no']?></a><?php }else echo $vd['part_no'];?></td>
+                            <td><?=$dv['brand']?></td>
+                            <td><?=$dv['lead_time']?></td>
+                            <td><?=$dv['mpq']?></td>
+                            <td><?=$dv['number']?></td>
+                            <td><?=$dv['expected_amount']?></td>
+                            <td><?=$dv['price']?></td>
+                           <td><?=$dv['pmpq']?$dv['pmpq']:'';?></td>
+                           <td><?=$dv['result_price']?$dv['result_price']:''?></td>
+                            <td><?php if($dv['expiration_time']<time() && $dv['expiration_time']>0){?>
+                              <font color="#FF0000">
+                              <?=date('Y-m-d H:i',$dv['expiration_time']);?>
+                              </font>
+                              <?php }else{ echo $dv['expiration_time']?'<font color="009944">'.date('Y-m-d',$dv['expiration_time']).'</font>':'';}?>
+                            </td>
+						  <?php }?>
+                            </tbody></table>
+                      </div></td>
+                  </tr>
+                </tbody></table></td>
+            </tr>
+             </table></div>
+		<?php }}?>
+        </div>
+        <div class="clear"></div>
+        <div class="bottombutton" id="baojiabtn">
+           <input type="button" onclick="oainqAction()" value="提交询价" class="btnabig">
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div id="myHiddenDiv" style="display:none">
+  <div class="popup">
+    <div class="popup-body" style="width:550px;">
+      <!-- 需要填写的区域-->
+      <div><img src="/images/admin/ajax-loader.gif" />正在检查Part/NO是否存在SAP系统中，请不要关闭。如果等待时间过长(超过1分钟)请刷新页面。</div>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+        var tab = $(".rdtype");
+        tab.click(function(){
+			if(this.value==5){
+				$(".oaline").hide();
+			}else if(this.value==2){
+			   $(".oaline").show();
+			}else if(this.value==1){
+			   $(".oaline").show();
+			   //ajax 检查part no是否在sap中
+			   checkpartinsqp();
+			}
+        });	
+})
+//ajax 检查part no是否在sap中
+function checkpartinsqp()
+{
+	//打开对话框
+	$.openPopupLayer({
+		name: "myopeneamil",
+		target: "myHiddenDiv"
+	});
+	//ajax请求
+	 $.ajax({
+		url: '<?=$this->indexurl?>/checkpartinsqp',
+		data: {'inqid':'<?=$this->id;?>'},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    $.closePopupLayer('myopeneamil');
+			alert(arr.message);
+			if(arr.code == 0){
+            	
+            }else{
+				document.getElementById("rdtype_2").checked=true;
+			}
+		}
+	  });
+}
+function showh_history()
+{
+  $("#show_history").slideToggle();
+}
+function oainqAction() {
+      
+       var rdtype = '';
+	   var rdtypeboj = document.getElementsByName("rdtype");
+	   for(i=0;i<rdtypeboj.length;i++){
+	      if(rdtypeboj[i].checked){
+	         rdtype = rdtypeboj[i].value; break;
+	      }
+	   }
+	   var project_name = '';//document.getElementById("project_name").value;
+	   var project_status = '';//document.getElementById("project_status").value;
+	   var ic_remark = '';//document.getElementById("ic_remark").value; 
+	   var pmscinq = new Array();
+	   var det_id = new Array();
+	   var oa_productline = new Array();
+	   var oa_forecast = new Array();
+	   var oa_target_price = new Array();
+	   var oa_price_source = new Array();
+	   var ic_inqd_remark = new Array();
+	   var pmscinq_obj     = document.getElementsByName("pmscinq");
+	   var oa_productline_obj     = document.getElementsByName("oa_productline");
+	   var idobj  = document.getElementsByName("det_id");
+	   var oa_forecast_obj     = document.getElementsByName("oa_forecast");
+	   var oa_target_price_obj = document.getElementsByName("oa_target_price");
+	   
+	   var ic_inqd_remark_obj  = document.getElementsByName("ic_inqd_remark");
+	   
+	   var client_cname = '<?=($this->user['companyname']);?>';//document.getElementById("client_cname").value;
+	   if(client_cname=='') {alert('请输入客户中文名');document.getElementById("client_cname").focus();return;}
+	   var client_ename = '';//document.getElementById("client_ename").value;
+	   var oa_sales = document.getElementById("oa_sales").value;
+	   var cansend = false;
+	   for (var i=0;i < oa_forecast_obj.length;i++)
+	   {
+	        if(pmscinq_obj[i].checked){
+			    pmscinq[i]=1;
+				cansend=true;
+				if(rdtype==5){
+					if(oa_productline_obj[i].value!='') oa_productline[i]=oa_productline_obj[i].value;
+					else oa_productline[i]='';
+				}else{
+					if(oa_productline_obj[i].value!='') oa_productline[i]=oa_productline_obj[i].value;
+					else {alert('请选择(OA)产品线');oa_productline_obj[i].focus();return;}
+				}	
+					if(oa_forecast_obj[i].value=='') {alert('请输入预测量');oa_forecast_obj[i].focus();return;}
+					else if(isNaN(oa_forecast_obj[i].value)){alert('预测量必须为数字');oa_forecast_obj[i].focus();return;}
+					else oa_forecast[i]= oa_forecast_obj[i].value;
+					
+					if(oa_target_price_obj[i].value=='')  {alert('请输入目标价');oa_target_price_obj[i].focus();return;}
+					else if(!BASEisFloat(oa_target_price_obj[i].value)) {alert('目标价必须为数字');oa_target_price_obj[i].focus();return;}
+					else oa_target_price[i]=oa_target_price_obj[i].value;
+					
+					var oa_price_source_obj = document.getElementsByName("oa_price_source_"+i);
+					for(j=0;j<oa_price_source_obj.length;j++){
+					  if(oa_price_source_obj[j].checked){
+						  oa_price_source[i] = oa_price_source_obj[j].value; break;
+					  }
+					}
+					
+					if(ic_inqd_remark_obj[i].value!='') ic_inqd_remark[i]=ic_inqd_remark_obj[i].value;
+					else {alert('请输入说明描述');ic_inqd_remark_obj[i].focus();return;}
+					
+					det_id[i] = idobj[i].value;
+			}else{
+			    pmscinq[i]='';
+			    oa_productline[i]='';
+				oa_forecast_obj[i]=''
+				oa_target_price_obj[i]=''
+				oa_price_source[i] = '';
+				ic_inqd_remark[i]= '';
+			}
+	   }
+	   if(!cansend){
+	     alert('请选择型号向PMSC询价');return;
+	   }
+	   var subtmp = document.getElementById("baojiabtn");
+	   subtmp.innerHTML = '<input type="button" class="btnabig" value="提交中..." style="cursor:default"/>';
+	  
+	   $.ajax({
+		url: '<?=$this->oainqurl;?>',
+		data: {'id':'<?=$this->id;?>','uid':'<?=$this->inqhistory[0]['uid']?>','client_cname':client_cname,'client_ename':client_ename,'oa_sales':oa_sales,'det_id':det_id,'oa_productline':oa_productline,'rdtype':rdtype,'project_name':project_name,'project_status':project_status,'ic_remark':ic_remark,'oa_forecast':oa_forecast,'oa_target_price':oa_target_price,'oa_price_source':oa_price_source,'ic_inqd_remark':ic_inqd_remark,'pmscinq':pmscinq},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+			if(arr.code == 0){
+            	 $.closePopupLayer('box');
+				 showbox('/icwebadmin/QuoInq/oasendinq/inqid/<?=$this->id?>/uid/<?=$this->inqhistory[0]['uid']?>');
+             }else{
+			      alert(arr.message);
+			}
+			subtmp.innerHTML = '<button type="button" class="btnabig" onclick="oainqAction()">提 交</button>';
+		}
+	  });
+		
+}
+</script>

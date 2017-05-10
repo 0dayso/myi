@@ -1,0 +1,4 @@
+@charset "utf-8";
+/* CSS Document */
+.dialogBoxClose{background:url(/js/jsplug/jmpopups/vb_close.gif) no-repeat scroll 0 0 transparent;float:right;height:20px;overflow:hidden;text-indent:-9999px;width:20px;position:absolute;right:5px;top:10px;cursor:pointer;}
+.dialogBoxClose:hover{background-position:0 -20px; border:0;}

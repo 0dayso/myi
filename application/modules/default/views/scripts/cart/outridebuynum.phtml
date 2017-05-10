@@ -1,0 +1,15 @@
+<div class="pop pop_shopbox">
+	<div class="popbox">
+    	<div class="poptit1">
+            <input type="button" title="关闭"  class="closebtn" onclick="$.closePopupLayer('outrideBox')">
+        </div>
+        <div class="popcon clearfix msg" style="width:90%; text-align:center">
+        	<div class="poptips1"  style="text-align:left"><p>剩余库存：<?=$this->stock?></p>
+            <p>1)购买数超过库存数，需要向工厂订货。</p>
+            <p>2)您也可以选择询价，以便满足您大批量采购的需求，同时获得更低的价格。</p>
+            <p>3)您也可以联系我们的销售专员了解即时库存。电话：<?=$this->tel?></p>
+            </div>
+            <a href="javascript:" onClick="openInquiry(<?=$this->partid?>);$.closePopupLayer('outrideBox');" class="abutton">我要询价</a>
+         </div>
+    </div>
+</div>

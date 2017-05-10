@@ -1,0 +1,201 @@
+<div class="popup" style="width:840px;">
+    <div class="popup-header">
+        <h2>添加用户</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('comBox');" title="关闭" class="dialogBoxClose">关闭</a> 
+    </div>
+    <div class="popup-body">
+    	<div class="companyifo overflowh">
+            <dl>
+            <dt><em>* </em>用户名：</dt>
+            <dd>
+             <input type="text" style="width:200px;" name="uname" id="uname"/>
+                  <span class="tips">4-20个字符，注册成功可以使用此用户名登录。一旦注册成功用户名将不能修改。</span>
+            </dd>
+            </dl>
+            <dl>
+            <dt>客户Email：</dt>
+           <dd class="emailtipbox">
+                   <input type="text" style="width:200px;" name="email" id="email"/>
+                  <span class="tips">请输入客户的邮箱，注册成功可以使用此邮箱地址登录。一旦注册成功邮箱地址将不能修改。</span>
+                  <!--<div id="email" class="mailListBox"></div>-->
+                  </dd>
+            </dl>
+            <dl>
+            <dt><em>* </em>公司名称：</dt>
+            <dd>
+             <input type="text" style="width:200px;" name="companyname2" id="companyname2">
+            </dd>
+            </dl>
+            <dl>
+            <dt>企业性质：</dt>
+            <dd>
+            <select name="property2" id="property2">
+                  <option value="enduser">终端用户</option>
+                  <option value="merchant">贸易商</option>
+                </select>
+            </dd>
+            </dl>
+            <dl>
+            <dt>行业领域：</dt>
+            <dd>
+            <select id="industry2" name="industry2" onchange="showother(this.value)">
+                <?php foreach($this->appLevel1 as $k=>$v){?>
+                <option value="<?=$v['id']?>"><?=$v['name']?></option>
+                <?php }?>
+                <option value='other' <?php if($this->myinfo['industry'] == 'other') echo 'selected="selected"';?>>其它</option>
+               </select>
+               <div id="industry_other_div" style="display:none">
+               <input  type="text" name="industry_other2" id="industry_other2" />
+               </div>
+            </dd>
+            </dl>
+            <dl>
+            <dt>常用币种：</dt>
+            <dd>
+             <select name="currency2" id="currency2">
+                    <option value="RMB">人民币(RMB)</option>
+                    <option value="USD">美元(USD)</option>
+                    <option value="HKD">港币(HKD)</option>
+                  </select>
+            </dd>
+            </dl>
+        </div>
+        <div class="addressspop overflowh">
+        	<dl>
+        <dt>联系人：</dt>
+        <dd>
+           <input type="text" style="width:200px;" name="truename2" id="truename2">
+        </dd>
+        </dl>
+            <dl>
+            <dt>手机：</dt>
+            <dd>
+              <input type="text" style="width:200px;" name="mobile2" id="mobile2">
+            </dd>
+            </dl>
+            <dl>
+            <dt>公司电话：</dt>
+            <dd>
+              <input type="text" style="width:200px;" name="tel2" id="tel2">
+            </dd>
+            </dl>
+            <dl>
+            <dt>公司传真：</dt>
+            <dd>
+              <input type="text" style="width:200px;" name="fax2" id="fax2">
+            </dd>
+            </dl>
+            <dl>
+            <dt>所在地区：</dt>
+            <dd> <span id="provinceSpan2">
+                  <select id="province2" name="province2">
+                    <option value="">请选择省</option>
+                  </select>
+                  </span> <span id="citySpan2">
+                  <select id="city2" name="city2">
+                    <option value="">请选择市</option>
+                  </select>
+                  </span> <span id="areaSpan2">
+                  <select id="area2" name="area2">
+                    <option value="">请选择区</option>
+                  </select>
+                  </span>
+            </dd>
+            </dl>
+            <dl>
+            <dt>详细地址：</dt>
+            <dd>
+              <input type="text" style="width:400px;" name="address2" id="address2">
+            </dd>
+            </dl>
+            <dl>
+            <dt>邮政编码：</dt>
+            <dd>
+              <input type="text" style="width:200px;" name="zipcode2" id="zipcode2">
+            
+            </dd>
+            </dl>
+            <dl>
+            <dt>&nbsp;</dt>
+            <dd class="tipcheckpop">
+            	<input type="checkbox" value="1" id="addyes"  name="addyes" checked="checked"><label for="addyes">将公司地址设为收货地址</label>
+            </dd>
+            </dl>
+        </div>
+        <div class="pbtn"><input type="button" onclick="adduser()" value="保 存" class="btnabig"></div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!--<script src="/js/jsplug/regemail/regemail.js" type="text/javascript"></script>-->
+<script type="text/javascript" language="javascript">
+function showother(value)
+{ 
+	var obj = document.getElementById("industry_other_div");
+	if(value=='other'){
+	   obj.style.display   = 'block';
+	}else{
+	   obj.style.display   = 'none';
+	}
+}
+function adduser()
+{
+	var uname = document.getElementById("uname").value;
+	var email = document.getElementById("email").value;
+	var companyname = document.getElementById("companyname2").value;
+	if(uname=='')  {alert('请填写用户名');return;}
+	//if(email=='')  {alert('请填写客户Email');return;}
+	if(companyname=='')  {alert('请填写公司名称');return;}
+	
+	var property = document.getElementById("property2").value;
+	var industry = document.getElementById("industry2").value;
+	var industry_other = document.getElementById("industry_other2").value;
+	var currency = document.getElementById("currency2").value;
+	var truename = document.getElementById("truename2").value;
+	var tel      = document.getElementById("tel2").value;
+	var mobile   = document.getElementById("mobile2").value;
+	var fax      = document.getElementById("fax2").value;
+	var province = document.getElementById("province2").value;
+	var city     = document.getElementById("city2").value;
+	var area     = document.getElementById("area2").value;
+	var address  = document.getElementById("address2").value;
+	var zipcode  = document.getElementById("zipcode2").value;
+	
+	var addyesobj = document.getElementById("addyes");
+	var addyes=0;
+	if(addyesobj.checked){
+		addyes=1;
+	}
+	$.ajax({
+            url: '/icwebadmin/OrUnso/adduser',
+            data: {'uname':uname,'email':email,'companyname':companyname,'property':property,'industry':industry,'industry_other':industry_other,'currency':currency,'truename':truename,'tel':tel,'mobile':mobile,'fax':fax,'province':province,'city':city,'area':area,'address':address,'zipcode':zipcode,'addyes':addyes},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	   alert(arr.message);
+				   window.location.href="/icwebadmin/OrUnso/index/uid/"+arr.uid+"/currency/RMB/delivery/SZ";
+               }else{
+			      alert(arr.message);
+			   }
+			}
+	});
+}
+onloadadd2('','','');
+function selectCity2(){
+		var provinceid=$("#province2").val();
+		$("#citySpan2").load("/common/getcity2?provinceid="+provinceid);
+		$("#areaSpan2").html("<select id=\"area2\" name=\"area2\"><option value=\"\">请选择区</option></select>");
+}
+function selectArea2(){
+	var cityid=$("#city2").val();
+	$("#areaSpan2").load("/common/getarea2?cityid="+cityid);
+}
+function onloadadd2(provinceid,cityid,areaid)
+{
+	$("#provinceSpan2").load("/common/getprovince2?provinceid="+provinceid);
+	if(provinceid)
+		$("#citySpan2").load("/common/getcity2?provinceid="+provinceid+"&cityid="+cityid);
+	if(cityid)
+		$("#areaSpan2").load("/common/getarea2?cityid="+cityid+"&areaid="+areaid);
+}	
+</script>

@@ -1,0 +1,84 @@
+    <link href="/js/bootstrap/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+    <div class="conmian">
+    <h1><?php echo $this->AreaTitle;?> : 一共 <?=$this->total?> 条  <a href="javascript:;" onclick="update(0,'更新所有','all')">已更新所有</a></h1>
+                <div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+<form id="myform"  class="form-search" name="myform" action="" method="get">
+    <label>样片：  <input type="checkbox" name="isSample" value="Y" <?php echo $this->isSample == 'Y' ? "checked" : "";?> /></label>
+    <label>ATS库存：  <input type="checkbox" name="hasStock" value="Y" <?php echo $this->hasStock == 'Y' ? "checked" : "";?> /></label>
+    <label>样品库存：  <input type="checkbox" name="sampleStock" value="Y" <?php echo $this->sampleStock == 'Y' ? "checked" : "";?> /></label>
+    <select name="matching" id="matching">
+    <?php foreach(array('All'=>'型号匹配','Y'=>'已匹配(Y)','N'=>'未匹配(N)') as $k=>$v):?>
+        <option value="<?php echo $k;?>" <?php echo $this->matching==$k ? "selected" : "";?>><?php echo $v;?></option>
+    <?php endforeach;?>
+    </select>
+<?php echo $this->ATSBrandSelect('brand',$this->brandName); ?> 
+<input type="submit" class="btn" value="查 找"/>
+</form>
+        <!-- 需要填写的区域-->
+        <div class="contentmia">
+            <table class="table ordertable"  border="1" style=" margin-top:-1px;">
+                <thead>
+                <tr>
+                    <th>OA品牌名称</th>
+                    <th>SAP型号</th>
+                    <th>ICEasy型号ID</th>
+                    <th>ICEasy型号</th>
+                    <th>库存(国内)</th>
+                    <th>库存(香港)</th>
+                    <th>库存(样片)</th>
+                    <th>MOQ</th>
+                    <th>MPQ</th>
+                    <th>LeadTime(Week)</th>
+                    <th>View</th>
+                    <th>更新时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php  if(empty($this->product)){?>
+                    <tr><td colspan="19"><center>暂无记录。</center></td></tr>
+                <?php }else{
+                    foreach($this->product as $k=>$data){
+                        ?>
+                        <tr>
+                            <td><?=$data['wgbez']?></td>
+                            <td><?=$data['matnr']?></td>
+                            <td><?=$data['part_id']?></td>
+                            <td>
+                                <a href="#"  id="part_id" class="bedit" 
+                                data-type="text" data-pk="<?php echo $data['id'];?>" 
+                                data-url="<?php echo $this->editurl;?>" 
+                                data-title="输入IC易站型号"><?php echo ($data['ic_part_no']) ? $data['ic_part_no'] : '';?></a>
+                            </td>
+                            <td><?=$data['sz_stock']?></td>
+                            <td><?=$data['hk_stock']?></td>
+                            <td><?=$data['sample_stock']?></td>
+                            <td><?=$data['moq']?></td>
+                            <td><?=$data['mpq']?></td>
+                            <td><?=$data['zeinr']?></td>
+                            <td>
+                            <?php if($data['part_id'] != -1){?>
+                                <a href="/proddetails?partid=<?php echo $data['part_id'];?>" target="_blank">View</a>
+                            <?php }?>    
+                            </td>
+                            <td><?=$data['updated_at']?></td>
+                        </tr>
+                    <?php }}?>
+                </tbody>
+
+            </table>
+            <div class="pagination divpage"><?=$this->page_bar;?></div>
+        </div>
+        <!-- 结束区域-->
+    </div>
+    <!-- Modal -->
+    <script src="/js/bootstrap/bootstrap.min.js"></script>
+    <script src="/js/bootstrap/bootstrap-editable/js/bootstrap-editable.js"></script>
+    <script type="text/javascript">
+        //$.fn.editable.defaults.mode = 'inline';
+        $(document).ready(function() {
+            $('.bedit').editable();
+        });
+    </script>

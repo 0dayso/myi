@@ -1,0 +1,43 @@
+<style type="text/css">
+#treetable2 td {
+	border: 1px solid #8DB9DB;
+	border-collapse: collapse;
+}
+</style>
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+      <h2>选择父级</h2>
+      <a href="javascript:;" onclick="$.closePopupLayer('selectBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+      <!-- 需要填写的区域-->
+      <table width="500px" border="0" cellpadding="1">
+        <tr>
+          <td height="10" colspan="3" align="center"><div id="message_sess_son" style="display:none" class="message_sess"> <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span> <span id="alert_message_son"></span> </div></td>
+        </tr>
+        <tr>
+          <td colspan="2"><table id="treetable2">
+              <?php for($i=0;$i<count($this->treedata);$i++){
+	  $data = $this->treedata[$i];
+	  			if($i%5==0) echo '<tr>';
+	  ?>
+              <td><a href="javascript:" onClick="seletcaction('<?=$data['pt_id']?>','<?=$data['pt_name']?>')">
+                  <?=$data['pt_name']?>
+                  </a></td>
+                <?php }?>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+function seletcaction(id,name)
+{
+	document.getElementById('parentid').value = id;
+	document.getElementById('parentname').value = name;
+	$.closePopupLayer('selectBox');
+}
+</script>

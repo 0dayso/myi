@@ -1,0 +1,59 @@
+<div id="myHiddenDiv">
+  <div class="popup" style="width:800px;">
+    <div class="popup-header">
+    <h2>编辑区域</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('addBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+      <!-- 需要填写的区域-->
+
+      <table width="740px" border="0" cellpadding="1">
+        <tr>
+         <td height="10" colspan="3" align="center">
+         <div id="message_sess_son" style="display:none" class="message_sess">
+         <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span>
+         <span id="alert_message_son"></span>
+         </div></td>
+         </tr>
+         <tr bgcolor="#334159" height="30px" style="color:#FFFFFF; font-weight:bold; float:Arial, Helvetica, sans-serif">
+          <td width="350px">Section Area ID</td>
+          <td>标题</td>
+          <td>排序</td>
+        </tr>
+        <tr bgcolor="#CCCCCC" align="center">
+          <td><input type="text" name="Section_Area_ID" id="Section_Area_ID" value="<?php echo $this->Section_Area_ID;?>" readonly="readonly"/></td>
+          <td><input type="text" name="Section_Area_Des" id="Section_Area_Des" size="40" value="<?php echo $this->Section_Area_Des;?>"/></td>
+          <td><input type="text" name="Order_ID" id="Order_ID" size="5" value="<?php echo $this->Order_ID;?>" onKeyUp="<?php echo ISNUMBER;?>"/></td>
+        </tr>
+        <tr>
+          <td align="center" colspan="2"><input type="button"  value="编辑" onclick="edit()"/>
+          </td>
+        </tr>
+      </table>
+
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+function edit()
+{
+    var sectionid    = document.getElementById('Section_Area_ID').value;
+	var sectiondesc  = document.getElementById('Section_Area_Des').value;
+	var orderid      = document.getElementById('Order_ID').value;
+	$.ajax({
+            url: '<?php echo $this->editurl;?>',
+            data: {'sectionid':sectionid,'sectiondesc':sectiondesc,'orderid':orderid},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  location.reload();
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			}
+	});
+}
+</script>

@@ -1,0 +1,124 @@
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/se2013.css"/>
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a href="/solutionlist" class="focs">应用方案</a> <?php foreach($this->appLevel1 as $app){
+        	  	 if($this->selectid==$app['id']) echo '&nbsp;&nbsp;»&nbsp;&nbsp;<span>'.$app['name'].'</span>';
+			  }
+	    ?>   
+  </div>
+</div>
+
+<div class="sebox2013">  
+	<div class="w" > 
+        <div class="layout rigybg" >
+            <div class="fl infolist MT10">
+            	<div class="selectbox201312 ">
+                    <dl>
+                        <dt>应用分类：</dt>
+                        <dd>
+                            <ul class="catList clearfix">  
+                            <li><a <?php if(!$this->selectid) echo 'class="curr"';?> href="/solutionlist">全部</a></li>
+                            <?php foreach($this->appLevel1 as $app){?>
+                            <li><a  href="/solutionlist-<?=$app['id']?>.html" title="<?=$app['name']?>" class="logclick <?php if($this->selectid==$app['id']) echo 'curr';?>" rev="solutionlist" rel="<?=$app['id']?>"><?=$app['name']?></a></li><?php }?>
+                            </ul> 
+                        </dd>
+                    </dl>
+                    <?php if($this->brandarr){?>
+                    <dl>
+                        <dt>品牌：</dt>
+                        <dd>
+                            <ul class="catList clearfix">                
+                                <?php foreach($this->brandarr as $brand){
+if(!in_array($brand['id'],$this->brandselect)){
+?>
+
+<li><a href="?b=<?php if($this->brandid) echo $this->brandid.'_'.$brand['id'];else echo $brand['id'];?>"><input onclick="location.href='?b=<?php if($this->brandid) echo $this->brandid.'_'.$brand['id'];else echo $brand['id'];?>'" type="checkbox" <?=(in_array($brand['id'],$this->brandselect)?'checked="checked"':'')?> /><?=$brand['name']?></a></li>
+<?php }else{?>
+
+<li><a href="?b=<?php 
+$newarr = array();
+foreach($this->brandselect as $bid){ if($brand['id']!=$bid) $newarr[]=$bid; };
+echo implode('_',$newarr);
+?>"><input onclick="location.href='?b=<?php 
+$newarr = array();
+foreach($this->brandselect as $bid){ if($brand['id']!=$bid) $newarr[]=$bid; };
+echo implode('_',$newarr);
+?>'" type="checkbox" <?=(in_array($brand['id'],$this->brandselect)?'checked="checked"':'')?> /><?=$brand['name']?></a></li>
+
+<?php }
+}
+?>   
+                            </ul>
+                        </dd>
+                    </dl>
+                    <?php }?>
+                </div>
+                <div class="list—tit">
+                         <h2>应用方案</h2>
+                   
+                </div>
+                <div class="w_100">
+                
+        <?php if(empty($this->allSol)){?>
+             <div class="posts p15 boxshadow_h">暂无数据</div>
+        <?php }else{
+		foreach($this->allSol as $sol){
+		$pricearr = explode(',',$sol['solution_img']);
+		?>
+        
+<div class="posts p15 boxshadow_h">
+<h2><span class="ifotip2013"><em><?=$sol['appname']?></em><i></i></span>
+<a href="/solution-<?=$sol['id']?>.html" title="<?=$sol['title']?>" class="logclick" rev="solution" rel="<?=$sol['id']?>" target="_blank"><?=$sol['title']?></a></h2>
+<div class="postmeta">
+                <?=$sol['solution_no']?'<span>方案编号：</span>'.$sol['solution_no'].'<span class="fontgray"> |</span>':'';?>
+                <?=$sol['source']?'<span>来源：</span>'.$sol['source'].'<span class="fontgray"> |</span>':''?>
+				<?=$sol['author']?'<span>作者：</span>'.$sol['author'].'<span class="fontgray"> |</span>':''?>
+                <span class="ml10">标签：</span><?php 
+					$tip = explode(',',$sol['tags']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+					}?>   
+</div>
+<div class="row">
+<div class="post-thumb">
+<img src="<?=($sol['sol_img'])?(APPICON.$sol['sol_img']):(SOLUTIONICON.$pricearr[0])?>"  alt="<?=$sol['title']?>" width="200" height="125">
+</div>
+<div class="post-cont">
+<p><?=$sol['description']?> <a href="/solution-<?=$sol['id']?>.html" title="<?=$sol['title']?>" class="logclick" rev="solution" rel="<?=$sol['id']?>" target="_blank">[详细]</a></p>
+</div>
+<p class="time">创建时间：<?=date('Y-m-d',$sol['created'])?></p>
+</div>
+</div>
+      <?php }}?>
+                </div>  
+                <div class="clr"></div>
+                <div class="page_box">
+<div class="page clearfix"><?=$this->page_bar;?></div></div> 
+            </div>
+            <div class="fr righttuij">
+            <div id="hotsearch"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
+            <div id="hotsolution"></div>
+            <div id="hotnews"></div>
+            <div id="hotwebinar"></div>
+            <div id="htocode"></div>
+            </div>
+            <div class="clr"></div>
+        </div>
+    </div>
+</div>
+<script language="javascript">
+	$(function(){
+	
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+		$("#hotsearch").load("/publicbox/hotsearch");
+		$("#hotsolution").load("/publicbox/hotsolution");
+		$("#hotnews").load("/publicbox/hotnews");
+		$("#hotwebinar").load("/publicbox/hotwebinar");
+		$("#htocode").load("/publicbox/htocode");
+	})
+</script>

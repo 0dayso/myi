@@ -1,0 +1,85 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+
+
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  <div class="fr u_right">
+  <div class="tab_content">
+    	<div class="tab_tit1">
+        <ul class="fl">
+          <li <?=$this->type=='wait'?'class="on"':''?>><a href="?type=wait&xsname=<?=$this->xsname?>" style="width:120px;">待处理<em>(<?=$this->waitnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='proc'?'class="on"':''?>><a href="?type=proc&xsname=<?=$this->xsname?>" style="width:120px;">已处理<em>(<?=$this->procnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='already'?'class="on"':''?>><a href="?type=already&xsname=<?=$this->xsname?>" style="width:120px;">不通过<em>(<?=$this->alreadynum?>)</em><b class="blank3"></b></a></li>
+          
+        </ul>
+        </div>
+    </div>
+    <div class="tab_con">
+      <table class="tableanew" border="0" cellspacing="0" cellpadding="0"  width="100%">
+        <tr>
+          <th width="20"><?=$this->type=='already'?'订单号':'编号'?></th>
+          <th width="50">申请用户</th>
+          <th width="50">品牌</th>
+          <th width="50">申请时间</th>
+          <th width="50">申请数量</th>
+          <th width="200">收货信息</th>
+          <th width="80" align="center">操作</th>
+        </tr>
+        <?php if(empty($this->applyall)){?>
+        <tr>
+          <td colspan="7"><center> 暂无记录。</center></td>
+        </tr>
+        <?php }else{
+		foreach($this->applyall as $k=>$v){
+		?>
+        <tr valign="top">
+          <td><?=$v['id']?></td>
+          <td align="left">
+          <a href="javascript:;" onclick="viewUser('<?=$v['uid']?>')" title="查看详细资料" ><?=($v['companyname']?$v['companyname']:$v['uname'])?></a>
+          </td>
+          <td><a href="/pl/<?=$v['brandname']?>" target="_blank"><?=$v['brandname']?></a></td>
+          <td><?=date('Y/m/d H:i',$v['created'])?></td>
+          
+          <td align="center"><?=$v['number']?></td>
+
+          <td><?=$v['sname'].'；'.$this->fun->createAddress($v['province'],$v['city'],$v['area'],$v['address'])."；".$v['mobile']." ".$v['tel']?></td>
+          
+          <td align="left"><?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+          		<?php if($v['status']==100){?>
+                <p><a class="gbqfb" href="javascript:;" onclick="release('<?=$v['id']?>','101')">已处理</a></p>
+                <p><a class="gbqfb" href="javascript:;" onclick="release('<?=$v['id']?>','201')">不通过</a></p>
+                <?php }?>
+            <?php }?>
+            
+          </td>
+        </tr>
+        <?php }
+		}?>
+       
+      </table>
+      <div class="pagination divpage">
+        <?=$this->page_bar;?>
+      </div>
+    </div>
+  </div>
+  <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+function release(id,type)
+{
+	 $.ajax({
+            url: '/icwebadmin/SampSxsq/release',
+            data: {'id':id,'type':type},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	alert(arr.message);
+				if(arr.code == 0) location.reload();
+            }
+	});
+}
+</script>

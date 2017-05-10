@@ -1,0 +1,75 @@
+<link href="/css/default/register.css" media="screen" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/js/jsplug/formvalidator/css/validationEngine.jquery.css" media="screen" type="text/css"/>
+<link rel="stylesheet" href="/js/jsplug/formvalidator/css/template.css" media="screen" type="text/css"/>
+<script src="/js/jsplug/formvalidator/js/jquery.validationEngine-en.js" type="text/javascript"></script>
+<script src="/js/jsplug/formvalidator/js/jquery.validationEngine.js" type="text/javascript"></script>
+<script language="javascript">	
+		$(document).ready(function() {
+			$("#formID").validationEngine()
+		});
+</script>
+<div id="header" class="w">
+    <div id="logo"><a hidefocus="true" href="/"><img alt="IC易站" src="/images/default/logo.jpg"></a></div>
+    <h1>找回密码</h1>
+</div>
+<form id="formID" method="post" action="">
+<div class="w forgotpassword">
+	<div class="registerline"></div>
+    <div class="steps step-1">
+          <ol>
+            <li>验证身份</li>
+            <li>重置密码</li>
+            <li>完成</li>
+        </ol>
+    </div>
+    <div class="RG_mbox fl lh">
+        <div class="item ">
+            <div class="ltext fl">
+                <em>*</em>账户名：
+            </div>
+            <div class="fl">
+                <input class="validate[required] reinput" type="text" name="loginname" id="loginname"/>
+                <span class="tips">用户名或者注册邮箱</span>
+            </div>
+        </div>
+        <div class="item ">
+            <div class="ltext fl">
+                <em>*</em>验证码：
+            </div>
+            <div class="fl">
+               <input class="validate[required] reinput" type="text" name="verifycode" id="verifycode"  style=" width:120px;"/>
+          <a  style="cursor:pointer" onClick="getVerify()" class="fontGray" ><img src="" id="verify"/>看不清？换一张</a> 
+            </div>
+        </div>
+        <div class="item ">
+            <div class="ltext fl">                
+                &nbsp;
+            </div>
+            <div class="fl">
+                <input type="submit" class="button"  value="提 交"/>
+            </div>
+        </div>
+    </div>
+	<div class="rtip fr">
+    	<h2>IC易站欢迎您！</h2>
+        <p>IC易站 —— 一站式的电子元器件电子商务交易平台！ 全程设计链、供应链支持，为您提供产品、技术、服务、知识等专业服务！</p>
+    </div>
+</div>
+</form>
+<script language="javascript">
+function getVerify(){
+ var d = new Date();
+ document.getElementById('verify').src="<?php echo $this->url(array('controller'=>'common','action'=>'createcode'));?>?t="+d.toTimeString();
+}
+$(document).ready(function(){
+ getVerify();
+})
+<?php if(!empty($this->loginnameMess)){?>
+var uname=document.getElementById("loginname");
+$.validationEngine.buildPrompt(uname,"<?php echo $this->loginnameMess;?>","error");
+<?php }?>
+<?php if(!empty($this->verifycodeMess)){?>
+var verifycode=document.getElementById("verifycode");
+$.validationEngine.buildPrompt(verifycode,"<?php echo $this->verifycodeMess;?>","error");
+<?php }?>
+</script>

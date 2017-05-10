@@ -1,0 +1,150 @@
+<div class="conmian">
+  <h1><a href="<?=$this->indexurl?>"><?php echo $this->AreaTitle;?></a> -> 编辑友情连接</h1>
+  
+      <!-- 需要填写的区域-->
+      <table width="700px" border="0" cellpadding="1">
+        <tr>
+          <td height="10" colspan="3" align="center"><div id="message_sess_son" style="display:none" class="message_sess"> <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span> <span id="alert_message_son"></span> </div></td>
+        </tr>
+        <tr>
+          <td colspan="2"><table bgcolor="#CCCCCC" width="100%">
+          <tr height="35">
+                <td width="100" align="right"><font color="#666600"><b>链接类型: </b></font></td>
+                <td colspan="3" align="left"> <label><input type="radio" name="link_type" value="1" <?=$this->linkdata['link_type']=='1'?'checked="checked"':''?>/><b>文字链接</b></label>
+                  <label><input type="radio" name="link_type" value="2" <?=$this->linkdata['link_type']=='2'?'checked="checked"':''?>/><b>图片链接</b></label>
+                </td>
+              </tr>
+               <tr height="35">
+                <td width="100" align="right"><font color="#666600"><b>状态 : </b></font></td>
+                <td colspan="3" align="left"> <label><input type="radio" name="status" value="102" <?=$this->linkdata['status']=='102'?'checked="checked"':''?>/>
+                 <font color="#339900"><b>上线</b></font></label>
+                  <label><input type="radio" name="status" value="100" <?=$this->linkdata['status']=='100'?'checked="checked"':''?>/>
+                  <font color="#CC3333"><b>下线</b></font></label>
+                  <label><input type="radio" name="status" value="103" <?=$this->linkdata['status']=='103'?'checked="checked"':''?>/>
+                  <font color="#CC3333"><b>不通过</b></font></label>
+                </td>
+              </tr>
+              <tr height="35">
+                <td align="right"><font color="#666600"><b>首页推荐: </b></font></td>
+                <td colspan="3" align="left"><input type="checkbox" name="home" id="home" value="1" <?=$this->linkdata['home']?'checked="checked"':''?> \></td>
+              </tr>
+               <tr>
+                <td align="right"><font color="#666600"><b>分类<em>*</em>: </b></font></td>
+                <td colspan="3" align="left"><select id="type" name="type">
+                <?php foreach($this->linktype as $linktype){?>
+                <option value="<?=$linktype['id']?>" <?=($this->linkdata['type']==$linktype['id']?'selected="selected"':'')?>><?=$linktype['name']?></option>
+                <?php }?>
+                </select></td>
+              </tr>
+              <tr>
+                <td align="right"><font color="#666600"><b>网站名称<em>*</em>: </b></font></td>
+                <td colspan="3" align="left"> <input type="text" name="name" id="name" value="<?=$this->linkdata['name']?>"/></td>
+              </tr>
+              <tr>
+                <td align="right"><font color="#666600"><b>网站地址<em>*</em>: </b></font></td>
+                <td colspan="3" align="left"> <input type="text" name="url" id="url" value="<?=$this->linkdata['url']?>"/></td>
+              </tr>
+              <tr>
+                <td align="right"><font color="#666600"><b>电子邮箱: </b></font></td>
+                <td colspan="3" align="left"> <input type="text" name="email" id="email" value="<?=$this->linkdata['email']?>"/></td>
+              </tr>
+              <tr>
+                <td align="right"><font color="#666600"><b>网站介绍: </b></font></td>
+                <td colspan="3" align="left"><textarea name="introduction" id="introduction"><?=$this->linkdata['introduction']?></textarea></td>
+              </tr>
+              <tr>
+                <td align="right"><font color="#666600"><b> 排序 : </b></font></td>
+                <td align="left" colspan="3"><input type="text" name="displayorder" id="displayorder" onKeyUp="<?php echo ISNUMBER;?>" value="<?=$this->linkdata['displayorder']?>"/></td>
+              </tr>
+              <tr>
+                <td align="right"><font color="#666600"><b> 网站logo : </b></font></td>
+                <td align="left" colspan="3"><input type="hidden" id="icon_url" name="icon_url" value="<?=$this->linkdata['icon'];?>" />
+                       <input type="button" id="icon_button" value="选择网站logo" />
+                       <img src="<?=$this->linkdata['icon'];?>" id="showimage1"  width="50" height="10" alt="img"/></td>
+              </tr>
+              <tr>
+                <td align="center" colspan="2"><input type="button"  value="更新" onclick="editaction()" class="btnabig"/>
+                </td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+</div>
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript" language="javascript">
+KindEditor.ready(function(K) {
+			var icon_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplodimg?part=upload/default/linksicon/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/linksicon/'
+			});
+			K('#icon_button').click(function() {
+				icon_editor.loadPlugin('image', function() {
+					icon_editor.plugin.imageDialog({
+						imageUrl : K('#icon_url').val(),
+						clickFn : function(url, title, width, height, border, align) {
+							K('#icon_url').val(url);
+							K('#showimage1').attr("src",url);
+							icon_editor.hideDialog();
+						}
+					});
+				});
+			});
+});
+
+function editaction()
+{
+	 var link_type ='';
+	var link_typeobj = document.getElementsByName('link_type');
+	for(i=0;i<link_typeobj.length;i++){
+	  if(link_typeobj[i].checked){
+	     link_type = link_typeobj[i].value;
+	     break;
+	  }
+	}
+	var statusobj = document.getElementsByName('status');
+	for(i=0;i<statusobj.length;i++){
+	  if(statusobj[i].checked){
+	     var status = statusobj[i].value;
+	     break;
+	  }
+	}
+	var type = document.getElementById('type').value;
+
+	var homevalue = 0;
+	var homeobj = document.getElementById('home');
+	if(homeobj.checked){
+	     homevalue = 1;
+	}
+	var name = document.getElementById('name').value;
+	if(name==''){alert('请填写网站名称');return;}
+	
+	var url = document.getElementById('url').value;
+	if(url=='' || url=='http://'){alert('请填写网站地址');return;}
+	
+	var email = document.getElementById('email').value;
+	var introduction = document.getElementById('introduction').value;
+	var displayorder   = document.getElementById('displayorder').value;
+	var icon_url = document.getElementById('icon_url').value;
+	if(link_type==2){
+		if(icon_url==''){alert('请选择网站logo');return;}
+	}
+	$.ajax({
+            url: '<?=$this->indexurl?>/editlink',
+            data: {'id':'<?=$this->linkdata['id']?>','link_type':link_type,'type':type,'status':status,'home':homevalue,'name':name,'url':url,'email':email,'introduction':introduction,'displayorder':displayorder,'icon_url':icon_url},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  location.reload();
+               }else{
+			      alert(arr.message);
+			   }
+			}
+	});
+}
+</script>

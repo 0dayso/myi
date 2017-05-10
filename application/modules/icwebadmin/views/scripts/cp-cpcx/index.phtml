@@ -1,0 +1,96 @@
+<?php 
+$selecturl = "&brand=$this->selectbrand&partno=$this->partno";
+?>
+<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?>
+    
+    <?php if($this->total){?>
+   -> <a href="/icwebadmin/CpCpcx/export?type=<?=$this->type?>&brand=<?=$this->selectbrand?>&partno=<?=$this->partno?>" target="_blank" title="将搜索结果导出成Excel">导出Excel</a>
+  <?php }?>
+  
+    </h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+<form id="myform"  class="form-search" name="myform" action="" method="get">
+<input type="hidden" name="type" value="<?=$this->type?>" />
+
+<select name="brand">
+<option value="">产品线-全部</option>
+<?php foreach($this->brand as $bd){?>
+<option value='<?=$bd['id']?>' <?=$bd['id']==$this->selectbrand?'selected':''?>><?=$bd['name']?></option>
+<?php }?>
+</select>
+<label>Part No.：</label>
+<div class="input-append">
+  <input type="text" class="span3 search-query" id="partno" value="<?=$this->partno?>" name="partno" />
+</div>
+&nbsp;
+<input type="submit" class="btn" value="查 找"/>
+</form>
+
+      <div class="fr u_right">
+    <div class="tab_content">
+    <div class="tab_tit1">
+        <ul class="fl">
+          <li <?php if($this->type=='' || $this->type=='ats') echo 'class="on"';?>><a href="/icwebadmin/CpCpcx?type=ats<?=$selecturl?>">有库存产品<em>(<?=$this->atsnum?>)</em></a></li>
+          <li <?php if($this->type=='staged') echo 'class="on"';?>><a href="/icwebadmin/CpCpcx?type=staged<?=$selecturl?>">滞仓产品<em>(<?=$this->stagednum?>)</em></a></li>
+        </ul>
+        </div>
+      </div>
+      <div class="tab_con mb10">
+       <table class="table ordertable"  border="0">
+          <thead>
+           <tr>
+            <th>型号</th>
+            <th>产品线</th>
+            <th>保税库存</th>
+            <th>完税库存</th>
+            <th>样片库存</th>
+            <th>总库存</th>
+            <th>订单占用（保税）</th>
+            <th>订单占用（完税）</th>
+            <th>减去占用后</th>
+            </tr>
+            </thead>
+          <tbody>
+            <?php  if(empty($this->product)){?>
+            <tr><td colspan="19"><center>暂无记录。</center></td></tr>
+            <?php }else{
+				 		foreach($this->product as $k=>$data){
+						if($k%2==0) $bg = '';
+						else $bg='class="tablebg"';
+						$hktotal = ($data['hk_stock']);
+						$sztotal = ($data['sz_stock']);
+						$sampletotal = ($data['sample_stock']);
+						$al = $hktotal+$sztotal+$sampletotal;
+						$totalAll = ($al-$data['hk_cover']-$data['sz_cover']);
+ 				 ?>
+            <tr <?=$bg?>>
+                <td><div class="productNO"><a href="/proddetails?partid=<?=$data['id']?>" target="_blank"><?=$data['part_no']?></a>
+                <?php if($data['staged']) echo '<sup><span title="Date Code：'.$data['datecode'].'" class="sup_SALE HOT">特卖</span></sup>';
+				if($data['pdnpcn']['pdn']) echo '<sup><span class="sup_PDN HOT">PDN</span></sup>';
+				if($data['pdnpcn']['pcn']) echo '<sup><span class="sup_PCN HOT">PCN</span></sup>';?>
+                </div>
+                </td>
+                <td><?=$data['bname']?></td>
+                <td><?=$hktotal?></td>
+                <td><?=$sztotal?></td>
+    			<td><?=$sampletotal?></td>
+                <td><?=$al?></td>
+                <td><?=$data['hk_cover']?></td>
+                <td><?=$data['sz_cover']?></td>
+                <td><?=($totalAll<0?'<font color="#FF0000">'.$totalAll.'</font>':$totalAll)?></td>
+            </tr>
+          <?php }}?>
+          </tbody>
+          
+        </table>
+    <div class="pagination divpage"><?=$this->page_bar;?></div>
+  </div>
+</div>
+      
+      <!-- 结束区域-->
+	</div>

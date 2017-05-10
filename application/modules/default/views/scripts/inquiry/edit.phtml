@@ -1,0 +1,207 @@
+<!--content-->
+<?php 
+$szArr = array('RMB');
+$hkArr = array('USD','HKD');
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$currencyArr = array('RMB'=>'人民币(RMB)','USD'=>'美元(USD)','HKD'=>'港币(HKD)');
+
+if(in_array($this->inq['currency'],$szArr)) $delivery_tmp = 'SZ';
+elseif(in_array($this->inq['currency'],$hkArr)) $delivery_tmp = 'HK';
+else {$delivery_tmp = 'SZ';$this->inq['currency'] = 'RMB';}
+
+?>
+<div class="w">
+    <div class="breadcrumbs">
+    	<span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/"><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/center" ><?=$this->translate('Menu_Center')?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/center/inquiry"><?=$this->translate('Menu_MyInquiry')?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><?=$this->inq['inq_number']?></span>        
+    </div>
+</div>
+<div class="w lh msg24">
+<div class="bomorder ">
+    <div class="rightbox fr">
+    	<div class="bomorder_tip" style="height:100px;">
+            <h2 class="titbg1ts">温馨提示:<em class="emtriangleright5px"></em></h2>
+            <p>1、在IC易站报价前，可以对询价单进行修改；</p>
+            <p>2、请确认交货地、交易币种、期望价格等重要信息正确性。</p>
+        </div>
+    </div>
+	<div class="fl shoplist ">
+      <table cellpadding="0" cellspacing="0" class="subinquirytable table">
+      <thead>
+        <tr>
+            <th>型号</th>
+            <th>品牌</th>
+            <th>标准包装</th>
+            <th>参考交期</th>
+            <th><em>*</em>采购数量</th>
+            <th>目标单价</th>
+            <th>年用量</th>
+          </tr>
+      </thead>
+      <tbody>
+     <?php
+	  foreach($this->inq['detaile'] as $item){
+				if(is_array($item)){
+				$rowid       =$item['id'];
+				$inputid     = 'pamount_'.$rowid;
+				$priceid     = 'price_'.$rowid;
+				$expected_amount_id     = 'expected_amount_'.$rowid;
+	 ?>
+      <tr height="30">
+        <td>
+            <p><a href="/item-0-0-<?=$rowid?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank" class="model" >
+              <?=$item['part_no'];?>
+              </a></p>
+          </td>
+        <td><?=$item['brand'];?></td>
+        <td><?=$item['mpq'];?></td>
+        <td><?=$item['lead_time'];?></td>
+        <td>
+        <input type="hidden" name="rowid" value="<?=$rowid;?>"/>
+        <input type="text" id="<?=$inputid;?>" name="pamountbut" onkeyup="<?=ISNUMBER?>" value="<?=$item['number'];?>"/></td>
+        <td><input type="text" id="<?=$priceid;?>" name="pricebut" onkeyup="<?=ISFLOAT?>" value="<?=$item['price'];?>"/></td>
+        <td><input type="text" id="<?=$expected_amount_id;?>" name="expected_amount" value="<?=$item['expected_amount'];?>"/></td>
+      </tr>
+      <?php }//end if(is_array($item))
+		 }//end foreach
+	  ?>
+      </tbody>
+      </table>
+      <table cellpadding="0" cellspacing="0" class="table bomtable">
+        <tr>
+        	<td width="120" style="border:0"><em>*</em>结算货币：</td>
+            <td align="left" style="border:0">
+       <span id='currency_text'><?php echo $currencyArr[$this->inq['currency']]?></span>
+       <div style="display:none" id="currency_div">
+       <select name="currency" id="currency" onchange="changeMbprice(this.value)">
+       <option value="RMB" <?php if($this->inq['currency'] == 'RMB') echo "selected";?>>人民币(RMB)</option>
+       <option value="HKD" <?php if($this->inq['currency'] == 'HKD') echo "selected";?>>港币(HKD)</option>
+       <option value="USD" <?php if($this->inq['currency'] == 'USD') echo "selected";?>>美元(USD)</option>
+       </select>
+       </div>
+          </td>
+        </tr>
+        <tr>
+            <td ><em>*</em>交货地：</td>
+            <td align="left">
+              <span id='delivery_text'><?=$deliveryArr[$delivery_tmp]?>&nbsp;&nbsp;<a href="javascript:;" onclick="changeDelivery()">修改结算货币&gt;&gt;</a></span>
+          <div style="display:none" id="delivery_div">
+        <select name="delivery" id="delivery" disabled="disabled">
+          <option value="SZ" <?php if($delivery_tmp == 'SZ') echo "selected";?>>国内</option>
+          <option value="HK" <?php if($delivery_tmp == 'HK') echo "selected";?>>香港</option>
+          </select>
+             &nbsp;&nbsp;<a href="javascript:;" onclick="saveDelivery()">保存&gt;&gt;</a>
+          </div>
+      		</td>
+      </tr>        
+      <tr>
+      	<td  >询价说明：</td>
+        <td align="left">
+        <textarea name="description" id="description" rows="3" cols="40"><?php echo $this->inq['remark'];?></textarea>
+        </td>
+      </tr>
+      <tr>
+      <td colspan="2" align="center">
+      <span id="orderbtn">
+      <input type="button" value="提交修改"  class="button bigbutton" onclick="handleInquiry()"/>
+      </span></td>
+        </tr>
+    </table>
+
+    </div>  
+</div>
+</div>
+<div class="clr"></div>
+<script type="text/javascript">
+function changeMbprice(v)
+{
+	if(v=='RMB')
+	{
+	   $("#delivery").val('SZ');
+	}
+	else if(v=='HKD')
+	{
+	    $("#delivery").val('HK');
+	 }
+	else{ 
+		 $("#delivery").val('HK');
+	}
+
+}
+function changeDelivery(){
+	document.getElementById("delivery_text").style.display = 'none';
+	document.getElementById("delivery_div").style.display  = 'block';
+	document.getElementById("currency_text").style.display = 'none';
+	document.getElementById("currency_div").style.display  = 'block';
+}
+function saveDelivery(){
+    var deliveryobj = document.getElementById("delivery");
+    var currencyobj = document.getElementById("currency");
+    
+	document.getElementById("delivery_text").style.display = 'block';
+	document.getElementById("delivery_div").style.display  = 'none';
+	document.getElementById("delivery_text").innerHTML = deliveryobj.options[deliveryobj.selectedIndex].text+'&nbsp;&nbsp;<a href="javascript:;" onclick="changeDelivery()">修改结算货币&gt;&gt;</a>';
+	document.getElementById("currency_text").innerHTML = currencyobj.options[currencyobj.selectedIndex].text;
+	document.getElementById("currency_text").style.display = 'block';
+	document.getElementById("currency_div").style.display  = 'none';
+}
+function handleInquiry() {
+	   var num    =new Array();
+	   var price  =new Array();
+	   var amount = new Array();
+	   var rowid  = new Array();
+	   var pamountbut = document.getElementsByName("pamountbut");
+	   var pricebut   = document.getElementsByName("pricebut");
+	   var rowidobj   = document.getElementsByName("rowid");
+	   var amountobj  = document.getElementsByName("expected_amount");
+	   for (var i=pamountbut.length-1;i>=0;i--)
+	   {
+			if(pamountbut[i].value=='') {alert('请输入采购数量');pamountbut[i].focus();return;}
+			else if(isNaN(pamountbut[i].value)){alert('采购数量必须为数字');pamountbut[i].focus();return;}
+			else if(pamountbut[i].value < 1){alert('采购数量必须大于0');pamountbut[i].focus();return;}
+			else num[i]=pamountbut[i].value;
+			
+			if(pricebut[i].value!=''){
+			  if(!BASEisFloat(pricebut[i].value)) {alert('目标单价必须为数字');pricebut[i].focus();return;}
+			  else if(!CheckFloat(pricebut[i].value,4)){alert('目标单价最多4位小数');pricebut[i].focus();return;}
+			}
+			price[i]=pricebut[i].value;
+			amount[i]=amountobj[i].value;
+			rowid[i] =rowidobj[i].value;
+	   }
+	   var delivery = document.getElementById('delivery').value;
+	   if(delivery == ''){alert('请选择交货地');return;}
+	   var currency = document.getElementById('currency').value;
+	   if(currency == ''){alert('请选择结算货币');return;}
+	   var description = document.getElementById('description').value;
+	   var subtmp = document.getElementById("orderbtn");
+	   $.ajax({
+			url: '/inquiry/edit',
+			data: {'inq_number':'<?=$this->inq['inq_number']?>','num':num,'price':price,'amount':amount,'rowid':rowid,'delivery':delivery,'currency':currency,'description':description},
+			type: 'post',
+			dataType: 'json',
+			success: function(arr) {
+				alert(arr.message);
+				if(arr.code==0)
+				{
+					location.reload();
+				}
+			}
+		});
+}
+changeCur();
+function changeCur()
+{
+	var delivery=$("#delivery").val();
+	if(delivery=='SZ')
+	{
+	   $("#cur_div").html('<select name="currency" id="currency"><option value="RMB">人民币(RMB)</option></select>');
+	}else if(delivery=='HK')
+	{
+		var usd = hkd = ''; 
+		if('<?=$this->inq['currency']?>' =='USD') usd = "selected";
+		else hkd = "selected";
+	   $("#cur_div").html('<select name="currency" id="currency"><option value="HKD" '+hkd+'>港币(HKD)</option><option value="USD" '+usd+'>美元(USD)</option></select>');
+	}
+	else $("#cur_div").html('<select name="currency" id="currency"><option value="">先选择交货地</option></select>');
+}
+</script>

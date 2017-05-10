@@ -1,0 +1,93 @@
+
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/se2013.css"/>
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+
+
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a href="/webinarlist" class="focs">技术研讨会</a> &nbsp;&nbsp;»&nbsp;&nbsp; 
+    <a href="/webinarlist-<?=$this->sem['semcid']?>.html"><?=$this->sem['name']?></a> &nbsp;&nbsp;»&nbsp;&nbsp; 
+    <span title=""><?=$this->sem['title']?></span>
+  </span></div>
+</div><span>
+
+<div class="w clearfix sembox2013">
+
+	<div class="layout rigybg" >
+        <div class="shoplist fl">
+    	<div class="themain themain1 " >
+        	<span class="ifotip2013"><em><?=$this->sem['name']?></em><i></i></span>
+         	<h1><?=$this->sem['title']?></h1>
+         	<div class="postmeta">                
+               来源：<span><?=$this->sem['source']?></span>
+               作者：<span><?=$this->sem['author']?></span>
+               创建时间：<span><?=date('Y-m-d',$this->sem['created'])?></span>
+               关键词：<span><?php 
+					$tip = explode(',',$this->sem['keyword']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+					}
+			    ?></span>
+            </div>
+            <?php if($this->sem['type']=='vdo'){?>
+            <div class="themain_p boxshadow_h">
+				<p><?=$this->sem['content']?></p>  
+                <div class="proinfo_btn">
+                    <a href="/webinarvideo-<?=$this->sem['id']?>.html" class="btnok-new1" ><i class="icon_see"></i>在线观看</a>
+                </div>     
+			</div>
+            <div class="dl2013">
+            	<dl class="dl100">
+                	<dt>公司名称：</dt>
+                    <dd><?=$this->sem['company']?></dd>
+                </dl>
+                <dl class="dl100">
+                	<dt>公司简介：</dt>
+                    <dd><?=$this->sem['com_profile']?></dd>
+                </dl>
+                <dl class="dl100">
+                	<dt>公司网址：</dt>
+                    <dd><a href="http://<?=$this->sem['com_url']?>" target="_blank"><?=$this->sem['com_url']?></a></dd>
+                </dl>
+            </div>
+            <?php }else{?>
+            
+            <!--<div class="themain_p boxshadow_h">
+            	<p><?=$this->sem['description']?></p>
+            </div>-->
+             <div class="dl2013">
+             <dl class="dl100">
+                	<dt></dt>
+                    <dd><?=$this->sem['content']?></dd>
+                </dl>
+             </div>
+            <?php }?>
+		</div>
+        
+		</div>                
+        <div class="fr righttuij">
+            <div id="hotsearch"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
+            <div id="hotsolution"></div>
+            <div id="hotnews"></div>
+            <div id="hotwebinar"></div>
+            <div id="htocode"></div>
+            </div>
+        <div class="clr"></div>
+    </div>
+
+</div>
+<script language="javascript">
+	$(function(){
+	
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+		$("#hotsearch").load("/publicbox/hotsearch");
+		$("#hotsolution").load("/publicbox/hotsolution");
+		$("#hotnews").load("/publicbox/hotnews");
+		$("#hotwebinar").load("/publicbox/hotwebinar");
+		$("#htocode").load("/publicbox/htocode");
+	})
+</script>

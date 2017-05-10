@@ -1,0 +1,108 @@
+<script type="text/javascript" language="javascript">
+function deleteaction(ID)
+{
+	if(confirm('你确定删除："'+ID+'" 吗？'))
+    {
+		$.ajax({
+            url: '<?php echo $this->deleteurl;?>',
+            data: {'ID':ID},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+				    alert(arr.message);
+                    location.reload();
+                }else{
+				    document.getElementById('message_sess').style.display = "block";
+	                document.getElementById('alert_message').innerHTML = arr.message;
+				}
+            }
+	    });
+	}
+}
+function openadd()
+{
+	$.openPopupLayer({
+        name:'addBox',
+        url:'<?php echo $this->addurl;?>'
+    });
+}
+function openedit(ID)
+{
+	$.openPopupLayer({
+        name:'addBox',
+        url:'<?php echo $this->editurl;?>'+'?ID='+ID
+    });
+}
+</script>
+<table class='tableContent'>
+  <tr>
+    <td bgcolor="#FFFFFF" align="left" valign="top" width="770"><table width="740" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td height="10" colspan="3">&nbsp;</td>
+        </tr>
+        <tr>
+          <td height="29" bgcolor="#FFFFFF" align="center"><table width="740" border="0" cellpadding="3" cellspacing="0">
+              <tr bgcolor="#334159">
+                <td height="7" align="left" colspan="6"><b><font color="#FFFFFF"> <?php echo $this->AreaTitle;?> : </font>
+                  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                  <a href="#add" onClick="openadd()"><font color="#CCCCCC">添加+</font></a>
+                  <?php }?>
+                  </b> </td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr>
+          <td height="10" colspan="3" align="center"><div id="message_sess" style="display:none" class="message_sess"> <span title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</span> <span id="alert_message"></span> </div></td>
+        </tr>
+      </table>
+      <!-- 需要填写的区域-->
+      <table width="740" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="584" height="241" valign="top"><table width="550" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+              <tr bgcolor="#E7E3E7">
+                <td bgcolor="#FFFFCC" align="left"><table width="740" border="0" cellspacing="0" cellpadding="1">
+                    <tr>
+                      <td colspan="4"><table width="740" border="0" cellpadding="1">
+                          <tr bgcolor="#334159"  height="30px">
+                            <td><div align="left"><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">Section Area ID</font></strong></div></td>
+                            <td><div align="left"><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">标题</font></strong></div></td>
+                            <td><div align="left"><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">排序</font></strong></div></td>
+                            <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                            <td></td>
+                            <?php }?>
+                          </tr>
+                          <?php
+                					   for ($i = 0; $i < count($this->Section); $i++){
+										$data = $this->Section[$i];
+										if(!empty($data))
+										{
+										  $areaid = $data['section_area_id'];
+										  $web_area = $data['section_area_des'];
+										  $orderid=$data['order_id'];
+										  $toarea=$this->indexurl.'/area';
+										  echo "<tr>";
+										  echo "<td  align='center'><a href=\"{$toarea}?sectionid={$areaid}\"/ title='进入操作'>{$areaid}</a></td>";
+										  echo "<td>".$web_area."</td>";									  
+										  echo "<td>".$orderid."</td>";
+										  
+										 if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID))						
+										  echo "<td><a href=\"#edit\" onClick=\"openedit('{$areaid}')\">编辑</a>&nbsp;|&nbsp;
+										  <a href=\"#delete\" onclick=\"deleteaction('{$areaid}')\">删除</a></td>";
+										  echo "</tr>\r\n";
+									   	 }
+									   }
+	            			      ?>
+                        </table></td>
+                    </tr>
+                  </table></td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      <br/>
+      <!-- 结束区域-->
+    </td>
+  </tr>
+</table>

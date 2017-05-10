@@ -1,0 +1,203 @@
+<link href="/css/default/register.css" media="screen" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/js/jsplug/formvalidator/css/validationEngine.jquery.css" media="screen" type="text/css"/>
+<link rel="stylesheet" href="/js/jsplug/formvalidator/css/template.css" media="screen" type="text/css"/>
+<script src="/js/jsplug/formvalidator/js/jquery.validationEngine-en.js" type="text/javascript"></script>
+<script src="/js/jsplug/formvalidator/js/jquery.validationEngine.js" type="text/javascript"></script>
+<script language="javascript">	
+		$(document).ready(function() {
+			$("#formID").validationEngine()
+		});
+</script>
+<div id="header" class="w">
+  <div id="logo"><a hidefocus="true" href="/"><img alt="IC易站" src="/images/default/logo.jpg"></a></div>
+  <h1>会员注册</h1>
+</div>
+<form id="formID" method="post" action="">
+<input type="hidden" name="invitekey" value="<?=$this->invitekey?>" />
+  <!--registerted-->
+  <div class="w register">
+    <div class="registerline"></div>
+    <div class="steps step-1">
+      <ol>
+        <li>填写注册信息</li>
+        <li>验证邮箱</li>
+        <li>注册成功</li>
+      </ol>
+    </div>
+    <div class="RG_mbox fl">
+      <div class="item ">
+        <div class="ltext fl"> <em>*</em>行业领域： </div>
+        <div class="fl">
+          <select id="industry" name="industry" onchange="showother(this.value)" style="width:210px;">
+            <?php foreach($this->appLevel1 as $k=>$v){
+			    $sel='';
+			    if($this->formData['industry'] == $v['id']) $sel = 'selected="selected"';
+			    echo "<option value='".$v['id']."' $sel>".$v['name']."</option>";
+		     }?>
+            <option value='other' <?php if($this->formData['industry'] == 'other') echo 'selected="selected"';?>>其它</option>
+          </select>
+          <div id="industry_other_div"></div>
+        </div>
+      </div>
+      
+      <div class="item ">
+        <div class="ltext fl"> <em>*</em>企业性质： </div>
+        <div class="fl">
+           <select name="property" id="property" style="width:210px;">
+                  <option value="enduser" <?=$this->formData['property']=='enduser'?'selected':'';?>>终端用户</option>
+                  <option value="merchant" <?=$this->formData['property']=='merchant'?'selected':'';?>>贸易商</option>
+                </select>
+        </div>
+      </div>
+      <div class="item ">
+        <div class="ltext fl"> <em>*</em>用户名： </div>
+        <div class="fl">
+          <input type="text" class="validate[required,custom[noSpecialCaracters],length[4,20],ajax[ajaxUname]] reinput fl" id="uname" name="uname" value="<?=$this->formData['uname']?>">
+          <span class="tips">4-20个字符，注册成功可以使用此用户名登录。一旦注册成功用户名将不能修改。</span> </div>
+      </div>
+      <div class="item ">
+        <div class="ltext fl"> <em>*</em>Email： </div>
+        <div class="fl emailtipbox">
+          <input type="text" class="validate[required] reinput fl"  value="<?=$this->formData['email']?>" id="email" name="email"  autocomplete="off">
+          <span class="tips">请输入您的邮箱，注册成功可以使用此邮箱地址登录。一旦注册成功邮箱地址将不能修改。</span> </div>
+      </div>
+      <div class="item ">
+        <div class="ltext fl"> <em>*</em>登录密码： </div>
+        <div class="fl">
+          <input type="password" class="validate[required,length[6,25]]  reinput fl" value="" id="password" name="password">
+          <span class="tips">6-25个字符，请使用字母加数字或符号的组合密码。</span> </div>
+      </div>
+      <div class="item ">
+        <div class="ltext fl"> <em>*</em>确认密码： </div>
+        <div class="fl">
+          <input type="password" class="validate[required,confirm[password]] reinput fl" value="" id="password2" name="password2">
+          <span class="tips1">请再次输入密码。</span> </div>
+      </div>
+      <div class="item ">
+        <div class="ltext fl"> <em>*</em>验证码： </div>
+        <div class="fl">
+          <input type="text" id="verifycode" name="verifycode" style=" width:120px;" class="validate[required] reinput fl">
+          <a style="cursor:pointer" onClick="getVerify()" class="refresh" ><img src="" id="verify"/>看不清？换一张</a> </div>
+      </div>
+      <div class="item ">
+        <div class="ltext fl"> &nbsp; </div>
+        <div class="fl">
+          <p><label><input type="checkbox" class="validate[]" name="agreement" id="agreement" value="ok" onclick="checkOk()"/>我已阅读并接受 </label>
+          <a href="javascript:"  onclick="openService()">《IC易站用户协议》</a><a href="javascript:"  onclick="openTransaction()">《IC易站交易条款》</a></p>
+          <br/>
+          <span id="sub_ok" style="display:none">
+          <input type="submit" class="button"  value="立即注册"/>
+          </span>
+          <span id="sub_no" title="阅读并接受《IC易站用户协议》和《IC易站交易条款》后才能注册"><input type="submit" class="button" style="background:#aaa;cursor:default"  value="立即注册" disabled="disabled"/></span>
+        </div>
+      </div>
+    </div>
+    <div class="rtip fr">
+      <h2>IC易站欢迎您！</h2>
+      <p>IC易站 —— 一站式的电子元器件电子商务交易平台！ 全程设计链、供应链支持，为您提供产品、技术、服务、知识等专业服务！</p>
+    </div>
+  </div>
+</form>
+<script src="/js/jsplug/regemail/regemail.js" type="text/javascript"></script>
+<script language="javascript">
+function checkOk(){
+	var agreement=document.getElementById("agreement");
+	var subtmp=document.getElementById("sub");
+	if(agreement.checked){ 
+		document.getElementById("sub_ok").style.display = 'block';
+		document.getElementById("sub_no").style.display = 'none';
+	}
+	else{
+		document.getElementById("sub_ok").style.display = 'none';
+		document.getElementById("sub_no").style.display = 'block';
+	}
+}
+
+<?php if($this->formData['industry'] == 'other'){?>
+   showother('other');
+<?php }?>
+//选择其它
+function showother(value){
+    var obj = document.getElementById("industry_other_div");
+	if(value=='other'){
+		obj.innerHTML='<input  type="text" name="industry_other" id="industry_other" value="<?=$this->formData['industry_other']?>" class="validate[required] reinput fl"/><span class="tips">请填写其他行业领域。</span>';
+		<?php if(empty($this->formData['industry_other'])) echo 'document.getElementById("industry_other").focus();';?>
+		$(".industry_otherformError").show();
+	}else{
+		$(".industry_otherformError").hide();
+	    obj.innerHTML='';
+	}
+}
+function getVerify(){
+ var d = new Date();
+ document.getElementById('verify').src="<?php echo $this->url(array('controller'=>'common','action'=>'createcode'));?>?t="+d.toTimeString();
+}
+$(document).ready(function(){
+ getVerify();
+})
+<?php if(!empty($this->userMess)){?>
+var uname=document.getElementById("uname");
+$.validationEngine.buildPrompt(uname,"<?php echo $this->userMess;?>","error");
+<?php }?>
+<?php if(!empty($this->emailMess)){?>
+var email=document.getElementById("email");
+$.validationEngine.buildPrompt(email,"<?php echo $this->emailMess;?>","error");
+<?php }?>
+<?php if(!empty($this->verifycodeMess)){?>
+var verifycode=document.getElementById("verifycode");
+$.validationEngine.buildPrompt(verifycode,"<?php echo $this->verifycodeMess;?>","error");
+<?php }?>
+
+<?php if(!empty($this->checkboxMess)){?>
+var agreement=document.getElementById("agreement");
+$.validationEngine.buildPrompt(agreement,"<?php echo $this->checkboxMess;?>","error");
+<?php }?>
+</script>
+<script type="text/javascript">
+function openService() {
+	$(".formError").hide();
+	$.openPopupLayer({
+		name: "myService",
+		target: "ServiceAlert"
+	});
+}
+function openTransaction() {
+	$(".formError").hide();
+	$.openPopupLayer({
+		name: "myTransaction",
+		target: "TransactionAlert"
+	});
+}
+</script>
+<div id="ServiceAlert" style="display:none">
+  <div class="pop pop_shopbox " id="pop_shopbox" style="display:block;">
+    <div class="popbox">
+      <div class="poptit1" style="height:25px;">
+        <!--<span>提示</span>-->
+        <input type="button" value=""  class="closebtn" onclick="$.closePopupLayer('myService');$('.formError').show();"/>
+      </div>
+      <div class="popcon clearfix" style="height:300px; overflow:auto">
+      <?=$this->user_agreement['content']?>
+      </div>
+    </div>
+    <div class="rightborder"> </div>
+    <span class="blank0"></span>
+    <div class="bottomborder"> </div>
+  </div>
+</div>
+<div id="TransactionAlert" style="display:none">
+  <div class="pop pop_shopbox " id="pop_shopbox" style="display:block;">
+    <div class="popbox">
+      <div class="poptit1" style="height:25px;">
+        <!--<span>提示</span>-->
+        <input type="button" value=""  class="closebtn" onclick="$.closePopupLayer('myTransaction');$('.formError').show();"/>
+      </div>
+      <div class="popcon clearfix" style="height:300px; overflow:auto">
+      <?=str_ireplace(array('新手入门&nbsp;|&nbsp;','上一篇：<a href="/help/index/type/terms">使用协议</a>','下一篇：<a href="/help/index/type/find">查找商品</a>'),array('','',''),$this->clause['content'])?>
+      </div>
+    </div>
+    <div class="rightborder"> </div>
+    <span class="blank0"></span>
+    <div class="bottomborder"> </div>
+  </div>
+</div>

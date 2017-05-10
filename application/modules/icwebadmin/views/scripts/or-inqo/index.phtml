@@ -1,0 +1,638 @@
+<?php 
+$statusarr = array('101'=>'<p class="orange_payment">待付款</p>',
+'102'=>'<p class="orange_ing">处理中</p>',
+'103'=>'<p class="orange_residualpayment">待支付余款</p>',
+'201'=>'<p class="orange_shipments">待发货</p>',
+'202'=>'<p class="orange_harvest">待确认收货</p>',
+'301'=>'<p class="green_ok">已完成</p>',
+'302'=>'<p class="green_evaluate">已评价</p>',
+'401'=>'<p class="gray_cancel">订单被取消</p>',
+'501'=>'<p class="gray_return">退款</p>',
+'502'=>'<p class="gray_returngoods">退货退款</p>');
+
+$codarr = array('101'=>'<p class="orange_approv">等待审核</p>',
+'102'=>'<p class="orange_ing">处理中</p>',
+'103'=>'<p class="orange_residualpayment">待支付余款</p>',
+'201'=>'<p class="orange_shipments">待发货</p>',
+'202'=>'<p class="orange_harvest">待确认收货</p>',
+'301'=>'<p class="green_ok">已完成</p>',
+'302'=>'<p class="green_evaluate">已评价</p>',
+'401'=>'<p class="gray_cancel">订单被取消</p>',
+'501'=>'<p class="gray_return">退款</p>',
+'502'=>'<p class="gray_returngoods">退货退款</p>');
+
+//301代表待评价，第一阶段没有评价功能
+$paytypearr = array('transfer'=>'银行转账','online'=>'在线支付','cod'=>'货到付款','mts'=>'款到发货');
+$wuliuarr = array('202','301','401','401');
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$type = array('spot'=>'现货','order'=>'订货');
+
+$statustmp = array('202','301','302');
+ 
+$selecturl = "&back_order=$this->back_order&sdata=$this->sdata&edata=$this->edata&edata=$this->edata&paytype=$this->paytype&delivery_place=$this->delivery_place&shipments=$this->shipments&sqs_code=$this->sqs_code&xsname=$this->xsname";
+$orderurl = "/icwebadmin/OrInqo?type=$this->type".$selecturl;?>
+
+<div class="conmian">
+<h1><?php echo $this->AreaTitle;?> </h1>
+<form id="myform"  class="form-search" name="myform" action="" method="get">
+<input type="hidden" name="type" value="select" />
+<input type="hidden" name="ordertype" value="<?=$this->ordertype?>" />
+<input type="hidden" name="orderby" value="<?=$this->orderby?>" />
+
+
+
+<label>开始时间</label><input type="text"  style="width:70px;" name="sdata" value="<?=$this->sdata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+<label>结束时间</label><input type="text"  style="width:70px;" name="edata" value="<?=$this->edata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+
+<div class="input-append">
+<select name="back_order" id="back_order">
+   <option value="all" <?=$this->back_order=='all'?'selected':''?>>订单性质</option>
+   <option value="before" <?=$this->back_order=='before'?'selected':''?>>online</option>
+   <option value="back" <?=$this->back_order=='back'?'selected':''?>>back</option>
+</select>
+</div>
+<?php if($_SESSION['staff_sess']['level_id']!='XS'){?>
+<div class="input-append">
+<select name="xsname" id="xsname">
+      <option value="" <?=$this->xsname==''?'selected':''?>>跟进销售</option>
+      <option value="alina.shang" <?=$this->xsname=='alina.shang'?'selected':''?>>尚玉(alina.shang)</option>
+      <?php for($i=0;$i<count($this->xs_staff);$i++){?>
+      <option value="<?=$this->xs_staff[$i]['staff_id']?>" <?=$this->xsname==$this->xs_staff[$i]['staff_id']?'selected':''?>><?=$this->xs_staff[$i]['lastname'].$this->xs_staff[$i]['firstname']."(".$this->xs_staff[$i]['staff_id'].")"?></option>
+      <?php }?>
+</select>
+</div>
+<?php }?>
+
+<label>订单号：</label>
+<div class="input-append">
+  <input type="text" class="search-query ac_input" id="salesnumber" style="width:120px"  value="<?=$this->salesnumber?>" name="salesnumber" autocomplete="off"/>
+</div>
+
+
+<!--<div class="input-append">
+<select name="paytype" id="paytype">
+      <option value="" <?=$this->paytype==''?'selected':''?>>支付类型-全部</option>
+      <option value="transfer" <?=$this->paytype=='transfer'?'selected':''?>>银行转账</option>
+      <option value="cod" <?=$this->paytype=='cod'?'selected':''?>>货到付款</option>
+      <option value="online" <?=$this->paytype=='online'?'selected':''?>>在线支付</option>
+</select>
+</div>-->
+<div class="input-append">
+<select name="delivery_place" id="delivery_place">
+      <option value="" <?=$this->delivery_place==''?'selected':''?>>交货地</option>
+      <option value="HK" <?=$this->delivery_place=='HK'?'selected':''?>>香港</option>
+      <option value="SZ" <?=$this->delivery_place=='SZ'?'selected':''?>>国内</option>
+</select>
+</div>
+<div class="input-append">
+<select name="sqs_code" id="sqs_code">
+      <option value="" <?=$this->sqs_code==''?'selected':''?>>订单流程</option>
+      <option value="1" <?=$this->sqs_code=='1'?'selected':''?>>正常流程</option>
+      <option value="2" <?=$this->sqs_code=='2'?'selected':''?>>SQS Code</option>
+</select>
+</div>
+<!--<div class="input-append">
+<select name="shipments" id="shipments">
+      <option value="" <?=$this->shipments==''?'selected':''?>>货物方式-全部</option>
+      <option value="spot" <?=$this->shipments=='spot'?'selected':''?>>现货</option>
+      <option value="order" <?=$this->shipments=='order'?'selected':''?>>订货</option>
+</select>
+</div>-->
+<input type="submit" class="btn" value="查 找"/>
+</form>
+
+<div id="message_sess" style="display:none" class="message_sess">
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div>
+</div>
+
+<?php if($this->type == 'select'){?>搜索结果（<?=$this->selectnum?>）<a href="/icwebadmin/OrInqo">返回&gt;&gt;</a><?php }?>
+<div class="contentmia">
+    <div class="leftSwitching">
+        <ul>
+         <li <?php if($this->type=='rel') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=rel<?=$selecturl?>">待审核<em>(<?=$this->relnum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='wpay') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=wpay<?=$selecturl?>">待付款<em>(<?=$this->wpaynum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='ema') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=ema<?=$selecturl?>">待释放订单<em>(<?=$this->emanum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='proc') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=proc<?=$selecturl?>">待反馈交期<em>(<?=$this->procnum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='over') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=over<?=$selecturl?>">待付余款<em>(<?=$this->overnum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='rec') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=rec<?=$selecturl?>">待发货<em>(<?=$this->recnum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='shou') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=shou<?=$selecturl?>">待收货<em>(<?=$this->shounum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='eva') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=eva<?=$selecturl?>">已完成<em>(<?=$this->evanum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='can') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=can<?=$selecturl?>">已取消<em>(<?=$this->cannum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='back') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=back<?=$selecturl?>">退款退货<em>(<?=$this->backnum?>)</em><b class="blank3"></b></a></li>
+           <li <?php if($this->type=='not') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=not<?=$selecturl?>">审核不通过<em>(<?=$this->notnum?>)</em><b class="blank3"></b></a></li>
+           <li <?php if($this->type=='all') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=all<?=$selecturl?>">全部订单<em>(<?=$this->allnum?>)</em><b class="blank3"></b></a></li>
+           <li <?php if($this->type=='change') echo 'class="on"';?>><a href="/icwebadmin/OrInqo?type=change<?=$selecturl?>">待审批交期变更<em>(<?=$this->changenum?>)</em><b class="blank3"></b></a></li>
+        </ul>
+    </div>
+    <div class="conright" >
+    	<table class="table ordertable" border="1" cellpadding="0" cellspacing="0">
+    <thead>
+        <tr>
+           
+            <th width="130">订单号</th>
+            <th width="50">订单流程</th>
+            <th width="130">订单商品</th>
+            <th width="40">交货地</th>
+            <th width="40">标准<br/>交期</th>
+            <th width="50">币种</th>
+            <th width="120"><a href="<?=$orderurl?>&ordertype=total&orderby=<?php if($this->orderby=='ASC' && $this->ordertype=='total') echo 'DESC';else echo 'ASC';?>" title="排序">订单金额</a>
+            <div class="aorder">
+                <a href="<?=$orderurl?>&ordertype=total&orderby=ASC" class="aorder_up <?php if($this->orderby=='ASC' && $this->ordertype=='total') echo 'onaorder';else echo '';?>"  title="升排序"></a>
+                <a href="<?=$orderurl?>&ordertype=total&orderby=DESC" class="aorder_down <?php if($this->orderby=='DESC' && $this->ordertype=='total') echo 'onaorder';else echo '';?>" title="降排序">倒序</a>
+            </div></th>
+            <th width="60">支付类型</th>
+            <th width="60">销售</th>
+            <th width="80"><a href="<?=$orderurl?>&ordertype=created&orderby=<?php if($this->orderby=='ASC' && $this->ordertype=='created') echo 'DESC';else echo 'ASC';?>" title="排序">下单时间</a>
+            <div class="aorder">
+                <a href="<?=$orderurl?>&ordertype=created&orderby=ASC" class="aorder_up <?php if($this->orderby=='ASC' && $this->ordertype=='created') echo 'onaorder';else echo '';?>"  title="升排序"></a>
+                <a href="<?=$orderurl?>&ordertype=created&orderby=DESC" class="aorder_down <?php if($this->orderby=='DESC' && $this->ordertype=='created') echo 'onaorder';else echo '';?>" title="降排序">倒序</a>
+            </div></th>
+            <th width="70">客户</th>
+            <th width="80">订单状态</th>
+            <th width="80" class="lrb">操作</th>
+            <th width="25">备注</th>
+        </tr>
+    </thead>
+    <tbody>
+    	<?php  if(empty($this->salesorder)){?>
+            <tr>
+              <td colspan="14"><span style="text-align:center; width:100%;  float:left">暂无记录。</span></td>
+            </tr>
+            <?php }else{
+				foreach($this->salesorder as $sodata){
+			?>
+    	<tr>
+            <td>
+            <p><a href="javascript:;" onclick="viewInqSo('<?=$sodata['salesnumber']?>')" title="查看订单"><?=$sodata['salesnumber']?></a></p>
+       
+           
+           <?php if($sodata['paper_contract']){?>
+           <p><a href="/icwebadmin/OrInqo/iccontract/key/<?=md5(session_id())?>/salesnumber/<?=$sodata['salesnumber']?>/<?=$sodata['salesnumber'].'_'.($sodata['companyname']?$sodata['companyname']:$sodata['uname'])?>" target="_blank"  class="gbqfb" title="查看纸质合同">纸质合同</a></p>
+           <p><a href="javascript:;" onclick="openbox('/icwebadmin/OrInqo/modifycontract/salesnumber/<?=$sodata['salesnumber']?>/type/iccontract')" class="gbqfb" title="修改合同">修改合同</a></p>
+           <?php }else{?>
+           <p><a href="/icwebadmin/OrInqo/digitalcontract/key/<?=md5(session_id())?>/salesnumber/<?=$sodata['salesnumber']?>/<?=$sodata['salesnumber'].'_'.($sodata['companyname']?$sodata['companyname']:$sodata['uname'])?>" target="_blank"  class="gbqfb" title="查看电子合同">电子合同</a></p>
+           <p><a href="javascript:;" onclick="openbox('/icwebadmin/OrInqo/modifycontract/salesnumber/<?=$sodata['salesnumber']?>/type/digitalcontract')" class="gbqfb" title="修改合同">修改合同</a></p>
+           <?php }?>
+           
+           <?php if($sodata['ufid']){?>
+              <?php if($sodata['total']==$sodata['down_payment']){?>
+              <p><a href="/upload/default/pi/<?=md5('down'.$sodata['salesnumber'])?>.pdf" target="_blank"  class="gbqfb" title="查看">订单PI</a></p>
+              <?php }else{?>
+              <p><a href="/upload/default/pi/<?=md5('down'.$sodata['salesnumber'])?>.pdf" target="_blank"  class="gbqfb" title="查看">预付款PI</a>&nbsp;&nbsp;&nbsp;&nbsp;
+              <a href="/upload/default/pi/<?=md5('surplus'.$sodata['salesnumber'])?>.pdf" target="_blank"  class="gbqfb" title="查看">余款PI</a></p>
+              <?php }?>
+           <?php }?>
+           
+           <!---->
+           <?php if($sodata['ship_salesnumber']){?>
+           <a href="javascript:" class="tipa" onclick="viewInqSo('<?=$sodata['ship_salesnumber']?>')" title="查看合并订单"><b class="tipicon"></b>
+                    <div class="bubblebox hide" style="width:200px;">
+                        <div class="uparrow"></div>
+                        <div class="popbox">
+                           <div class="popcon" >
+                               <p><strong class="fontorg">此订单与订单#： <?=$sodata['ship_salesnumber']?> 一起发货。</strong></p>
+                            </div>
+                        </div>
+                    </div>	
+            </a>
+           <?php }?>
+            </td>
+            <td>   
+            <?=$sodata['sqs_code']?'SQS流程':'SAP正常流程'?>
+            
+            <?php 
+            if($_SESSION['staff_sess']['level_id']!='XS' && $this->mycommon->checkA($this->Staff_Area_ID)){
+           	 if(in_array($sodata['status'],array(101,102)) && $sodata['back_status'] == 201){
+            	if($sodata['sqs_code']==1){
+					echo '<br/><a class="gbqfb" href="javascript:" onclick="changeLiucheng(\''.$sodata['salesnumber'].'\',0)">转为SAP流程</a>';
+				}else{
+					echo '<br/><a class="gbqfb" href="javascript:" onclick="changeLiucheng(\''.$sodata['salesnumber'].'\',1)">转为SQS流程</a>';
+				}
+				}
+			}
+            ?>
+            </td>
+            <td class="productNO"><?php foreach($sodata['prodarr'] as $pid=>$partarr){
+			   if($partarr['id']){ ?>
+              <a href="/proddetails?partid=<?=$partarr['id'];?>" target="_blank" title="查看产品信息"><?=$partarr['part_no']?></a>
+			  <?php }else echo '<p>'.$partarr['part_no'].'</p>';?>
+			  <?php if($partarr['staged']) echo '<sup><span title="Date Code：'.$partarr['datecode'].'" class="sup_SALE HOT">特卖</span></sup>';}
+			    if($partarr['pdnpcn']['pdn']) echo '<sup><span class="sup_PDN HOT">PDN</span></sup>';
+				if($partarr['pdnpcn']['pcn']) echo '<sup><span class="sup_PCN HOT">PCN</span></sup>';
+				if(in_array($partarr['id'],$this->tongyong)) echo '<sup><span class="sup_TY">通用</span></sup>';
+			  ?></td>
+            <td class="price"><?=$deliveryArr[$sodata['delivery_place']]?><!--<br/>(<?=$type[$sodata['shipments']]?>)--></td>
+
+            <td><?=$sodata['delivery_time']==0?$sodata['delivery_about_time']:date('Y/m/d',$sodata['delivery_time'])?>
+            
+            <?php if($sodata['delivery_status']>0 && $sodata['back_status']!=102){?>
+                    <?php if($sodata['delivery_status']==101) echo '<br/><span style="color:#FF0000" title="申请更改的交货期：'.date("Y/m/d",$sodata['delivery_change_date']).'"><a href="javascript:" onclick="deliverychange(\''.$sodata['salesnumber'].'\')" class="btnbuynow mb5">处理申请</a></span>';
+						elseif($sodata['delivery_status']==201) echo '<br/><span  style="color:#009944" title="申请更改的交货期：'.date("Y/m/d",$sodata['delivery_change_date']).'">申请通过</span>';
+						elseif($sodata['delivery_status']==301) echo '<br/><span  style="color:#FF0000" title="申请更改的交货期：'.date("Y/m/d",$sodata['delivery_change_date']).'">申请不通过</span>';
+				}
+			?>
+            </td>
+            <td><span style="color:#CC0000;"><?=$sodata['currency']?></span></td>
+            <td style="text-align:left; padding-left:4px; padding-bottom:5px;">
+                <?php if($sodata['total']==$sodata['down_payment']){?>
+                <span style="color:#CC0000; font-weight:bold"><?=number_format($sodata['total'],DECIMAL)?></span>
+                <?php }else{?>
+                总&nbsp;&nbsp;&nbsp;计：<span style="color:#CC0000; font-weight:bold"><?=number_format($sodata['total'],DECIMAL)?></span><br/>
+                预付款：<span style="color:#CC0000; font-weight:bold"><?=number_format($sodata['down_payment'],DECIMAL)?></span><br/>
+			    剩余款：<span style="color:#CC0000; font-weight:bold"><?=number_format($sodata['total'] - $sodata['down_payment'],DECIMAL)?></span>
+                 <?php }?>
+               </td>
+               <td><?=$paytypearr[$sodata['paytype']];?>
+                <?php if($sodata['total']==$sodata['down_payment']){ 
+                	      if(!empty($sodata['receipt']) && file_exists(UP_RECEIPT.$sodata['receipt'])){?>
+				          <br/><a href="<?=RECEIPT.$sodata['receipt']?>" target="_blank" title="查看">汇款凭证</a>
+				<?php }
+				  }else{
+				    if(!empty($sodata['receipt']) && file_exists(UP_RECEIPT.$sodata['receipt'])){?>
+                    <br/><a href="<?=RECEIPT.$sodata['receipt']?>" target="_blank" title="查看">预款凭证</a>
+                    <?php }?>
+                    <?php if(!empty($sodata['receipt_2']) && file_exists(UP_RECEIPT.$sodata['receipt_2'])){?>
+                    <br/><a href="<?=RECEIPT.$sodata['receipt_2']?>" target="_blank" title="查看">余款凭证</a>
+                <?php }
+				}?>
+               </td>
+            <td><?=$sodata['lastname'].$sodata['firstname']?>
+			</td>
+              <td><?=date('Y/m/d H:i',$sodata['created'])?></td>
+              
+              <td style="border-left:1px solid #ececec"><a href="javascript:;" onclick="viewUser('<?=$sodata['uid']?>')" title="查看详细资料" ><?=($sodata['companyname']?$sodata['companyname']:$sodata['uname'])?></a>
+              
+              <?php if(in_array($this->type,array('rel','wpay','ema')) && (!$sodata['annex1'] || !$sodata['annex2'])){?>
+                 <p><a class="gbqfb" href="javascript:;" onclick="openbox('/icwebadmin/UsUsgl/uploadannex/uid/<?=$sodata['uid']?>')">上传资料</a></p>
+                 <?php }?>
+                 
+              </td>
+		   <td style="border-left:1px solid #ececec"><?php if($sodata['back_status']!=102){
+			          echo '<div class="order_status">';
+			           if(in_array($sodata['paytype'],array('transfer','online'))) 
+			       		    echo $statusarr[$sodata['status']];
+			           else echo $codarr[$sodata['status']];
+					  echo '</div>';
+				   }else echo '<p style="color:#FF0000">审核不通过</p>';
+			  ?></td>
+
+           <td style="border-left:1px solid #ececec">
+	<?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+    			
+              <?php if($sodata['back_status']==101 && $sodata['status']==101 && $_SESSION['staff_sess']['level_id']!='XS'){?>
+                <div style="margin-top:2px"><a href="javascript:" onclick="openbox('/icwebadmin/OrInqo/modifyshipping?key=<?=$this->fun->encryptVerification($sodata['salesnumber'])?>')" class="gbqfb">修改运费</a></div>
+              <?php }?>
+    			
+			  <?php if($sodata['back_status']==101 && $sodata['status']!='401'){?>
+               <div style="margin-top:2px"><a class="gbqfb" href="javascript:" onclick="openrelease('<?=$sodata['salesnumber']?>')">审核订单</a></div>   
+			  <?php }?>
+              
+		      <?php if($sodata['paytype']=='transfer' && $sodata['status']=='101' && $sodata['back_status']==201){?>    
+                <div style="margin-top:2px"><a class="gbqfb" href="javascript:" onclick="transfer('<?=$sodata['salesnumber']?>')">上传转账凭证</a></div>
+                <div style="margin-top:2px"><a class="gbqfb" href="javascript:" onclick="canOrder('<?=$sodata['salesnumber']?>')" >取消订单</a></div>
+              <?php }?>
+             
+             <?php if($sodata['status']=='102' && $sodata['back_status']=='201'){?>
+                <div style="margin-top:2px"><a href="javascript:" onclick="openbox('<?=$this->indexurl?>/mailsend?salesnumber=<?=$sodata['salesnumber']?>')" class="gbqfb">释放订单</a></div>
+              <?php }?>
+              
+			  <?php if(!$sodata['invoiceid'] && $sodata['currency']=='RMB' && $sodata['status']!='401' && in_array($sodata['back_status'],array('101','201'))){?>
+                <div style="margin-top:2px"><a class="gbqfb" href="javascript:" onclick="openbox2('/icwebadmin/OrInqo/addinvoice/salesnumber/<?=$sodata['salesnumber']?>')">添加发票</a></div>
+              <?php }?>
+              
+              
+              <?php if($sodata['paytype']=='transfer' && $sodata['status']=='103' && $sodata['back_status']==301){?>
+                <div style="margin-top:2px"><a href="javascript:" onclick="transfer2('<?=$sodata['salesnumber']?>')" class="gbqfb">上传余款凭证</a></div>
+              <?php }?>
+              <?php if($sodata['paytype']=='transfer' && $sodata['status']=='201' && $sodata['back_status']==301){?>
+                <div style="margin-top:2px"><a href="javascript:" onclick="openbox('<?=$this->indexurl?>/mailsend?type=2&salesnumber=<?=$sodata['salesnumber']?>')" class="gbqfb">通知发货</a></div>
+              <?php }?>
+              
+              <?php if($sodata['status']=='102' && $sodata['back_status']==202){?>
+                <div style="margin-top:2px"><a href="javascript:" onclick="processing('<?=$sodata['salesnumber']?>','','')" class="gbqfb">交期反馈</a></div>
+               <div style="margin-top:2px"> <a href="javascript:" onclick="changestatus('<?=$sodata['salesnumber']?>','noneed')" class="gbqfb">不需交期反馈</a> </div>
+              <?php }elseif($sodata['status']>102 && $sodata['back_status']>=201 && $sodata['status']<202){
+			         //if(!$sodata['delivery_time'] || $_SESSION['staff_sess']['level_id']!='XS'){?>
+              <div style="margin-top:2px"><a href="javascript:" onclick="processing('<?=$sodata['salesnumber']?>','<?=$sodata['delivery_time']?>','edit')" class="gbqfb">交期反馈</a></div>
+              <?php //}
+			  }?>
+                 
+                <?php //if($sodata['delivery_place']=='HK'){?>
+                <p><a href="javascript:" onclick="openbox('<?=$this->indexurl.'/orderpi/salesnumber/'.$sodata['salesnumber']?>')" class="gbqfb"><?=($sodata['ufid']?'修改PI':'填写PI')?></a></p>
+                <?php //}?>
+                
+                <?php 
+				if(in_array($sodata['status'],$statustmp)){?>
+                <div style="margin-top:2px"><a href="javascript:" onclick="courier('<?=$sodata['id']?>','<?=$sodata['salesnumber']?>')" class="gbqfb">查看物流</a></div>
+                <?php }?>
+                
+                <?php if(in_array($sodata['status'],array(102,103,201)) && $sodata['back_status'] != 102){?>
+                <div style="margin-top:2px"><a href="javascript:" onclick="backorder('<?=$sodata['id']?>','<?=$sodata['salesnumber']?>','reimburse')"  class="gbqfb">退款</a></div>
+				<?php }elseif(in_array($sodata['status'],array(202,301,302)) && $sodata['back_status'] != 102){?>
+                <div style="margin-top:2px"><a href="javascript:" onclick="backorder('<?=$sodata['id']?>','<?=$sodata['salesnumber']?>','returns')"  class="gbqfb">退货退款</a></div>
+				<?php }?><?php }//end if($this->mycommon->checkA($this->Staff_Area_ID)?>
+                
+                <?php if($_SESSION['staff_sess']['level_id']!='XS' && $this->mycommon->checkA($this->Staff_Area_ID)){?>
+                <a href="/icwebadmin/OrInqo/iccontract/type/up/key/<?=md5(session_id())?>/salesnumber/<?=$sodata['salesnumber']?>/<?=$sodata['salesnumber'].'_'.($sodata['companyname']?$sodata['companyname']:$sodata['uname'])?>" class="gbqfb" target="_blank">更新纸质合同</a>
+                <a href="/icwebadmin/OrInqo/digitalcontract/type/up/key/<?=md5(session_id())?>/salesnumber/<?=$sodata['salesnumber']?>/<?=$sodata['salesnumber'].'_'.($sodata['companyname']?$sodata['companyname']:$sodata['uname'])?>" class="gbqfb" target="_blank">更新电子合同</a>
+                <?php }?>
+                
+                
+                 <?php if($sodata['back_order']){?>
+
+                <div style="margin-top:2px"><a class="gbqfb" href="javascript:" onclick="transfer('<?=$sodata['salesnumber']?>')">上传转账凭证</a></div>			
+                 <?php if($sodata['down_payment']!=$sodata['total']){?>
+                 
+                <div style="margin-top:2px"><a href="javascript:" onclick="transfer2('<?=$sodata['salesnumber']?>')" class="gbqfb">上传余款凭证</a></div>
+                <?php }?>
+              
+				<?php }?>
+                
+              </td>
+
+            <td class="ourreply">
+            	<?php if($sodata['back_status']==102 || in_array($sodata['status'],array(501,502))){?>
+                <a href="javascript:" class="tipa"><b class="tipicon"></b>
+                    <div class="bubblebox hide">
+                        <div class="uparrow"></div>
+                        <div class="popbox">
+                           <div class="popcon" >
+                               <p><?=$sodata['admin_notes']?></p>
+                            </div>
+                        </div>
+                    </div>	
+                </a>
+                <?php }?>
+            </td>
+        </tr>
+        <?php }}?>
+    </tbody>
+    </table>
+    <div class="pagination divpage mt10 fr" >
+        <?=$this->page_bar;?>
+      </div>
+    </div> 
+</div>
+</div>
+
+<div id="myHiddenDiv" style="display:none">
+  <div class="popup">
+    <div class="popup-body" style="width:550px;">
+      <!-- 需要填写的区域-->
+      <div><img src="/images/admin/ajax-loader.gif" />正在发送邮件，请不要关闭。如果等待时间过长(超过1分钟)请刷新页面。</div>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<link href="/js/jsplug/ajaxselect/jquery.autocomplete.css" rel="stylesheet">
+<script src="/js/jsplug/ajaxselect/jquery.autocomplete.js" type="text/javascript"></script>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script type="text/javascript">
+function theform_menu()
+{
+	document.getElementById('myform').submit();
+}
+$(function(){
+    //查看备注
+	var tab = $(".tipa");
+	tab.hover(function(){
+		$(this).find(".bubblebox").removeClass("hide");
+	},function(){
+		$(this).find(".bubblebox").addClass("hide");
+	});
+})
+//查看订单
+function viewInqSo(salesnumber){
+	$.openPopupLayer({
+		name: "box",
+		url: "<?=$this->viewsourl?>?salesnumber="+salesnumber
+	});
+}
+//弹出不通过审核订单
+function openrelease(salesnumber){
+	$.openPopupLayer({
+        name:'box',
+        url:'<?php echo $this->release;?>?sonum='+salesnumber
+    });
+}
+//处理订单
+function processing(salesnumber,deliverytime_old,type){
+	$.openPopupLayer({
+        name:'processingBox',
+        url:'<?php echo $this->processingurl;?>?sonum='+salesnumber+'&deliverytime_old='+deliverytime_old+'&type='+type
+    });
+}
+//改变订单状态
+function changestatus(salesnumber,type){
+  if(type == 'pay' || type=='payover')
+  {
+	  if(confirm('你确定订单：'+salesnumber+'，已付款吗？'))
+	  {
+		$.ajax({
+				url: '<?=$this->changestatusurl?>',
+				data: {'salesnumber':salesnumber,'type':type},
+				type: 'post',
+				dataType: 'json',
+				success: function(arr) {
+					document.getElementById('message_sess').style.display = "block";
+					document.getElementById('alert_message').innerHTML = arr.message;
+					setTimeout('hidMessage()',3000);
+					if(arr.code == 0) location.reload();
+				}
+		});
+	  }
+  }else if(type == 'noneed')
+  {
+	  if(confirm('你确定处理订单：'+salesnumber+'，不需要反馈交期？'))
+	  {
+		$.ajax({
+				url: '<?=$this->changestatusurl?>',
+				data: {'salesnumber':salesnumber,'type':type},
+				type: 'post',
+				dataType: 'json',
+				success: function(arr) {
+					document.getElementById('message_sess').style.display = "block";
+					document.getElementById('alert_message').innerHTML = arr.message;
+					setTimeout('hidMessage()',3000);
+					if(arr.code == 0) location.reload();
+				}
+		});
+	  }
+  }
+  
+}
+//释放，确认可发货
+function mailsend(salesnumber){
+    var line_process = 0;
+    /*var lp_boj = $("#line_process").attr("checked");
+	var title = '';
+	if(lp_boj=='checked'){
+	    line_process = 1;
+		title = '你选择了：订单已在走 线下订单评审流程。你确认释放此订单吗？';
+	}else{
+	    line_process = 0;
+		title = '你没有选择：订单已在走 线下订单评审流程。你确认释放此订单吗？';
+	}*/
+	//if(confirm(title)){
+ 	openeamil();
+	var sqscode=0; 
+    var sqscodeobj   = document.getElementById("sqscode");
+    if(sqscodeobj.checked)  sqscode = 1;
+	$.ajax({
+            url: '<?=$this->emancipateurl?>',
+            data: {'salesnumber':salesnumber,'line_process':line_process,'sqscode':sqscode},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    $.closePopupLayer('myopeneamil');
+				if(arr.code == 0) {alert(arr.message);location.reload();}
+				else alert(arr.message);
+            }
+	});
+	//}
+}
+//支付余款，确认可发货
+function deliverymail(salesnumber){
+ 	openeamil();
+	$.ajax({
+            url: '/icwebadmin/OrInqo/deliverymail',
+            data: {'salesnumber':salesnumber},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    $.closePopupLayer('myopeneamil');
+				if(arr.code == 0) {alert(arr.message);location.reload();}
+				else alert(arr.message);
+            }
+	});
+}
+//弹出退款退货窗口
+function backorder(id,salesnumber,type){
+	$.openPopupLayer({
+        name:'notreleaseBox',
+        url:'/icwebadmin/OrInqo/backorder?sonum='+salesnumber+'&sonid='+id+'&type='+type
+    });
+}
+function openeamil() {
+	$.openPopupLayer({
+		name: "myopeneamil",
+		target: "myHiddenDiv"
+	});
+}
+function hidMessage(){
+	document.getElementById("message_sess").style.display = 'none';
+}
+//查看物流
+function courier(id,salesnumber){
+    $.openPopupLayer({
+        name:'courierBox',
+        url:'/icwebadmin/OrInqo/courier?sonum='+salesnumber+'&sonid='+id
+    });
+}
+//上传回执单
+function transfer(salesnumber){
+	$.openPopupLayer({
+		name: "transferBox",
+		url: "/icwebadmin/OrInqo/transfer?salesnumber="+salesnumber+'&ordertype=inq'
+	});
+}
+//上传余款回执单
+function transfer2(salesnumber){
+	$.openPopupLayer({
+		name: "transferBox",
+		url: "/icwebadmin/OrInqo/transfer2?salesnumber="+salesnumber+'&ordertype=inq'
+	});
+}
+//交货期申请
+function deliverychange(salesnumber)
+{
+	 $.openPopupLayer({
+		name: "deliverychangeBox",
+		url: "/icwebadmin/OrInqo/deliverychange?salesnumber="+salesnumber
+	});
+}
+//取消订单
+function canOrder(salesnumber){
+if(confirm('你确定取消此订单：'+salesnumber+'？'))
+	  {
+	$.ajax({
+            url: '/icwebadmin/OrInqo/cancel',
+            data: {'salesnumber':salesnumber},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    alert(arr.message);
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	 });
+}
+}
+
+function check(){
+		var salesnumber = document.getElementById('salesnumber').value;
+		if(salesnumber=="") {alert("订单号！");document.getElementById('salesnumber').focus();return;}
+		else $('#myform').submit();
+	}
+
+	$(document).ready(function() {
+			$("#salesnumber").autocomplete("/icwebadmin/OrInqo/getajaxtag",
+			{
+				delay:5,
+            	minChars:3,
+            	matchSubset:1,
+            	matchContains:1,
+            	cacheLength:10,
+            	onItemSelect:selectItem,
+            	onFindValue:findValue,
+            	formatItem:formatItem,
+            	autoFill:false
+        	}
+    		);
+			});
+			function findValue(li) {
+    			if( li == null ) return alert("No match!");
+				if( !!li.extra ) var sValue = li.extra[0];
+				else var sValue = li.selectValue;
+				}
+			function selectItem(li) { findValue(li);}
+			function formatItem(row) { return row[0];//return row[0] + " (id: " + row[1] + ")"//如果有其他参数调用row[1]，对应输出格式Sparta|896
+			}
+			function lookupAjax(){
+			var oSuggest = $("#salesnumber")[0].autocompleter;
+			oSuggest.findValue();
+			return false;
+			}
+function getinqorder(salesnumber){
+ $.ajax({
+            url: '/icwebadmin/OrInqo/ajaxorderinfo?salesnumber='+salesnumber,
+            data: {},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+            	document.getElementById('soinfo').innerHTML = html;
+				$("#soinfo").height($("#ajaxorderinfo").height()+10);
+            }
+	});
+}
+
+function changeLiucheng(salesnumber,type){
+	$.ajax({
+        url: '/icwebadmin/OrInqo/changeliucheng',
+        data: {'salesnumber':salesnumber,'type':type},
+        type: 'post',
+        dataType: 'json',
+        success: function(arr) {
+        	alert(arr.message);
+        	if(arr.code == 0)
+            {
+                location.reload();
+            }
+        }
+});
+}
+</script>
+<?php $_SESSION['messages']='';?>

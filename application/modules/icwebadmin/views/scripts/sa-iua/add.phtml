@@ -1,0 +1,270 @@
+<div id="myHiddenDiv">
+<div class="popup" style="width:800px">
+<div class="popup-header">
+  <h2>添加用户</h2>
+  <a href="javascript:;" onclick="$.closePopupLayer('addBox');location.reload();" title="关闭" class="dialogBoxClose">关闭</a> </div>
+<div class="popup-body">
+<!-- 需要填写的区域-->
+<table width="700px" border="0" cellpadding="1">
+<tr>
+  <td height="10"><div id="message_sess_son" style="display:none" class="message_sess"> 
+   <div title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></div>
+   <div id="alert_message_son"></div> </div></td>
+</tr>
+<tr>
+  <td><!---->
+    <table width="700" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+      <tr bgcolor="99FFFF">
+        <td width="719" height="29" align="left" bgcolor="#FFFFFF"><table width="700" bgcolor="#FFFFCC" >
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b>状态 : </b></font></td>
+              <td colspan="3" align="left"><input type="radio" name="Status" id="status1" value="1" checked="checked"/>
+                <label for="status1"><font color="#339900"><b>ON</b></font></label>
+                <input type="radio" id="status1" name="Status" value="0"/>
+                <label for="status1"><font color="#CC3333"><b>OFF</b></font></label> </td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#FF0000">*</font><font color="#666600"><b>部门 : </b></font></td>
+              <td colspan="3"  align="left"><select name="departmentid" id="departmentid">
+                  <option value="0">请选择部门</option>
+                  <?php foreach($this->Department as $value){
+				  		echo "<option value='".$value['department_id']."'>".$value['department_id']." — ".$value['department']."</option>";
+				  } ?>
+                </select></td>
+            </tr>
+            <tr>
+              <td align="right"><font color="#FF0000">*</font><font color="#666600"><b>级别 : </b></font></td>
+              <td colspan="3" align="left"><select name="levelid" id="levelid">
+                  <option value="0">请选择级别</option>
+                  <?php foreach($this->Level as $value){
+				  		echo "<option value='".$value['level_id']."'>".$value['level_id']." — ".$value['level']."</option>";
+				  } ?>
+                </select></td>
+            </tr>
+             <tr>
+              <td align="right"><font color="#666600"><b>上级 : </b></font></td>
+              <td colspan="3" align="left"><select name="superior" id="superior">
+                  <option value="">请选择</option>
+                  <?php foreach($this->superior as $value){
+				  		echo "<option value='".$value['staff_id']."'>".$value['department_id']." — ".$value['lastname'].$value['firstname']."</option>";
+				  } ?>
+                </select></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#FF0000">*</font><font color="#666600"><b>用户名: </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="staffid" id="staffid" value=""/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#FF0000">*</font><font color="#666600"><b> 姓 : </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="lastname" id="lastname" value=""/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#FF0000">*</font><font color="#666600"><b> 名 : </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="firstname" id="firstname" value=""/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#FF0000">*</font><font color="#666600"><b> 邮箱 : </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="email" id="email" value=""/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b> 固定电话 : </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="tel" id="tel" value=""/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b> 分机 : </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="ext" id="ext"/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b> 手机 : </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="phone" id="phone" value=""/></td>
+            </tr>
+            <input type="hidden" id="uploadimg" name="uploadimg" />
+            <tr>
+              <td align="right"><font color="#666600"><b> 头像 : </b></font></td>
+              <td colspan="3" align="left"><input type="button" name="but" onclick="openUplod()" value="上传头像"/>
+                <span class="fhint">(只允许上传图片gif|jpg|jpeg|png，不超过200k，145px*180px)</span></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="3"><div id="uploadimgshow"></div></td>
+            </tr>
+            <tr>
+            <tr>
+              <td colspan="4">&nbsp;</td>
+            </tr>
+            <tr>
+              <td width="126" align="right" valign="top" bgcolor="#FFF4DF"><font color="#666600"><b>区域权限 : </b></font></td>
+              <td valign="top" bgcolor="#FFF4DF" colspan="3"><table width="100%" height="1" border="0" cellpadding="0" cellspacing="1">
+                  <?php
+				  $allArea = array();
+			for($a=0;$a<count($this->Section);$a++){
+				   $section_temp    = $this->Section[$a];
+				   $section_id 		= $section_temp["section_area_id"];
+				   $section_title   = $section_id." - ".$section_temp["section_area_des"];
+				   $area_temp  = $this->Area[$section_id]; 
+				if(is_array($area_temp)){
+		?>
+                  <tr>
+                    <td colspan="4">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td width="430" height="25" align="left" bgcolor="#D3CDFA"><b> <?php echo $section_title;?> </b> </td>
+                        </tr>
+                        <tr>
+                          <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0" height="1">
+                              <tr>
+                                <td valign="top" width="100%"><b> </b>
+                                  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                    <?php
+						for($i=0;$i<count($area_temp);$i++){
+						 $data	= $area_temp[$i];
+						$allArea[]= $data["staff_area_id"];
+						 if($i%2==0) $bg="#E8E8E8";
+						 else $bg="#F3F3F3";
+							?>
+                                    <tr height="25px"  align="left">
+                                      <td  width="31%" bgcolor=<?=$bg?>><?=$data["staff_area_id"]." - ".$data["staff_area_des"]?></td>
+                                      <td width="52%" valign="top"><?php
+			$checkedA=$checkedW=$checkedR='';$checkedB='checked';
+			$name_tmp="Right_Rule".$data["staff_area_id"];
+			if(isset($Right_Rule))
+			{
+				$checkedB='';
+				if($Right_Rule[$data["staff_area_id"]]=="A") $checkedA='checked';
+				elseif($Right_Rule[$data["staff_area_id"]]=="W") $checkedW='checked';
+				elseif($Right_Rule[$data["staff_area_id"]]=="R") $checkedR='checked';
+				else $checkedB='checked';
+			}
+			echo "Admin<input type='radio' name='{$name_tmp}' value='A' {$checkedA}/>";
+			echo "| Write<input type='radio' name='{$name_tmp}' value='W' {$checkedW}/>";
+			echo "| Read<input type='radio' name='{$name_tmp}' value='R' {$checkedR}/>";
+			echo "| Blocked<input type='radio' name='{$name_tmp}' value='B' {$checkedB}/>";
+						?>
+                                      </td>
+                                    </tr>
+                                    <?php }//End for?>
+                                  </table></td>
+                              </tr>
+                            </table></td>
+                        </tr>
+                      </table></td>
+                  </tr>
+                  <?php }//End if
+          } ?>
+                </table></td>
+            </tr>
+            <tr>
+              <td colspan="4">&nbsp;</td>
+            </tr>
+            <tr height="50px">
+              <td colspan="4" align="center">
+              <div id="orderbtn"><input type="button"  value="添加" onclick="addaction()"/></div></td>
+            </tr>
+          </table>
+          <!---->
+        </td>
+      </tr>
+    </table>
+    <!-- 结束区域-->
+</div>
+</div>
+</div>
+<script type="text/javascript" src="/js/jsplug/AjaxFileUploader/ajaxfileupload.js"></script>
+<script type="text/javascript" language="javascript">
+function addaction()
+{
+    var statusobj = document.getElementsByName('Status');
+	for(i=0;i<statusobj.length;i++){
+	  if(statusobj[i].checked){
+	     var status = statusobj[i].value;
+	     break;
+	  }
+	}
+	var departmentid = document.getElementById('departmentid').value;
+	var levelid      = document.getElementById('levelid').value;
+	var superior     = document.getElementById('superior').value;
+	var staffid      = document.getElementById('staffid').value;
+	var lastname     = document.getElementById('lastname').value;
+	var firstname    = document.getElementById('firstname').value;
+	var tel        = document.getElementById('tel').value;
+	var ext        = document.getElementById('ext').value;
+	var phone        = document.getElementById('phone').value;
+	var email        = document.getElementById('email').value;
+	var uploadimg    = document.getElementById('uploadimg').value;
+	var allrule = Object();
+   <?php for($i=0;$i<count($allArea);$i++){?>
+    var ruleobj = document.getElementsByName("Right_Rule<?php echo $allArea[$i];?>");
+	for(i=0;i<ruleobj.length;i++){
+	  if(ruleobj[i].checked){
+          allrule['<?php echo $allArea[$i];?>'] = ruleobj[i].value ;
+	  }
+	}
+	<?php }?>
+	var subtmp=document.getElementById("orderbtn");
+	subtmp.innerHTML = '<input type="button"  value="添加中..." />';
+	$.ajax({
+            url: '<?php echo $this->addurl;?>',
+            data: {'staffid':staffid,'status':status,'departmentid':departmentid,'levelid':levelid,'superior':superior,'lastname':lastname,'firstname':firstname,'email':email,'tel':tel,'ext':ext,'phone':phone,'uploadimg':uploadimg,'Right_Rule':allrule},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				//  location.reload();
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			   subtmp.innerHTML = '<input type="button"  value="添加" onclick="addaction()"/>';
+			}
+	});
+}
+function openUplod() {
+	$.openPopupLayer({
+		name: "uplodBox",
+		width: 450,
+		url: "<?php echo $this->openpicurl;?>"
+		});
+}
+function ajaxFileUpload()
+{    
+	document.getElementById('loading_ajax').style.display="block";
+    var staffid      = document.getElementById('staffid').value;
+	$.ajaxFileUpload
+	(
+		{
+				url:'<?php echo $this->uplodheadcurl;?>',
+				secureuri:false,
+				fileElementId:'fileToUpload',
+				dataType: 'json',
+				data:{name:'logan', id:'id'},
+				success: function (data, status)
+				{
+					document.getElementById('loading_ajax').style.display="none";
+					if(typeof(data.error) != 'undefined')
+					{
+						if(data.error != 0)
+						{
+							document.getElementById('uploadmsg').innerHTML=data.message;
+						}else
+						{
+						    var d = new Date();
+							document.getElementById('uploadmsg').innerHTML=data.message;
+							document.getElementById('uploadimg').value    = data.filename;
+							document.getElementById('uploadimgshow').innerHTML ='<img src="/upload/admin/head/'+data.filename+'?_'+d.toTimeString()+'"/>';
+							document.getElementById('fileToUpload').disabled="disabled";
+						}
+					}
+				},
+				error: function (data, status, e)
+				{
+					document.getElementById('loading_ajax').style.display="none";
+					document.getElementById('uploadmsg').innerHTML=e;
+				}
+			}
+		)
+		return false;
+}
+</script>

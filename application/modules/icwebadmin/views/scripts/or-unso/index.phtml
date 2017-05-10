@@ -1,0 +1,916 @@
+<?php
+$typeArr = array ('1' => '明细','2' => '电子元件','3' => '耗材' );
+?>
+<link rel="stylesheet" type="text/css" href="/js/jsplug/FlexBox/css/jquery.flexbox.css" />
+<script type="text/javascript" src="/js/jsplug/FlexBox/js/jquery.flexbox.js"></script>
+<script type="text/javascript">
+var countries = {};
+countries.results = [
+	<?php for($i=0;$i<count($this->userlist);$i++){?>
+    {id:'<?=$this->userlist[$i]['uid']?>',name:'<?=$this->userlist[$i]['companyname']?>'} 
+    <?php if($i<(count($this->userlist)-1)) echo ",";}?>
+];
+countries.total = countries.results.length;
+	$(function() {
+		// Do not autocomplete initial value, and handle non-existent values
+		$('#user_select').flexbox(countries, {
+			initialValue: '<?=$this->user['companyname']?>',
+			noResultsText: '',
+			onSelect: function() {
+				window.location.href="<?=$this->indexurl?>/index/uid/"+$('input[name=user_select]').val()+'/currency/RMB/delivery/SZ';
+			}
+		});
+	});
+</script>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> <a href="/icwebadmin/OrUnso/list" title="查看订单列表">查看订单列表</a></h1>
+  <div class="fr tab_content">
+      <input type="hidden" name="uid" id="uid" value="<?=$this->user['uid']?>" />
+      <table class="table011">
+        <tr>
+          <td height="10" colspan="6" align="center"><div id="message_sess_son" style="display:none" class="message_sess"> <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span> <span id="alert_message_son"></span></div></td>
+        </tr>
+        <tr height="35">
+          <td align="right" width="80"><em>*</em>选择客户：</td>
+          <td style="font-weight:bold"><div id="user_select"></div></td>
+          <td><a  href="javascript:;" onclick="openadduser()" class="btna">+添加IC易站新客户</a></td>
+        </tr>
+        <?php if($this->user['uid']){?>
+        <tr>
+          <td align="right"><em>*</em>结算货币：</td>
+          <td colspan="2"><select name="currency" id="currency" onchange="changeMbprice(this.value)">
+              <option value="RMB" <?=($this->currency=='RMB'?'selected="selected"':'')?> >人民币(RMB)</option>
+              <option value="HKD" <?=($this->currency=='HKD'?'selected="selected"':'')?>>港币(HKD)</option>
+              <option value="USD" <?=($this->currency=='USD'?'selected="selected"':'')?>>美元(USD)</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+        <td align="right"><em>*</em>交货地：</td>
+          <td colspan="2"><select name="delivery" id="delivery" disabled="disabled">
+              <option value="SZ" <?=($this->delivery=='SZ'?'selected="selected"':'')?> >国内</option>
+              <option value="HK" <?=($this->delivery=='HK'?'selected="selected"':'')?> >香港</option>
+            </select>
+          </td>
+        </tr>
+        <?php }//end if($this->user['uid'])?>
+      </table>
+<?php if($this->user['uid']){?>
+       <!--配送方式-->
+       <div class="div1 labelinput"><label style="font-weight:bold;">需方信息</label></div>
+       <div  class="mergerorder">
+          <div  class="div_dl">
+            <dl>
+              <dt>需方： </dt>
+                <dd class="labelinput"><?=$this->user['companyname']?></dd>
+            </dl>
+            <dl>
+              <dt>地址： </dt>
+                <dd class="labelinput"><?=$this->fun->createAddress($this->user['province'],$this->user['city'],$this->user['area'],$this->user['address'])?></dd>
+            </dl>
+            <dl>
+              <dt>联系人： </dt>
+              <dd class="labelinput"><?=$this->user['truename']?></dd>
+             </dl>
+             
+            <dl>
+              <dt>联系电话： </dt>
+                <dd class="labelinput"><?=$this->user['tel'].'；'.$this->user['mobile']?></dd>
+            </dl>
+            <dl>
+              <dt>传真： </dt>
+              <dd class="labelinput"><?=$this->user['fax']?></dd>
+             </dl>
+             <dl>
+              <dt>&nbsp;</dt>
+              <dd class="labelinput"> <a class="gbqfbb" href="javascript:;" onclick="openbox2('/icwebadmin/UsUsgl/updateuser/uid/<?=$this->user['uid']?>')" title="修改客户信息">修改需方信息</a></dd>
+             </dl>
+            </div>
+        </div>
+        <!--end 配送方式-->
+        
+       <!--配送方式-->
+       <div class="div1 labelinput"><label style="font-weight:bold;">配送方式</label></div>
+       <div  class="mergerorder">
+          <div  class="div_dl">
+            <dl>
+              <dt>配送方式： </dt>
+              <dd class="labelinput">
+                <?php if($this->delivery=='SZ'){$delivery_type_checked='checked="checked"';?>
+                <label><input type="radio" name="delivery_type" value="1" class="delivery_type" <?=$delivery_type_checked?> >国内快递</label>
+                <?php }elseif($this->delivery=='HK'){$delivery_type_checked='checked="checked"';?>
+                <label><input type="radio" name="delivery_type" value="2" class="delivery_type" checked="checked">公司配送</label>
+                <label><input type="radio" name="delivery_type" value="3" class="delivery_type">客户自提</span></label>
+                <label><input type="radio" name="delivery_type" value="4" class="delivery_type">客户提供账号</label>
+                <?php }?>
+              </dd>
+             </dl>
+             <dl>
+              <dt>运费： </dt>
+                <dd class="labelinput"><input type="text" name="freight" id="freight" onkeyup="<?=ISFLOAT?>" value="0"><?=$this->currency?></dd>
+            </dl>
+            <dl>
+              <dt>运费支付方： </dt>
+                <dd class="labelinput"><label><input type="radio" name="exp_paytype" value="1"/>供方付费</label>
+                 <label><input type="radio" name="exp_paytype" value="2"/>需方付费</label></dd>
+            </dl>
+            </div>
+        </div>
+        <!--end 配送方式-->
+        <!--合并订单-->
+        <?php if($this->shiporder){?>
+           <div class="div1 labelinput">
+           <label style="font-weight:bold;"><input type="checkbox" name="needshipoder" id="needshipoder" value="1" />与现有订单一起发货</label></div>  
+            <div class="mergerorder">
+                <div class="needshipoder_div">
+                <?php foreach($this->shiporder as $shipoder){?>
+                     <div class="one">
+                         <a  href="javascript:;" onclick="viewInqSo('<?=$shipoder['salesnumber']?>')" title="查看订单详细"><?=$shipoder['salesnumber']?></a>
+                         <span ><?=$this->fun->createAddress($shipoder['province'],$shipoder['city'],$shipoder['area'],$shipoder['address'])?>&nbsp;&nbsp;&nbsp;<?=$shipoder['name'].($shipoder['mobile']?' , '.$shipoder['mobile']:'').($shipoder['tel']?' , '.$shipoder['tel']:'')?>&nbsp;</span>
+                     </div>
+                <?php }?>
+                </div>
+                
+                <div class="needshipoder_div" style="display:none;">
+                <?php foreach($this->shiporder as $shipoder){?>
+                     <div class="one">
+                         <label class="number"><input type="radio" name="shipoder_salesnumber" value="<?=$shipoder['salesnumber']?>" <?=count($this->shiporder)==1?'checked="checked"':''?> title="选择合并此订单"></label>
+                         <a  href="javascript:;" onclick="viewInqSo('<?=$sodata['salesnumber']?>')" title="查看订单详细"><?=$shipoder['salesnumber']?></a>
+                         <span><?=$this->fun->createAddress($shipoder['province'],$shipoder['city'],$shipoder['area'],$shipoder['address'])?>&nbsp;&nbsp;&nbsp;<?=$shipoder['name'].($shipoder['mobile']?' , '.$shipoder['mobile']:'').($shipoder['tel']?' , '.$shipoder['tel']:'')?>&nbsp;</span>
+                     </div>
+                <?php }?>
+                </div>
+         </div>
+	  <?php }?>
+        <!--end合并订单-->
+        
+        <!--收货人信息-->
+        <input type="hidden" name="addid" id="addid" value="<?=$this->addressFirst['id'];?>" />
+        <div class="receiving_info">
+        <div class="div1 labelinput"><label style="font-weight:bold;"><input type="checkbox"  value="yes" id="needadd" name="needadd" checked="checked" />收货信息</label></div>  
+        
+        <div class="address_all">
+        <!--演示-->
+        <div class="mergerorder address_show" style="display:<?=$this->addressFirst?'block':'none'?>">
+          <div class="div_dl">
+             <dl>
+              <dt>收 货 人：</dt>
+              <dd class="labelinput show_shrname"><?php echo $this->addressFirst['name'];?></dd>
+             </dl>
+             <dl>
+              <dt>详细地址：</dt>
+              <dd class="labelinput show_address"><?php echo $this->fun->createAddress($this->addressFirst['province'], $this->addressFirst['city'], $this->addressFirst['area'], $this->addressFirst['address']);?></dd>
+             </dl>
+             <dl>
+              <dt>公司名称：</dt>
+              <dd class="labelinput show_companyname"><?php echo $this->addressFirst['companyname'];?></dd>
+             </dl>
+             <dl>
+              <dt>入仓号：</dt>
+              <dd class="labelinput show_warehousing"><?php echo $this->addressFirst['warehousing'];?></dd>
+             </dl>    
+             <dl>
+              <dt>邮政编码：</dt>
+              <dd class="labelinput show_zipcode"><?php echo $this->addressFirst['zipcode'];?></dd>
+             </dl>
+             
+             <dl>
+              <dt>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：</dt>
+              <dd class="labelinput show_mobile"><?php echo $this->addressFirst['mobile'];?></dd>
+             </dl>
+             <dl>
+              <dt>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</dt>
+              <dd class="labelinput show_tel"><?php echo $this->addressFirst['tel'];?></dd>
+             </dl>
+            </div>
+
+            <div  class="div_dl">
+             <dl>
+              <dt>&nbsp;</dt>
+              <dd class="labelinput"><a href="javascript:" class="gbqfbb change_receiving">修改收货信息</a></dd>
+             </dl>
+            </div>
+        </div>
+        <!--end演示-->
+        <!--修改-->
+        <div  class="mergerorder address_add_edit" style="display:<?=!$this->addressFirst?'block':'none'?>">
+          <!--地址列表-->
+          <div class="div_dl addresslist">
+            <?php if($this->addressArr){
+			foreach($this->addressArr as $address){
+		?>
+            <p>
+              <input type="radio" value="<?=$address['id']?>" id="<?=$address['id']?>" name="addressradio" onclick="editchange('<?=$address['id'];?>','edit')" <?=($this->addressFirst['id'] == $address['id']?"checked":"")?>>
+              <label for="<?=$address['id']?>"><?php echo $address['name']." , ".$address['province']." ".$address['city']." ".$address['area']." ".$address['address']." , ".$address['zipcode']." , ".$address['mobile']." ".$address['tel'];?></label>
+            </p>
+            <?php }}?>
+            <h4><a onclick="editchange('0','add')" href="javascript:" class="gbqfbb">+添加新地址</a></h4>
+          </div>
+          <!--地址列表-->
+          <div class="div_dl">
+             <dl>
+              <dt>收 货 人：</dt>
+              <dd class="labelinput"><input type="text" name="shrname" id="shrname" style="width:300px" value="<?php echo $this->addressFirst['name'];?>" /><em>*</em>
+              </dd>
+             </dl>
+             <dl>
+              <dt>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：</dt>
+              <dd class="labelinput"><span id="provinceSpan">
+                      <select id="province" name="province">
+                        <option value="">请选择省</option>
+                      </select>
+                      </span> <span id="citySpan">
+                      <select id="city" name="city">
+                        <option value="">请选择市</option>
+                      </select>
+                      </span> <span id="areaSpan" style="position: relative;">
+                      <select id="area" name="area">
+                        <option value="">请选择区</option>
+                      </select>
+                      </span>
+                     </dd>
+             </dl>
+             <dl>
+              <dt>详细地址：</dt>
+              <dd class="labelinput"><input type="text" name="address" id="address"  style="width:300px" value="<?php echo $this->addressFirst['address'];?>" /><em>*</em></dd>
+             </dl>
+             <dl>
+              <dt>公司名称：</dt>
+              <dd class="labelinput"><input type="text" style="width:300px" name="companyname" id="companyname" value="<?php if($this->addressFirst['companyname']) echo $this->addressFirst['companyname'];else echo $this->user['companyname'];?>" /><em>*</em></dd>
+             </dl>
+             <dl>
+              <dt>入仓号：</dt>
+              <dd class="labelinput"><input type="text"  style="width:300px"  name="warehousing" id="warehousing" value="<?php echo $this->addressFirst['warehousing'];?>" /></dd>
+             </dl>
+             
+             <dl>
+              <dt>邮政编码：</dt>
+              <dd class="labelinput"><input type="text"  style="width:300px"  name="zipcode" id="zipcode" value="<?php echo $this->addressFirst['zipcode'];?>" /></dd>
+             </dl>
+             
+             <dl>
+              <dt>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：</dt>
+              <dd class="labelinput"><input type="text"  style="width:300px" name="mobile" id="mobile" value="<?php echo $this->addressFirst['mobile'];?>" /></dd>
+             </dl>
+             <dl>
+              <dt>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</dt>
+              <dd class="labelinput"><input type="text"  style="width:300px"  name="tel" id="tel" value="<?php echo $this->addressFirst['tel'];?>" /></dd>
+             </dl>
+             <dl>
+              <dt>设为默认：</dt>
+              <dd class="labelinput"><input type="checkbox" name="default" id="default" value="1" <?php if($this->addressFirst['default']==1) echo "checked";?> style=" margin-top:-5px"/></dd>
+             </dl>
+            </div>
+            <div  class="div_dl">
+             <dl>
+              <dt>&nbsp;</dt>
+              <dd class="labelinput"><a href="javascript:" class="gbqfbb edit_address">保 存</a>
+               <a href="javascript:" class="gbqfbb cancel_receiving">取 消</a></dd>
+             </dl>
+            </div> 
+        </div>
+        <!--end修改-->
+        </div>
+        
+        <!--客户提供账号-->
+        <div class="mergerorder account_edit" style="display:none;">
+          <?php if($this->expressadd){
+				   $address_4 = $this->expressadd['address'];
+				   $name_4 = $this->expressadd['name'];
+				   $tel_4 = $this->expressadd['tel'];
+				   $express_name_4 = $this->expressadd['express_name'];
+				   $express_account_4 = $this->expressadd['express_account'];
+			}
+			?>
+          <div class="div_dl">
+             <dl>
+              <dt>收货地址：</dt>
+              <dd class="labelinput"><input type="text" style="width:500px;" name="address_4" id="address_4" value="<?=$address_4?>"/></dd>
+             </dl>
+             <dl>
+              <dt>收&nbsp;货&nbsp;人&nbsp;：</dt>
+              <dd class="labelinput"><input type="text" style="width:200px;" name="name_4" id="name_4" value="<?=$name_4?>"/></dd>
+             </dl>
+             <dl>
+              <dt>联系方式：</dt>
+              <dd class="labelinput"><input type="text" style="width:200px;" name="tel_4" id="tel_4" value="<?=$tel_4?>"/></dd>
+             </dl>
+             <dl>
+              <dt>快&nbsp;递&nbsp;商&nbsp;：</dt>
+              <dd class="labelinput"><input type="text" style="width:200px;" name="express_name_4" id="express_name_4" value="<?=$express_name_4?>"/></dd>
+             </dl>
+             <dl>
+              <dt>快递账号：</dt>
+              <dd class="labelinput"><input type="text" style="width:200px;" name="express_account_4" id="express_account_4" value="<?=$express_account_4?>"/></dd>
+             </dl>
+             <dl>
+              <dt>公司名称：</dt>
+              <dd class="labelinput"><input type="text" style="width:200px;" name="companyname_4" id="companyname_4" value="<?php if($this->expressadd['companyname']) echo $this->expressadd['companyname'];else echo $this->myinfo['companyname'];?>"/></dd>
+             </dl>
+            </div>
+        </div>
+        <!--end 客户提供账号-->
+       </div>
+       <!--end收货人信息-->
+       <!--结算方式-->
+       <div class="div1 labelinput"><label style="font-weight:bold;">结算方式</label></div>
+       <div  class="mergerorder">
+          <div  class="div_dl">
+             <dl>
+              <dt>结算方式：</dt>
+              <dd class="labelinput">
+               <label><input type="radio" name="paytype" value="mts"/>款到发货</label>
+              </dd>
+             </dl>
+             <dl style="display:none;">
+              <dt>&nbsp;</dt>
+              <dd class="labelinput">
+               <label><input type="radio" name="paytype" value="cod"/>货到付款(COD)</label>
+              </dd>
+             </dl>
+             <dl>
+              <dt>&nbsp;</dt>
+                <dd class="labelinput">
+                <label><input type="radio" name="paytype" value="transfer_100"/>预付全款</label>
+                </dd>
+            </dl>
+            <dl>
+              <dt>&nbsp;</dt>
+                <dd class="labelinput">
+                <label><input type="radio" name="paytype" value="transfer_pec"/>预付</label>
+                <input type="text" style="border:0; border-bottom:1px solid #999"  class="input-small " name="percentage" id="percentage" onkeyup="<?=ISNUMBER?>"/>
+%定金<?=$this->currency?>
+                </dd>
+            </dl>
+            <dl>
+              <dt>&nbsp;</dt>
+                <dd class="labelinput">
+                <label><input type="radio" name="paytype" value="down_payment"/>预付</label><input type="text" style="border:0; border-bottom:1px solid #999"  class="input-small " name="down_payment" id="down_payment" onkeyup="<?=ISFLOAT?>"/>
+定金<?=$this->currency?>
+                </dd>
+            </dl>
+            <dl>
+              <dt>&nbsp;</dt>
+                <dd class="labelinput">
+                <label><input type="radio" name="paytype" value="other"/>其他</label><input type="text" name="paytype_other" id="paytype_other" style="border:0; border-bottom:1px solid #999" class="input-xxlarge"/>
+                </dd>
+            </dl>
+            </div>
+        </div>
+       <!--end结算方式-->
+       
+       <!--发票信息-->
+       <div <?=$this->delivery=='HK'?'style="display:none"':''?>>
+       <div class="div1 labelinput"><label style="font-weight:bold;"><input type="checkbox"  value="yes" id="needinvoice" name="needinvoice" <?=$this->delivery=='HK'?'':'checked="checked"'?> />需要发票</label>
+        <div class="invoice_all"><label><input type="radio"  class="invoicetype" name="invoicetype" value="2" checked="checked">增值税发票</label>
+        <label><input type="radio"  class="invoicetype" name="invoicetype" value="1">普通发票</label></div>
+       </div>
+       <input type="hidden" value="<?php //echo $this->invoiceFirst['id']?>" name="incoice_id" id="incoice_id">
+       <div class="invoice_all">
+          <!--默认发票-->
+          <div  class="mergerorder invoice_show" style="display:none<?php //echo $this->invoiceFirst?'block':'none'?>">
+              <div  class="div_dl invoice_1" style="display:<?=$this->invoiceFirst['type']==1?'block':'none'?>">
+                <dl>
+                  <dt>发票类型： </dt>
+                  <dd class="labelinput">普通发票</dd>
+                 </dl>
+                 <dl>
+                  <dt>发票抬头： </dt>
+                    <dd class="labelinput inv_taitouname"><?=$this->invoiceFirst['name']?></dd>
+                 </dl>
+                 <dl>
+                  <dt>发票内容： </dt>
+                    <dd class="labelinput inv_cont"><?=$typeArr[$this->invoiceFirst ['contype']];?></dd>
+                 </dl>
+                 
+              </div>
+              <div  class="div_dl invoice_2" style="display:<?=$this->invoiceFirst['type']==2?'block':'none'?>">
+                <dl>
+                  <dt>发票类型： </dt>
+                  <dd class="labelinput">增值税发票</dd>
+                 </dl>
+                 <dl>
+                  <dt>单位名称： </dt>
+                    <dd class="labelinput inv_dwname"><?=$this->invoiceFirst['name']?></dd>
+                 </dl>
+                 <dl>
+                  <dt>纳税号： </dt>
+                    <dd class="labelinput inv_identifier"><?=$this->invoiceFirst['identifier']?></dd>
+                 </dl>
+                 <dl>
+                  <dt>注册地址： </dt>
+                    <dd class="labelinput inv_regaddress"><?=$this->invoiceFirst['regaddress']?></dd>
+                 </dl>
+                 <dl>
+                  <dt>注册电话： </dt>
+                    <dd class="labelinput inv_regphone"><?=$this->invoiceFirst['regphone']?></dd>
+                 </dl>
+                 <dl>
+                  <dt>开户银行： </dt>
+                    <dd class="labelinput inv_bank"><?=$this->invoiceFirst['bank']?></dd>
+                 </dl>
+                 <dl>
+                  <dt>银行帐户： </dt>
+                    <dd class="labelinput inv_account"><?=$this->invoiceFirst['identifier']?></dd>
+                 </dl>
+              </div>
+             <div  class="div_dl">
+             <dl>
+              <dt>&nbsp;</dt>
+              <dd class="labelinput show_tel"><a href="javascript:" class="gbqfbb change_invoice">修改发票信息</a></dd>
+             </dl>
+            </div>
+              
+              <!--发票地址-->
+              <div class="invoice_address_info">
+                    <em>发票发送地址：</em>
+                    <span id="invaddvaule">默认为收货地址。</span>
+                    <span id="invadd"><a onclick="changeinvoiceadd('open')" href="javascript:;">修改</a></span>
+              </div>
+              <!--修改收货地址-->
+             <div style="display:none" id="changeinvoiceadd">
+             <div class="addresslist invoice_address_info">
+             <?php if($this->addressArr){
+                foreach($this->addressArr as $address){
+            ?>
+                 <p class="labelinput"><label>
+                 <input type="radio" value="<?=$address['id']?>" id="<?=$address['id']?>invoice" name="invoiceaddressradio" <?php if($this->addressFirst['id'] == $address['id']) echo "checked";?>/>
+                 <span id="<?php echo $address['id'];?>invoiceadd"><?php echo $address['name']." , ".$address['province']." ".$address['city']." ".$address['area']." ".$address['address']." , ".$address['zipcode']." , ".$address['mobile']." ".$address['tel'];?></span></label></p>
+                <?php }?>
+                <p><a class="gbqfbb" onclick="saveinvoiceaddress()" href="javascript:">保存</a> &nbsp;&nbsp;</p>   
+                <?php }?>
+               </div>
+               </div>
+               <!--end修改收货地址-->
+             <!--end 发票地址-->
+          </div>
+          <!--end默认发票-->
+          <!--修改发票-->
+          <div  class="mergerorder invoice_add_edit" style="display:none;<?php //echo $this->invoiceFirst?'none':'block'?>">
+              <div class="div_dl">
+                <dl>
+                  <dt>选择类型：</dt>
+                  <!--<dd class="labelinput"><label><input type="radio"  class="invoicetype" name="invoicetype" value="2" checked="checked">增值税发票</label>
+                  <label><input type="radio"  class="invoicetype" name="invoicetype" value="1">普通发票</label></dd>-->
+                 </dl>
+              </div>
+              <div class="div_dl invoice_info_2">
+                <dl>
+                  <dt>单位名称：</dt>
+                  <dd class="labelinput">
+                  <input type="text" value="<?=$this->invoiceFirst['name']?>" id="dwname" name="dwname" style="width:250px"><em>*</em></dd>
+                 </dl>
+                 <dl>
+                  <dt>纳税号：</dt>
+                  <dd class="labelinput">
+                  <input type="text" value="<?=$this->invoiceFirst['identifier']?>" id="identifier" name="identifier" style="width:250px">
+                  <em>*</em></dd>
+                 </dl>
+                 <dl>
+                  <dt>注册地址：</dt>
+                  <dd class="labelinput">
+                  <input type="text" value="<?=$this->invoiceFirst['regaddress']?>" id="regaddress" name="regaddress" style="width:250px">
+                  <em>*</em></dd>
+                 </dl>
+                 <dl>
+                  <dt>注册电话：</dt>
+                  <dd class="labelinput">
+                  <input type="text" value="<?=$this->invoiceFirst['regphone']?>" id="regphone" name="regphone" style="width:250px">
+                  <em>*</em></dd>
+                 </dl>
+                 <dl>
+                  <dt>开户银行：</dt>
+                  <dd class="labelinput">
+                  <input type="text" value="<?=$this->invoiceFirst['bank']?>" id="bank" name="bank" style="width:250px">
+                  <em>*</em></dd>
+                 </dl>
+                 <dl>
+                  <dt>银行帐户：</dt>
+                  <dd class="labelinput">
+                  <input type="text" value="<?=$this->invoiceFirst['identifier']?>" id="account" name="account" style="width:250px">
+                  <em>*</em></dd>
+                 </dl>
+              </div>
+              <div class="div_dl invoice_info_1" style="display:none">
+                <dl>
+                  <dt>发票抬头：</dt>
+                  <dd class="labelinput">
+                  <input type="text" value="<?=$this->invoiceFirst['name']?>" id="taitouname" name="taitouname" style="width:250px"><em>*</em></dd>
+                 </dl>
+                 <dl>
+                  <dt>发票内容：</dt>
+                  <dd class="labelinput">
+                  <label><input type="radio" name="contype" value="1" checked="checked" >明细</label>
+                  <label><input type="radio" name="contype" value="2" <?=($this->invoiceFirst ['contype']==2?'checked="checked"':'')?>>电子元件</label>
+                  <label><input type="radio" name="contype" value="3" <?=($this->invoiceFirst ['contype']==3?'checked="checked"':'')?>>耗材</label></dd>
+                 </dl>
+              </div>
+              <div  class="div_dl">
+             <dl>
+              <dt>&nbsp;</dt>
+              <dd class="labelinput show_tel"><a href="javascript:" class="gbqfbb edit_invoice">保 存</a>
+                  <a href="javascript:" class="gbqfbb cancel_invoice">取 消</a></dd>
+             </dl>
+            </div>
+          </div>
+          <!--end修改发票-->
+            </div>
+          </div>
+         <!--end发票信息-->
+         <!--产品清单-->
+         <div class="div1 labelinput"><label style="font-weight:bold;">产品清单</label>
+         </div>
+         <div  class="mergerorder">
+          <div  class="div_dl">
+          		<table cellpadding="0" cellspacing="0" border="0" class="table"  id="SignFrame">
+                <thead>
+                  <tr id="trHeader">
+                    <th width="120">型号<em>*</em></th>
+                    <th width="100">品牌<br/>(产品线)<em>*</em></th>
+                    <th width="100">客户物料号</th>
+                    <th width="100">单价<em>*</em></th>
+                    <th width="100">购买数量<em>*</em></th>
+                    <th width="100">需求日期</th>
+                    <th width="100">标准货期</th>
+                    <th width="100">备注</th>
+                    <th width="100"><a href="javascript:;" class="gbqfb" onclick="AddSignRow()">添加产品</a></th>
+                    <input name='txtTRLastIndex' type='hidden' id='txtTRLastIndex' value="2" />
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" name="part_no"  class="input-small input-model"/></td>
+                    <td><select name="oa_productline"><option value="">请选择</option>
+					<?php foreach($this->oaproductline as $bd){?>
+                    <option value="<?=$bd['oa_name']?>"><?=$bd['oa_name']?></option><?php }?>
+                    </select></td>
+                    <td><input type="text" name="customer_material"  class="input-small"/></td>
+                    <td><input type="text" name="price"  class="input-small"  onkeyup="<?=ISFLOAT?>"/></td>
+                    <td><input type="text" name="buy_number"  class="input-small" onkeyup="<?=ISNUMBER?>"/></td>
+                    <td><input type="text" name="needs_time"  style="width:80px;" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" title="点击选择日期"></td>
+                    <td><input type="text" name="standard_delivery"  class="input-small"/></td>
+                    <td><input type="text" name="remark" class="input-small"/></td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+          </div>
+        </div>
+         <!--end产品清单-->
+         <div  class="mergerorder mergerorderbtn">
+         	<div style=" margin-left:300px; margin-bottom:10px;" id="baojiabtn">
+            <input type="button" value="提交订单" class="btnabig" onclick="addorder()"></div>
+         </div>
+<?php }//end if($this->user['uid'])?>
+      <div class="clear"></div>
+  </div>
+</div>
+<script type="text/javascript">
+//添加订单
+function addorder()
+{
+    var delivery_type = $('input[name="delivery_type"]:checked').val();
+	var freight = $('input[name="freight"]').val();
+	//if(freight=="" || typeof(freight)=="undefined"){alert('请输入运费');$('input[name="freight"]').focus();return;}
+	var exp_paytype = 0;
+	<?php if($this->delivery=='SZ'){?>
+	exp_paytype = $('input[name="exp_paytype"]:checked').val();
+	if(exp_paytype=='' || typeof(exp_paytype)=="undefined") {
+	      alert('请选择运费支付方');$('input[name="exp_paytype"]:checked').focus();return;
+     }
+	 <?php }?>
+	//收货信息
+	var addid = '';
+	var delivery_type_4_array = new Array();
+	//是否合并订单
+	var shipoder_salesnumber = '';
+	var needshipoder = $("#needshipoder").attr("checked");
+	if(needshipoder=='checked'){
+		shipoder_salesnumber = $('input[name="shipoder_salesnumber"]:checked').val();
+		if(shipoder_salesnumber=="" || typeof(shipoder_salesnumber)=="undefined")
+		{alert('请选择需要合并发货的订单');$('input[name="shipoder_salesnumber"]').focus();return;}
+	}else{
+		   //收货地址
+		   if(delivery_type==1 || delivery_type==2)
+		   {
+		      //是否需要地址
+			  var needadd = $("#needadd").attr("checked");
+	          if(needadd=='checked'){
+		         addid = $("#addid").val();
+		         if(addid=='') {alert('请填写收货信息');return;}
+			  }
+		   }else if(delivery_type==4){
+				//客户提供账号
+				delivery_type_4_array[0] = $("#address_4").val();
+				//if(delivery_type_4_array[0]=='')
+				//{alert('请填写收货地址');$("#address_4").focus();return;}
+				delivery_type_4_array[1] = $("#name_4").val();
+				//if(delivery_type_4_array[1]=='')
+				//{alert('请填写收货人');$("#name_4").focus();return;}
+				delivery_type_4_array[2] = $("#tel_4").val();
+				//if(delivery_type_4_array[2]=='')
+				//{alert('请填写联系方式');$("#tel_4").focus();return;}
+				delivery_type_4_array[3] = $("#express_name_4").val();
+				//if(delivery_type_4_array[3]=='')
+				//{alert('请填写快递商');$("#express_name_4").focus();return;}
+				delivery_type_4_array[4] = $("#express_account_4").val();
+				//if(delivery_type_4_array[4]=='')
+				//{alert('请填写快递账号');$("#express_account_4").focus();return;}
+				delivery_type_4_array[5] = $("#companyname_4").val();
+				//if(delivery_type_4_array[5]=='')
+				//{alert('请填写公司名称');$("#companyname_4").focus();return;}
+	      }
+	 }
+	 //结算方式
+	 var paytype = $('input[name="paytype"]:checked').val();
+	 var percentage = '';
+     if(paytype=='' || typeof(paytype)=="undefined") {
+	      alert('请选择结算方式');$('input[name="paytype"]:checked').focus();return;
+     }
+	 if(paytype == 'transfer_pec'){
+		percentage = $("#percentage").val();
+		if(percentage<=0 || percentage==''){
+		     alert('请填写定金百分比');$("#percentage").focus();return;
+		}else if(percentage >100){
+		     alert('请填写定金百分比必须小于100');$("#percentage").focus();return;
+		}
+	 }
+	 var down_payment  = 0;
+	 if(paytype == 'down_payment'){
+	 	down_payment = $("#down_payment").val();
+		if(down_payment<=0){
+		     alert('请填写定金');$("#down_payment").focus();return;
+		}
+	 }
+	 var paytype_other = $("#paytype_other").val();
+	 //发票信息
+	 var incoice_type='';
+	 var invoiceaddressradio = '';
+	 var needinvoice = $("#needinvoice").attr("checked");
+	 if(needinvoice=='checked'){
+		incoice_type = $('input[name="invoicetype"]:checked').val();
+		/*incoice_id = $("#incoice_id").val();
+		if(incoice_id=='' || typeof(incoice_id)=="undefined"){
+			alert('请填写发票信息');$("#needinvoice").focus();return;
+		}
+		//发票地址*/
+		invoiceaddressradio = $('input[name="invoiceaddressradio"]:checked').val();
+	 }
+	 //订单信息
+	 var part_no        = new Array();
+	 var oa_productline = new Array();
+	 var customer_material = new Array();
+	 var price          = new Array();
+	 var buy_number     = new Array();
+	 var needs_time  = new Array();
+	 var standard_delivery = new Array();
+	 var remark = new Array();
+	 var part_no_obj     = document.getElementsByName("part_no");
+	 var oa_productline_obj  = document.getElementsByName("oa_productline");
+	 var customer_material_obj  = document.getElementsByName("customer_material");
+	 var price_obj       = document.getElementsByName("price");
+	 var buy_number_obj  = document.getElementsByName("buy_number");
+	 var needs_time_obj  = document.getElementsByName("needs_time");
+	 var standard_delivery_obj  = document.getElementsByName("standard_delivery");
+	 var remark_obj      = document.getElementsByName("remark");
+	 for (var i=0;i < part_no_obj.length;i++)
+	 {
+	 		if(part_no_obj[i].value=='') {alert('请输入型号');part_no_obj[i].focus();return;}
+			else part_no[i]= part_no_obj[i].value;
+			if(oa_productline_obj[i].value=='') {alert('请选择品牌(产品线)');oa_productline_obj[i].focus();return;}
+			else oa_productline[i]= oa_productline_obj[i].value;
+			customer_material[i] = customer_material_obj[i].value;
+			if(price_obj[i].value=='') {alert('请输入单价');price_obj[i].focus();return;}
+			else price[i]= price_obj[i].value;
+			
+			if(buy_number_obj[i].value=='' || buy_number_obj[i].value <= 0) {alert('请输入购买数');buy_number_obj[i].focus();return;}
+			else if(isNaN(buy_number_obj[i].value)){alert('购买数必须为数字');buy_number_obj[i].focus();return;}
+			else buy_number[i]= buy_number_obj[i].value;
+			needs_time[i]        = needs_time_obj[i].value;
+			standard_delivery[i] = standard_delivery_obj[i].value;
+			remark[i]            = remark_obj[i].value;
+	  }
+	 //提交订单
+	 var subtmp = document.getElementById("baojiabtn");
+	 subtmp.innerHTML = '<input type="button" value="提 交 中..." class="btnabig">';
+	 $.ajax({
+            url: '/icwebadmin/OrUnso/addinqorder',
+            data: {'uid':'<?=$this->user['uid']?>','currency':'<?=$this->currency?>','delivery':'<?=$this->delivery?>','delivery_type':delivery_type,'freight':freight,'exp_paytype':exp_paytype,'addid':addid,'delivery_type_4_array':delivery_type_4_array,'shipoder_salesnumber':shipoder_salesnumber,'paytype':paytype,'percentage':percentage,'down_payment':down_payment,'paytype_other':paytype_other,'incoice_type':incoice_type,'invoiceaddressradio':invoiceaddressradio,'paytype_other':paytype_other,'part_no':part_no,'oa_productline':oa_productline,'customer_material':customer_material,'price':price,'buy_number':buy_number,'needs_time':needs_time,'standard_delivery':standard_delivery,'remark':remark},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+			  	   $.openPopupLayer({
+					name:'comBox',
+					url:'/icwebadmin/OrUnso/success?salesnumber='+arr.salesnumber
+				   });
+               }else{
+			      alert(arr.message);
+				  subtmp.innerHTML = '<input type="button" value="提 交" class="btnabig" onclick="addorder()">';
+			   }
+			}
+	});
+}
+$(function(){
+    //合并订单
+	$("#needshipoder").click(function(){
+	    $('.needshipoder_div').toggle();
+		if($("#needshipoder").attr("checked")=='checked'){
+			//收货信息
+			$(".receiving_info").css("display","none");
+			//发票地址
+			$(".invoice_address_info").css("display","none");
+		}else{
+		    $(".receiving_info").css("display","block");
+			//发票地址
+			$(".invoice_address_info").css("display","block");
+		}
+	});
+	//配送方式
+	$(".delivery_type").click(function(){
+		if(this.value==1 || this.value==2){
+		    //收货信息
+			$(".receiving_info").css("display","block");
+			$(".address_all").css("display","block");
+			//$(".address_show").css("display","block");
+			$(".account_edit").css("display","none");
+		}else if(this.value==3){
+		    //收货信息
+			$(".receiving_info").css("display","none");
+			$(".address_all").css("display","none");
+			//$(".address_show").css("display","none");
+			$(".account_edit").css("display","none");
+		}else if(this.value==4){
+		    //收货信息
+			$(".receiving_info").css("display","block");
+			$(".address_all").css("display","none");
+			$(".account_edit").css("display","block");
+		}
+	});
+	//需要地址
+	$("#needadd").click(function(){
+	    $('.address_all').toggle();
+	});
+	//修改收货人信息
+	$(".change_receiving").click(function(){
+	    $(".address_show").css("display","none");
+		$(".address_add_edit").css("display","block");
+	});
+	//取消修改收货人信息
+	$(".cancel_receiving").click(function(){
+	    $(".address_show").css("display","block");
+		$(".address_add_edit").css("display","none");
+	});
+	//是否需要发票
+	$("#needinvoice").click(function(){
+	    $('.invoice_all').toggle();
+	});
+	//修改发票
+	$(".change_invoice").click(function(){
+	    $(".invoice_show").css("display","none");
+		$(".invoice_add_edit").css("display","block");
+	});
+	//取消修改发票
+	$(".cancel_invoice").click(function(){
+	    $(".invoice_show").css("display","block");
+		$(".invoice_add_edit").css("display","none");
+	});
+	//选择发票类型
+	$(".invoicetype").click(function(){
+	    if(this.value==2){
+		   $(".invoice_info_2").css("display","block");
+		   $(".invoice_info_1").css("display","none");
+		}else if(this.value==1){
+		   $(".invoice_info_2").css("display","none");
+		   $(".invoice_info_1").css("display","block");
+		}
+	});
+	
+	
+})
+
+//添加客户
+function openadduser()
+{
+    $.openPopupLayer({
+        name:'comBox',
+        url:'/icwebadmin/OrUnso/adduser?url=/icwebadmin/OrUnso/oainq'
+    });
+}
+//改变货币
+function changeMbprice(v)
+{
+	if(v=='RMB')
+	{
+	   window.location.href="<?=$this->indexurl?>/index/uid/<?=$this->user['uid']?>/currency/RMB/delivery/SZ";
+	}
+	else if(v=='USD')
+	{
+	    window.location.href="<?=$this->indexurl?>/index/uid/<?=$this->user['uid']?>/currency/USD/delivery/HK";
+	}
+	else if(v=='HKD')
+	{
+	    window.location.href="<?=$this->indexurl?>/index/uid/<?=$this->user['uid']?>/currency/HKD/delivery/HK";
+	}
+}
+//查看订单
+function viewInqSo(salesnumber){
+	$.openPopupLayer({
+		name: "box",
+		url: "/icwebadmin/OrInqo/viewso?salesnumber="+salesnumber
+	});
+}
+function getinqorder(salesnumber){
+ $.ajax({
+            url: '/icwebadmin/OrInqo/ajaxorderinfo?salesnumber='+salesnumber,
+            data: {},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+            	document.getElementById('soinfo').innerHTML = html;
+				$("#soinfo").height($("#ajaxorderinfo").height()+10);
+            }
+	});
+}
+</script>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script language="JavaScript" type="text/javascript" src="/js/admin/unso.js"></script>
+<script language="JavaScript" type="text/javascript">
+$(document).ready(function(){
+	 //加载城市和地区
+	onloadadd('<?php echo $this->addressFirst['provinceid'];?>','<?php echo $this->addressFirst['cityid'];?>','<?php echo $this->addressFirst['areaid'];?>');
+});
+</script>
+<script language="javascript">// Example: obj = findObj("image1");
+function findObj(theObj, theDoc)
+{ 
+   var p, i, foundObj; 
+   if(!theDoc) theDoc = document; 
+   if( (p = theObj.indexOf("?")) > 0 && parent.frames.length) 
+   {    
+       theDoc = parent.frames[theObj.substring(p+1)].document;
+	   theObj = theObj.substring(0,p); 
+   } 
+   if(!(foundObj = theDoc[theObj]) && theDoc.all) foundObj = theDoc.all[theObj]; 
+   for (i=0; !foundObj && i < theDoc.forms.length; i++)
+   foundObj = theDoc.forms[i][theObj]; 
+   for(i=0; !foundObj && theDoc.layers && i < theDoc.layers.length; i++) 
+	 foundObj = findObj(theObj,theDoc.layers[i].document); 
+   if(!foundObj && document.getElementById) 
+   foundObj = document.getElementById(theObj);    
+   return foundObj;
+}
+//添加一个参与人填写行
+function AddSignRow(){ //读取最后一行的行号，存放在txtTRLastIndex文本框中 
+   var txtTRLastIndex = findObj("txtTRLastIndex",document);
+   var rowID = parseInt(txtTRLastIndex.value);
+   var signFrame = findObj("SignFrame",document);
+   //添加行
+   var newTR = signFrame.insertRow(signFrame.rows.length);
+   newTR.id = "SignItem" + rowID;
+   //添加列:型号
+   var newNameTD=newTR.insertCell(0);
+   newNameTD.innerHTML = '<input type="text" name="part_no"  class="input-small input-model"/>';
+   //添加列:品牌(产品线)
+   var newNameTD=newTR.insertCell(1);
+   newNameTD.innerHTML = '<select name="oa_productline"><option value="">请选择</option><?php foreach($this->oaproductline as $bd){?><option value="<?=$bd["oa_name"]?>"><?=$bd["oa_name"]?></option><?php }?></select>';
+   //客户物料号
+    var newEmailTD=newTR.insertCell(2);
+    newEmailTD.innerHTML = '<input type="text" name="customer_material"  class="input-small"/>';
+   
+   //添加列:单价
+   var newEmailTD=newTR.insertCell(3);
+   newEmailTD.innerHTML = "<input type='text' name='price'  class='input-small'  onkeyup=value=value.replace(/[^\\\d\\\.]/g,'') />";
+   //添加列:购买数量
+   var newTelTD=newTR.insertCell(4);
+   newTelTD.innerHTML = "<input type='text' name='buy_number' class='input-small' onkeyup=value=value.replace(/[^\\\d]/g,'') />";
+   //添加列:日期
+   var newMobileTD=newTR.insertCell(5);
+   newMobileTD.innerHTML = '<input type="text" name="needs_time" style="width:80px;" onclick="WdatePicker({startDate:\'\',dateFmt:\'yyyy-MM-dd\',alwaysUseStartDate:true,lang:\'sc\'})" title="点击选择日期" />';;
+   
+   //添加列:标准货期
+   var newCompanyTD=newTR.insertCell(6);
+   newCompanyTD.innerHTML = "<input name='standard_delivery' type='text' class='input-small' />";
+   
+   //添加列:备注
+   var newCompanyTD=newTR.insertCell(7);
+   newCompanyTD.innerHTML = "<input name='remark' type='text'  class='input-small'/>";
+   
+   //添加列:删除按钮
+   var newDeleteTD=newTR.insertCell(8);
+   //添加列内容
+   newDeleteTD.innerHTML = "<a href='javascript:;' class='gbqfb' onclick=\"DeleteSignRow('SignItem" + rowID + "')\">删除</a>";
+   //将行号推进下一行
+   txtTRLastIndex.value = (rowID + 1).toString() ;
+}
+//删除指定行
+function DeleteSignRow(rowid){
+  var signFrame = findObj("SignFrame",document);
+  var signItem = findObj(rowid,document);
+  //获取将要删除的行的Index
+  var rowIndex = signItem.rowIndex;
+  //删除指定Index的行
+  signFrame.deleteRow(rowIndex);
+}
+</script>

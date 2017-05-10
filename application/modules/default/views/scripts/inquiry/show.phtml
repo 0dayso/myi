@@ -1,0 +1,40 @@
+<!--购买 弹出框-->
+<div class="pop pop_inquiry ">
+	<div class="popbox">
+    	<div class="poptit1">
+            <input type="button" value="" class="closebtn" onclick="$.closePopupLayer('inqshowBox')">
+        </div>
+        <div class="popcon clearfix msg">
+        	<div class="ok ">加入询价篮成功！您可以去提交询价单 或者 继续查找型号询价。</div>
+            <div class="poptable">
+   			   <table border="0" cellpadding="0" cellspacing="0" class="table">
+      <tbody>
+      <tr>
+        <th width="140">型号</th>
+        <th width="35">品牌</th>
+        <th width="90">查考交期</th>
+        <th width="100">采购数量</th>
+        <th width="70">目标单价</th>
+      </tr>
+           <?php
+			foreach($this->items as $item){
+				if(is_array($item)){
+			?>
+      <tr>
+        <td align="center"><p class="model"><a href="/item-0-0-<?=$item['id'];?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank"><?=$item['part_no'];?></a></p></td>
+        <td align="center"><?=$item['options']['brand'];?></td>
+        <td align="center"><?=$item['options']['lead_time'];?>&nbsp;</td>
+        <td align="center"><?=$item['hope_number'];?>&nbsp;</td>
+        <td align="center"><?=$item['hope_price'];?>&nbsp;</td>
+      </tr>
+      <?php }//end if(is_array($item))
+		 }//end foreach
+	  ?>
+          </tbody></table>
+            </div>
+            <p class="spbbtndiv"><a href="javascript:" onClick="$.closePopupLayer('inqshowBox')" class="fl">继续查找型号询价，稍后再提交</a>
+            <a class="abutton fr" href="/inquiry">去提交询价单</a></p>
+    </div>
+
+    </div>
+</div>

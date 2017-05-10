@@ -1,0 +1,211 @@
+<?php
+//头像
+$uploadimg_tmp=0;
+if(isset($this->uploadimg) &&$this->uploadimg!="") {
+   $uploadimg     = $this->uploadimg;
+   $uploadimg_tmp = "/upload/admin/head/".$uploadimg.'?_'.time();;}
+else {
+  $uploadimg      = $this->staffall['head']==''?'nohead.jpg':$this->staffall['head'];
+  $uploadimg_tmp  = "/upload/admin/head/".$uploadimg.'?_'.time();;
+}
+?>
+<div id="myHiddenDiv">
+<div class="popup" style="width:800px">
+<div class="popup-header">
+  <h2>编辑用户基本信息</h2>
+  <a href="javascript:;" onclick="$.closePopupLayer('editBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+<div class="popup-body"  >
+<!-- 需要填写的区域-->
+<table width="700px" border="0" cellpadding="1">
+<tr>
+  <td height="10" align="center"><div id="message_sess_son" style="display:none" class="message_sess"> <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span> <span id="alert_message_son"></span> </div></td>
+</tr>
+<tr>
+  <td><!---->
+    <table width="700" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+      <tr bgcolor="99FFFF">
+        <td width="719" height="29" align="left" bgcolor="#FFFFFF"><table width="700" bgcolor="#FFFFCC" >
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b>状态 : </b></font></td>
+              <td colspan="3" align="left">
+                 <input type="radio" name="Status" id="status1" value="1" <?php echo $this->staffall['status']==1?'checked':'';?>/>
+                <label for="status1"><font color="#339900"><b>ON</b></font></label>
+                <input type="radio" name="Status" id="status2" value="0" <?php echo $this->staffall['status']!=1?'checked':'';?>/>
+                <label for="status2"><font color="#CC3333"><b>OFF</b></font></label></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b>部门 : </b></font></td>
+              <td colspan="3"  align="left"><select name="Department_ID" id="Department_ID">
+                  <option value="0">请选择部门</option>
+                  <?php foreach($this->Department as $value){
+				        $selected='';
+				        if($this->staffall['department_id'] == $value['department_id']) $selected='selected';
+				  		echo "<option value='".$value['department_id']."' {$selected}>".$value['department_id']." — ".$value['department']."</option>";
+				  } ?>
+                </select></td>
+            </tr>
+            <tr>
+              <td align="right"><font color="#666600"><b>级别 : </b></font></td>
+              <td colspan="3" align="left"><select name="Level_ID" id="Level_ID">
+                  <option value="0">请选择级别</option>
+                  <?php foreach($this->Level as $value){
+				        $selected='';
+				        if($this->staffall['level_id'] == $value['level_id']) $selected='selected';
+				  		echo "<option value='".$value['level_id']."' {$selected}>".$value['level_id']." — ".$value['level']."</option>";
+				  } ?>
+                </select></td>
+            </tr>
+            <tr>
+              <td align="right"><font color="#666600"><b>上级 : </b></font></td>
+              <td colspan="3" align="left"><select name="superior" id="superior">
+                  <option value="">请选择</option>
+                  <?php foreach($this->superior as $value){
+				        $selected='';
+				        if($this->staffall['superior'] == $value['staff_id']) $selected='selected';
+				  		echo "<option value='".$value['staff_id']."' {$selected}>".$value['department_id']." — ".$value['lastname'].$value['firstname']."</option>";
+				  } ?>
+                </select></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b>用户名: </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="Staff_ID" id="Staff_ID" value="<?php echo $this->staffall['staff_id']?>" readonly="readonly"/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b> 姓 : </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="LastName" id="LastName" value="<?php echo $this->staffall['lastname']?>"/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b> 名 : </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="FirstName" id="FirstName" value="<?php echo $this->staffall['firstname']?>"/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b> 邮箱 : </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="Email" id="Email" value="<?php echo $this->staffall['email']?>"/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b> 固定电话 : </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="tel" id="tel" value="<?php echo $this->staffall['tel']?>"/></td>
+            </tr>
+             <tr>
+              <td width="126" align="right"><font color="#666600"><b> 分机 : </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="ext" id="ext" value="<?php echo $this->staffall['ext']?>"/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b> 手机 : </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="phone" id="phone" value="<?php echo $this->staffall['phone']?>"/></td>
+            </tr>
+            <input type="hidden" id="uploadimg" name="uploadimg" />
+            <tr>
+              <td align="right"><font color="#666600"><b> 头像 : </b></font></td>
+              <td colspan="3" align="left">
+              <input type="button" name="but" onclick="openUplod()" value="上传头像"/>
+              <span class="fhint">(只允许上传图片gif|jpg|jpeg|png，不超过200k，145px*180px)</span></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="3"><div id="uploadimgshow"></div></td>
+            </tr>
+            <tr>
+              <td colspan="4">&nbsp;</td>
+            </tr>
+            <tr height="50px">
+              <td colspan="4" align="center"><input type="button"  value="保存" onclick="editaction()"/></td>
+            </tr>
+          </table>
+          <!---->
+        </td>
+      </tr>
+    </table>
+    <!-- 结束区域-->
+</div>
+</div>
+</div>
+<script type="text/javascript" src="/js/jsplug/AjaxFileUploader/ajaxfileupload.js"></script>
+<script language="javascript" type="text/javascript">
+if("<?=$uploadimg_tmp?>" != "0" )
+{
+	document.getElementById('uploadimg').value="<?=$uploadimg?>";
+	document.getElementById('uploadimgshow').innerHTML='<img src="<?=$uploadimg_tmp?>" />';
+}
+function editaction()
+{
+    var statusobj = document.getElementsByName('Status');
+	for(i=0;i<statusobj.length;i++){
+	  if(statusobj[i].checked){
+	     var status = statusobj[i].value;
+	     break;
+	  }
+	}
+	var departmentid = document.getElementById('Department_ID').value;
+	var levelid      = document.getElementById('Level_ID').value;
+	var superior     = document.getElementById('superior').value;
+	var lastname     = document.getElementById('LastName').value;
+	var firstname    = document.getElementById('FirstName').value;
+	var email        = document.getElementById('Email').value;
+	var tel        = document.getElementById('tel').value;
+	var ext        = document.getElementById('ext').value;
+	var phone        = document.getElementById('phone').value;
+	var uploadimg    = document.getElementById('uploadimg').value;
+	$.ajax({
+            url: '<?php echo $this->editinfourl;?>',
+            data: {'staffid':'<?php echo $this->staffid;?>','status':status,'departmentid':departmentid,'levelid':levelid,'superior':superior,'lastname':lastname,'firstname':firstname,'tel':tel,'ext':ext,'phone':phone,'email':email,'uploadimg':uploadimg},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  $.closePopupLayer('editBox');
+				  showMainInfo('<?php echo $this->staffid;?>');
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			}
+	});
+}
+function openUplod() {
+	$.openPopupLayer({
+		name: "uplodBox",
+		width: 450,
+		url: "<?php echo $this->openpicurl;?>"
+		});
+}
+function ajaxFileUpload()
+{    
+	document.getElementById('loading_ajax').style.display="block";
+	$.ajaxFileUpload
+	(
+		{
+				url:'<?php echo $this->uplodheadcurl;?>?headname=<?php echo $this->staffall['head'];?>',
+				secureuri:false,
+				fileElementId:'fileToUpload',
+				dataType: 'json',
+				data:{name:'logan', id:'id'},
+				success: function (data, status)
+				{
+					document.getElementById('loading_ajax').style.display="none";
+					if(typeof(data.error) != 'undefined')
+					{
+						if(data.error != 0)
+						{
+							document.getElementById('uploadmsg').innerHTML=data.message;
+						}else
+						{
+						    var d = new Date();
+							document.getElementById('uploadmsg').innerHTML=data.message;
+							document.getElementById('uploadimg').value    = data.filename;
+							document.getElementById('uploadimgshow').innerHTML ='<img src="/upload/admin/head/'+data.filename+'?_'+d.toTimeString()+'"/>';
+							document.getElementById('fileToUpload').disabled="disabled";
+						}
+					}
+				},
+				error: function (data, status, e)
+				{
+					document.getElementById('loading_ajax').style.display="none";
+					document.getElementById('uploadmsg').innerHTML=e;
+				}
+			}
+		)
+		return false;
+}
+</script>

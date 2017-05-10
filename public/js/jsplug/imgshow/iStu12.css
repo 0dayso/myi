@@ -1,0 +1,17 @@
+/* ================================================================ 
+Copyright (c) 2011 Stu Nicholls - iStu.co.uk. All rights reserved.
+This stylsheet and the associated html may be modified in any 
+way to fit your requirements.
+Download by http://down.liehuo.net
+=================================================================== */
+
+ul.iStu12 {list-style:none; margin:0 auto; position:relative; padding:0 42px 25px 42px; width:0;}
+ul.iStu12 li.prev {position:absolute; width:42px; height:123px; background:url(left.png) no-repeat; left:0; z-index:100; cursor:pointer;}
+ul.iStu12 li.next {position:absolute; width:42px; height:123px; background:url(right.png) no-repeat; right:0; z-index:100; cursor:pointer;}
+ul.iStu12 li.prev:hover{background:url(left_h.png) no-repeat;}
+ul.iStu12 li.next:hover{background:url(right_h.png) no-repeat;}
+ul.iStu12 li.images {position:absolute; /*left:0px;*/ top:0; overflow:hidden; z-index:50;}
+ul.iStu12 li.images div.slide {position:absolute; left:0; top:0;}
+ul.iStu12 li.images img {display:block; float:left;}
+ul.iStu12 li.caption {position:absolute; bottom:0; left:42px; font:bold 12px/25px arial,sans-serif; color:#888;}
+

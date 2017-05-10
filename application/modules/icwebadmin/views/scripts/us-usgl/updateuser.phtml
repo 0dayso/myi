@@ -1,0 +1,164 @@
+<!--修改客户信息-->
+<div class="popup" style="width:660px;">
+<div class="popup-header">
+    <h2>修改客户信息</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box2');" title="关闭" class="dialogBoxClose">关闭</a> 
+</div>
+<div class="popup-body">
+    <table cellpadding="0" cellspacing="0" border="0" class="regoa regoa1">
+        <tbody>
+            <tr>
+              <td  width="80" align="left">用户名：</td>
+              <td><strong><?php echo $this->user['uname'];?></strong></td>
+              <td  width="80" align="left">Email：</td>
+              <td><strong><?php echo $this->user['email'];?></strong></td>
+            </tr>
+            <tr>
+              <td>公司名：</td>
+              <td colspan="3"><input type="text"  style="width:530px" name="companyname2" id="companyname2" value="<?php echo $this->user['companyname'];?>"/></td>
+            </tr>
+            <tr>
+              <td>行业领域：</td>
+              <td colspan="3">
+               <select id="industry2" name="industry2" onchange="showother(this.value)" style=" width:206px">
+                <?php foreach($this->appLevel1 as $k=>$v){
+			    $sel='';
+			    if($this->user['industry'] == $v['id']) $sel = 'selected="selected"';
+			    echo "<option value='".$v['id']."' $sel>".$v['name']."</option>";
+		        }?>
+               <option value='other' <?php if($this->user['industry'] == 'other') echo 'selected="selected"';?>>其它</option>
+               </select>
+               <span id="industry_other_div"></span>
+              </td>
+            </tr>
+            <tr>
+              <td >公司性质：</td>
+              <td ><select name="property2" id="property2" style=" width:206px">
+            <option value="enduser" <?=$this->user['property']=='enduser'?'selected':'';?>>终端用户</option>
+            <option value="merchant" <?=$this->user['property']=='merchant'?'selected':'';?>>贸易商</option>
+          </select>
+              </td>
+              <td >常用货币：</td>
+              <td ><select name="currency2" id="currency2"  style=" width:206px">
+                                <option value="RMB" <?=$this->user['currency']=='RMB'?'selected':'';?>>人民币（RMB）</option>
+    							<option value="USD" <?=$this->user['currency']=='USD'?'selected':'';?>>美元（USD）</option>
+                                <option value="HKD" <?=$this->user['currency']=='HKD'?'selected':'';?>>港币（HKD）</option>
+                            </select>
+          	 </td>
+            </tr>
+            <tr >
+              <td >联系人：</td>
+              <td ><input type="text" name="contact2" id="contact2" style=" width:200px" value="<?php echo $this->user['truename'];?>"/></td>
+              <td >部门：</td>
+              <td ><select name="department_id2" id="department_id2">
+                  <?php foreach($this->office as $v){?>
+                  <option value="<?=$v['id']?>" <?=$this->user['department_id']==$v['id']?'selected':'';?>><?=$v['department']?></option>
+                  <?php }?>
+             </select></td>
+            </tr>
+            <tr >
+              <td >手机：</td>
+              <td ><input type="text" style=" width:200px" name="mobile2" id="mobile2" value="<?php echo $this->user['mobile'];?>"/></td>
+              <td >联系电话：</td>
+              <td ><input type="text" name="tel2" id="tel2" style=" width:200px" value="<?php echo $this->user['tel'];?>"/></td>
+            </tr>
+            <tr >
+              <td >传真：</td>
+              <td colspan="3"><input type="text" style=" width:200px" name="fax2" id="fax2" value="<?php echo $this->user['fax'];?>"/></td>
+            </tr>
+            <tr>
+              <td >所在地区：</td>
+              <td colspan="3"><span id="provinceSpan_info">
+          <select id="province2" name="province2">
+            <option value="">请选择省</option>
+          </select>
+          </span> <span id="citySpan_info">
+          <select id="city2" name="city2">
+            <option value="">请选择市</option>
+          </select>
+          </span> <span id="areaSpan_info" style="position:relative;">
+          <select id="area2" name="area2">
+            <option value="">请选择区</option>
+          </select>
+          </span></td>
+            </tr>
+            <tr>
+              <td >详细地址：</td>
+              <td colspan="3"><input type="text" style=" width:530px" name="address2" id="address2" value="<?php echo $this->user['address'];?>"/></td>
+            </tr>
+      </tbody></table>
+    <div class="bottombutton" id="baojiabtn">
+    	<input type="button" onclick="tijiaocominfo()" value="提 交" class="btnabig">
+    </div>
+    <div class="clear"></div>
+</div>
+</div>
+<script type="text/javascript">
+function tijiaocominfo() 
+{
+	var companyname= document.getElementById('companyname2').value;
+	var property = document.getElementById('property2').value;
+	var industry = document.getElementById('industry2').value;
+	var currency = document.getElementById('currency2').value;
+	var department_id = document.getElementById('department_id2').value;
+	var contact = document.getElementById('contact2').value;
+	var mobile = document.getElementById('mobile2').value;
+	var tel = document.getElementById('tel2').value;
+	var fax = document.getElementById('fax2').value;
+	var province = document.getElementById('province2').value;
+	var city = document.getElementById('city2').value;
+	var area = document.getElementById('area2').value;
+	var address = document.getElementById('address2').value;
+	var industry_other = $("#industry_other2").val();
+    var subtmp = document.getElementById("baojiabtn");
+	   subtmp.innerHTML = '<input type="button" class="btnabig" value="提交中..."/>';
+    $.ajax({
+            url: '/icwebadmin/UsUsgl/updateuser',
+            data: {'uid':'<?php echo $this->user['uid'];?>','companyname':companyname,'contact':contact,'department_id':department_id,'industry':industry,'property':property,'currency':currency,'mobile':mobile,'tel':tel,'fax':fax,'province':province,'city':city,'area':area,'address':address,'industry_other':industry_other},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   alert(arr.message);
+			   if(arr.code==0)
+			   {  
+			      location.reload();
+			   }
+			   subtmp.innerHTML = '<input type="button" onclick="tijiaocominfo()" value="提 交" class="btnabig">';
+            }
+    });
+}
+//加载城市和地区
+
+onloadadd('<?php echo $this->user['provinceid'];?>','<?php echo $this->user['cityid'];?>','<?php echo $this->user['areaid'];?>');
+function selectCity2(){
+		var provinceid=$("#province2").val();
+		$("#citySpan_info").load("/common/getcity2?provinceid="+provinceid);
+	}
+	function selectArea2(){
+		var cityid=$("#city2").val();
+		$("#areaSpan_info").load("/common/getarea2?cityid="+cityid);
+	}
+	function setArea2(value){
+	}
+	function onloadadd(provinceid,cityid,areaid)
+	{
+		$("#provinceSpan_info").load("/common/getprovince2?provinceid="+provinceid);
+		if(provinceid && cityid)
+			$("#citySpan_info").load("/common/getcity2?provinceid="+provinceid+"&cityid="+cityid);
+		if(cityid && areaid)
+		    $("#areaSpan_info").load("/common/getarea2?cityid="+cityid+"&areaid="+areaid);
+	}
+<?php if($this->user['industry'] == 'other'){?>
+   showother('other');
+<?php }?>
+//选择其它
+function showother(value){
+    var obj = document.getElementById("industry_other_div");
+	if(value=='other')
+	{
+	   obj.innerHTML='<input  type="text" name="industry_other2" id="industry_other2" value="<?=$this->user['personaldesc']?>" style=" width:200px" />';
+	}else{
+	    obj.innerHTML='';
+	}
+}
+</script>

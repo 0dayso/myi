@@ -1,0 +1,151 @@
+<!--弹出框-->
+
+<div class="popnew ypapplypop">
+<div class="popnew-tit"> 
+     <span class="popnew-tit_t">样片申请</span>
+       <input type="button" title="关闭" class="popnew-closebtn" onclick="$.closePopupLayer('box')">
+    </div> <!--<div class="tip fontorange font14" style="top:10px">&nbsp;&nbsp;&nbsp;&nbsp;IC易站乐意为您提供样片。</div>-->
+    <div class="popnew-con">
+    
+        <div class="ypapplyform"> 
+                <?php if($this->samplesarr){?>
+                <dl>
+                 <dt><em>*</em>型号：</dt><dd>
+                 	<select name="partid" id="partid" >
+                    <?php foreach($this->samplesarr as $arr){?>
+              <option value="<?=$this->fun->encryptVerification($arr['id'])?>"  ><?=$arr['part_no']?></option>
+              <?php }?>
+               </select>
+                 </dd>
+                </dl>
+                <?php }else{?>
+                <dl>
+                 <dt>型号：</dt><dd>
+                 	<?=$this->partno?>
+                 </dd>
+                </dl>
+                
+                <?php }?>
+                 <dl>
+                 <dt><em>*</em>申请数量：</dt><dd><input type="text" name="applynum" id="applynum" class="input300"  style="width:100px;" onkeyup="<?=ISNUMBER?>"> <?php if($this->appnum){?><span style="font-size:12px; color:#999">(不超过<?=$this->appnum?>片)</span><?php }?></dd>
+                </dl>
+               <dl>
+                 <dt><em>*</em>姓名：</dt><dd><input type="text" name="engineer" id="engineer" class="input300"></dd>
+                </dl>
+                <dl>
+                 <dt><em>*</em>联系电话：</dt><dd><input type="text" name="contact" id="contact"  class="input300"></dd>
+                </dl>
+               
+                <dl>
+                 <dt><em>*</em>项目名称：</dt><dd><input type="text" name="projectname" id="projectname" class="input300"></dd>
+                </dl>
+                <dl>
+                 <dt><em>*</em>项目应用：</dt><dd><input type="text" name="projectapp" id="projectapp" class="input300" ></dd>
+                </dl>
+                <dl>
+                 <dt><em>*</em>项目状态：</dt><dd><input type="text" name="projectstatus" id="projectstatus" class="input300"></dd>
+                </dl>
+                
+                <dl>
+                 <dt>预测年用量：</dt><dd><input type="text" name="amount" id="amount" style="width:100px;" class="input300" > <span style="font-size:12px; color:#999">PCS</span></dd>
+                </dl>
+                
+                <dl>
+                 <dt>预计量产日期：</dt><dd>
+                 <input type="text" id="productiondate" name="productiondate"   style="width:100px;" readonly="readonly" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" title="点击选择日期" /></dd>
+                </dl>
+                
+                <dl class="dlall">
+                 <dt>申请备注：</dt><dd><textarea name="instructions" id="instructions" rows="3"></textarea></dd>
+                </dl>
+                <dl class="dlall">
+                 <dt><em>*</em>配送信息：</dt><dd><?php if(!$this->addressArr){?>
+            <p style="color:#FF0000">你没有配送信息，请去<a href="/center/address" target="_blank">收货地址</a>添加。</p>
+            <?php }else{?>
+              <?php  foreach($this->addressArr as $address){?>
+              <p>
+                <label>
+                <input type="radio" name="addressradio" value="<?php echo $address['id'];?>" <?php if($this->addressFirst['id'] == $address['id']) echo "checked";?> />
+                <?php echo $address['name']." , ".$address['province']." ".$address['city']." ".$address['area']." ".$address['address']." , ".$address['zipcode']." , ".$address['mobile']." ".$address['tel'];?></label>
+              </p>
+              <?php }?>
+              <p style="color:#FF0000">需要修改收货地址，请去<a href="/center/address" target="_blank">收货地址</a>修改。</p>
+        <?php }?></dd>
+                </dl>
+                <dl>
+                 <dt>&nbsp;</dt><dd><span id="orderbtn"><input type="button"  class="popbtn" onclick="submitsamples()" value="提 交"/></span></dd>
+                </dl>
+            </div>
+		<div class="clr"></div>
+    </div> 
+    <div class="clr"></div>
+</div>
+<script type="text/javascript">
+//提交
+function submitsamples()
+{
+       var applynum = $("#applynum").val();
+	   var projectname = $("#projectname").val();
+	   var projectapp  = $("#projectapp").val();
+	   var projectstatus = $("#projectstatus").val();
+	   var engineer = $("#engineer").val();
+	   var contact = $("#contact").val();
+	   var amount = $("#amount").val();
+	   var productiondate = $("#productiondate").val();
+	   var instructions = $("#instructions").val();
+	   if(applynum=='' || typeof(applynum)=="undefined") {alert('请输入申请数量');$("#applynum").focus();return;}
+	   <?php if($this->appnum){?>
+	      if(applynum><?=$this->appnum?>) {alert('申请数量不要超过<?=$this->appnum?>片');$("#applynum").focus();return;}
+	   <?php }?>
+	   if(engineer=='' || typeof(engineer)=="undefined") {alert('请输入工程师姓名');$("#engineer").focus();return;}
+	   if(contact=='' || typeof(contact)=="undefined") {alert('请输入工程师联系电话');$("#contact").focus();return;}
+	   
+	   if(projectname=='' || typeof(projectname)=="undefined") {alert('请输入项目名称');$("#projectname").focus();return;}
+	   if(projectstatus=='' || typeof(projectstatus)=="undefined") {alert('请输入项目状态');$("#projectstatus").focus();return;}
+	   if(projectapp=='' || typeof(projectapp)=="undefined") {alert('请输入项目应用');$("#amount").focus();return;}
+	    var addressradio = $('input[name="addressradio"]:checked').val();
+		if(addressradio=='' || typeof(addressradio)=="undefined") {
+			alert('请选择配送信息');$('input[name="addressradio"]:checked').focus();return;
+		}
+	   var subtmp = document.getElementById("orderbtn");
+	   subtmp.innerHTML = '<input type="button"  class="popbtn" value="提交中..."/>';
+	     <?php if($this->partid) {?>
+	     var partid = '<?=$this->partid?>';
+	     <?php }else{?>
+	     var partid = $("#partid").val();
+	     <?php }?>
+		$.ajax({
+			url: '/samples/app',
+			data: {'partid':partid,'engineer':engineer,'contact':contact,'applynum':applynum,'projectname':projectname,'projectstatus':projectstatus,'projectapp':projectapp,'amount':amount,'productiondate':productiondate,'instructions':instructions,'addressradio':addressradio},
+			type: 'post',
+			dataType: 'json',
+			success: function(arr) {
+				if(arr.code==0)
+				{
+					successSamples(partid);
+					$.closePopupLayer('box')
+					//alert(arr.message);
+					//window.location.href='/center/samples';
+				}else{
+				   if(arr.code==400)
+				   {
+						 $.openPopupLayer({
+						 name: "companyinfoBox",
+						 url: "/center/companyinfo"
+						});
+					}else{
+						alert(arr.message);
+					}
+				}
+				subtmp.innerHTML = '<input type="button"  class="popbtn" onclick="submitsamples()" value="提 交"/>';
+			}
+		});
+			   
+}
+function successSamples(pid){
+	$.openPopupLayer({
+	 name: "successSamplesBox",
+	 url: "/samples/success?pid="+pid
+	});
+}
+</script>

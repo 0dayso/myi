@@ -1,0 +1,106 @@
+/* Input textbox - do not specify a width here, it will be overwritten */
+
+#user_select{ margin-top:5px}
+.ffb-input 
+{
+	float:left;
+	color:#666; /* must specify along with watermark color */
+	height:22px; /* required for webkit browsers (Safari, Chrome) */
+	border: 1px solid #DDD;
+	padding-left:3px
+}
+.ffb-input:hover{border: 1px solid #DDD;}
+/* Color of watermark, if present */
+.ffb-input.watermark { /* added and removed dynamically */
+	color:#888; /* must specify along with input color */
+}
+/* Drop-down arrow, with sprited image */
+.ffb-arrow 
+{
+	float:left;
+	width:17px;
+	height:24px;
+	background-image:url(../img/sel_win7.gif);
+}
+.ffb-arrow.out { /* css sprite technique */
+	background-position:0;
+}
+.ffb-arrow.over { /* css sprite technique */
+	background-position:-17px 0;
+}
+.ffb-arrow.active { /* css sprite technique */
+	background-position:-34px 0;
+}
+.ffb-no-results 
+{
+	padding:2px;
+	color:#888;
+	font-style:italic;
+	border-bottom:1px solid #ddd;
+}
+/* Container for dropdown contents */
+.ffb {
+	position:absolute; /* this guy's parent div is hard-coded to position:relative */
+	overflow:hidden;
+	border-left:1px solid #ddd; /* #7B9EBD for Vista */
+	border-right:1px solid #ddd;
+	background-color:#fff; /* Give it a background-color, so it's not transparent */
+	top:24px !important; left:-1px !important;
+	width:205px !important;
+}
+/* Inner div for dropdown */
+.ffb .content {
+	overflow:auto;
+}
+.ffb .content .row {
+	/*border-bottom:1px solid #828790;
+	color:#000;
+	height:20px;*/
+	clear:both;
+}
+.ffb-sel {
+	cursor:pointer;
+	cursor:hand;
+	color:#fff !important;
+	background-color:#39f;
+}
+.ffb-match {
+	font-weight:bold;
+	color:#f00;
+}
+
+/* Paging */
+.ffb .paging {
+	vertical-align:middle;
+	border-bottom:1px solid #ddd;
+}
+.ffb .page, .ffb a.page {
+	font-size:85%;
+	padding:2px;
+	border:solid 0px #339;
+	background-color:#ddd;
+	margin:2px;width:15px; text-align:center;display:inline-block;  line-height:16px 
+}
+.ffb .box {
+	width:22px;
+	margin:2px;
+	height:20px
+}
+.ffb .summary {
+	font-size:85%;
+	width:100%; float:left; 
+	background:#ddd;
+	text-indent:5px
+}
+
+.paging a{ text-decoration:none; font-family:Arial; color:#fff; background:#999 !important;}
+.paging a:hover{background:#f00 !important;}
+
+
+
+
+.row {
+padding-left:5px;
+margin-left:0;
+}
+.row:hover{ background:#f2f2f2; color:#666 !important}

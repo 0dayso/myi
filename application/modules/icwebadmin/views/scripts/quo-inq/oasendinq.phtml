@@ -1,0 +1,47 @@
+  <div class="popup">
+    <div class="popup-body">
+      <!-- 需要填写的区域-->
+      <div style="font-weight:bold;" id="title_message">
+      <img src="/images/admin/ajax-loader.gif" />正在向OA提交询价，请不要关闭页面。如果等待时间过长(超过2分钟)请刷新页面。</div>
+      
+      <div id="alert_message_son" style=" margin-left:40px;"><p>正在向OA提交客户注册资料...</p></div>
+      <div id="close" style=" margin-left:40px;"></div>
+      <!-- 结束区域-->
+    </div>
+  </div>
+ <script type="text/javascript">
+ doProgress();
+function doProgress() {
+    var progress_message_obj = document.getElementById('alert_message_son');
+	$.ajax({
+		url: '/icwebadmin/QuoInq/oasendinq',
+		data: {'inqid':'<?=$this->inqid?>','uid':'<?=$this->uid?>','type':'oauser'},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+			if(arr.code==0){
+			    progress_message_obj.innerHTML = "<p>"+arr.message+"</p><p>正在向OA提交询价...</p>";
+				$.ajax({
+					url: '/icwebadmin/QuoInq/oasendinq',
+					data: {'inqid':'<?=$this->inqid?>','uid':'<?=$this->uid?>','type':'oainq'},
+					type: 'post',
+					dataType: 'json',
+					success: function(arr2) {
+					    progress_message_obj.innerHTML="<p>"+arr.message+"</p><p>"+arr2.message+"</p>";
+						if(arr2.code==0){
+							document.getElementById('title_message').innerHTML='<img src="/images/admin/yes.gif" />已成功向OA提交询价。';
+						}else{
+                            document.getElementById('title_message').innerHTML='<img src="/images/admin/error.png" />向OA提交询价失败。';
+						}
+						document.getElementById('close').innerHTML="<p><a href=\"javascript:;\" onclick=\"$.closePopupLayer('box');location.reload();\" >关闭对话框</a></p>";
+					}
+				});
+			}else{
+				 progress_message_obj.innerHTML = '<p style="color:#FF0000">'+arr.message+'</p>';
+				 document.getElementById('title_message').innerHTML='<img src="/images/admin/error.png" />向OA提交询价失败。';
+				 document.getElementById('close').innerHTML="<p><a href=\"javascript:;\" onclick=\"$.closePopupLayer('box');location.reload();\" >关闭对话框</a></p>";
+			}
+		}
+	  });
+}
+</script>

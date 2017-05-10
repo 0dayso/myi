@@ -1,0 +1,25 @@
+<?php 
+$varstr ='';
+if($_GET['var1']) $varstr = "'".$_GET['var1']."'";
+?>
+<div id="myUplodpic">
+  <div class="popup" style="width:450px">
+    <div class="popup-header">
+      <h2>上传图片</h2>
+      <a href="javascript:;" onclick="$.closePopupLayer('uplodBox')" title="关闭" class="dialogBoxClose">关闭</a>
+    </div>
+    <div class="popup-body"> 
+      <img id="loading_ajax" src="/images/admin/ajax-loader.gif" style="display:none;">
+      <form name="form" action="" method="POST" enctype="multipart/form-data">
+        <table>
+          <tr>
+            <td align="left"><input id="fileToUpload" type="file" name="fileToUpload" onchange="return ajaxFileUpload(<?php echo $varstr;?>);">
+            </td>
+            <td><span id="uploadmsg"  style="color:#FF0000"></span></td>
+          </tr>
+        </table>
+        <br/>
+      </form>
+    </div>
+  </div>
+</div>

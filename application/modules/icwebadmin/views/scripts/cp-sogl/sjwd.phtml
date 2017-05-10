@@ -1,0 +1,162 @@
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<div class="conmian">
+  <h1><a href="<?=$this->indexurl?>"><?php echo $this->AreaTitle;?></a> -> <?=$this->processData['title']?> -> 设计文档 | <a href="/icwebadmin/CpSogl/jszq/id/<?=$this->processData['id']?>">技术支持</a> | <a href="/icwebadmin/CpSogl/cgal/id/<?=$this->processData['id']?>">成功案例</a></h1>
+<div id="message_sess" style="display:none" class="message_sess">
+                  <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+                  <div id="alert_message"></div>
+                </div>
+<?php if (isset($_SESSION['messages'])) : ?>
+          <div class="alert fade in">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p>
+          </div>
+ <?php endif; ?>
+<form class="form-horizontal form-validate" style="text-align:left" method="post" action="" enctype="multipart/form-data">
+           <input type="hidden" name="solid" value="<?=$this->processData['id']?>" />
+           <br/>
+                <table width="90%" bgcolor="#FFFFCC" >
+            <tr>
+              <td width="126" align="right" height="35px"><font color="#666600"><b>电路图： </b></font></td>
+              <td width="210" align="left"><input type="text" name="schematic" value="<?=$this->sjwd[1][0]['name']?>" style="width:200px"/></td>
+              <td align="left"><input type="hidden" id="schematic_file" name="schematic_file" value="<?=$this->sjwd[1][0]['url']?>" />
+                <input type="button" id="schematic_file_box"  value="选择文件" />
+                <span id="schematic_file_show"><?=$this->sjwd[1][0]['url']?></span></td>
+            </tr>
+            <tr>
+              <td width="126" align="right" height="35px"><font color="#666600"><b>源代码：</b></font></td>
+              <td align="left"><input type="text" name="sourcecode" value="<?=$this->sjwd[2][0]['name']?>" style="width:200px"/></td>
+              <td align="left"><input type="hidden" id="sourcecode_file" name="sourcecode_file" value="<?=$this->sjwd[2][0]['url']?>" />
+                <input type="button" id="sourcecode_file_box"  value="选择文件" />
+                <span id="sourcecode_file_show"><?=$this->sjwd[2][0]['url']?></span></td>
+            </tr>
+           <tr>
+              <td width="126" align="right" height="35px"><font color="#666600"><b>PCB layout：</b></font></td>
+              <td align="left"><input type="text" name="pcdlayout" value="<?=$this->sjwd[3][0]['name']?>" style="width:200px"/></td>
+              <td align="left"><input type="hidden" id="pcdlayout_file" name="pcdlayout_file" value="<?=$this->sjwd[3][0]['url']?>" />
+                <input type="button" id="pcdlayout_file_box"  value="选择文件" />
+                <span id="pcdlayout_file_show"><?=$this->sjwd[3][0]['url']?></span></td>
+            </tr>
+            <tr>
+              <td width="126" align="right" height="35px"><font color="#666600"><b>测试：</b></font></td>
+              <td align="left"><input type="text" name="test" style="width:200px" value="<?=$this->sjwd[4][0]['name']?>"/></td>
+              <td align="left"><input type="hidden" id="test_file" name="test_file" value="<?=$this->sjwd[4][0]['url']?>" />
+                <input type="button" id="test_file_box"  value="选择文件" />
+                <span id="test_file_show"><?=$this->sjwd[4][0]['url']?></span></td>
+            </tr>
+            
+             <tr>
+              <td width="126" align="right" height="35px"><font color="#666600"><b>开发指导书：</b></font></td>
+              <td align="left"><input type="text" name="guidebook" style="width:200px" value="<?=$this->sjwd[5][0]['name']?>"/></td>
+              <td align="left"><input type="hidden" id="guidebook_file" name="guidebook_file" value="<?=$this->sjwd[5][0]['url']?>" />
+                <input type="button" id="guidebook_file_box"  value="选择文件" />
+                <span id="guidebook_file_show"><?=$this->sjwd[5][0]['url']?></span></td>
+            </tr>
+            <tr>
+              <td colspan="4">&nbsp;</td>
+            </tr>
+            <tr height="50px">
+              <td>&nbsp;</td>
+              <td>
+              <input type="submit" class="btn" value="更 新"></td>
+            </tr>
+          </table>
+          </form>
+          <br>
+          <!-- 结束区域-->
+</div>
+<script language="javascript">
+KindEditor.ready(function(K) {
+			 //电路图
+			var schematic_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplod?part=upload/default/applications/documents/schematic/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/applications/documents/schematic/'
+			});
+			K('#schematic_file_box').click(function() {
+				schematic_editor.loadPlugin('image', function() {
+					schematic_editor.plugin.imageDialog({
+						imageUrl : K('#schematic_file').val(),
+						clickFn : function(url, title) {
+							K('#schematic_file').val(url);
+							K('#schematic_file_show').html(url);
+							schematic_editor.hideDialog();
+						}
+					});
+				});
+			});
+			 //源代码
+			var sourcecode_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplod?part=upload/default/applications/documents/sourcecode/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/applications/documents/sourcecode/'
+			});
+			K('#sourcecode_file_box').click(function() {
+				sourcecode_editor.loadPlugin('image', function() {
+					sourcecode_editor.plugin.imageDialog({
+						imageUrl : K('#sourcecode_file').val(),
+						clickFn : function(url, title) {
+							K('#sourcecode_file').val(url);
+							K('#sourcecode_file_show').html(url);
+							sourcecode_editor.hideDialog();
+						}
+					});
+				});
+			});
+			//PCB layout
+			var pcdlayout_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplod?part=upload/default/applications/documents/pcdlayout/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/applications/documents/pcdlayout/'
+			});
+			K('#pcdlayout_file_box').click(function() {
+				pcdlayout_editor.loadPlugin('image', function() {
+					pcdlayout_editor.plugin.imageDialog({
+						imageUrl : K('#pcdlayout_file').val(),
+						clickFn : function(url, title) {
+							K('#pcdlayout_file').val(url);
+							K('#pcdlayout_file_show').html(url);
+							pcdlayout_editor.hideDialog();
+						}
+					});
+				});
+			});
+			//测试
+			var test_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplod?part=upload/default/applications/documents/test/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/applications/documents/test/'
+			});
+			K('#test_file_box').click(function() {
+				test_editor.loadPlugin('image', function() {
+					test_editor.plugin.imageDialog({
+						imageUrl : K('#test_file').val(),
+						clickFn : function(url, title) {
+							K('#test_file').val(url);
+							K('#test_file_show').html(url);
+							test_editor.hideDialog();
+						}
+					});
+				});
+			});
+			//开发指导书
+			var guidebook_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplod?part=upload/default/applications/documents/guidebook/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/applications/documents/guidebook/'
+			});
+			K('#guidebook_file_box').click(function() {
+				guidebook_editor.loadPlugin('image', function() {
+					guidebook_editor.plugin.imageDialog({
+						imageUrl : K('#guidebook_file').val(),
+						clickFn : function(url, title) {
+							K('#guidebook_file').val(url);
+							K('#guidebook_file_show').html(url);
+							guidebook_editor.hideDialog();
+						}
+					});
+				});
+			});
+});
+</script>

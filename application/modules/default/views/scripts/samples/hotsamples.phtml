@@ -1,0 +1,59 @@
+<div class="search_bar w">
+	<?php if($this->sampleshot){?>
+	<!--<div class="sort-bar">
+       <div class="button-strip">
+            <a href="#" title="默认排序" class="button-strip-item on"><span>默认排序</span></a>
+            <a href="#" title="销量从高到低" class="button-strip-item" ><span>销量</span><span class="button-img-up"></span></a>
+            <a href="#" title="价格从低到高" class="button-strip-item" ><span>销量</span><span class="button-img-down"></span></a>
+            <a href="#" title="发布时间" class="button-strip-item" ><span>发布时间</span><span class="button-img-down"></span></a>
+        </div>
+        <div class="chelable"><input type="checkbox" /><label>只看现货</label></div>
+    </div>-->
+	<div class="hottsamples titte">热门样片</div>
+    <ul class="clearfix">
+         <?php foreach($this->sampleshot as $prod){
+				$stock = ($prod['sz_stock']-$prod['sz_cover'])+($prod['hk_stock']-$prod['hk_cover']);
+				$price = $this->fun->getFirstPriceRomOrUsd($prod['break_price_rmb'],$prod['break_price']);
+				$f_produrl = "/item-b".$prod['manufacturer']."-".($prod['part_level3']?$prod['part_level3']:$prod['part_level2'])."-".$prod['id'].'-'.$this->fun->filterUrl($prod['part_no']).'.html';
+				
+				$img_url = '';
+				if($prod['part_img']=='' || $prod['part_img']=='no.gif') {
+					$img_url = PRODUCTICON.'no_big.gif';
+				}else {
+					$img_url = PRODUCTICON.$prod['part_img'];
+				}
+
+			?>
+        <li class="js_itemList ">
+            <div class="Sampleslistimg">
+                <a href="/samples-<?=$prod['id']?>.html" target="_blank">
+                    <img src="<?=$img_url?>">
+                </a>
+            </div>
+            <div class="Sampleslistcont">      	        
+                <h2 class="model"><a href="<?=$f_produrl?>" target="_blank"><?=$prod['part_no']?></a></h2>
+                <div class="Sampleslistifo hide">
+                    品牌：<?=$prod['brandname']?>
+                </div> 
+                <div class="price_all">
+                    <p class="vip_price price fl"><span class="txt_price">¥</span><span class="num_price">0</span></p>
+                    <p class="original_price fl"><span class="tit">原价</span> <del>¥<?=$price?></del></p>
+                </div>
+                <div class="info_time">
+                <p class="business fl">品牌：<strong><?=$prod['brandname']?></strong>&nbsp;&nbsp;</p>
+                <p class="business fl">类别：<strong><?=($prod['pcname3']?$prod['pcname3']:$prod['pcname2'])?></strong></p>
+                <!--<p class="business fl">已有<strong>200</strong>人申请</p>
+                <p class="c_tx1 fl">已有<strong>20</strong>人成功申请</p>--></div>
+                <div class="Samplesapply">
+                    <a href="/samples-<?=$prod['id']?>.html" target="_blank" class="abtnapplysmall">免费申请</a>
+                </div>	
+            </div>
+            <div class="status">
+                <p <?=($stock?'class="xian png_ie6"':'class="ding png_ie6"')?>></p>
+            </div>            
+        </li>
+        <?php }?>
+    </ul>
+    <div class="pagination fr"><?=$this->page_bar?></div>
+    <?php }?>
+</div>

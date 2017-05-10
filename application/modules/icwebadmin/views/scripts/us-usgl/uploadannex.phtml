@@ -1,0 +1,110 @@
+<?php
+$annexur_part = COM_ANNEX.$this->user['uid'].'/';
+$annexurl = $annexur_part.$this->user['annex1'];
+$annexurl2= $annexur_part.$this->user['annex2'];
+?>
+<div class="popup">
+  <div class="popup-header">
+    <h2>上传公司资料
+      <?=$this->so['salesnumber'];?>
+    </h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+  <div class="popup-body">
+    <table border="0" cellpadding="1">
+      <tr>
+        <td>
+    
+    <form name="form" action=""  method="POST" enctype="multipart/form-data">
+      <dl>
+        <dt></dt>
+        <dd>
+          <b>营业执照：</b>
+          <img id="loading_ajax_annex1" src="/images/admin/ajax-loader.gif" style="display:none;">
+          <input id="fileToUpload_annex1" type="file" name="fileToUpload_annex1" onchange="return ajaxFileUpload('annex1');">
+          <span id="uploadmsg_annex1" style="color:#FF0000"></span>
+          <br/>
+          <span class="annex1">
+          <?php if(file_exists($annexurl) && $this->user['annex1']){?>
+           已经存在，<a href="<?='/'.$annexurl?>" target="_blank" title="查看">查看</a><?php }?></span>
+          <br/><font color="#999999">可以上传.JPG/.GIF/.PNG/.PDF/.ZIP/.RAR 格式的文件，单个文件大小不能超过8M</font>
+        </dd>
+      </dl>
+      <dl>
+        <dt></dt>
+        <dd>
+          <b>税务登记证：</b>
+          <img id="loading_ajax_annex2" src="/images/admin/ajax-loader.gif" style="display:none;">
+          <input id="fileToUpload_annex2" type="file" name="fileToUpload_annex2" onchange="return ajaxFileUpload('annex2');">
+          <span id="uploadmsg_annex2" style="color:#FF0000"></span>
+          <br/>
+          <span class="annex2">
+          <?php if(file_exists($annexurl2) && $this->user['annex2']){?>
+          已经存在，<a href="<?='/'.$annexurl2?>" target="_blank" title="查看">查看</a><?php }?></span>
+          <br/><font color="#999999">可以上传.JPG/.GIF/.PNG/.PDF/.ZIP/.RAR 格式的文件，单个文件大小不能超过8M</font>
+        </dd>
+      </dl>
+   </form> 
+   		 </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<script type="text/javascript" src="/js/jsplug/AjaxFileUploader/ajaxfileupload.js"></script>
+<script type="text/javascript">
+var annexur_part='<?=$annexur_part?>';
+var newname1='<?=md5(md5($this->user['annex1']))."1"?>';
+var newname2='<?=md5(md5($this->user['annex1']))."2"?>';
+function ajaxFileUpload(type)
+{    
+	document.getElementById('loading_ajax_'+type).style.display="block";
+	if(type=='annex1'){
+		newname = newname1;
+	}else{
+		newname = newname2;
+	}
+	$.ajaxFileUpload
+	(
+		{
+				url:'/common/uplodannex',
+				secureuri:false,
+				fileElementId:'fileToUpload_'+type,
+				dataType: 'json',
+				data:{'type':type,'part':annexur_part,'newname':newname},
+				success: function (data, status)
+				{
+					document.getElementById('loading_ajax_'+type).style.display="none";
+					if(typeof(data.error) != 'undefined')
+					{
+						if(data.error != 0)
+						{
+							document.getElementById('uploadmsg_'+type).innerHTML=data.message;
+						}else
+						{
+						    var d = new Date();
+							document.getElementById('uploadmsg_'+type).innerHTML=data.message;
+							document.getElementById('fileToUpload_'+type).disabled="disabled";
+							$("."+type).html('已经存在，<a title="查看" target="_blank" href="/<?=$annexur_part?>'+data.filename+'">查看</a>');
+							updateannex(data.filename,type);
+						}
+					}
+				},
+				error: function (data, status, e)
+				{
+					document.getElementById('loading_ajax_'+type).style.display="none";
+					document.getElementById('uploadmsg_'+type).innerHTML=e;
+				}
+			}
+		)
+		return false;
+}
+function updateannex(annexname,type){
+	$.ajax({
+            url: '/icwebadmin/UsUsgl/uploadannex',
+            data: {'uid':'<?=$this->user['uid']?>','annexname':annexname,'type':type},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            }
+	 });
+}
+</script>

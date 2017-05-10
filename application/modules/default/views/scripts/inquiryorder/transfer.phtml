@@ -1,0 +1,34 @@
+<!--转账信息-->
+<div class="poptit"> <span class="titbg1ts">转账信息</span><input type="button" title="关闭" class="closebtn" onclick="$('#personPopupContainer'+<?=$this->so['id']?>).css('display', 'none');">
+  <h1>订单号:<span class="number"><?=$this->so['salesnumber'];?></span></h1>
+</div>
+<div id="transferinfo<?=$this->so['id']?>" >
+<div class="popcon clearfix">
+        <table cellpadding="0" cellspacing="0" class="table01">
+        <tbody>
+        <tr><td class="tableti">转账金额：</td><td class="price"><?=$this->so['currency']?>
+        <?php if($this->so['status']==101) echo number_format($this->so['down_payment'],DECIMAL);
+		elseif($this->so['status']==103) echo number_format($this->so['total']-$this->so['down_payment'],DECIMAL);?>
+        </td></tr>
+        
+        <?php if($this->so['delivery_place']=='SZ'){?>
+        <tr><td class="tableti">户名：</td><td align="left"><?=BANK_COM?></td></tr>
+        <tr><td class="tableti">帐号：</td><td align="left"><?=BANK_ACCOUNT?></td></tr>
+        <tr><td class="tableti">开户行：</td><td align="left"><?=BANK_NAME?></td></tr>
+        <?php }else{?>
+        <tr><td class="tableti">户名：</td><td align="left"><?=BANK_HK_COM?></td></tr>
+        <tr><td class="tableti">帐号：</td><td align="left"><?=BANK_HK_ACCOUNT?></td></tr>
+        <tr><td class="tableti">开户行：</td><td align="left"><?=BANK_HK_NAME?></td></tr>
+        <?php }?>
+        <!--<tr><td class="tableti">汇款识别码：</td><td align="left"><?=$this->so['salesnumber'];?></td></tr>-->
+        
+        <tr height="25"><td colspan="2" align="center"><a href="#" class="button" onclick="javascrīpt:printDiv('transferinfo<?=$this->so['id']?>')" target="_self">打 印</a></td></tr>
+        </tbody></table>
+</div>
+<!--<div class="tipbubble fontorange"><?php if($this->so['shipments']=='spot' && $this->so['status']==101)
+		      echo '说明：库存有现货，所以需要全额支付，待支付成功后我们会安排为您发货。';
+			  elseif($this->so['status']==101) echo '说明：由于库存缺货，我们需要为你订货，所以需要预先支付总金额的30%作为定金。待我们订货完成后，会更新订单状态，之后您再支付剩余货款，我们会为您发货。';	
+			  elseif($this->so['status']==103)  
+			  echo '说明：您订购的产品已经备货完毕，请支付剩余货款，待支付成功后我们会安排为您发货。';
+	    ?></div>
+</div>-->

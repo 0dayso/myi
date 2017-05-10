@@ -1,0 +1,85 @@
+<link rel="stylesheet" type="text/css" href="css/default/scheme.css"/>
+<div class="w">
+    <div class="breadcrumbs">		
+    	<span>您当前的位置：</span><a href="/" title="首页">首页</a>
+        &nbsp;&nbsp;»&nbsp;&nbsp;<a href="/code" title="代码库">代码库</a>
+        &nbsp;&nbsp;»&nbsp;&nbsp;<a href="/codelist-<?=$this->sem['app_level1']?>.html"><?=$this->sem['appname']?></a>
+        &nbsp;&nbsp;»&nbsp;&nbsp;<span><?=$this->sem['title']?></span>        
+    </div>
+</div>
+
+
+<div class="w clearfix">
+	<div class="fl shoplist">
+    	<div class="themain">
+         	<h1><?=$this->sem['title']?></h1>
+         	<div class="tag">
+               <?=($this->sem['source']?'来源：<span>'.$this->sem['source'].'</span>':'')?>
+               <?=($this->sem['author']?'作者：<span>'.$this->sem['author'].'</span>':'')?>
+               创建时间：<span><?=date('Y-m-d',$this->sem['created'])?></span>
+               关键词：<span><?php 
+					$tip = explode(',',$this->sem['keyword']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+					}
+			    ?></span>
+				
+             </div>
+            <div class="themain_p" id="share_content">
+            	<!--内容-->
+                               	
+                <div class="w_100 seminar_introduction seminar_introduction1">
+                    <div class="fl themianright">
+                        <p><b>开发环境：<?=$this->sem['dep_environment']?></b></p>
+                        <p class="miaos"><b>程序简介：</b><?=$this->sem['description']?></p>
+
+
+                    </div>
+                    <div class="fr"><a class=" btnok-new" href="javascript:;" onClick="downloadcode('<?=$this->fun->encryptVerification($this->sem['id'])?>')">立即下载</a>
+                    <div class="damoney">
+                    <p>大小：<span><?=$this->fun->format_bytes(filesize($this->sem['annexpath']))?></span></p>
+                    <p>下载次数：<span><?=$this->sem['downloadnumber']?></span></p>
+                    <p>需要积分：<?=$this->sem['spendpoints']?'<span class="money">'.$this->sem['spendpoints'].'</span>':'<span class="fontorange">免费</span>'?><p>
+                    </div>
+                    </div>
+                </div>
+                <div class="w_100 company_dl">
+                    <p><?=$this->sem['content']?></p>                 
+                </div>
+                
+            </div>
+		</div>
+	</div>
+    <div class="fr rightbox">
+    	<div class="blank10"></div>
+        <div class="subhot">
+                <div class="subhot_t">
+                    <h3 class="titbg1ts">最新程序<em class="emtrianglerightgray5px"></em></h3>
+                </div>
+                <div class="subshop seminar">
+                	<?php foreach($this->newarr as  $arr){?>
+                                    <div class="w_100 ">
+                        <p><a href="/code-<?=$arr['id']?>.html" title="<?=$arr['title']?>" ><?=$arr['title']?></a></p>
+                        <p class="fontgray"><?=date("Y/m/d",$arr['created'])?></p>
+                    </div>
+                    <?php }?>
+                     </div>
+            </div>
+            <div class="blank10"></div>
+         <?php if($this->donlog){?>
+        <div class="subhot">
+                <div class="subhot_t">
+                    <h3 class="titbg1ts">下载了该程序的用户还下载了<em class="emtrianglerightgray5px"></em></h3>
+                </div>
+                <div class="subshop seminar">
+                		<?php foreach($this->donlog as  $arr){?>
+                                    <div class="w_100 ">
+                        <p><a href="/code-<?=$arr['id']?>.html" title="<?=$arr['title']?>" ><?=$arr['title']?></a></p>
+                        <p class="fontgray"><?=date("Y/m/d",$arr['created'])?></p>
+                    </div>
+                    <?php }?>
+                     </div>
+            </div>
+            <?php }?>
+    </div>
+</div>

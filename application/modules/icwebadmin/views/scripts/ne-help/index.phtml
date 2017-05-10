@@ -1,0 +1,149 @@
+<link rel="stylesheet" type="text/css" href="/css/default/help.css" />
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<script src="/js/kindeditor/kindeditor-all.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?>
+  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                        <a href="<?php echo $this->addurl;?>" >添加+</a>
+ <?php }?></h1>
+ 
+ <div id="message_sess" style="display:none" class="message_sess">
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div>
+</div>
+      <!-- 需要填写的区域-->
+      <style type="text/css">
+	  .linkbox h3{ float:none !important;}
+      </style>
+      <form id="thisform" class="form-horizontal form-validate" style="text-align:left" method="post" action="<?php echo $this->indexurl;?>" enctype="multipart/form-data">
+      <table   border="0" style=" margin-top:10px;"><tr><td>
+      <div class="Clmenu fl">        	                       
+       <div class="linkbox">
+            <dl class="on">
+                <dt><h3>新手入门</h3><small>&gt;&gt;</small></dt>
+                <dd>
+                <a title="注册登录" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'login'))?>" <?php if($this->type=='login') echo 'class="choose"';?>><small>&gt;</small>&nbsp;注册登录</a>
+                </dd>
+                <dd>
+                <a title="我的易站" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'my'))?>" <?php if($this->type=='my') echo 'class="choose"';?>><small>&gt;</small>&nbsp;我的易站</a>
+                </dd>
+                <dd>
+                <a title="使用协议" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'terms'))?>" <?php if($this->type=='terms') echo 'class="choose"';?>><small>&gt;</small>&nbsp;使用协议</a>
+                </dd>
+                <dd>
+                <a title="交易条款" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'clause'))?>" <?php if($this->type=='clause') echo 'class="choose"';?>><small>&gt;</small>&nbsp;交易条款</a>
+                </dd>				
+            </dl>
+            <dl class="on">
+                <dt><h3>网上采购</h3><small>&gt;&gt;</small></dt>
+                <dd> 
+                <a title="查找产品" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'find'))?>" <?php if($this->type=='find') echo 'class="choose"';?>><small>&gt;</small>&nbsp;查找产品</a>
+                </dd>
+                <dd>
+                <a title="在线下单" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'online'))?>" <?php if($this->type=='online') echo 'class="choose"';?>><small>&gt;</small>&nbsp;在线下单</a>
+                </dd>
+                <dd>
+                <a title="在线询价" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'inq'))?>" <?php if($this->type=='inq') echo 'class="choose"';?>><small>&gt;</small>&nbsp;在线询价</a>
+                </dd>
+                <dd>
+               <a title="采购需求" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'stock'))?>" <?php if($this->type=='stock') echo 'class="choose"';?>><small>&gt;</small>&nbsp;采购需求</a>
+                </dd>	
+            </dl>
+            <dl class="on">
+                <dt><h3>交付配送</h3><small>&gt;&gt;</small></dt>
+                <dd>
+                <a title="支付方式" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'pay'))?>" <?php if($this->type=='pay') echo 'class="choose"';?>><small>&gt;</small>&nbsp;支付方式</a>
+                </dd>
+                <dd>
+                <a title="配送方式" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'shipping'))?>" <?php if($this->type=='shipping') echo 'class="choose"';?>><small>&gt;</small>&nbsp;配送方式</a>
+                </dd>
+                <dd>
+                 <a title="验货签收" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'inspection'))?>" <?php if($this->type=='inspection') echo 'class="choose"';?>><small>&gt;</small>&nbsp;验货签收</a>
+                </dd>
+                <dd>
+                <a title="交期说明" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'delivery'))?>" <?php if($this->type=='delivery') echo 'class="choose"';?>><small>&gt;</small>&nbsp;交期说明</a>
+                </dd>				
+            </dl>
+            <dl class="on">
+                <dt><h3>专业服务</h3><small>&gt;&gt;</small></dt>
+                <dd>
+                <a title="技术支持" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'technical'))?>" <?php if($this->type=='technical') echo 'class="choose"';?>><small>&gt;</small>&nbsp;技术支持</a>
+                </dd>
+                <dd>
+                <a title="BOM采购" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'bom'))?>" <?php if($this->type=='bom') echo 'class="choose"';?>><small>&gt;</small>&nbsp;BOM采购</a>
+                </dd>
+                <dd>
+                <a title="发票信息"  href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'invoice'))?>" <?php if($this->type=='invoice') echo 'class="choose"';?>><small>&gt;</small>&nbsp;发票信息</a>
+                </dd> 
+                <dd>
+                <a title="货物退换" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'exchange'))?>" <?php if($this->type=='exchange') echo 'class="choose"';?>><small>&gt;</small>&nbsp;货物退换</a>
+                </dd>				
+            </dl>
+            <dl class="on">
+                <dt><h3>帮助信息</h3><small>&gt;&gt;</small></dt>
+                <dd>
+                <a title="关于我们" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'aboutus'))?>" <?php if($this->type=='aboutus') echo 'class="choose"';?>><small>&gt;</small>&nbsp;关于我们</a>
+                </dd>
+                <dd>
+                 <a title="常见问题"  href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'question'))?>" <?php if($this->type=='question') echo 'class="choose"';?>><small>&gt;</small>&nbsp;常见问题</a>
+                </dd>
+                <dd>
+                <a title="联系客服" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'customer'))?>" <?php if($this->type=='customer') echo 'class="choose"';?>><small>&gt;</small>&nbsp;联系客服</a>
+                </dd>
+                <dd>	
+                <a title="隐私说明" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'privacy'))?>" <?php if($this->type=='privacy') echo 'class="choose"';?>><small>&gt;</small>&nbsp;隐私说明</a>
+                </dd>				
+            </dl>
+            <dl class="on">
+                <dt><h3>客服中心</h3><small>&gt;&gt;</small></dt>
+                <dd>
+                <a title="常见问题" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'problem'))?>" <?php if($this->type=='problem') echo 'class="choose"';?>><small>&gt;</small>&nbsp;常见问题</a>
+                </dd>
+                <dd>
+                <a title="售后服务"  href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'aftermarket'))?>" <?php if($this->type=='aftermarket') echo 'class="choose"';?>><small>&gt;</small>&nbsp;售后服务</a>
+                </dd>
+                <dd>
+                <a title="在线客服" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'onlineservice'))?>" <?php if($this->type=='onlineservice') echo 'class="choose"';?>><small>&gt;</small>&nbsp;在线客服</a>
+                </dd>
+                <dd> 
+                <a title="投诉中心"  href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'complaint'))?>" <?php if($this->type=='complaint') echo 'class="choose"';?>><small>&gt;</small>&nbsp;投诉中心</a>
+                </dd>	
+                 <dd>
+                 <a title="客服邮箱" href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'servicemail'))?>" <?php if($this->type=='servicemail') echo 'class="choose"';?>><small>&gt;</small>&nbsp;客服邮箱</a>
+                </dd>				
+            </dl>
+            <dl class="on">
+                <dt><h3>其它内容</h3><small>&gt;&gt;</small></dt>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'NeHelp', 'action'=>'index', 'type'=>'user_agreement'))?>" <?php if($this->type=='user_agreement') echo 'class="choose"';?>><small>&gt;</small>&nbsp;注册用户协议</a>
+                </dd>
+            </dl>
+        </div>
+    </div></td>
+   <td valign="top">
+    <input type="hidden" name="type" value="<?=$this->type?>" />
+    <input type="hidden" name="name" value="<?=$this->typecom['name']?>" />
+    <textarea  id="content"  name="content" style="width:780px; height:880px;"><?=$this->typecom['content']?></textarea>
+   </td></tr>
+   <tr><td colspan="2" align="center"><input type="submit" value="更 新" class="btn"/></td></tr></tr>
+   </table>
+   </form>
+    <br/>
+      <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+
+KindEditor.ready(function(K) {
+    var editor =  K.create('#content', {
+		allowFileManager : true,
+		uploadJson : '/icwebadmin/common/editoruplod?part=images/default/help/',
+        fileManagerJson : '/icwebadmin/common/filemanagerjson?part=images/default/help/'
+	});
+
+});
+<?php if(isset($_SESSION['remess'])){?>
+document.getElementById('message_sess').style.display = "block";
+document.getElementById('alert_message').innerHTML = "<?=$_SESSION['remess']?>";
+<?php unset($_SESSION['remess']);}?>
+</script>

@@ -1,0 +1,51 @@
+<div class="popup" style="width:950px;">
+    <div class="popup-header">
+        <h2>选择技术支持：</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+    </div>
+    <div class="popup-body">
+    	<div class=" overflowh">
+        	<div class="publicOne">
+                <table cellpadding="0" cellspacing="0" border="0" class="table" width="90%" id="SignFrame">
+                <thead>
+                  <tr id="trHeader">
+                    <th width="60">头像</th>
+                    <th width="60">姓名</th>
+                    <th width="100">职位</th>
+                    <th width="200">简介</th>
+                    <th width="100">电话</th>
+                    <th width="100">Email</th>
+                    <th width="50"><a href='javascript:;' class='gbqfb' onclick="openbox2('/icwebadmin/CpSogl/addengineer?id=<?=$this->id?>')">添加</a></th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php foreach($this->engineer as $k=>$v){?>
+                  <tr>
+                    <td><img src="/<?=$v['head']?>" height="60px" width="50px" /></td>
+                    <td><?=$v['name']?></td>
+                    <td><?=$v['office']?></td>
+                    <td><?=$v['introduction']?></td>
+                    <td><?=$v['tel']?></td>
+                    <td><?=$v['email']?></td>
+                    <td><a href='javascript:;' class='gbqfb' onclick="chooseengineer('<?=$this->id?>','<?=$v['id']?>','<?=$v['name']?>','<?=$v['office']?>')">选择</a>
+                    <a href='javascript:;' class='gbqfb' onclick="openbox2('/icwebadmin/CpSogl/addengineer?id=<?=$this->id?>&engid=<?=$v['id']?>')">修改</a>
+                    </td>
+                  </tr>
+                   <?php }?>
+                </tbody>
+              </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+//选择公司
+function chooseengineer(id,engid,name,office)
+{
+	$("#engineer_id_"+id).val(engid);
+	$("#name_"+id).html(name);
+	$("#office_"+id).html(office);
+	$.closePopupLayer('box');
+	$.closePopupLayer('box2');
+}
+</script>

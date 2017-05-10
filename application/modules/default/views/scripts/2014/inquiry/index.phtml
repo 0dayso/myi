@@ -1,0 +1,270 @@
+<?php 
+$szArr = array('RMB');
+$hkArr = array('USD','HKD');
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$currencyArr = array('RMB'=>'人民币(RMB)','USD'=>'美元(USD)','HKD'=>'港币(HKD)');
+
+if(in_array($this->items['currency'],$szArr)) $delivery_tmp = 'SZ';
+elseif(in_array($this->items['currency'],$hkArr)) $delivery_tmp = 'HK';
+else {$delivery_tmp = 'SZ';$this->items['currency'] = 'RMB';}
+
+?>
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a class="focs">我的询价篮</a> 
+  </div>
+</div>
+
+<div class="w">
+	<div class="BOMpage MT20 ">
+        <div class="onebox  ">
+
+            <div>
+                <div class="ImportExcel clearfix" >
+                  <strong>说明：</strong><br>
+                  —— 提交询价必须要提交相关企业资料，如果还没提交企业资料：请到“<a href="/center/info?type=2" target="_blank">企业资料</a>”提交。<br>
+                  —— 如有疑问请致电：400-626-1616 或 发邮件：<a href="mailto:sales@ceacsz.com.cn">sales@ceacsz.com.cn</a><br>                                                                           
+                </div>
+    <div class="BOMinfo clearfix boxshadow_h">
+           <?php if($this->items['total_items']<1){?>
+    <table cellpadding="0" cellspacing="0" class="BOMtable" height="165">
+      <tr>
+        <td colspan="8" height="50px" style="font-size:16px;">暂时没有询价产品，您可以去<a href="/category">挑选需要询价的产品</a></td>
+      </tr>
+    </table>
+    <?php }else{?>     
+                
+                
+   <table cellpadding="0" cellspacing="0" class="BOMtable">
+      <thead>
+        <tr>
+            <th width="150">型号</th>
+            <th>品牌</th>
+            <th>标准包装</th>
+            <th>参考交期</th>
+            <th><em>*</em>采购数量</th>
+            <th>目标单价</th>
+            <th>年用量</th>
+            <th></th>
+          </tr>
+      </thead>
+      <tbody>
+      <?php
+			foreach($this->items as $k=>$item){
+				if(is_array($item)){
+				$rowid       =$item['rowid'];
+				$inputid     = 'pamount_'.$rowid;
+				$priceid     = 'price_'.$rowid;
+				$expected_amount_id     = 'expected_amount_'.$rowid;
+			?>
+        <tr height="30">
+        <td>
+            <p><a href="/item-0-0-<?=$item['id'];?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank" class="model" >
+              <?=$item['part_no'];?>
+              </a></p>
+          </td>
+        <td><?=$item['options']['brand'];?></td>
+        <td><?=$item['options']['mpq'];?></td>
+        <td><?=$item['options']['lead_time'];?></td>
+        <td>
+        <input type="hidden" name="rowid" value="<?=$rowid;?>"/>
+        <input type="text" id="<?=$inputid;?>" name="pamountbut" onkeyup="<?=ISNUMBER?>" value="<?=$item['hope_number'];?>"/></td>
+        <td><input type="text" id="<?=$priceid;?>" name="pricebut" onkeyup="<?=ISFLOAT?>" value="<?=$item['hope_price'];?>"/></td>
+        <td><input type="text" id="<?=$expected_amount_id;?>" name="expected_amount" value="<?=$item['expected_amount'];?>"/></td>
+        <td><div class="tablea"><a href="javascript:" class="gbqfb" onclick="delectinquiry('<?=$rowid;?>')">删除</a> </div></td>
+      </tr>
+      <?php }}?>
+            </tbody>
+      </table>
+                	
+              		<div class="dl2013 clearfix">
+                    <dl>
+                        <dt><em>*</em>结算货币：</dt>
+                        <dd>
+                          <span id='currency_text'><?php echo $currencyArr[$this->items['currency']]?></span>
+          <div style="display:none" id="currency_div">
+          <select name="currency" id="currency" onchange="changeMbprice(this.value)">
+       <option value="RMB" <?php if($this->items['currency'] == 'RMB') echo "selected";?>>人民币(RMB)</option>
+       <option value="HKD" <?php if($this->items['currency'] == 'HKD') echo "selected";?>>港币(HKD)</option>
+       <option value="USD" <?php if($this->items['currency'] == 'USD') echo "selected";?>>美元(USD)</option>
+       </select>
+          </div>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>交货地：</dt>
+                        <dd>
+                           <span id='delivery_text'><?=$deliveryArr[$delivery_tmp]?>&nbsp;&nbsp;<a href="javascript:;" onclick="changeDelivery()">修改结算货币&gt;&gt;</a></span>
+          <div style="display:none" id="delivery_div">
+        <select name="delivery" id="delivery" disabled="disabled">
+          <option value="SZ" <?php if($delivery_tmp == 'SZ') echo "selected";?>>国内</option>
+          <option value="HK" <?php if($delivery_tmp == 'HK') echo "selected";?>>香港</option>
+          </select>
+             &nbsp;&nbsp;<a href="javascript:;" onclick="saveDelivery()">保存&gt;&gt;</a>
+          </div>
+                        </dd>
+                    </dl>
+                    <dl class="dl100">
+                        <dt>询价说明：</dt>
+                        <dd>
+                          <textarea name="description" id="description" rows="3" cols="40"></textarea>
+                        </dd>
+                    </dl>
+                    <dl class="dl100">
+                        <dt>&nbsp;</dt>
+                        <dd><br/><br/><div id="orderbtn" style="margin-left:80px;">
+                        
+      <input type="button" value="提交询价单"  class="gbqfbbig_h" onclick="handleInquiry()"/>
+      </div>
+                        </dd>
+                    </dl>
+                    <div class="clr"></div>
+                </div>
+            <?php }?>    
+                
+              	</div>
+            </div>
+        </div>
+        
+        <div class="ac"></div>  
+    </div> 
+</div>
+<script type="text/javascript">
+function changeMbprice(v)
+{
+	if(v=='RMB')
+	{
+	   $("#delivery").val('SZ');
+	}
+	else if(v=='HKD')
+	{
+	    $("#delivery").val('HK');
+	 }
+	else{ 
+		 $("#delivery").val('HK');
+	}
+
+}
+function changeDelivery(){
+	document.getElementById("delivery_text").style.display = 'none';
+	document.getElementById("delivery_div").style.display  = 'block';
+	document.getElementById("currency_text").style.display = 'none';
+	document.getElementById("currency_div").style.display  = 'block';
+}
+function saveDelivery(){
+    var deliveryobj = document.getElementById("delivery");
+    var currencyobj = document.getElementById("currency");
+    
+	document.getElementById("delivery_text").style.display = 'block';
+	document.getElementById("delivery_div").style.display  = 'none';
+	document.getElementById("delivery_text").innerHTML = deliveryobj.options[deliveryobj.selectedIndex].text+'&nbsp;&nbsp;<a href="javascript:;" onclick="changeDelivery()">修改结算货币&gt;&gt;</a>';
+	document.getElementById("currency_text").innerHTML = currencyobj.options[currencyobj.selectedIndex].text;
+	document.getElementById("currency_text").style.display = 'block';
+	document.getElementById("currency_div").style.display  = 'none';
+}
+//应用领域onload_app();
+function onload_app()
+{
+	$("#app1Span").load("/common/getapp?level=1");
+	$("#app2Span").load("/common/getapp?level=2");
+}
+function setApp(){
+		var app_1_id=$("#app_1").val();
+		$("#app2Span").load("/common/getapp?level=2&app_1_id="+app_1_id);
+}
+function handleInquiry() {
+	$.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   if(arr.code==0)
+			   {  
+			       var num  =new Array();
+				   var price=new Array();
+				   var amount = new Array();
+				   var rowid = new Array();
+			       var pamountbut = document.getElementsByName("pamountbut");
+				   var pricebut   = document.getElementsByName("pricebut");
+				   var rowidobj   = document.getElementsByName("rowid");
+				   var amountobj   = document.getElementsByName("expected_amount");
+				   for (var i=pamountbut.length-1;i>=0;i--)
+				   {
+						if(pamountbut[i].value=='') {alert('请输入采购数量');pamountbut[i].focus();return;}
+						else if(isNaN(pamountbut[i].value)){alert('采购数量必须为数字');pamountbut[i].focus();return;}
+						else if(pamountbut[i].value < 1){alert('采购数量必须大于0');pamountbut[i].focus();return;}
+						else num[i]=pamountbut[i].value;
+						
+						//if(pricebut[i].value=='')  {alert('请输入目标单价');pricebut[i].focus();return;}
+						//else if(!BASEisFloat(pricebut[i].value)) {alert('目标单价必须为数字');pricebut[i].focus();return;}
+						if(pricebut[i].value!=''){
+						  if(!BASEisFloat(pricebut[i].value)) {alert('目标单价必须为数字');pricebut[i].focus();return;}
+						  else if(!CheckFloat(pricebut[i].value,4)){alert('目标单价最多4位小数');pricebut[i].focus();return;}
+						}
+						
+						price[i]=pricebut[i].value;
+						amount[i]=amountobj[i].value;
+						rowid[i] =rowidobj[i].value;
+				   }
+				   var delivery = document.getElementById('delivery').value;
+				   if(delivery == ''){alert('请选择交货地');return;}
+				   var currency = document.getElementById('currency').value;
+				   if(currency == ''){alert('请选择结算货币');return;}
+				   var app_1 = '';//document.getElementById('app_1').value;
+				   var app_2 = '';//document.getElementById('app_2').value;
+				   var description = document.getElementById('description').value;
+				   //if(description=='')  {alert('请输入询价说明');document.getElementById('description').focus();return;}
+				   var subtmp = document.getElementById("orderbtn");
+				   subtmp.innerHTML = '<input type="button" class="gbqfbbig_h" value="提交中..." disabled="disabled" style="cursor:default"/>';
+				   $.ajax({
+						url: '/inquiry/handle',
+						data: {'num':num,'price':price,'amount':amount,'rowid':rowid,'delivery':delivery,'currency':currency,'app_1':app_1,'app_2':app_2,'description':description},
+						type: 'post',
+						dataType: 'json',
+						success: function(arr) {
+							if(arr.code==0)
+							{
+								window.location.href ="/inquiry/success?key="+arr.key;
+							}else{
+							   if(arr.code==400)
+							   {
+									 $.openPopupLayer({
+		            				 name: "companyinfoBox",
+		            				 url: "/center/companyinfo"
+	                             	});
+								}else{
+									alert(arr.message);
+								}
+								subtmp.innerHTML ='<input type="button" value="提交询价单"  class="gbqfbbig_h" onclick="handleInquiry()"/>';
+							}
+						}
+					});
+			   }else if(arr.code==100){
+			   	  $.openPopupLayer({
+		             name: "loginBox",
+		             target: "login_box"
+	              });
+			   }else if(arr.code==200){
+			   	   window.location.href ="/user/verification";
+			   }
+            }
+    });
+}
+changeCur();
+function changeCur()
+{
+	var delivery=$("#delivery").val();
+	if(delivery=='SZ')
+	{
+	   $("#cur_div").html('<select name="currency" id="currency"><option value="RMB">人民币(RMB)</option></select>');
+	}else if(delivery=='HK')
+	{
+		var usd = hkd = ''; 
+		if('<?=$this->items['currency']?>' =='USD') usd = "selected";
+		else hkd = "selected";
+	   $("#cur_div").html('<select name="currency" id="currency"><option value="HKD" '+hkd+'>港币(HKD)</option><option value="USD" '+usd+'>美元(USD)</option></select>');
+	}
+	else $("#cur_div").html('<select name="currency" id="currency"><option value="">先选择交货地</option></select>');
+}
+</script>

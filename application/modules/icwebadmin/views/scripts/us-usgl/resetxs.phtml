@@ -1,0 +1,52 @@
+<div class="popup">
+    <div class="popup-header">
+    <h2>重新分配销售：<?=$this->userinfo['uname']?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('resetxsBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body" style="width:550px;">
+     <!-- 需要填写的区域-->
+      <table width="100%" border="0" cellpadding="1">
+        <tr>
+          <td align="right">公司名：</td><td><?=$this->userinfo['companyname']?></td>
+          </tr>
+          <tr>
+          <td align="right">
+          负责销售：</td><td><select id="staffid" name="staffid">
+           <option value="alina.shang" <?=$this->xsname=='alina.shang'?'selected':''?>>尚玉(alina.shang)</option>
+          <?php foreach($this->xiaoshou as $starr){?>
+            <option value="<?=$starr['staff_id']?>" <?php if($this->userinfo['staffid']==$starr['staff_id']) echo 'selected';?>><?=$starr['department'].' - '.$starr['lastname'].$starr['firstname'].'('.$starr['staff_id'].')'?></option>
+          <?php }?>
+            </select>
+            </td>
+        </tr>
+        <tr><td align="right">情况说明：</td><td><textarea name="follow_up" id="follow_up" rows="3"  style="width:400px;"></textarea></td></tr>
+        <tr>
+          <td align="center" colspan="2"><span id="baojiabtn"><input type="button" class="btnabig"  value="提交" onclick="resetxsaction()"/></span>
+          </td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+</div>
+<script type="text/javascript" language="javascript">
+function resetxsaction()
+{
+	var staffid = document.getElementById('staffid').value;
+	var follow_up = document.getElementById('follow_up').value;
+	var subtmp = document.getElementById("baojiabtn");
+	subtmp.innerHTML = '<input type="button" class="btnabig" value="提交中..."/>';
+	 $.ajax({
+            url: '/icwebadmin/UsUsgl/resetxs',
+            data: {'uid':<?=$this->userinfo['uid']?>,'staffid':staffid,'follow_up':follow_up},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    alert(arr.message);
+            	if(arr.code == 0)
+                {   $.closePopupLayer('resetxsBox');
+                    location.reload();
+                }
+				subtmp.innerHTML = '<input type="button" class="btnabig"  value="提交" onclick="resetxsaction()"/>';
+            }
+	  });
+}
+</script>

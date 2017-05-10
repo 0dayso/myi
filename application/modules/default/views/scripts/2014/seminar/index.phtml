@@ -1,0 +1,102 @@
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/se2013.css"/>
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+
+
+<div class="w">
+  <div class="breadcrumbs2013">
+    <a href="/webinarlist" class="focs"> 技术研讨会</a> 
+    <?php foreach($this->semLevel1 as $sem){
+        	  	 if($this->selectid==$sem['id']) echo '&nbsp;&nbsp;»&nbsp;&nbsp; <span>'.$sem['name'].'</span>';
+		}
+    ?>  
+  </div>
+</div>
+
+<div class="sembox2013 ">  
+	<div class="w" > 
+        <div class="layout rigybg" >
+            <div class="fl infolist MT10">
+            	<div class="selectbox201312 ">
+                    <dl>
+                        <dt>技术分类：</dt>
+                        <dd>
+                            <ul class="catList clearfix">                
+                               <li><a <?php if(!$this->selectid) echo 'class="curr"';?> href="/webinarlist">全部</a></li>
+                            <?php foreach($this->semLevel1 as $app){?>
+                             <li><span class="fore<?=$app['id']?>"></span><s></s><a href="/webinarlist-<?=$app['id']?>.html"  title="<?=$app['name']?>" class="logclick <?php if($this->selectid==$app['id']) echo 'curr';?>" rev="newslist" rel="<?=$app['id']?>"><?=$app['name']?></a></li>
+							 <?php }?>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="list—tit">
+                         <h2>技术研讨会</h2>
+                </div>
+                <div class="w_100">
+                
+                <?php if(empty($this->allSol)){?>
+        <div class="posts p15 boxshadow_h">没有记录</div> 
+        <?php }else{
+			foreach($this->allSol as $sol){?>
+          
+<div class="posts p15 boxshadow_h">
+<h2><span class="ifotip2013"><em><?=$sol['appname']?></em><i></i></span><a href="/webinar-<?=$sol['id']?>.html" title="<?=$sol['title']?>" class="logclick" rev="news" rel="<?=$sol['id']?>" target="_blank"><?=$sol['title']?></a>
+<?php if($sol['type']=='vdo'){?>
+<img src="images/default/video.jpg">
+<?php }?>
+</h2>
+<div class="postmeta">                
+<span>来源：</span><?=$sol['source']?>
+                <span class="ml10">作者：</span><?=$sol['author']?>
+                <span class="ml10">关键词：</span><?php 
+					$tip = explode(',',$sol['keyword']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+				 }?>      
+</div>
+
+<div class="row">
+<div class="post-thumb">
+<?php if($sol['image']){?>
+<img src="<?php echo $sol['image'];?>" alt ="<?php echo $sol['title'];?>" title="<?php echo $sol['title'];?>" width="200" height="125">
+<?php }?>
+</div>
+<div class="post-cont">
+<p><?=$sol['description']?></p>
+</div>
+<!--<p class="time">2013-10-20</p>-->
+</div>
+
+</div> 
+       <?php }}?>
+
+                </div>  
+                <div class="clr"></div>
+                <div class="page_box"><div class="page clearfix"><?=$this->page_bar;?></div></div> 
+            </div>    
+            <div class="fr righttuij">
+            <div id="hotsearch"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
+            <div id="hotsolution"></div>
+            <div id="hotnews"></div>
+            <div id="hotwebinar"></div>
+            <div id="htocode"></div>
+            </div>
+            <div class="clr"></div>
+        </div>
+    </div>
+</div>
+<script language="javascript">
+	$(function(){
+	
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+		$("#hotsearch").load("/publicbox/hotsearch");
+		$("#hotsolution").load("/publicbox/hotsolution");
+		$("#hotnews").load("/publicbox/hotnews");
+		$("#hotwebinar").load("/publicbox/hotwebinar");
+		$("#htocode").load("/publicbox/htocode");
+	})
+</script>

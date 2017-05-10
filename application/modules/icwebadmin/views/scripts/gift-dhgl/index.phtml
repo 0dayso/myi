@@ -1,0 +1,95 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  <div class="fr u_right">
+  <div class="tab_content">
+    	<div class="tab_tit1">
+        <ul class="fl">
+          <li <?=$this->type=='wait'?'class="on"':''?>><a href="?type=wait" style="width:120px;">待处理<em>(<?=$this->waitnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='already'?'class="on"':''?>><a href="?type=already" style="width:120px;">已处理<em>(<?=$this->alreadynum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='cancel'?'class="on"':''?>><a href="?type=cancel" style="width:120px;">已取消<em>(<?=$this->cancelnum?>)</em><b class="blank3"></b></a></li>
+        </ul>
+        </div>
+    </div>
+    <div class="tab_con">
+      <table class="tableanew" border="0" cellspacing="0" cellpadding="0"  width="100%">
+        <tr>
+          <th width="60">图片</th>
+          <th width="150">礼品</th>
+          <th width="50">礼品类型</th>
+          <th width="150">兑换用户</th>
+          <th width="40">消费积分</th>
+          <th width="40">兑换数量</th>
+          <th width="200">收货人信息</th> 
+          <th width="90">兑换日期</th>
+          <th width="90">用户备注</th>
+          <?php if(in_array($this->type,array('already','cancel'))){?>
+          <th width="90">处理结果</th>
+          <?php }?>
+          <th width="80" align="center">操作</th>
+        </tr>
+        <?php if(empty($this->giftall)){?>
+        <tr>
+          <td colspan="11"><center> 暂无记录。</center></td>
+        </tr>
+        <?php }else{
+		foreach($this->giftall as $k=>$v){
+		?>
+        <tr valign="top">
+          <td align="left"><img src="/upload/default/gift/<?=$v['images']?>"  width="60" height="60"/></td>
+          <td align="left"><a  href="/jifen-<?=$v['id']?>.html" target="_blank" title="查看礼品"><?=$v['giftname']?></a></td>
+          <td align="center"><?=$v['gifttype']==1?'实物':'虚拟物品'?></td>
+          <td align="center"><a href="javascript:;" onclick="viewUser('<?=$v['uid']?>')" title="查看详细资料" ><?=($v['companyname']?$v['companyname']:$v['uname'])?></a></td>
+          <td align="center"><?=$v['score']?></td>
+          <td align="center"><?=$v['number']?></td>
+          <td align="center"><?php if($v['gifttype']==1) echo $v['name']." , ".$v['province']." ".$v['city']." ".$v['area']." ".$v['address']." , ".$v['mobile']." ".$v['tel'];else echo '--';?>
+          
+          <?php if($v['courierid']){?>
+           <p style="color:#006600">(<?=$v['couname'].' , '.$v['cou_number']?>)</p>
+          <?php }?>
+          
+          </td>
+          <td align="center"><?=($v['created']?date('Y/m/d H:i',$v['created']):'--')?></td>
+          <td><?=$v['remark']?$v['remark']:'--'?></td>
+          <?php if(in_array($this->type,array('already','cancel'))){?>
+          <td><?=$v['notice']?></td>
+          <?php }?>
+          <td><?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+          		<?php if(in_array($this->type,array('wait'))){?>
+                <p><a class="gbqfb" href="javascript:;" onclick="process('<?=$v['id']?>')">处理</a></p>
+                <p><a class="gbqfb" href="javascript:;" onclick="cancel('<?=$v['id']?>')">取消</a></p>
+                <?php }?>
+            <?php }?>
+          </td>
+        </tr>
+        <?php }
+		}?>
+      </table>
+      <div class="pagination divpage">
+        <?=$this->page_bar;?>
+      </div>
+    </div>
+  </div>
+  <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+function cancel(id)
+{
+	 $.openPopupLayer({
+        name:'cancelBox',
+        url:'/icwebadmin/GiftDhgl/cancel?id='+id
+    });
+}
+function process(id)
+{
+	 $.openPopupLayer({
+        name:'processBox',
+        url:'/icwebadmin/GiftDhgl/process?id='+id
+    });
+}
+
+</script>

@@ -1,0 +1,88 @@
+<!--弹出框-->
+
+<div class="popnew ypapplypop">
+<div class="popnew-tit"> 
+     <span class="popnew-tit_t">产品选型指南申请</span>
+       <input type="button" title="关闭" class="popnew-closebtn" onclick="$.closePopupLayer('box')">
+    </div> <!--<div class="tip fontorange font14" style="top:10px">&nbsp;&nbsp;&nbsp;&nbsp;IC易站乐意为您提供样片。</div>-->
+    <div class="popnew-con">
+    
+        <div class="ypapplyform"> 
+               <dl>
+                 <dt><em>*</em>申请数量：</dt><dd><input type="text" name="applynum" id="applynum" class="input300"  style="width:100px;" onkeyup="<?=ISNUMBER?>" value="1"> <!--<span style="font-size:12px; color:#999">(不超过10片)</span>--></dd>
+                </dl>
+               
+               
+                <dl class="dlall">
+                 <dt><em>*</em>配送信息：</dt><dd><?php if(!$this->addressArr){?>
+            <p style="color:#FF0000">你没有配送信息，请去<a href="/center/address" target="_blank">收货地址</a>添加。</p>
+            <?php }else{?>
+              <?php  foreach($this->addressArr as $address){?>
+              <p>
+                <label>
+                <input type="radio" name="addressradio" value="<?php echo $address['id'];?>" <?php if($this->addressFirst['id'] == $address['id']) echo "checked";?> />
+                <?php echo $address['name']." , ".$address['province']." ".$address['city']." ".$address['area']." ".$address['address']." , ".$address['zipcode']." , ".$address['mobile']." ".$address['tel'];?></label>
+              </p>
+              <?php }?>
+              <p style="color:#FF0000">需要修改收货地址，请去<a href="/center/address" target="_blank">收货地址</a>修改。</p>
+        <?php }?></dd>
+                </dl>
+                <dl>
+                 <dt>&nbsp;</dt><dd><span id="orderbtn"><input type="button"  class="popbtn" onclick="submitsamples()" value="提 交"/></span></dd>
+                </dl>
+            </div>
+		<div class="clr"></div>
+    </div> 
+    <div class="clr"></div>
+</div>
+<script type="text/javascript">
+//提交
+function submitsamples()
+{
+       var applynum = $("#applynum").val();
+	   if(applynum=='' || typeof(applynum)=="undefined") {
+		   alert('请填写申请数量');$('#applynum').focus();return;
+		}else if(applynum>2){
+		   alert('申请数量不超过2');$('#applynum').focus();return;
+		}
+		var addressradio = $('input[name="addressradio"]:checked').val();
+	   if(addressradio=='' || typeof(addressradio)=="undefined") {
+			alert('请选择配送信息');$('input[name="addressradio"]:checked').focus();return;
+		}
+	   var subtmp = document.getElementById("orderbtn");
+	   subtmp.innerHTML = '<input type="button"  class="popbtn" value="提交中..."/>';
+	     
+		$.ajax({
+			url: '/samples/dataapply',
+			data: {'brandid':<?=$this->brandid?>,'applynum':applynum,'addressradio':addressradio},
+			type: 'post',
+			dataType: 'json',
+			success: function(arr) {
+				if(arr.code==0)
+				{
+					$.closePopupLayer('box');
+					alert(arr.message);
+				}else{
+				   if(arr.code==400)
+				   {
+						 $.openPopupLayer({
+						 name: "companyinfoBox",
+						 url: "/center/companyinfo"
+						});
+					}else{
+						alert(arr.message);
+						$.closePopupLayer('box');
+					}
+				}
+				subtmp.innerHTML = '<input type="button"  class="popbtn" onclick="submitsamples()" value="提 交"/>';
+			}
+		});
+			   
+}
+function successSamples(pid){
+	$.openPopupLayer({
+	 name: "successSamplesBox",
+	 url: "/samples/success?pid="+pid
+	});
+}
+</script>

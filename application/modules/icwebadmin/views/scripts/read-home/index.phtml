@@ -1,0 +1,81 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+  <div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+ </div>
+	  <!-- 需要填写的区域-->
+	<div class="fr u_right">
+    <div class="tab_content">
+      <div class="tab_tit1">
+        <ul class="fl">
+          <li class="on"><a href="/icwebadmin/ReadHome">滚动图片<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/newprod">精品 • 新品<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/actingbrand">代理品牌<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/app">应用分类<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/recbrand">产品分类推荐品牌<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/hotprod">热销产品推荐<b class="blank3"></b></a></li>
+        </ul>
+        <div class="tab_con mb10">
+            
+        	<table class="tab_tb"  border="0" style=" margin-top:-1px;">
+        	<tr><td style="padding:10px;">
+                <table width="100%" cellpadding="1" border="0" class="producttable">
+                <tr bgcolor="#334159" height="30px">  
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">标题</font></strong></td>
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">类型</font></strong></td>
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">图片</font></strong></td>
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">连接地址</font></strong></td> 
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">打开连接方式</font></strong></td>
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">显示顺序</font></strong></td>
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">状态</font></strong></td>
+                <td width="50"><div style="margin-top:2px"><a href="<?php echo $this->url(array('controller'=>'ReadHome', 'action'=>'hpadd', 'id'=>$data['id']));?>" class="gbqfb">添加</a></div></td>      
+                </tr>
+                <?php for($i=0;$i<count($this->topimageArr);$i++){
+                	$data = $this->topimageArr[$i];?>
+       			<tr height="25px">  
+                <td><?=$data['title']?></td>
+                <td><?=$data['type']?></td>
+                <td title="<?=$data['image']?>"><img src="<?=$data['image']?>" width="200" height="100"/></td>
+                <td><a href="<?=$data['url']?>" target="_blank"><?=$data['url']?></a></td>
+                <td><?=$data['url_target']==2?'弹出新页面':'覆盖当前页'?></td> 
+                <td><?=$data['displayorder']?></td>
+                 <td><?php if($data['status']==1) {?> 
+                <a href="javascript:;" onclick="changestatus(<?=$data['id']?>,0)" title="点击下线"><font color="#006600">已上线</font></a>
+				<?php }else {?>
+                <a href="javascript:;" onclick="changestatus(<?=$data['id']?>,1)" title="点击上线"><font color="#FF0000">已下线</font></font></a>
+                <?php }?>
+                </td>
+                <td>
+				<a href="<?php echo $this->url(array('controller'=>'ReadHome', 'action'=>'hpedit', 'id'=>$data['id']));?>" class="">Edit</a> 
+				</td>   
+                </tr>
+                <?php }?>
+                </table>
+            </td></tr>
+            </table>
+        </div>
+      </div>
+     </div>
+     </div>
+      <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+function changestatus(id,status)
+{
+	 $.ajax({
+            url: '/icwebadmin/ReadHome/hpstatus',
+            data: {'id':id,'status':status},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    document.getElementById('message_sess').style.display = "block";
+	            document.getElementById('alert_message').innerHTML = arr.message;
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+}
+</script>

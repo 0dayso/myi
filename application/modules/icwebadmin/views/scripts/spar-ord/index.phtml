@@ -1,0 +1,61 @@
+<?php 
+$title = array('icwebadmin'=>'后台验证码类型',
+'default'=>'前台验证码类型',
+'prodlist'=>'产品列表每页显示数',
+'prodlistype'=>'产品列表分页种类',
+'news'=>'新闻列表每页显示数',
+'newstype'=>'新闻列表分页种类',
+'orderlist'=>'订单列表每页显示数',
+'orderlisttype'=>'订单列表分页种类',
+'inquirylist'=>'询价列表每页显示数',
+'inquirylisttype'=>'询价列表分页种类',
+'bomlist'=>'BOM采购列表每页显示数',
+'bomlisttype'=>'BOM采购列表分页种类',
+'invoicelist'=>'发票申请列表每页显示数',
+'invoicelisttype'=>'发票申请列表分页种类',
+'favoriteslist'=>'收藏夹列表每页显示数',
+'favoriteslisttype'=>'收藏夹列表分页种类'
+);
+?>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+      <!-- 需要填写的区域-->
+      <form id='thisform' name="thisform" action='' method='post'>
+      <table cellpadding="1" border="1" width="740px" style=" margin-top:10px;">
+      <?php if($this->configArr){
+	  	foreach($this->configArr as $key=>$config){
+	  ?>
+<!--       <input type="hidden" name="<?=$key?>" value="<?=$key?>" />-->
+       <tr height="25px"><td width="70"><?=$key?></td><td>
+	   		<table>
+            	<?php for($i=1;$i<count($config);$i++){
+					 $value = $config[$i];
+					 if($value[1]){
+					 ?>
+                	 <tr height="25px"><td width="370" align="right"><?=$title[$value[0]].'('.$value[0].')：'?></td><td>
+                     <?php if(in_array($value[0],array('bankaddress_hk','title','description','keywords','contract_add_sz','contract_add_hk','foot_remark'))){?>
+                     <textarea  name="<?=trim($value[0])?>" rows="3"  style="width:300px;"><?=trim($value[1])?></textarea>
+                     <?php }else{?>
+                     <input type="text" style="width:300px" name="<?=trim($value[0])?>" value="<?=trim($value[1])?>" />
+                     <?php }?>
+                     </td></tr>
+                <?php }}?>
+            </table>
+       </td></tr> 
+      <?php }}?>
+      <tr height="35"><td colspan="2" align="center"><input type="submit"   class="btnabig"  value="更 新"/></td></tr>
+      </table>
+      </form>
+      <br/>
+      <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+<?php if(isset($_SESSION['remess'])){?>
+document.getElementById('message_sess').style.display = "block";
+document.getElementById('alert_message').innerHTML = "<?=$_SESSION['remess']?>";
+<?php unset($_SESSION['remess']);}?>
+</script>

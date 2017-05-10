@@ -1,0 +1,442 @@
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/brand2014.css"/>
+
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+<script  type="text/javascript">
+    //tab切换
+    $(function(){
+        var tab = $(".tabbar2 li");
+        tab.click(function(){
+            $(this).addClass("selected").siblings().removeClass("selected");
+            var index = tab.index(this);
+            $(".tabbarson").eq(index).show().siblings().hide();
+            if($(this).attr("id")=="solution_click"){
+
+                $("#brand_solution").load("/publicbox/brandsolution?brandid=<?=$this->brandinfo['id']?>");
+            }
+        });
+    })
+    //ajax应用分类分页
+    function ajaxpage(url){
+        $("#brand_solution").load(url);
+        scrollTo(0,200);
+    }
+</script>
+<div class="w ">
+    <div class="breadcrumbs2013">
+        <span><a href="/brand" class="focs">品牌</a></span> &nbsp;&nbsp;»&nbsp;&nbsp;
+        <span title="<?=$this->brandname?>"><?=$this->brandname?></span>
+    </div>
+</div>
+<div class="w brandcon <?php if($this->brandinfo['id']==4){ echo 'belingbrand';}else echo 'epsonbrand';?>">
+<?php if($this->brandinfo['show']==1){?>
+<!--专题样式-->
+<!--图片-->
+<?php if($this->brandinfo['logo']){$logoarr = explode('|',$this->brandinfo['logo']);
+    if(!isset($logoarr[1]) || $logoarr[1]==''){?>
+        <div class="brandconimg"><img src="<?=$logoarr[0]?>" border="0" usemap="#Map" />
+            <?php if($this->brandname=='GigaDevice'){?>
+                <map name="Map" id="Map"><area shape="rect" title="http://www.gigadevice.com" coords="152,156,626,193" href="http://www.gigadevice.com" target="_blank"/></map>
+            <?php }?>
+        </div>
+    <?php }else{?>
+        <link rel="stylesheet" type="text/css" href="/js/jsplug/flexslider/flexslider.css"/>
+        <script type="text/javascript" src="/js/jsplug/flexslider/jquery.flexslider-min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                $(".flexslider").flexslider({});
+            });
+        </script>
+        <div class="brandconimg">
+            <div class="flexslider">
+                <ul class="slides">
+                    <?php foreach($logoarr as $lv){if($lv){?>
+                        <li><img src="<?=$lv?>" ></li>
+                    <?php }}?>
+                </ul>
+            </div>
+        </div>
+    <?php }}?>
+<!--end 图片-->
+<?php if($this->brandinfo['content']){ echo $this->brandinfo['content'];}else echo '<br/>';?>
+
+
+<!--切换-->
+<ul class="tabbar2 clearfix">
+    <li class="selected" id="list_click"><a href="javascript:">产品列表<b class="blank3"></b></a></li>
+    <?php if( $this->brandinfo['introduction']){?><li class="" id="brand_click"><a href="javascript:">品牌介绍<b class="blank3"></b></a></li><?php }?>
+    <?php if( $this->bsNum>0){?>
+        <li class="" id="solution_click"><a href="javascript:">相关方案<b class="blank3"></b></a></li>
+    <?php }?>
+</ul>
+<!--end 切换-->
+
+<div>
+
+<div class="tabbarson">
+
+<div class="indexsearch">
+    <div class="pro_sortbarAll">
+        <strong>产品分类：</strong>
+        <div class="pro_sortbarul">
+            <?php if($this->app2 || $this->app3 || $this->p){?>
+                <ul class="labelinput ulfore1">
+                    <li><label><a href="/pl/<?=$this->brandinfo['name']?>">查看全部</a></label></li>
+                </ul>
+            <?php }?>
+            <?php
+            $n = 5;
+            $num = count($this->app)/$n;
+            for($i=0;$i<$num;$i++){?>
+                <ul class="labelinput ulfore2"><!--注意： 一行ulfore2最多展示5个   超过就要换行  -->
+                    <?php for($j=($i*$n);$j<($i*$n+$n);$j++){
+                        if($this->app[$j]){
+                            ?>
+                            <li><label><input type="checkbox" value="<?=$this->app[$j]['app2'][0]?>" name="app2[]"  onchange="subsearchbtn()" <?php if(in_array($this->app[$j]['app2'][0],$this->app2)) echo "checked";?>  ><?=$this->app[$j]['app2'][1]?></label>
+                                <?php if($this->app[$j]['app3']){?>
+                                    <ul class="labelinput ulfore3 showapp3_div" <?php if(empty($this->app3)) echo 'style="display:none"';?>>
+                                        <?php foreach($this->app[$j]['app3'] as $v){if($v[0]){?>
+                                            <li><label><input type="checkbox" value="<?=$this->app[$j]['app2'][0].';'.$v[0]?>" name="app3[]" onchange="subsearchbtn()" <?php if(in_array($this->app[$j]['app2'][0].';'.$v[0],$this->app3)) echo "checked";
+                                                    if(in_array($this->app[$j]['app2'][0],$this->app2)) echo 'checked="checked" disabled="disabled"';
+                                                    ?> ><?=$v[1]?></label></li>
+                                        <?php }}?>
+                                    </ul>
+                                <?php }?>
+                            </li>
+                        <?php }
+                    }?>
+                    <?php if(!empty($this->app3)){?>
+                        <span class="showspan"><a class='gbqfb gbqfb_open' href='javascript:;' onclick='showapp3(0)'>收起<i class='open_tri open_down'></i></a></span>
+                    <?php }else{?>
+                        <span class="showspan"><a class="gbqfb gbqfb_open" href="javascript:;" onclick="showapp3(1)">展开<i class="open_tri open_up "></i></a></span>
+                    <?php }?>
+                </ul>
+            <?php }?>
+        </div>
+    </div>
+    <div class="subsearchbox">
+        <input type="text" class="subsearchtext" name="brand_prodno" id="brand_prodno" onkeydown="enterserch(event)" onblur="inputBlur($(this),'请输入搜索型号')" onfocus="inputFocus($(this),'请输入搜索型号');" value="<?=$this->p?$this->p:'请输入搜索型号'?>" >
+        <input type="button" class="subsearchbtn" value="<?=$this->brandname?> 型号搜索" onclick="subsearchbtn()" <?=($this->brandinfo['id']==98?'style="width:200px"':'')?> >
+        <!--选型指南-->
+        <?php if(in_array($this->brandinfo['id'],array(13))){?>
+            <div class="epson_cb">
+                <a href="javascript:;" onclick="epsonapply('<?=$this->brandinfo['id']?>')">点击申请选型指南</a>
+            </div>
+        <?php }elseif(in_array($this->brandinfo['id'],array(4))){?>
+            <div class="epson_cb">
+                <a href="javascript:;" onclick="bellingapply('<?=$this->brandinfo['id']?>')">点击下载贝岭2014产品目录</a>
+            </div>
+        <?php }?>
+    </div>
+
+
+</div>
+<script type="text/javascript">
+    function dataapply(brandid){
+        $.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+                if(arr.code==0)
+                {
+                    $.ajax({
+                        url: '/user/checkdetailed',
+                        data: {},
+                        type: 'post',
+                        dataType: 'json',
+                        success: function(arr) {
+                            if(arr.code==0)
+                            {
+                                openbox('/samples/dataapply?key='+brandid,"_blank");
+                            }else{
+                                $.openPopupLayer({
+                                    name: "companyinfoBox",
+                                    url: "/center/companyinfo?opbox=box&opurl=/samples/app&key="+brandid
+                                });
+                            }
+                        }
+                    });
+
+                }else if(arr.code==100){
+                    $.openPopupLayer({
+                        name: "loginBox",
+                        target: "login_box"
+                    });
+                }else if(arr.code==200){
+                    window.location.href ="/user/verification";
+                }
+            }
+        });
+    }
+    function bellingapply(brandid){
+        $.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+                if(arr.code==0)
+                {
+                    $.ajax({
+                        url: '/user/checkdetailed',
+                        data: {},
+                        type: 'post',
+                        dataType: 'json',
+                        success: function(arr) {
+                            if(arr.code==0)
+                            {
+                                window.location.href='/samples/bellingapply?key='+brandid;
+                            }else{
+                                $.openPopupLayer({
+                                    name: "companyinfoBox",
+                                    url: "/center/companyinfo?opbox=box&opurl=/samples/bellingapply&key="+brandid
+                                });
+                            }
+                        }
+                    });
+
+                }else if(arr.code==100){
+                    $.openPopupLayer({
+                        name: "loginBox",
+                        target: "login_box"
+                    });
+                }else if(arr.code==200){
+                    window.location.href ="/user/verification";
+                }
+            }
+        });
+    }
+
+
+    function epsonapply(brandid){
+        $.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+                if(arr.code==0)
+                {
+                    $.ajax({
+                        url: '/user/checkdetailed',
+                        data: {},
+                        type: 'post',
+                        dataType: 'json',
+                        success: function(arr) {
+                            if(arr.code==0)
+                            {
+                                window.location.href='/samples/epsonapply?key='+brandid;
+                            }else{
+                                $.openPopupLayer({
+                                    name: "companyinfoBox",
+                                    url: "/center/companyinfo?opbox=box&opurl=/samples/bellingapply&key="+brandid
+                                });
+                            }
+                        }
+                    });
+
+                }else if(arr.code==100){
+                    $.openPopupLayer({
+                        name: "loginBox",
+                        target: "login_box"
+                    });
+                }else if(arr.code==200){
+                    window.location.href ="/user/verification";
+                }
+            }
+        });
+    }
+
+    function showapp3(type){
+        if(type==1){
+            $(".showspan").html("<a class='gbqfb gbqfb_open' href='javascript:;' onclick='showapp3(0)'>收起<i class='open_tri open_down'></i></a>");
+            $(".showapp3_div").slideDown();
+        }else{
+            $(".showspan").html("<a class='gbqfb gbqfb_open' href='javascript:;' onclick='showapp3(1)'>展开<i class='open_tri open_up'></i></a>");
+            $(".showapp3_div").slideUp();
+        }
+    }
+    function enterserch(evt){
+        evt=evt?evt:(window.event?window.event:null);
+        var keyCode = evt.keyCode;
+        if(keyCode==13) subsearchbtn();
+    }
+    function subsearchbtn(){
+        var app2 = '';
+        var app3 = '';
+        var app2_obj  = document.getElementsByName("app2[]");
+        var app3_obj  = document.getElementsByName("app3[]");
+        for (var i=0;i < app2_obj.length;i++)
+        {
+            if(app2_obj[i].checked) {app2 +=app2_obj[i].value+'_'}
+        }
+        for (var i=0;i < app3_obj.length;i++)
+        {
+            if(app3_obj[i].checked && !app3_obj[i].disabled) {app3 +=app3_obj[i].value+'_'}
+        }
+        var brand_prodno = document.getElementById('brand_prodno').value;
+        if(brand_prodno=='请输入搜索型号') brand_prodno = '';
+
+        window.location.href='/pl/<?=$this->brandinfo['name']?>?app2='+app2+'&app3='+app3+'&p='+encodeURI(brand_prodno);
+    }
+</script>
+<!--专题样式-->
+<?php }else{?>
+    <h1 class="brandconh1">
+        <img src="/images/default/brand/<?=$this->brandid?>.png" title="<?=$this->brandname?>"/><?=$this->brandname?>
+    </h1>
+<?php }?>
+<div class="listd_c">
+    <div class="list—tit">
+        <h2>产品列表</h2>
+    </div>
+    <table cellpadding="0" cellspacing="0" class="listtable boxshadow_h" border="0">
+        <tbody>
+        <tr>
+            <th width="10%">图片</th>
+            <th width="15%">型号</th>
+            <th width="10%">品牌</th>
+            <th width="15%">产品描述</th>
+            <th width="10%">数据文档</th>
+            <th width="10%">应用笔记</th>
+            <th width="5%">库存</th>
+            <th width="15%">阶梯价格</th>
+            <th width="10%">操作</th>
+        </tr>
+        <?php if(empty($this->allProd)){?>
+            <tr>
+                <td class="productIMG" colspan="9" align="center">没有记录</td>
+            </tr>
+        <?php }else{
+            foreach($this->allProd as $k=>$prod){
+                $prod = $this->fun->filterProduct($prod);
+                $break_price='';
+                $stock = 0;$show_price = 0;
+                if($prod['f_show_price_sz']){
+                    $show_price = $prod['f_show_price_sz'];
+                    $stock      = $prod['f_stock_sz'];
+                    $break_price = $prod['f_break_price_notitle_sz'];
+                }elseif($prod['f_show_price_hk']){
+                    $show_price = $prod['f_show_price_hk'];
+                    $stock      = $prod['f_stock_hk'];
+                    $break_price = $prod['f_break_price_notitle_hk'];
+                }elseif($prod['f_break_price_notitle_sz']){
+                    $break_price = $prod['f_break_price_notitle_sz'];
+                }elseif($prod['f_break_price_notitle_hk']){
+                    $break_price = $prod['f_break_price_notitle_hk'];
+                }
+                $bgclass='';
+                if($k%2==1) $bgclass = 'class="trbg"';
+                ?>
+                <tr <?=$bgclass?>>
+                    <td class="productIMG">
+                        <a target="_blank" href="<?=$prod['f_produrl']?>" class="model logclick" title="<?=$prod['part_no']?>" rev="prodlist_part_id" rel="<?=$prod['id']?>"><img src="<?=PRODUCTICON.($prod['part_img']==''?'no.gif':$prod['part_img'])?>" width="80" /></a>
+                    </td>
+                    <td align="left" >
+                        <div class="productNO pmodel201312" > <a target="_blank" href="<?=$prod['f_produrl']?>" class="model logclick" title="<?=$prod['part_no']?>" rev="prodlist_part_id" rel="<?=$prod['id']?>">
+                                <?=$prod['part_no']?>
+                            </a> <sup>
+                                <?php if($prod['staged']) echo '<span class="sup_SALE">特卖</span>';
+                                if($prod['pdnpcn']['pdn']) echo '<a class="sup_PDN">PDN</a>';
+                                if($prod['pdnpcn']['pcn']) echo '<a class="sup_PCN">PCN</a>';
+                                ?>
+                            </sup> </div>
+                    </td>
+                    <td><?=$prod['bname']?></td>
+                    <td align="left" class="en"><p title="<?=$prod['description']?>" style="word-break:break-all;">
+                            <?=$this->fun->utf_substr($prod['description'],68)?>
+                        </p></td>
+                    <td>
+                        <?php if($prod['datasheet']) {
+                            $dsarr = explode('<>',$prod['datasheet']);
+                            $dsstr = $dsarr[0]?$dsarr[0]:$dsarr[1];
+                            $datasheet_name =  $datasheet = '';
+                            $tmparr = explode('()',$dsstr);
+                            if(count($tmparr)==2){
+                                $datasheet_name = $tmparr[0];
+                                $datasheet      = $tmparr[1];
+                            }else{
+                                $datasheet_name = '数据文档';
+                                $datasheet      = $tmparr[0];
+                            }
+
+                            ?>
+                            <!--<?=$datasheet_name?><br />-->
+                            <a href="<?=$datasheet?>" target="_blank" title="<?=$prodarr['part_no'].$datasheet_name;?>"  class="logclick" rev="prodderails_datasheet" rel="<?=$this->prodarr['id']?>"><i class="icon_pdf"></i></a>
+                        <?php }else echo '--';?>
+                    </td>
+                    <td>
+                        <a href="<?=$prod['f_produrl']?>" target="_blank"><i class="icon_download"></i></a></td>
+                    <td><?php
+                        if(($prod['f_stock_sz']+$prod['f_stock_hk'])>0){echo '<font color="#469F68">现货</font>';}
+                        else {echo '<font color="#FC9C30">订货</font>';}?></td>
+                    <td align="center">
+                        <div class="pprice201312_detail">
+                            <?=($show_price?$break_price:'--')?>
+                        </div>
+                    </td>
+                    <td  class="borderbottomlas">
+                        <div class="tabelbtn">
+
+                            <?php if($show_price){?>
+                                <a href="javascript:" onclick="buy('<?=$prod['id']?>.')"  class="gbqfb logclick" title="购买"  rev="prodlist_part_id" rel="<?=$prod['id']?>"><i class="i_buy_s"></i>在线购买</a>
+                            <?php }else{?>
+                                <!-- <a class="gbqfb ">购买</a>-->
+                            <?php }?>
+                            <?php if($prod['samples'] && $prod['sample_stock']>0){?>
+                            <a href="javascript:;" class="gbqfbbig_h" onclick="appSamples('<?=$this->fun->encryptVerification($prod['id'])?>')" title="我要申请">免费样片</a><?php }?>
+                            <?php if(!$prod['noinquiry']){?>
+                                <a href="javascript:" onclick="openInquiry('<?=$prod['id']?>')" class="gbqfb logclick" title="询价"  rev="prodlist_part_id" rel="<?=$prod['id']?>"><i class="i_xun_s"></i>批量询价</a><br/>
+                            <?php }else{?>
+                                <!--<a class="gbqfb ">询价</a>-->
+                            <?php }?>
+                        </div>
+                    </td>
+                </tr>
+            <?php }}?>
+        </tbody>
+    </table>
+    <div class="clr"></div>
+    <div class="page_box">
+        <div class="page clearfix"><?=$this->page_bar?></div>
+    </div>
+</div>
+
+</div>
+<?php if($this->brandinfo['show']==1 && $this->brandinfo['introduction']){?>
+    <!--品牌介绍-->
+    <div class="tabbarson" style="display:none;">
+    	<div class="brandinfo" style="margin-top:10px;">
+        <?=$this->brandinfo['introduction']?>
+        </div>
+    </div>
+<?php }?>
+
+<?php if( $this->bsNum>0){?>
+    <!--相关方案-->
+    <div class="tabbarson" style="display:none;">
+        <div class="brandinfo" id="brand_solution"><img src="/images/admin/ajax-loader.gif" /></div>
+    </div>
+<?php }?>
+
+</div>
+
+</div>
+<?php if($this->brandinfo['ad_image'] && $this->brandinfo['ad_image']!='#'){?>
+    <style type="text/css">
+        .tips-img{background:url(<?=$this->brandinfo['ad_image']?>) no-repeat; height:340px; width:1190px; }
+    </style>
+    <div class="tk-tips">
+        <div class="w">
+            <div class="tips-img"></div>
+            <a title="关闭提示" class="tips-close" href="javascript:;" onclick="closetk()" >关闭提示</a>
+        </div>
+    </div>
+    <script>
+        function closetk(){
+            $(".tk-tips").fadeOut();
+        }
+        setInterval(closetk, 5000);
+    </script>
+<?php }?>

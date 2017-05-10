@@ -1,0 +1,37 @@
+<script type="text/javascript">
+$('.close').click(function() {
+	$('.fade').hide(); 
+	$('.alert-error').hide(); 
+})
+</script>
+<div class="clear"></div>
+<div class="footer" style="height:57px;">
+<p>IC易站运营管理系统</p><p>粤ICP备05143739号-2</p>
+<p>中国电子器材深圳有限公司 版权所有<span style="font-family:Arial">©</span><?php echo date('Y');?></p>
+
+</div>
+<!--jbox-->
+<script language="JavaScript" type="text/javascript" src="/js/admin/stuHover.js"></script>
+<!--<script type="text/javascript" src="/js/jsplug/jBox/jquery.jBox-2.2.min.js"></script>-->
+<script language="JavaScript" type="text/javascript" src="/js/jsplug/jmpopups/jquery.jmpopups.js"></script>
+<script type="text/javascript" src="/js/jsplug/totop/manhuatoTop.1.0.js"></script>
+<script type="text/javascript">
+$(function (){
+	$(window).manhuatoTop({
+		showHeight : 200,
+		speed : 500 
+	});
+});
+//防止session过期
+function checklogin(){
+ $.ajax({
+            url: '/icwebadmin/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(data) {}
+	});
+}
+//循环执行，每隔20分钟，执行一次checklogin（） 1秒钟=1000
+window.setInterval(checklogin, 1000*60*20); 
+</script>

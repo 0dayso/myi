@@ -1,0 +1,155 @@
+<!--content-->
+<?php
+// 状态
+$statusArr = array (
+		'1' => '<font color="#FF0000">待回复</font>',
+		'2' => '<font color="#009944">已回复</font>',
+);
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$currencyArr = array('RMB'=>'RMB','USD'=>'USD','HKD'=>'HKD');
+?>
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/myself2013.css"/>
+<link rel="stylesheet" type="text/css" href="/css/default/myself<?=$_SESSION['new_version']?>.css"/>
+<script type="text/javascript" language="javascript"> center_css();</script>
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a  class="focs">我的IC易站</a>&nbsp;&nbsp;»&nbsp;&nbsp;<a ><?=$this->translate('Menu_Bom')?></a>
+  </div>
+</div>
+
+<div class="blank10"></div>
+<div class="w clearfix ourbox">
+        <!--左边导航-->
+        <?php echo $this->render('center/leftmenu.phtml');?>
+		
+        
+     <div class="fr u_right msg24">
+     <div class="col_main" id="onlineorder">
+     <h1>BOM采购</h1>
+            <div class="order_tab_head">
+                <ul>
+                    <li <?php if(!$this->type) echo 'class="on"';?>><a style="width:110px" href="/center/bom">全部BOM采购<em>(<?=$this->allnum?>)</em><b class="blank3"></b></a></li>
+        <!--<li <?php if($this->type == 'wait') echo 'class="on"';?>><a href="/center/bom?type=wait">待回复<em>(<?=$this->waitnum?>)</em><b class="blank3"></b></a></li>
+        <li <?php if($this->type == 'already') echo 'class="on"';?>><a href="/center/bom?type=already">已回复<em>(<?=$this->alreadynum?>)</em><b class="blank3"></b></a></li>-->
+                </ul>
+            </div>
+            <div class="table_box inquiry " >
+                 <?php if (empty ( $this->bom )) { ?><div class="nodata">暂无记录</div> 
+            <?php }else{
+				        foreach ( $this->bom as $k => $v ) {
+							$bgclass = '';
+							if ($k % 2 == 1)
+							$bgclass  = 'tabletrf9';
+							$inqkey   = $this->fun->encryptVerification($v['id']);
+							$remark   = $v['remark'];
+							$delivery = $deliveryArr[$v['delivery']];
+							$currency = $currencyArr[$v['currency']];
+							$created  = date('Y-m-d H:i',$v['created']);
+							$status   = $statusArr[$v['status']];
+							$result_remark   = $v['result_remark']==''?'':$v['result_remark'];
+							$modified = $v['modified']==0?'':date('Y-m-d H:i',$v['modified']);
+							$detaile = $v['detaile'];
+							$detnum = count ( $detaile );
+						
+					?>
+                <div class="A_order">
+                    <div class="numberbox">
+                    	<em class="emtrianglebottom5px"></em>
+                        <p>询价编号：<span class="number"><?php echo $v['bom_number'];?></span>  									
+                        	<span class="time">交货地：<?php echo $delivery;?></span>
+                            <span class="time">结算货币：<strong class="en"><?php echo $currency;?></strong></span>
+                            <!--<span class="time">状态：<?php echo $status;?></span>-->
+                            <?php if($v['inq_numbers']){ 
+			                 $inqs = explode(',',$v['inq_numbers']);?>
+                 <span class="time" style="font-weight:bold;">报价编号：<?php foreach($inqs as $inqnumber){if($inqnumber){?><?=$inqnumber?>&nbsp;&nbsp;&nbsp;&nbsp;<?php }}?></span><?php }?>
+                        </p>  	
+                     </div>
+                     
+                     <div class="bomtime">
+                      	<p class="Submittime fl"><?php echo $created;?> <?php echo $remark;?></p>
+                       <!-- <p class="replytime fl"><?=$v['modified']==0?'':date('Y-m-d H:i',$v['modified'])?> <?=$v['result_remark']?></p>-->
+                      </div>
+
+                         <!--<div class="inquirystep five">
+                        <div class="gray green forestart">
+                        	<s></s>
+                        	<h4>提交</h4>
+                            <div class="inquiryinfo">
+                            	<p class="time"><?php echo $created;?></p>
+                                <p class="dialogue"><?php echo $remark;?></p>
+                            </div>
+                        </div>
+                         <div class="gray <?php if($v['status']==1) echo 'orange';elseif($v['status']=2) echo 'green';?>  foreend">
+                        	<s></s>
+                        	<h4>回复</h4>
+                            <div class="inquiryinfo">
+                            	<p class="time"><?=$v['modified']==0?'':date('Y-m-d H:i',$v['modified'])?></p>
+                                <p class="dialogue"><?=$v['result_remark']?></p>
+                            </div>
+                        </div>
+                        </div>-->
+					 <table width="100%" cellpadding="0" cellspacing="0" class="subtablei table">
+                                  <tbody>
+                                      <tr>
+                                          <th width="100">品牌</th>
+                                      	  <th width="170">型号</th>
+                                          <th width="100">需求数量</th>
+                                          <th width="100">目标单价</th>
+                                          <th width="100">要求交货日期</th>
+                                          <th width="100">备注</th>
+                                          </tr>
+                       <?php
+					  for($j=0;$j<$detnum;$j++){
+							$detspan = "detspan_".$v['id'];
+							$hideclass = $moretr = '';
+							if($j>2){
+								$hideclass = 'class="more'.$v['id'].' hide"';
+						$moretr    = '<tr class="moretr">
+                        <td colspan="11"><span id="morespan'.$v['id'].'"><a href="javascript:;" onclick="slideMore('.$v['id'].',1)"><img src="/css/img/more2.png"  class="png_ie6">更 多</a></span></td>
+                         </tr>';
+							}
+					  ?>
+                      <tr <?=$hideclass?>>
+                        <td><?=$detaile[$j]['brand_name']?></td>
+                        <td><?=$detaile[$j]['part_no']?></td>
+                        <td><?=$detaile[$j]['number']?></td>
+                        <td><?=$detaile[$j]['price']>0?$detaile[$j]['price']:'--'?></td>
+                        <td><?=$detaile[$j]['deliverydate']?date('Y-m-d',$detaile[$j]['deliverydate']):'--'?></td>
+                        <td><?=$detaile[$j]['description']?></td>
+                      </tr>                 
+					  <?php }
+					  	echo $moretr;
+					  ?> 
+                      </tbody>
+                     </table>
+                </div>
+                
+                <?php }}?>
+            </div> 
+            <div class="pagination fr"><?=$this->page_bar;?></div>
+        </div>
+       </div>
+	
+</div>
+<div class="clr"></div>
+<script type="text/javascript">
+$(function(){
+    //查看备注
+	var tab = $(".desshow");
+	tab.hover(function(){
+		$(this).find(".autobox").removeClass("hide");
+	},function(){
+		$(this).find(".autobox").addClass("hide");
+	});
+})
+function slideMore(id,type){
+   if(type == 1)
+   {
+    $(".more"+id).removeClass("hide");
+    $("#morespan"+id).html('<a href="javascript:;" onclick="slideMore('+id+',2)"><img src="/css/img/more.png" class="png_ie6">隐  藏</a>');
+   }else{
+   	$(".more"+id).addClass("hide");
+    $("#morespan"+id).html('<a href="javascript:;" onclick="slideMore('+id+',1)"><img src="/css/img/more2.png"  class="png_ie6">更  多</a>');
+   }
+}
+</script>

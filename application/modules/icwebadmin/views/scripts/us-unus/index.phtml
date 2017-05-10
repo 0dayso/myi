@@ -1,0 +1,90 @@
+<table class="tableContent">
+    <tr>
+    <td bgcolor="#FFFFFF" align="left" valign="top" width="770"><table width="740" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td height="10" colspan="3">&nbsp;</td>
+        </tr>
+        <tr>
+          <td height="29" bgcolor="#FFFFFF" align="center"><table width="740" border="0" cellpadding="3" cellspacing="0">
+              <tr bgcolor="#334159">
+                <td height="7" align="left" colspan="6"><b><font color="#FFFFFF"> <?php echo $this->AreaTitle;?> : </font>
+                <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?><a href="<?=$this->addurl?>">添加企业信息+</a><?php }?></b> </td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr>
+          <td height="10" colspan="3" align="center"><div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div></td>
+        </tr>
+      </table>
+       <table><tr>
+        <td valign="top">公司名：</td>
+        <td>
+        <form id="myform"  class="form-search" name="myform" action="" method="get">
+        <input type="text" class="span3 search-query" id="keyword" value="<?=$this->keyword?>" name="keyword"   style="height:20px"  onkeydown="enter(event)"/>
+        <input  type="submit" class="btn" value="查 找" style="height:30px"/>
+		</form>
+        </td>
+     </tr></table>
+      <!-- 需要填写的区域-->
+      <table width="100%" cellpadding="1" border="0" class="producttable">
+              <tbody><tr bgcolor="#334159" height="30px">  
+                <td align="center"><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">公司名称</font></strong></td>
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">公司英文名称</font></strong></td>
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">联系人</font></strong></td> 
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">手机</font></strong></td>
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">固定电话</font></strong></td>
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">传真</font></strong></td>
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">公司地址</font></strong></td>
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">公司英文地址</font></strong></td>
+                <td><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">邮编</font></strong></td>
+                <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){ echo '<td width="100px"></td>';}?>
+              </tr></tbody>
+              <?php
+			  	  if(!empty($this->allcom)){
+                	 foreach ($this->allcom as $k=>$data){
+
+						if($k%2==0)$bg="#D5C5FE";
+						else $bg="#E4E4E4";
+						echo "<tr bgcolor=\"$bg\" height=\"25px\">";
+						echo "<td>".$data['companyname']."</td>";
+						echo "<td>".$data['companyname_en']."</td>";
+						echo "<td>".$data['truename']."</td>";
+						echo "<td>".$data['mobile']."</td>";	
+						echo "<td>".$data['tel']."</td>";
+						echo "<td>".$data['fax']."</td>";
+						echo "<td>".$data['address']."</td>";
+						echo "<td>".$data['address_en']."</td>";
+						echo "<td>".$data['zipcode']."</td>";
+						if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){
+						echo '<td>';
+		if($data['status']==1){
+		echo '<a href="'.$this->url(array('controller'=>'UsUnus', 'action'=>'change', 'un_uid'=>$data['un_uid'], 'status'=>0)).'" >屏蔽</a> |  ';
+		}else{
+		echo '<a href="'.$this->url(array('controller'=>'UsUnus', 'action'=>'change', 'un_uid'=>$data['un_uid'], 'status'=>1)).'" ><font color="#FF0000">开启</font></a> |  ';
+		}
+                            echo '<a href="'.$this->url(array('controller'=>'UsUnus', 'action'=>'edit', 'un_uid'=>$data['un_uid'])).'" >编辑</a> ';
+                        echo '</td>';
+						}
+					    echo "</tr>";
+				    }
+				   }
+	            ?>
+            </table>
+            <br/>
+            <div class="pagination"><?=$this->page_bar;?></div>
+      <br/>
+      <!-- 结束区域-->
+    </td>
+  </tr>
+</table>
+<script type="text/javascript">
+<?php if(isset($_SESSION['messages'])){?>
+document.getElementById('message_sess').style.display = "block";
+document.getElementById('alert_message').innerHTML = '<?=$_SESSION['messages']?>';
+<?php 
+}unset($_SESSION['messages']);
+?>
+</script>

@@ -1,0 +1,51 @@
+<div class="conmian">
+<h1><?php echo $this->AreaTitle;?> -- 批量更新产品信息 </h1>
+<?php if (count($this->messages)) : ?>
+<div class="alert alert-error">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+<?php foreach ($this->messages as $message) : ?>
+    <p><strong><?php echo ($message); ?></strong></p>
+<?php endforeach; ?>
+ </div>
+<?php endif; ?>   
+<?php if($_SESSION['mfr_log'] or $_SESSION['part_log'] or $_SESSION['cat_log']) :?>
+<p class="lead">数据匹配失败</p>
+	<?php if($_SESSION['cat_log']):?>
+	<p><a href="<?php echo $_SESSION['cat_log'];?>" target="_blank">分类匹配失败 </a>
+	 <?php endif; ?>    
+	 <?php if($_SESSION['part_log']):?>
+	<p><a href="<?php echo $_SESSION['part_log'];?>" target="_blank">型号匹配失败 </a>
+	 <?php endif; ?>    
+	 <?php if($_SESSION['mfr_log']):?>
+	<p><a href="<?php echo $_SESSION['mfr_log'];?>" target="_blank">品牌匹配失败 </a>
+	<?php endif; ?>    
+ <?php endif; ?>           
+<div class="contentmia" style="margin-bottom:20px;">
+<form action="/icwebadmin/CpCpgl/import"  method="post" enctype="multipart/form-data" name="form" id="form">
+<p class="lead">Excel 上传注意事项</p>
+	<ul>
+	<li>1.文件大小不能超过10M</li>
+	<li>2.Excel文件名称为英文,不能包含空格,"/,'" 等特殊字符(eg: ats.xls)</li>
+	<li>3.Excel样例文件中的第一行为可以更新字段的标题，禁止做任何修改</li>
+	<li>4.Excel样例文件中的第一列为IC易站型号ID
+		<ul>
+		<li>更新的产品信息需要填写IC易站型号ID</li>
+		<li>批量添加新产品的时候，请在此列填写"#N/A"</li>
+		</ul>
+	</li>
+	<li>5.在填写价格有效期的请设置单元格格式为文本, 日期格式( yyyy-mm-dd), eg(2013-04-09)。</li>
+	<li>6.在上传文档之前请仔细检查Excel里面的内容。</li>
+	<li>7.<a href="/icwebadmin/CpCpgl/template">数据更新模板</a></li>	
+	<li>8.<a href="/upload/sample/template-product-add.xls">数据新增模板</a></li>
+	<li>8. Excel里面表头标记（*）号的为必填内容</li>
+	</ul>
+	<div class="controls" ><input type="file"  name="price_sheet"  id="price_sheet"/></div>
+	 <input type="submit" class="btn">
+</form>
+</div>
+</div>
+<?php  
+unset($_SESSION['part_log']);
+unset($_SESSION['cat_log']);
+unset($_SESSION['mfr_log']);
+?>

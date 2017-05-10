@@ -1,0 +1,131 @@
+<link rel="stylesheet" type="text/css" href="/css/default/buyprocess.css" />
+<!--content-->
+<?php 
+$paytypearr = array('transfer'=>'银行转账','online'=>'在线支付','cod'=>'货到付款','mts'=>'款到发货');
+
+?>
+<div id="header" class="w">
+  <div id="logo"><a hidefocus="true" href="/"><img alt="IC易站" src="/images/default/logo.jpg"></a></div>
+  <h1>询价下单</h1>
+</div>
+<div class="w buyprocess inquirystep">
+	<div class="registerline"></div>
+    <div class="steps step-3">
+        <ol>
+            <li>我的购物车</li>
+            <li>填写核对信息单</li>
+            <li>成功提交订单</li>
+        </ol>
+    </div>
+</div>
+<div class="w lh Order ">
+	<div class="Order_details">
+    <table cellpadding="0" cellspacing="0" class="tableorder table">
+        <caption>感谢您的惠顾，订单已经提交成功！</caption>
+        <thead>
+            <tr>
+                <th>订单号</th>
+                <th>总金额</th>
+                <th>支付方式</th>
+                <th>收货人信息</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <?php if($this->orderarr['son_so']){?>
+            <tr>
+                <td><a href="/inquiryorder/view?salesnumber=<?=$this->orderarr['salesnumber']?>" title="查看订单详细" target="_blank" class="number"><?php echo $this->orderarr['salesnumber'];?></a>
+                </td>
+                <td class="fontred"><?php echo $this->orderarr['currency'].number_format($this->orderarr['total'],DECIMAL);?></td>
+                <td><?php echo $paytypearr[$this->orderarr['paytype']];?></td>
+                <td>
+                <?php echo $this->orderarr['name'];?>&nbsp;&nbsp;&nbsp;&nbsp;
+                <?php echo $this->orderarr['province'].$this->orderarr['city'].$this->orderarr['area'].$this->orderarr['address'];?>&nbsp;&nbsp;&nbsp;&nbsp;
+                <?php echo $this->orderarr['mobile']."  ".$this->orderarr['tel'];?>
+                </td>
+            </tr>
+            <tr>
+                <td><a href="/inquiryorder/view?salesnumber=<?=$this->orderarr['son_so']['salesnumber']?>" title="查看订单详细" target="_blank" class="number"><?php echo $this->orderarr['son_so']['salesnumber'];?></a>
+                </td>
+                <td class="fontred"><?php echo $this->orderarr['currency'].number_format($this->orderarr['son_so']['total'],DECIMAL);?></td>
+                <td><?php echo $paytypearr[$this->orderarr['paytype']];?></td>
+                <td>
+                <?php echo $this->orderarr['name'];?>&nbsp;&nbsp;&nbsp;&nbsp;
+                <?php echo $this->orderarr['province'].$this->orderarr['city'].$this->orderarr['area'].$this->orderarr['address'];?>&nbsp;&nbsp;&nbsp;&nbsp;
+                <?php echo $this->orderarr['mobile']."  ".$this->orderarr['tel'];?>
+                </td>
+            </tr>
+            <?php }else{?>
+            <tr>
+                <td><a href="/inquiryorder/view?salesnumber=<?=$this->orderarr['salesnumber']?>" title="查看订单详细" target="_blank" class="number"><?php echo $this->orderarr['salesnumber'];?></a>
+                </td>
+                <td class="fontred"><?php echo $this->orderarr['currency'].number_format($this->orderarr['total'],DECIMAL);?></td>
+                <td><?php echo $paytypearr[$this->orderarr['paytype']];?></td>
+                <td><?php if($this->orderarr['delivery_type']==3) echo '客户自提';else { 
+				echo $this->orderarr['name'].'&nbsp;&nbsp;&nbsp;&nbsp;'.$this->orderarr['province'].$this->orderarr['city'].$this->orderarr['area'].$this->orderarr['address'].'&nbsp;&nbsp;&nbsp;&nbsp;'.$this->orderarr['mobile']."  ".$this->orderarr['tel'];
+				}
+				?>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+     <?php if($this->orderarr['paytype']=='online'){?>
+    <div class="pay-detail">
+       <a href="/payment/orderpay?salesnumber=<?php echo $this->orderarr['salesnumber'];?>" class="button">立即支付</a>
+    </div>
+    <table cellpadding="0" cellspacing="0" class="order-tip table">
+        <tbody><tr>
+        <td align="left" style="border-bottom:0">
+        <h2>提示：</h2>
+        <p>1.支付成功后，我们可以立即安排工作人员处理订单。</p>
+        <p>2.未完成在线支付的订单将保留24小时，如果您现在不方便支付，可于24小时内到<a href="/center/inqorder">我的订单</a>中完成支付。</p>
+        </td>
+        </tr>
+        </tbody>
+   </table>
+    <?php }elseif($this->orderarr['paytype']=='transfer'){?>
+    
+    <table cellpadding="0" cellspacing="0" class="order-tip table">
+        <tr><td align="left" colspan="2"><h2>帐户信息：</h2></td></tr>
+        <tr><td class="tableti">转账金额：</td><td class="price"><?=$this->orderarr['currency']?>
+        <?php echo number_format($this->orderarr['down_payment'],DECIMAL);?>
+        </td></tr>
+        
+        <?php if($this->orderarr['delivery_place']=='SZ'){?>
+        <tr><td class="tableti">户名：</td><td align="left"><?=BANK_COM?></td></tr>
+        <tr><td class="tableti">帐号：</td><td align="left"><?=BANK_ACCOUNT?></td></tr>
+        <tr><td class="tableti">开户行：</td><td align="left"><?=BANK_NAME?></td></tr>
+        <?php }else{?>
+        <tr><td class="tableti">户名：</td><td align="left"><?=BANK_HK_COM?></td></tr>
+        <tr><td class="tableti">帐号：</td><td align="left"><?=BANK_HK_ACCOUNT?></td></tr>
+        <tr><td class="tableti">开户行：</td><td align="left"><?=BANK_HK_NAME?></td></tr>
+        <?php }?>
+        <!--<tr><td class="tableti">汇款识别码：</td><td align="left"><?=$this->orderarr['salesnumber'];?></td></tr>-->
+        </table>
+    
+    <table cellpadding="0" cellspacing="0" class="order-tip table">
+        <tbody><tr>
+        <td align="left" style="border-bottom:0">
+        <h2>提示：</h2>
+        <p>1.转账成功后请到我的订单上传转账凭证。</p>
+        <p>2.支付成功后，我们可以立即安排工作人员处理订单。</p>
+        <p>3.未完成支付的订单将保留48小时，如果您现在不方便支付，可于48小时内到<a href="/center/inqorder">我的订单</a>中查看转账信息并支付。</p>
+        </td>
+        </tr>
+        </tbody>
+        </table>
+    <?php }?>
+        <div class="order-oprate">
+       
+         <div class="bg_cart">
+            <div class="fl">
+                <a href="/"><em></em>继续购物</a>
+            </div>
+            <div class="fr">
+                <a href="/center/inqorder" class="button">询价订单</a>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

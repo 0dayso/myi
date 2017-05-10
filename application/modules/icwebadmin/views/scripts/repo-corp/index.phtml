@@ -1,0 +1,91 @@
+<?php 
+$paytypearray = array('online'=>'在线支付','transfer'=>'银行转账','cod'=>'货到付款','mts'=>'款到发货');
+$statusarr = array('101'=>'待客户支付货款',
+    			'102'=>'待处理',
+    			'103'=>'待支付余款',
+    			'201'=>'待发货',
+    			'202'=>'已发货',
+    			'301'=>'已完成',
+    			'302'=>'已评价',
+    			'401'=>'订单被取消');
+?>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?>
+  <?php if($this->soprod){?>
+   -> <a href="/icwebadmin/RepoCorp/export?sdata=<?=$this->sdata?>&edata=<?=$this->edata?>" target="_blank" title="将搜索结果导出成Excel">导出Excel</a>
+  <?php }?>
+  </h1>
+  <form id="myform"  class="form-search" name="myform" action="" method="get">
+    <label>开始时间：</label>
+    <input type="text"  style="width:80px;" name="sdata" value="<?=$this->sdata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+    <label>结束时间：</label>
+    <input type="text"  style="width:80px;" name="edata" value="<?=$this->edata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+    &nbsp;
+    <input type="submit" class="btn" value="确 定"/>
+  </form>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  <br/>
+  <table width="100%" cellspacing="0" cellpadding="0" border="1" align="center" style="border-collapse:collapse;font-size: 12px;border:1px #999 solid;padding-top:0px;">
+    <tbody>
+      <tr bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;">
+        <th>用户</th>
+        <th>真实姓名</th>
+        <th>Email</th>
+        <th>公司名称</th>
+        <th>手机</th>
+        <th>固话</th>
+        <th>订单号</th>
+        <th>下单时间</th>
+        <th>品牌</th>
+        <th>型号</th>
+        <th>数量</th>
+        <th>单价</th>
+        <th>订单金额</th>
+        <th>币种</th>
+        <th>支付类型</th>
+        <th>订单状态</th>
+        <th>优惠券</th>
+        <th>优惠券备注</th> 
+        <th>部门</th> 
+        <th>责任销售</th> 
+      </tr>
+    </tbody>
+    <tbody>
+      <?php if($this->soprod){
+	    foreach($this->soprod as $v){
+	  ?>
+      <tr height="30px">
+      <td><?=$v['uname']?></td>
+      <td><?=$v['truename']?></td>
+      <td><?=$v['uemail']?></td>
+      <td><?php if($v['companyname']) echo $v['companyname'];
+			elseif($v['invtype']==2 && $v['invname']) echo $v['invname'];
+			else echo $v['uname'];?></td>
+      <td><?=$v['mobile']?></td>
+      <td><?=$v['tel']?></td>
+      <td><?=$v['salesnumber']?></td>
+      <td><?=date('Y/m/d H:i',$v['created'])?></td>
+      <td><?=$v['brandname']?></td>
+      <td><?=$v['part_no']?></td>
+      <td><?=$v['buynum']?></td>
+      <td><?=$v['buyprice']?></td>
+      <td><?=number_format($v['buynum']*$v['buyprice'],DECIMAL);?></td>
+      <td><?=$v['currency']?></td>
+      <td><?=$paytypearray[$v['paytype']]?></td>
+      <td><?=$statusarr[$v['sostatus']]?></td>
+      <td><?=($v['coupon']['code']?$v['coupon']['code']:'--')?></td>
+      <td><?=($v['coupon']['remark']?$v['coupon']['remark']:'--')?></td>
+      <td><?=$v['department']?></td>
+      <td><?=$v['lastname'].$v['firstname']?></td>
+    </tr>
+      <?php }}else echo '<tr height="30px"><td colspan="20" align="center">暂无记录，请选择时间段查询</td></tr>';?>
+        </tbody>
+  </table>
+  <br/>
+  <!-- 结束区域-->
+</div>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>

@@ -1,0 +1,758 @@
+<!--jamie-->
+<link rel="stylesheet" type="text/css" href="<?=$_SESSION['new_version']?>/css/default/home2013.css"/>
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+<link rel="stylesheet" type="text/css" href="/js/jsplug/scroll/scroll<?=$_SESSION['new_version']?>.css"/>
+<script type="text/javascript" src="/js/jsplug/scroll/scroll.js"></script>
+<!--专题，方案滚动-->
+<link rel="stylesheet" type="text/css" href="/js/jsplug/slideshow-lite/slideshow.css" media="screen" />
+<script type="text/javascript" src="/js/jsplug/slideshow-lite/slideshow.js"></script>
+
+
+<script type="text/javascript">
+$(function(){
+	$('.pprice201312').hover(function(){
+		$(this).addClass("item-hover");
+	},function(){
+		$(this).removeClass("item-hover");
+	});
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+	$('.boxshadow_h1').hover(function(){
+		$(this).addClass("boxshadow1");
+	},function(){
+		$(this).removeClass("boxshadow1");
+	});
+	$('.item').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+	$('.por_box2013').hover(function(){
+		$(this).addClass("tabelbtn_h");
+	},function(){
+		$(this).removeClass("tabelbtn_h");
+	});
+});
+$(function(){
+var tab = $(".tabbar li");
+tab.click(function(){
+	$(this).addClass("selected").siblings().removeClass("selected");		
+	var index = tab.index(this);
+	$(".layout").eq(index).show().siblings().hide();	
+});
+})
+$(function(){
+var tab = $(".tabbar1 li");
+tab.click(function(){
+	$(this).addClass("selected").siblings().removeClass("selected");		
+	var index = tab.index(this);
+	$(".layout").eq(index).show().siblings().hide();	
+});
+})
+
+</script>
+
+<!---------------------------------------------------------------------首页内容 开始--------------------------------------------------------------------->
+<div class="home201312">
+<div class="w ">
+  <div class="mainbannerbox">
+    <div class="fl">
+      <div class="indexShow scroll">
+        <div class="indexShowBox scroll_cont" id="FS_Cont_01" data-client="focus">
+          <!-- 抓站_焦点图 begin -->
+          
+          <?php 
+		  foreach($this->topimageArr as $v){
+		        $url_target = '_self';
+				if($v['url_target']==2) $url_target = '_blank';
+		  ?>
+          <div class="box homeimages">
+            <div><a href="<?=$v['url']?>" target="<?=$url_target?>" title="<?=$v['title']?>" class="logclick" rev='topimage' rel='<?=$v['id']?>'><img class="homeimages" height="342" alt="<?=$v['title']?>" src="<?=$v['image']?>" title="<?=$v['title']?>"/></a></div>
+            <div class="bg"></div>
+            <!--<div class="txt">
+              <p><a href="<?=$v['url']?>"  target="<?=$url_target?>" title="<?=$v['title']?>"  class="logclick" rev='topimage' rel='<?=$v['id']?>'><?=$v['title']?></a></p>
+            </div>-->
+          </div>
+          <?php }?>
+          <!-- 抓站_焦点图 end -->
+        </div>
+        <a href="javascript:;" title="上一张" class="arr_left" id="FS_arr_left_01"></a> <a href="javascript:;" title="下一张" class="arr_right" id="FS_arr_right_01"></a>
+        <div class="scroll_num" id="FS_numList_01"></div>
+      </div>
+<script type="text/javascript" language="javascript"> 
+var widescreen = false;
+var standard_width = 550;
+if (screen.width >= 1280) { 
+     standard_width = 700;
+	 widescreen = true;
+}
+$(".homeimages").css("width", standard_width); 
+</script>
+      <script language="javascript" type="text/javascript">
+			  <!--//--><![CDATA[//><!--
+			  var focusScroll_01 = new ScrollPic();
+			  focusScroll_01.scrollContId   = "FS_Cont_01"; //内容容器ID
+			  //focusScroll_01.arrLeftId      = "FS_arr_left_01";//左箭头ID
+			  //focusScroll_01.arrRightId     = "FS_arr_right_01"; //右箭头ID
+			  focusScroll_01.dotListId      = "FS_numList_01";//点列表ID
+			  focusScroll_01.dotClassName   = "";//点className
+			  focusScroll_01.dotOnClassName	= "current";//当前点className
+			  focusScroll_01.listType		= "";//列表类型(number:数字，其它为空)
+			  focusScroll_01.listEvent      = "onmouseover"; //切换事件
+			  focusScroll_01.frameWidth     = standard_width;//显示框宽度
+			  focusScroll_01.pageWidth      = standard_width; //翻页宽度
+			  focusScroll_01.upright        = false; //垂直滚动
+			  focusScroll_01.speed          = 10; //移动速度(单位毫秒，越小越快)
+			  focusScroll_01.space          = 60; //每次移动像素(单位px，越大越快)
+			  focusScroll_01.autoPlay       = true; //自动播放
+			  focusScroll_01.autoPlayTime   = 5; //自动播放间隔时间(秒)
+			  focusScroll_01.circularly     = true;
+			  focusScroll_01.initialize(); //初始化
+			  sina.$('FS_arr_left_01').onmousedown = function(){
+				focusScroll_01.pre();
+				return false;
+			  }
+			  sina.$('FS_arr_right_01').onmousedown = function(){
+				focusScroll_01.next();
+				return false;
+			  }
+			  //--><!]]>
+			  function showbrand(showclass,hideclass){
+			       $("."+hideclass).hide();
+			  	   $("."+showclass).fadeIn();	
+			  }
+			  //定时换 推荐品牌
+			  var showbrandnow = 1;
+			  function change_showbrand(){
+			  	  if(showbrandnow==1){ showbrandnow = 2;showbrand('brand_2','brand_1');}
+				  else if(showbrandnow==2){ showbrandnow = 1;showbrand('brand_1','brand_2');}
+			  }
+			  setInterval("change_showbrand()",6000);
+			  //快速订购
+			  function q_action(){
+			  	 // var q_shipto = $("#q_shipto").val();
+				  var q_partno = $("#q_partno").val();
+				 // var q_number = $("#q_number").val();
+				  if(q_partno=='' || q_partno=='请输入型号') {$("#q_partno").focus();return;};
+				  //if(q_number=='' || q_number=='数量') {$("#q_number").focus();return;};
+				  //提交订单
+					 var subtmp = document.getElementById("baojiabtn");
+					 subtmp.innerHTML = '<input value="提交中..." type="button" class="gbqfb">';
+					 $.ajax({
+							url: '/cart/quickorder',
+							data: {'q_partno':q_partno},
+							type: 'post',
+							dataType: 'json',
+							success: function(arr) {
+							   if(arr.code == 0){
+								   buy(arr.id);
+							   }else if(arr.code == 1){
+							       if(confirm(arr.message)){
+									   openInquiry(arr.id);
+								   }
+							   }else if(arr.code == 2){
+									window.location.href=arr.url;   
+							   }else if(arr.code == 100){
+									window.location.href="/search?keyword="+q_partno+"&st=searchmodel";   
+							   }else if(arr.code == 200){
+							        if(confirm(arr.message)){
+									    window.location.href="/search?keyword="+q_partno+"&st=searchmodel";   
+									}
+							   }else{
+								  alertbox(arr.message);
+							   }
+							   subtmp.innerHTML = '<input onclick="q_action()" value="确 认" type="button" class="gbqfb">';
+							}
+					});
+			  }
+		</script>
+      <div class="brand_wall btnpx">
+        <ul class="brandBox">
+          <li id="marqueebox" >
+            <?php foreach($this->actingBrand as $k=>$actingbrand){ $showclass = $k<12?'brand_1':'brand_2';?>
+            <a href="/pl/<?=$actingbrand['name']?><?php if(in_array($actingbrand['comid'],array(17,13))){echo '?t=1';}?>" title="<?=$actingbrand['name']?>" class="flowTip logclick <?=$showclass?>" rev="acting_brand" rel="<?=$actingbrand['comid']?>" target="_blank">
+            <img height="40" src="/images/default/brand/<?=$actingbrand['comid']?>.png" <?=$icss?> title="<?=$actingbrand['name']?>"/> <span><?=$actingbrand['name']?></span></a>
+            <?php }?>
+          </li>
+        </ul>
+        <a class="btn_prev" id="btn_prev" href="javascript:;" onClick="showbrand('brand_1','brand_2')"></a> 
+        <a class="btn_next" id="btn_next" href="javascript:;" onClick="showbrand('brand_2','brand_1')"></a> </div>
+    </div>
+    <div class="clr"></div>
+    <div class="mainrightbox">
+      <div class="mainrightbox_buynow boxshadow_h">
+        <h2>快速订购</h2>
+        <!--<select name="q_shipto" id="q_shipto" class="mainrightbox_buynow_s">
+          <option value="SZ">发货地(国内)</option>
+          <option value="HK">发货地(香港)</option>
+        </select>-->
+        <div class="mainrightbox_buynowtip">输入型号，就能快速下单哟！</div>
+        <div class="qbcontain">
+          <table border="0" cellspacing="0" cellpadding="0" >
+            <tbody>
+              <tr>
+                <td><input value="<?=$this->keyword==''?'请输入型号':$this->keyword;?>" onFocus="inputFocus($(this),'请输入型号');" onBlur="inputBlur($(this),'请输入型号')"  type="text"  id="q_partno" name="q_partno" class="input150"></td>
+                <!--<td style="padding-left:5px"><input value="<?=$this->keyword==''?'数量':$this->keyword;?>" onfocus="inputFocus($(this),'数量');" onblur="inputBlur($(this),'数量')" onkeyup="<?=ISNUMBER?>" type="text" id="q_number" name="q_number" style="width:40px"></td>-->
+              </tr>
+              <tr>
+                <td align="right">
+                <span id="baojiabtn"><input onClick="q_action()" value="确 认" type="button" class="gbqfb"></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          </form>
+        </div>
+      </div>
+     
+	 
+     <!--多图滚动-->
+      <script type="text/javascript" charset="utf-8">
+		$(document).ready(function(){
+			$("#slideshow").slideshow({
+				height: 117,
+				width:278,
+				caption: false,
+				pauseSeconds:4
+			});
+		});
+	</script>
+     <div class="item boxshadow_h">
+     <div id="slideshow">
+     <?php 
+		  foreach($this->specialimageArr as $v){
+		  ?>
+          <a href="<?=$v['url']?>" target="<?=$url_target==1?'_self':'_blank'?>" title="<?=$v['title']?>" class="logclick" rev='specialimage' rel='<?=$v['id']?>'><img  width="277" height="117" alt="<?=$v['title']?>" src="<?=$v['image']?>" title="<?=$v['title']?>" /></a>
+          <?php }?>
+	  </div>
+      </div>
+
+      <script language="javascript">
+    //轮转
+    $(function(){
+        var tab = $(".tabbar li");
+        tab.hover(function(){
+		    $('.li_1_a').removeClass("selected");	
+            $(this).addClass("selected");		
+            var index = tab.index(this);
+            $(".div_1").eq(index).show().siblings().hide();	
+        });
+     })</script>
+      <div class="mod_tab boxshadow_h">
+        <div class="clearfix ">
+          <ul class="tabbar clearfix">
+            <li class="li_1_a selected"><a href="/solutionlist">方案<b class="blank3"></b></a></li>
+            <li class="li_1_a"><a>新闻速递<b class="blank3"></b></a></li>
+            <li class="li_1_a"><a href="/webinarlist" style="border-right:0px;">研讨会<b class="blank3"></b></a></li>
+          </ul>
+        </div>
+        <div class="mod_tab_c">
+          <div class="content">
+            <div class="div_1">
+              <ul>
+                <?php 
+		    foreach($this->solution as $solutiontmp){?>
+                <li><ins class="dot"></ins><a href="/solution-<?=$solutiontmp['id']?>.html" title="<?=$solutiontmp['title']?>"  class="logclick" rev="index_solution" rel="<?=$solutiontmp['id']?>" target="_blank">
+                  <?=$this->fun->utf_substr($solutiontmp['title'],34)?>
+                  </a></li>
+                <?php }?>
+              </ul>
+            </div>
+            <div class="div_1" style="display:none">
+              <ul>
+                <?php 
+		    foreach($this->news as $news){
+			 $newtype = array('1'=>'【行业】','2'=>'【产品】','3'=>'【企业】');
+			?>
+                <li><ins class="dot"></ins> 
+                <?=$newtype[$news['news_type_id']]?><a href="/news-<?=$news['id']?>.html" title="<?=$news['title']?>"  class="logclick" rev="index_news" rel="<?=$news['id']?>" target="_blank">
+                  <?=$this->fun->utf_substr($news['title'],34)?>
+                  </a> </li>
+                <?php }?>
+              </ul>
+            </div>
+             <div class="div_1" style="display:none">
+              <ul>
+                <?php 
+		    foreach($this->sem as $semtmp){?>
+                <li><ins class="dot"></ins> <a href="/webinar-<?=$semtmp['id']?>.html" title="<?=$semtmp['title']?>"  class="logclick" rev="index_webinar" rel="<?=$semtmp['id']?>" target="_blank">
+                  <?=$semtmp['type']=='vdo'?'<img src="/images/default/video.jpg">&nbsp;':''?>
+                  <?=$this->fun->utf_substr($semtmp['title'],34)?>
+                  </a> </li>
+                <?php }?>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clr"></div>
+  </div>
+</div>
+<div class="w MT20">
+  <div class="hotgoods fl">
+    <h2>精品 • 新品<em>最新信息，及时掌握</em></h2>
+    <div class=" hotnew  ">
+      <div class="floor_logo fl">
+        <ul class="brandlisth">
+          <?php $itmp = 1;$i=0;
+			    foreach($this->bandhotArr as $bandid=>$hotArr){
+				if($i<4){
+				if($itmp==1) $onfouce = 'onfouce';
+				else $onfouce='';
+				$itmp = 0;
+			?>
+            <li class="a_hotgood a_<?=$bandid?> <?=$i==0?'on':''?>" rel="<?=$bandid?>"><a href="/pl/<?=$hotArr[0]['brandname']?><?php if(in_array($actingbrand['comid'],array(17,13))){echo '?t=1';}?>" class="<?=$onfouce?>  logclick" rev="bandhot_brand" rel="<?=$bandid?>" title="<?=$hotArr[0]['brandname']?>" target="_blank"><i class="ie-scrim"></i><img src="/images/default/brand/<?=$bandid?>_h.png"></a></li>
+	        <?php $i++;}}?>
+        </ul>
+      </div>
+      <?php $itmp = 1;$k=0;
+			    foreach($this->bandhotArr as $bandid=>$hotArr){
+				if($k<4){$k++;
+				if($itmp==1) $hide = '';
+				else $hide='hide';
+				$itmp = 0;
+			?>
+      <div class="border1px hot<?=$bandid?> <?=$hide?>">
+      <ul class="hotnew_por_box2013 ">
+      	<?php 
+			for($i=0;$i<count($hotArr) && $i<4;$i++){
+			    //过滤产品
+				$data =  $this->fun->filterProduct($hotArr[$i]);
+				
+				//print_r($data);
+				if($i==3){
+				  $border_right ='style="border-right:0px; width:182px"';
+				}else{
+				  $border_right ='';
+				}
+				$spot_order = '<strong>订货</strong>';
+				$buyshow = '';
+				$priceshow = '<div class="pprice201312">&nbsp;</div>';
+				if(($data['f_stock_sz']+$data['f_stock_hk'])>0) $spot_order = '<strong class="fontorange">现货</strong>';//现货或订货
+			    if($data['f_show_price_sz']){
+				 //低至价格
+				  $showprice = $data['f_rmb'].number_format($data['f_lowest_price_sz'],DECIMAL); 
+				  //阶梯价格
+				  $btable = $data['f_break_price_notitle_sz'];
+				  
+				  
+				  
+				}elseif($data['f_show_price_hk']){
+				 //低至价格
+				  $showprice = $data['f_usd'].number_format($data['f_lowest_price_hk'],DECIMAL); 
+				  //阶梯价格
+				  $btable = $data['f_break_price_notitle_hk'];
+				  
+				}
+				if($data['f_show_price_sz'] || $data['f_show_price_hk']){
+				  $priceshow = '<div class="pprice201312"><div class="icon_t"> 低至：<span class="priceti">'.$showprice.'<i><em></em><span></span></i></span><div class="pprice201312_detail">'.$btable.'</div></div></div>';
+				  $buyshow = '<a href="javascript:" onclick="buy('.$data['id'].')" rev="bandhot_part_id" rel="'.$data['id'].'" class="gbqfb logclick" title="购买"><i class="i_buy_s"></i>购买</a>';	
+				}elseif($data['f_break_price_notitle_sz']){
+				    //低至价格
+				   $showprice = $data['f_rmb'].number_format($data['f_lowest_price_sz'],DECIMAL); 
+				   //阶梯价格
+				   $btable = $data['f_break_price_notitle_sz'];
+				   $priceshow = '<div class="pprice201312"><div class="icon_t"> 低至：<span class="priceti">'.$showprice.'<i><em></em><span></span></i></span><div class="pprice201312_detail">'.$btable.'</div></div></div>';
+				}elseif($data['f_break_price_notitle_hk']){
+				    //低至价格
+				   $showprice = $data['f_usd'].number_format($data['f_lowest_price_hk'],DECIMAL); 
+				   //阶梯价格
+				   $btable = $data['f_break_price_notitle_hk'];
+				   $priceshow = '<div class="pprice201312"><div class="icon_t"> 低至：<span class="priceti">'.$showprice.'<i><em></em><span></span></i></span><div class="pprice201312_detail">'.$btable.'</div></div></div>';
+				}
+		   	 ?>
+        <li class="fore<?=$i+1?>">
+          <div class="por_box2013 item "><a href="<?=$data['f_produrl']?>" title="<?=$data['part_no']?>"  class="logclick s-img" rev="bandhot_part_id" rel="<?=$data['id']?>" target="_blank"><img src="<?=PRODUCTICON.($data['part_img']==''?'no.gif':$data['part_img'])?>"/></a></a>
+            <div class="pbox201312">
+              <div class="spot201312"></div>
+              <div class="pmodel201312"><a href="<?=$data['f_produrl']?>" class="logclick" title="<?=$data['part_no']?>" rev="bandhot_part_id" rel="<?=$data['id']?>" target="_blank"><?=$data['part_no']?></a></div>
+              
+            
+              <div class="ptip201312"><?=$spot_order?>-<a href="/list-<?=$data['part_level1']?>-<?=$data['part_level2']?>-<?=$data['part_level3']?>.html" target="_blank"><?=($data['bname3']==''?$data['bname2']:$data['bname3'])?></a></div>
+              
+              <?=$priceshow?>
+             
+              <div class="pbrand201312"><a href="/pl/<?=$data['brandname']?><?php if(in_array($actingbrand['comid'],array(17,13))){echo '?t=1';}?>" target="_blank"><img src="/images/default/brand/<?=$data['manufacturer']?>_h.png" title="<?=$data['brandname']?>"/></a></div>
+              
+              <div class="tabelbtn"> 
+              <?php if(!$data['noinquiry']){?>
+             <a href="javascript:" onClick="openInquiry('<?=$data['id']?>')" class="gbqfb logclick" title="询价" rev="bandhot_part_id" rel="<?=$data['id']?>"><i class="i_xun_s"></i>询价</a>
+             <?php }?>
+              <?=$buyshow?>
+              </div>
+            </div>
+          </div>
+        </li>
+        <?php }?>   
+      </ul>
+      </div>
+      <?php }}//end  foreach($this->bandhotArr as $bandid=>$hotArr)?>
+    </div>
+  </div>
+  
+  <script type="text/javascript">
+var nowbandid = 0;
+var itmp      = 0;
+var bandidarr = new Array();
+var clrID = 0 ;
+
+<?php $itmp = 0;$i=0;
+	foreach($this->bandhotArr as $bandid=>$hotArr){if($i<4){?>
+	bandidarr[<?=$itmp?>] = <?=$bandid?>;
+<?php $itmp++;$i++;}}?>
+function changeHot()
+{
+	for(i=0;i<bandidarr.length;i++)
+	{
+	    $(".a_"+bandidarr[i]).removeClass("on");
+		$(".hot"+bandidarr[i]).addClass("hide");
+	}
+	
+	for(i=0;i<bandidarr.length;i++)
+	{
+		if(nowbandid==0){
+			nowbandid = bandidarr[1];
+			itmp = 1;
+			break;
+		}else{
+			if(itmp==(bandidarr.length-1)){
+				nowbandid = bandidarr[0];
+				itmp = 0;
+				break;
+			}else{
+			    i = itmp;
+				nowbandid = bandidarr[i+1];
+				itmp = i+1;
+				break;
+			}
+		}
+		
+	}
+	$(".a_"+nowbandid).addClass("on");
+	$(".hot"+nowbandid).removeClass("hide");
+}
+//hover停止
+function killchangehot()
+{
+	window.clearInterval(clrID);
+}
+//开始
+function startchangehot()
+{
+	clrID = setInterval("changeHot()",5000);
+}
+
+//轮转
+$(function(){
+        var tab = $(".a_hotgood");
+        tab.hover(function(){
+		    killchangehot();
+            $(this).addClass("on").siblings().removeClass("on");
+			var bandid = $(this).attr('rel');
+			$(".border1px").addClass("hide");
+			$(".hot"+bandid).removeClass("hide");
+        },function () {
+            startchangehot();
+        });
+})
+//第一次运行
+startchangehot();
+</script>
+  
+  <div class="hot_sch fr" >
+    <h2>热门方案<em>最新信息，及时掌握</em></h2>
+    <div class="indexShow">
+      <div class="indexShowBox" style="overflow:hidden">
+      
+      <script type="text/javascript" charset="utf-8">
+		$(document).ready(function(){
+			$("#slideshow2").slideshow({
+				height: 225,
+				width:291,
+				caption: false
+			});
+		});
+	</script>
+
+     <div id="slideshow2">
+      <?php 
+		  foreach($this->solutionimageArr as $v){
+		  ?>
+          <a href="<?=$v['url']?>" target="<?=$url_target==1?'_self':'_blank'?>" title="<?=$v['title']?>" class="logclick" rev='solutionimage' rel='<?=$v['id']?>' target="_blank"><img  width="290" height="225" alt="<?=$v['title']?>" src="<?=$v['image']?>" title="<?=$v['title']?>" /></a>
+          <?php }?>
+		
+	</div>
+      
+         <!--<ul class="slider_img" >
+         <li style="opacity: 1 !important;"><a href="#" target="_blank"><img alt="" title="" src="images/default/ad/300r_1.jpg"  width="300"/></a></li>
+          <li><a href="/solution-273.html" target="_blank"><img alt="" title="" src="2014/images/default/ad/300r_1.jpg"  width="300"/></a></li>
+        </ul>-->
+      </div>
+      <!--<ul class="slider_trigger" style="">
+        <li class="on">1</li>
+        <li class="">2</li>
+      </ul>
+      <a href="javascript:void(0)" class="indexShowLeft_s" hidefocus="hideFocus"></a> <a href="javascript:void(0)" class="indexShowRight_s" hidefocus="hideFocus"></a>--> </div>
+  </div>
+  <div class="clr"></div>
+</div>
+<div class="w MT20" style="z-index:2">
+  <div class="hotRecommend" >
+    <h2>热卖推荐</h2>
+    <div class="h_change ">
+      <!--点击的过程中加上 onchick-->
+      <a href="javascript:;" onClick="rfhotRecommend()" ytag="20000"><i class="i_change">&nbsp;</i><b>换一批</b></a> </div>
+    <div class="hotRecommend_A" id="hotRecommend_show"><img src="/images/admin/ajax-loader.gif" /></div>
+  </div>
+  <div class="clr"></div>
+</div>
+<script language="javascript">
+    $(function(){rfhotRecommend();})
+	function rfhotRecommend(){
+		$("#hotRecommend_show").html('<img src="/images/admin/ajax-loader.gif" />');
+		$("#hotRecommend_show").load("/publicbox/hotrecommend");
+	}
+	
+	//应用分类
+	$(function(){
+	   $(".app_soumain").hover(function(){
+		 $(this).addClass("app_soumain_hove");
+	   },function(){
+		  $(this).removeClass("app_soumain_hove");
+	   });
+})
+
+//显示应用方案元器件
+	    var itemarr = new Array();
+		
+		if(widescreen) var screennum = 1;
+		else var screennum = 0;
+
+		<?php foreach($this->appArr as $appid=>$app){?>
+			itemarr[<?=$appid?>] = 2+screennum;
+		<?php }?>
+	    function showapp_part(type,appid,allnum){
+		 
+		    var hideclass = '';
+			var showclass = '';
+			if(type=='prev'){
+			   if(itemarr[appid]>screennum+2){
+			      hideclass = 'part'+appid+(itemarr[appid]-3+screennum);
+			      showclass = 'part'+appid+(itemarr[appid]-1+screennum); 
+		          itemarr[appid]--;
+			   }
+			 }else{
+			   if(itemarr[appid]<allnum){
+			     hideclass = 'part'+appid+(itemarr[appid]-2-screennum);
+			     showclass = 'part'+appid+(itemarr[appid]); 
+			     itemarr[appid]++;
+			   }
+			 } 
+			 if(hideclass && showclass){
+			 $("."+hideclass).hide();
+			 $("."+showclass).fadeIn();	
+			 }
+		}
+</script>
+<div class="w">
+<?php 
+$m = 0;
+foreach($this->appArr as $appid=>$app){
+$m++;
+  //滚动id
+  $scrollid = "scroll".$appid;
+  //标题
+  $par = $app['par'];
+  //热门方案
+  $solution = $app['solution'][0];
+  //推荐产品
+  $prodvalue= $app['value'];
+  //推荐品牌
+  $brand    = $app['brand'];
+  //应用分类
+  $sonapp   = $app['sonapp'];
+  $solimg = '';
+  if($solution['sol_img'])
+  {
+  	   $solimg = APPICON.$solution['sol_img'];
+  }else{
+  	   if($solution['solution_img'])
+	   {
+	   		$pricearr = explode(',',$solution['solution_img']);
+			$solimg   = SOLUTIONICON.$pricearr[0];
+	   }
+  }
+?>
+  <div class="application u<?=$m?>">
+    <h2><a href="/solutionlist-<?=$appid?>.html" class="logclick"  target="_blank" title="<?=$par['name']?>" rev="app_solutionlist" rel="<?=$appid?>"><?=$par['name']?></a></h2>
+    <div class="app_tit"><a href="/solutionlist-<?=$appid?>.html"  target="_blank" class="logclick" title="<?=$par['name']?>" rev="app_solutionlist" rel="<?=$appid?>"><?=$par['name']?></a></div>
+    <div class="w_100 fl">
+      <div class="fl index_left01">
+        <div class="item"> <img src="<?=$_SESSION['new_version']?>/images/default/solution/pic<?=$m?>.jpg"  /> </div>
+        <div class="subleftc201312">
+          <h3>应用分类</h3>
+          <ul>
+            <?php for($i=0;$i<count($sonapp) && $i<8;$i++){?>
+      <li><ins class="dot"></ins><a href="/solutionlist-<?=$sonapp[$i]['parent_id']?>.html" title="<?=$sonapp[$i]['name']?>" class="logclick" rev="sonapp" rel="" target="_blank"><?=$this->fun->utf_substr($sonapp[$i]['name'],20,'...')?></a></li>
+        <?php }?>
+          </ul>
+        </div>
+      </div>
+      <div class="app_soumain fl boxshadow_h1">
+        <div class="titbggreen">关键元器件</div>
+        <div class="soultionimg"> 
+        <a href="/solution-<?=$solution['solid']?>.html" title="<?=$solution['title']?>" class="logclick" rev="app_solution" rel="<?=$solution['solid']?>" target="_blank"><img src="http://www.iceasy.com<?=$solimg?>" alt="暂无方案框图"  title="<?=$solution['title']?>"/></a>
+        <span class="imgtitbg"><a href="/solution-<?=$solution['solid']?>.html" title="<?=$solution['title']?>" class="logclick" rev="app_solution" rel="<?=$solution['solid']?>" target="_blank"><?=$solution['title']?></a></span>
+        </div>
+
+        <div class="sou201312 btnpx">
+          <ul class="ulw100">
+          <?php for($i=0;$i<count($solution['rec_prod']);$i++){
+		  		$data = $this->fun->filterProduct($solution['rec_prod'][$i]);
+				$spot_order = '<strong>订货</strong>';
+				$buyshow = '';
+				$priceshow = '<div class="pprice201312">&nbsp;</div>';
+				if(($data['f_stock_sz']+$data['f_stock_hk'])>0) $spot_order = '<strong class="fontorange">现货</strong>';//现货或订货
+			    if($data['f_show_price_sz']){
+				 //低至价格
+				  $showprice = $data['f_rmb'].number_format($data['f_lowest_price_sz'],DECIMAL); 
+				  //阶梯价格
+				  $btable = $data['f_break_price_notitle_sz'];
+				  
+				  
+				  
+				}elseif($data['f_show_price_hk']){
+				 //低至价格
+				  $showprice = $data['f_usd'].number_format($data['f_lowest_price_hk'],DECIMAL); 
+				  //阶梯价格
+				  $btable = $data['f_break_price_notitle_hk'];
+				  
+				}
+				if($data['f_show_price_sz'] || $data['f_show_price_hk']){
+				  $priceshow = '<div class="pprice201312"><div class="icon_t"> 低至：<span class="priceti">'.$showprice.'<!--<i><em></em><span></span></i>--></span><!--<div class="pprice201312_detail">'.$btable.'</div>--></div></div>';
+				  $buyshow = '<a href="javascript:" onclick="buy('.$data['id'].')" rev="bandhot_part_id" rel="'.$data['id'].'" class="gbqfb logclick" title="购买"><i class="i_buy_s"></i>购买</a>';	
+				}elseif($data['f_break_price_notitle_sz']){
+				    //低至价格
+				   $showprice = $data['f_rmb'].number_format($data['f_lowest_price_sz'],DECIMAL); 
+				   //阶梯价格
+				   $btable = $data['f_break_price_notitle_sz'];
+				   $priceshow = '<div class="pprice201312"><div class="icon_t"> 低至：<span class="priceti">'.$showprice.'<!--<i><em></em><span></span></i>--></span><!--<div class="pprice201312_detail">'.$btable.'</div>--></div></div>';
+				}elseif($data['f_break_price_notitle_hk']){
+				    //低至价格
+				   $showprice = $data['f_usd'].number_format($data['f_lowest_price_hk'],DECIMAL); 
+				   //阶梯价格
+				   $btable = $data['f_break_price_notitle_hk'];
+				   $priceshow = '<div class="pprice201312"><div class="icon_t"> 低至：<span class="priceti">'.$showprice.'<!--<i><em></em><span></span></i>--></span><!--<div class="pprice201312_detail">'.$btable.'</div>--></div></div>';
+				}
+				
+		  ?>
+            <li class="part<?=$appid.$i?>">
+            <div class="por_box2013 item"><a href="<?=$data['f_produrl']?>" title="<?=$data['part_no']?>"  class="logclick s-img" rev="bandhot_part_id" rel="<?=$data['id']?>" target="_blank"><img src="<?=PRODUCTICON.($data['part_img']==''?'no.gif':$data['part_img'])?>"/></a>
+              <div class="pbox201312">
+                <div class="spot201312"></div>
+                <div class="pmodel201312"><a href="<?=$data['f_produrl']?>" class="logclick" title="<?=$data['part_no']?>" rev="bandhot_part_id" rel="<?=$data['id']?>" target="_blank"><?=$data['part_no']?></a></div>
+                
+                <div class="ptip201312"><?=$spot_order?>-<a href="/list-<?=$data['part_level1']?>-<?=$data['part_level2']?>-<?=$data['part_level3']?>.html" target="_blank"><?=($data['bname3']==''?$data['bname2']:$data['bname3'])?></a></div>
+                
+                <?=$priceshow?>
+                
+                <div class="pbrand201312"><a href="/pl/<?=$data['bname']?><?php if(in_array($actingbrand['comid'],array(17,13))){echo '?t=1';}?>" target="_blank"><img src="/images/default/brand/<?=$data['manufacturer']?>_h.png" title="<?=$data['bname']?>"/></a></div>
+              
+              <div class="tabelbtn"><?php if(!$data['noinquiry']){?>
+             <a href="javascript:" onClick="openInquiry('<?=$data['id']?>')" class="gbqfb logclick" title="询价" rev="bandhot_part_id" rel="<?=$data['id']?>"><i class="i_xun_s"></i>询价</a>
+             <?php }?>
+              <?=$buyshow?>
+              </div>
+            </div>
+            </div>
+          </li>
+            <?php }?>
+          </ul>
+          <a class="btn_prev" id="btn_prev" href="javascript:;" onClick="showapp_part('prev','<?=$appid?>','<?=count($solution['rec_prod'])?>')" title="左移"></a> 
+          <a class="btn_next" id="btn_next" href="javascript:;" onClick="showapp_part('next','<?=$appid?>','<?=count($solution['rec_prod'])?>')" title="右移"></a> </div>
+      </div>
+      <div class="U-hotRecommend" >
+        <ul class="">
+        <?php for($i=0;$i<count($prodvalue) && $i<2;$i++){
+		  		$data = $this->fun->filterProduct($prodvalue[$i]);
+				$spot_order = '<strong>订货</strong>';
+				$buyshow = '';
+				$priceshow = '<div class="pprice201312">&nbsp;</div>';
+				if(($data['f_stock_sz']+$data['f_stock_hk'])>0) $spot_order = '<strong class="fontorange">现货</strong>';//现货或订货
+			    if($data['f_show_price_sz']){
+				 //低至价格
+				  $showprice = $data['f_rmb'].number_format($data['f_lowest_price_sz'],DECIMAL); 
+				  //阶梯价格
+				  $btable = $data['f_break_price_notitle_sz'];
+				  
+				  
+				  
+				}elseif($data['f_show_price_hk']){
+				 //低至价格
+				  $showprice = $data['f_usd'].number_format($data['f_lowest_price_hk'],DECIMAL); 
+				  //阶梯价格
+				  $btable = $data['f_break_price_notitle_hk'];
+				  
+				}
+				if($data['f_show_price_sz'] || $data['f_show_price_hk']){
+				  $priceshow = '<div class="pprice201312"><div class="icon_t"> 低至：<span class="priceti">'.$showprice.'<i><em></em><span></span></i></span><div class="pprice201312_detail">'.$btable.'</div></div></div>';
+				  $buyshow = '<a href="javascript:" onclick="buy('.$data['id'].')" rev="bandhot_part_id" rel="'.$data['id'].'" class="gbqfb logclick" title="购买"><i class="i_buy_s"></i>购买</a>';	
+				}elseif($data['f_break_price_notitle_sz']){
+				    //低至价格
+				   $showprice = $data['f_rmb'].number_format($data['f_lowest_price_sz'],DECIMAL); 
+				   //阶梯价格
+				   $btable = $data['f_break_price_notitle_sz'];
+				   $priceshow = '<div class="pprice201312"><div class="icon_t"> 低至：<span class="priceti">'.$showprice.'<i><em></em><span></span></i></span><div class="pprice201312_detail">'.$btable.'</div></div></div>';
+				}elseif($data['f_break_price_notitle_hk']){
+				    //低至价格
+				   $showprice = $data['f_usd'].number_format($data['f_lowest_price_hk'],DECIMAL); 
+				   //阶梯价格
+				   $btable = $data['f_break_price_notitle_hk'];
+				   $priceshow = '<div class="pprice201312"><div class="icon_t"> 低至：<span class="priceti">'.$showprice.'<i><em></em><span></span></i></span><div class="pprice201312_detail">'.$btable.'</div></div></div>';
+				}
+		  ?>
+          <li>
+            <div class="por_box2013 item"> <a href="<?=$data['f_produrl']?>" title="<?=$data['part_no']?>"  class="logclick s-img" rev="bandhot_part_id" rel="<?=$data['id']?>" target="_blank"><img src="<?=PRODUCTICON.($data['part_img']==''?'no.gif':$data['part_img'])?>"/></a>
+              <div class="pbox201312">
+                <div class="spot201312"></div>
+                <div class="pmodel201312"><a href="<?=$data['f_produrl']?>" class="logclick" title="<?=$data['part_no']?>" rev="bandhot_part_id" rel="<?=$data['id']?>" target="_blank"><?=$data['part_no']?></a></div>
+                
+                <div class="ptip201312"><?=$spot_order?>-<a href="/list-<?=$data['part_level1']?>-<?=$data['part_level2']?>-<?=$data['part_level3']?>.html" target="_blank"><?=$this->fun->utf_substr(($data['bname3']==''?$data['bname2']:$data['bname3']),14,'...')?></a></div>
+                
+                <?=$priceshow?>
+                
+                <div class="pbrand201312"><a href="/pl/<?=$data['brandname']?><?php if(in_array($actingbrand['comid'],array(17,13))){echo '?t=1';}?>" target="_blank"><img src="/images/default/brand/<?=$data['manufacturer']?>_h.png" title="<?=$data['brandname']?>"/></a></div>
+              
+              <div class="tabelbtn"><?php if(!$data['noinquiry']){?>
+             <a href="javascript:" onClick="openInquiry('<?=$data['id']?>')" class="gbqfb logclick" title="询价" rev="bandhot_part_id" rel="<?=$data['id']?>"><i class="i_xun_s"></i>询价</a>
+             <?php }?>
+              <?=$buyshow?>
+              </div>
+            </div>
+            </div>
+          </li>
+          <?php }?>
+        </ul>
+      </div>
+      <div class="floor_logo fl">
+        <ul class="brandlisth">
+        <?php for($i=0;$i<count($brand) && $i<8;$i++){?>
+     <li><a href="/pl/<?=$brand[$i]['name']?><?php if(in_array($actingbrand['comid'],array(17,13))){echo '?t=1';}?>" title="<?=$brand[$i]['name']?>" class="logclick" rev="app_brand" rel="<?=$brand[$i]['id']?>" target="_blank"><img src="images/default/brand/<?=$brand[$i]['id']?>_h.png"></a></li>
+    <?php }?>
+         
+        </ul>
+      </div>
+    </div>
+    <div class="unit_bom"></div>
+  </div>
+
+
+<?php }//end foreach($this->appArr as $appid=>$app){?>
+
+</div>
+
+

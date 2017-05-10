@@ -1,0 +1,42 @@
+<div class="blank10"></div>
+<div class="subhot">
+      <div class="subhot_t">
+        <h3 class="titbg1ts">热销商品<em class="emtrianglerightgray5px"></em></h3>
+        <span class="hotbrandimg"><a href="/pl/<?=$this->brandname?>" target="_blank" title="<?=$this->brandname?>" onclick="logclickaction($(this))" rev="hotpord_brand" rel="<?=$this->bandid?>"><img src="/images/default/brand/<?=$this->bandid?>_h.png" height="35px" title="<?=$this->brandname?>"></a></span>
+      </div>
+      <div class="subshop">
+         <?php for($i=0;$i<count($this->hotArr);$i++){
+	         $data = $this->fun->filterProduct($this->hotArr[$i]);
+			 $break_price='';$stock = 0;$show_price = 0;
+			if($data['f_show_price_sz']){
+			    $show_price = $data['f_show_price_sz'];
+				$stock      = $data['f_stock_sz'];
+				$showprice = $data['f_rmb'].number_format($data['f_lowest_price_sz'],DECIMAL); 
+				$break_price = $data['f_break_price_notitle_sz'];
+			}elseif($data['f_show_price_hk']){
+			    $show_price = $data['f_show_price_hk'];
+				$stock      = $data['f_stock_hk'];
+				$showprice = $data['f_usd'].number_format($data['f_lowest_price_hk'],DECIMAL); 
+				$break_price = $data['f_break_price_notitle_hk'];
+			}
+			 if(($data['f_stock_sz']+$data['f_stock_hk'])>0){
+			 	 $goodsprice_title = '<font color="#469F68">现货</font>';
+			 }else{
+			 	 $goodsprice_title = '<font color="#FC9C30">订货</font>';
+			 }
+			 if($show_price){
+			 	 $goodsprice = '<div class="goodsprice"  style="z-index:'.(100-$i).'"><span>低至：</span><a href="'.$data['f_produrl'].'" class="price">'.$showprice.'<em class="priceem"></em></a>
+				 <div class="tipprice">'.$break_price.'</div>
+				 </div><p class=" fontGray">库存：'.$goodsprice_title.'</p>';
+		     }else{
+			    $goodsprice = '<div class="goodsprice">库存：'.$goodsprice_title.'</div><p class=" fontGray"></p>';
+			 }
+	      ?>
+        <div class="w_100 " <?=$i==(count($this->hotArr)-1)?'style="border-bottom:0px;"':''?>> 
+          <b><?=$i+1?></b><a href="<?=$data['f_produrl']?>" title="<?=$data['part_no']?>"  onclick="logclickaction($(this))" rev="bandhot_part_id" rel="<?=$data['id']?>"><img alt="img" src="<?=PRODUCTICON.($data['part_img']==''?'no.gif':$data['part_img'])?>"  title="<?=$data['part_no']?>"></a>
+          <p><a class="model" href="<?=$data['f_produrl']?>"  title="<?=$data['part_no']?>"  onclick="logclickaction($(this))" rev="bandhot_part_id" rel="<?=$data['id']?>"><?=$data['part_no']?></a></p>
+          <p class="hide">FLASH存储器</p>
+          <?=$goodsprice?>
+	    </div>
+	<?php }?>
+</div>

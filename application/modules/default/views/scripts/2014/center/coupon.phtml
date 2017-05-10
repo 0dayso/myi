@@ -1,0 +1,87 @@
+<!--content-->
+<?php
+$typearr = array('1'=>'型号数量优惠券','2'=>'通用金额优惠券','3'=>'品牌金额优惠券');
+?>
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/myself2013.css"/>
+<link rel="stylesheet" type="text/css" href="/css/default/myself<?=$_SESSION['new_version']?>.css"/>
+<script type="text/javascript" language="javascript"> center_css();</script>
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a  class="focs">我的IC易站</a>&nbsp;&nbsp;»&nbsp;&nbsp;<a><?=$this->translate('Menu_MyCoupon')?></a>
+  </div>
+</div>
+
+
+<div class="blank10"></div>
+<div class="w clearfix ourbox">
+        <!--左边导航-->
+        <?php echo $this->render('center/leftmenu.phtml');?>
+	<div class="fr u_right msg24">
+
+     <div class="col_main" id="onlineorder">
+           <h1>我的优惠券</h1>
+            <div class="tiporder fontorange">注意：应在有效时间内使用；每张只能使用一次；可以多张同时使用，优惠总金额如果超过购买总金额，就按购买总金额抵扣，剩余金额作废。</div>
+            <div class="order_tab_head">
+           <ul>
+          <li <?=$this->type=='can'?'class="on"':''?>><a href="/center/coupon" style="width:120px;">可以使用<em>(<?=$this->cantotal?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='used'?'class="on"':''?>><a href="/center/coupon?type=used" style="width:120px;">已经使用<em>(<?=$this->usedtotal?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='notdue'?'class="on"':''?>><a href="/center/coupon?type=notdue" style="width:120px;">还没到期<em>(<?=$this->notduetotal?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='expired'?'class="on"':''?>><a href="/center/coupon?type=expired" style="width:120px;">已经过期<em>(<?=$this->expiredtotal?>)</em><b class="blank3"></b></a></li>
+          </ul>
+            </div> 
+            <div class="table_box ivcoice " >
+                <table class="vac_table table"  cellpadding="0" cellspacing="0">   
+                <thead>    
+                    <tr>
+                        <th>类型</th>
+                        <th>优惠券号</th>
+                        <th>品牌</th>
+                        <th>产品型号</th>
+                        <th>抵扣数量</th>
+                        <th>抵扣金额(RMB)</th>
+                        <th>抵扣金额(USD)</th>
+                        <th>开始日期</th>
+                        <th>结束日期</th>
+                        <?php if($this->type=='used') echo '<th>使用订单</th>';?>
+                    </tr>   
+                </thead>            
+                <tbody>  
+            <?php if(empty($this->couponall)){echo '<tr><td colspan="9">暂无记录</td></tr>';}
+		  	else{
+				foreach($this->couponall as $key=>$data){
+				$bg='';
+				if($key%2==1) $bg = 'class="tabletrf9"';
+		    ?>
+			  <tr <?=$bg?>>
+                <td><?=$typearr[$data['type']];?></td>
+                <td><?php echo $data['code'];?></td>
+				<td><?php
+				$brand_id   = ($data['brand_id']?$data['brand_id']:$data['brand_id2']);
+				$brand_name = ($data['bname']?$data['bname']:$data['bname2']);
+				if($brand_id){?><a href="/pl/<?=$brand_name?>" target="_blank"><?=$brand_name?></a>
+				<?php }else{ echo '--'; }?></td>
+                <td><?php
+                if($data['part_id']){
+				  $pcid = ($data['part_level3']?$data['part_level3']:$data['part_level2']);
+				?>
+                <a href="/item-b<?=$brand_id?>-<?=$pcid?>-<?=$data['part_id']?>-<?=$data['part_no']?>.html" target="_blank"><?=$data['part_no']?></a>
+				<?php }else{ echo '--'; }?></td>
+				<td><?=($data['buy_number']?$data['buy_number']:'--')?></td>
+                <td><?=$data['money_rmb']>0?$data['money_rmb']:'--';?></td>
+                <td><?=$data['money_usd']>0?$data['money_usd']:'--';?></td>
+				<td><font color="<?=(time()<$data['start_date']?'#006600':'')?>"><?php echo date('Y-m-d',$data['start_date'])?></font></td>
+                <td><font color="<?=(time()>$data['end_date']?'#FF0000':'')?>"><?php echo date('Y-m-d',$data['end_date'])?></font></td>
+              	<?php if($this->type=='used') echo '<td><a href="/order/view?salesnumber='.$data['salesnumber'].'" title="查看订单详细" target="_blank">'.$data['salesnumber'].'</a></td>';?>
+              </tr>
+		    <?php		
+				}
+			}
+		    ?>
+                </tbody>         
+                </table>
+            </div>
+            <div class="pagination fr"> <?=$this->page_bar;?></div>
+        </div>
+   </div>
+</div>
+<div class="clr"></div>

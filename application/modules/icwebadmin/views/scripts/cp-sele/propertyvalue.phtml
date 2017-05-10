@@ -1,0 +1,18 @@
+
+	<div class="conmian">
+	<h1><a href="<?=$this->indexurl;?>"><?php echo $this->AreaTitle;?></a> -> <a href="<?=$this->propertyurl;?>">属性管理</a> -> 属性：<?=$this->property['cname']?> -> <b <?=$this->property['status']?'':'style="color:#FF0000"'?>><?=$this->property['cname']?>的所有值</b></h1>
+
+	  <!-- 需要填写的区域-->
+      <h3><a href="javascript:;" onclick="openbox('<?=$this->indexurl?>/editproperty/pid/<?=$this->property['id']?>')">编辑属性</a> | <a href="javascript:;" onclick="openbox('<?=$this->indexurl?>/addvalue/pid/<?=$this->property['id']?>')">+添加属性值</a></h3>
+      <table border="1" width="80%">
+      <tr bgcolor="<?=$bg?>">
+        <td>
+            <?php  foreach($this->propertyvalue as $pvarr){?>
+                <b><a href="javascript:;" onclick="openbox('<?=$this->indexurl?>/editvalue/pid/<?=$this->property['id']?>/pvid/<?=$pvarr['id']?>')" <?=$pvarr['status']?'':'style="color:#FF0000"'?>><?=$pvarr['value']?></a></b>&nbsp;|&nbsp;
+			 <?php }?>
+        </td>
+      </tr>
+      </table>
+      <br/>
+      <!-- 结束区域-->
+	</div>

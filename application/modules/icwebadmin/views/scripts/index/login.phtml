@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cn" lang="cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>IC易站 后台登录 - 专业IC交易网站</title>
+<script language="JavaScript" type="text/javascript" src="/js/jsplug/jquery.1.8.2.min.js"></script>
+<link rel="stylesheet" href="/css/admin/login.css" type="text/css" />
+<link rel="stylesheet" href="/js/jsplug/formvalidator/css/validationEngine.jquery.css" media="screen" type="text/css"/>
+<link rel="stylesheet" href="/js/jsplug/formvalidator/css/template.css" media="screen" type="text/css"/>
+<script src="/js/jsplug/formvalidator/js/jquery.validationEngine-en.js" type="text/javascript"></script>
+<script src="/js/jsplug/formvalidator/js/jquery.validationEngine.js" type="text/javascript"></script>
+</head>
+<body>
+<script language="javascript">	
+		$(document).ready(function() {
+			$("#formID").validationEngine()
+		});
+		// JUST AN EXAMPLE OF CUSTOM VALIDATI0N FUNCTIONS : funcCall[validate2fields]
+		function validate2fields(){
+			if($("#firstname").val() =="" ||  $("#lastname").val() == ""){
+				return false;
+			}else{
+				return true;
+			}
+		}
+</script>
+<div class="wrapper-top">
+  <div class="logo"><img SRC="/images/admin/logo.jpg" alt="Administry" /></div>
+</div>
+<div class="wrapper-login">
+  <div class="full">
+    <h3>系统登录</h3>
+    <form id="formID" method="post" action="">
+      <p>
+        <label class="required" for="username">用户名:</label>
+        <br/>
+        <input class="validate[required] full" type="text" name="loginname" id="loginname" value="<?php echo $this->loginname;?>"/>
+      </p>
+      <p>
+        <label class="required" for="password">密码:</label>
+        <br/>
+        <input type="password" class="validate[required,length[6,25]] full" value="" id="password" name="password">
+      </p>
+      <p>
+        <label class="required" for="password">验证码:</label>
+        <br/>
+        <input class="validate[required] half" type="text" name="verifycode" id="verifycode"/>
+        <a style="cursor:pointer" onClick="getVerify()" class="fontGray" title="看不清？换一张"><img src="" id="verify" style="margin-bottom:-8px;"/>看不清？</a>
+        </p>
+      <p>
+        <input type="submit"  class="btn"  value="登 录"/>
+      </p>
+      <div class="clear">&nbsp;</div>
+    </form>
+  </div>
+</div>
+<div id="bottom">
+  <p><b>中国电子器材深圳有限公司 版权所有©<?=date('Y')?> </b></p>
+</div>
+<?php //$_SESSION['message_sess']="";?>
+<script language="javascript">
+function getVerify(){
+	 var d = new Date();
+	 document.getElementById('verify').src="<?php echo $this->url(array('controller'=>'common','action'=>'createcode'));?>?t="+d.toTimeString();
+	}
+$(document).ready(function(){
+ getVerify();
+})
+<?php if(!empty($this->loginnameMess)){?>
+var uname=document.getElementById("loginname");
+$.validationEngine.buildPrompt(uname,"<?php echo $this->loginnameMess;?>","error");
+<?php }?>
+<?php if(!empty($this->passwordMess)){?>
+var email=document.getElementById("password");
+$.validationEngine.buildPrompt(email,"<?php echo $this->passwordMess;?>","error");
+<?php }?>
+<?php if(!empty($this->verifycodeMess)){?>
+var verifycode=document.getElementById("verifycode");
+$.validationEngine.buildPrompt(verifycode,"<?php echo $this->verifycodeMess;?>","error");
+<?php }?>
+</script>
+</body>
+</html>

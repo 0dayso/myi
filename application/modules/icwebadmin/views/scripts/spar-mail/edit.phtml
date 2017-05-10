@@ -1,0 +1,89 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 编辑 <a href="/icwebadmin/SparMail">返回&gt;&gt;</a></h1>
+<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div>
+          </div>
+      <!-- 需要填写的区域-->
+      <?php if($this->email['to_user']==1){
+	        $touser = '<font color="#009900">是</font>';
+			$readonly = "readonly";
+	  }else{
+	 		$touser = '<font color="#FF0000">否</font>';
+			$readonly = "";
+	  }?>
+      <form id='thisform' name="thisform" action='' method='post'>
+      <input type="hidden" name="id" value="<?=$this->email['id']?>" />
+      <table width="700px" border="0" cellpadding="1">
+        <tr>
+          <td colspan="2" style="padding-left:20px;"><table bgcolor="#CCCCCC" width="100%">
+              <tr>
+                <td width="126" align="right"><font color="#666600"><b>Type : </b></font></td>
+                <td colspan="3"  align="left"><?=$this->email['type']?></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><b><font color="#666600">标题 : </font></b></td>
+                <td align="left" colspan="3"><?=$this->email['title']?></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><font color="#666600"><b> 客户邮件 : </b></font></td>
+                <td align="left" colspan="3"><?=$touser?></td>
+              </tr>
+              <tr height="35">
+                <td width="126" align="right"><font color="#666600"><b> 是否抄送给负责销售 : </b></font></td>
+                <td align="left" colspan="3"> <input type="checkbox" name="bcc_sell" id="bcc_sell" value="1" <?=$this->email['bcc_sell']?'checked="checked"':''?> /></td>
+              </tr>
+             
+              <tr><td>
+              	<table><tr>
+                <td width="126" align="right"><b><font color="#666600">To : </font></b></td>
+                <td align="left" colspan="3"><textarea name="to" id="to" rows="2" cols="20" <?=$readonly?> ><?=$this->email['to']?></textarea></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><b><font color="#666600">CC : </font></b></td>
+                <td align="left" colspan="3"><textarea name="cc" id="cc" rows="2" cols="20" <?=$readonly?> ><?=$this->email['cc']?></textarea></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><b><font color="#666600">BCC: </font></b></td>
+                <td align="left" colspan="3"><textarea name="bcc" id="bcc" rows="2" cols="20"><?=$this->email['bcc']?></textarea></td>
+              </tr></table>	
+              </td>
+              <td><table> <tr>
+                <td width="126" align="right"><b><font color="#666600">To Staff: </font></b></td>
+                <td align="left" colspan="3"><textarea name="to_staffid" id="to_staffid" rows="2" cols="20" <?=$readonly?> ><?=$this->email['to_staffid']?></textarea></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><b><font color="#666600">CC Staff: </font></b></td>
+                <td align="left" colspan="3"><textarea name="cc_staffid" id="cc_staffid" rows="2" cols="20" <?=$readonly?> ><?=$this->email['cc_staffid']?></textarea></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><b><font color="#666600">BCC Staff: </font></b></td>
+                <td align="left" colspan="3"><textarea name="bcc_staffid" id="bcc_staffid" rows="2" cols="20"><?=$this->email['bcc_staffid']?></textarea></td>
+              </tr></table></td>
+              </tr>
+              
+             
+              <tr>
+                <td colspan="2"><font color="#FF0000">多个邮箱地址或者用户名用 | 隔开</td>
+              </tr>
+              
+              <tr>
+                <td colspan="2">业务发展中心CSE分工：<textarea name="other_mail" id="other_mail" rows="4" style="width:400px;"><?=$this->email['other_mail']?></textarea></td>
+              </tr>
+              
+              <tr>
+                <td align="center" colspan="2"><input type="submit"  value="编 辑" class="btnabig"/>
+                </td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      </form>
+      <!-- 结束区域-->
+</div>
+<?php
+if(isset($_SESSION['message'])){
+	echo "<script>alert('".$_SESSION['message']."');</script>";
+	unset($_SESSION['message']);
+}
+?>

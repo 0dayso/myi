@@ -1,0 +1,88 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*注册页面email自动完成*/
+.mailListBox {
+	border:1px solid #cfcfcf;
+	border-top:none;
+	background-color:#fffbfb;
+	display:none;
+	position:absolute;
+	z-index:9999;
+	float:left;
+	color:#989898;
+}
+.mailListBox ul {
+	padding:0;
+	margin:0;
+}
+.mailListBox li {
+	zoom:1;
+	overflow:hidden;
+	padding-left:10px;
+	font-family:Arial;
+	line-height:22px;
+	cursor:pointer;
+}
+.mailListBox li.hover {
+	background-color:#edeef7;
+	color:#333;
+}
+.mailListBox li.current {
+	background-color:#edeef7;
+	color:#333;
+}
+
+.registerline{border-left:380px solid #a2000b;border-right:600px solid #f00; height:3px; width:0; margin-bottom:30px; display:none}
+.regstep{overflow:hidden; width:800px; margin:0 auto 15px auto; padding-bottom:0px; position:relative; }
+em{ color:#ff0000; margin-right:5px; font-size:12px;}
+
+
+.steps {width: 980px;height: 34px;background:url(../img/step.jpg) no-repeat 0 0; margin-bottom:20px;}
+.forgotpassword .steps{ background:url(../img/forgotpasswordstep.jpg) no-repeat 0 0}
+.steps li {display: inline;float: left;width: 33%;height: 34px;line-height: 34px;text-indent: -9999em;}
+.step-1,.inquirystep .step-1,.forgotpassword .step-1{background-position: 0 0px;}
+.step-2,.inquirystep .step-2,.forgotpassword .step-2{background-position: 0 -34px;}
+.step-3,.inquirystep .step-3,.forgotpassword .step-3{background-position: 0 -68px;}
+
+
+
+.RG_mbox { width:700px; padding-bottom:20px; }
+.RG_mbox .item { width:100%; padding-top:10px; height:45px; }
+.RG_mbox .ltext { width:120px; line-height:30px; font-size:14px; color:#666; text-align:right; }
+.RG_mbox .tips,.RG_mbox .tips1 { width:305px; margin-top:-2px; display:inline-block; color:#999; margin-left:5px; }
+.RG_mbox .tips1 {margin-top:5px;}
+.RG_mbox .errorinfo { height:20px; color:#f00; display:block; line-height:20px; margin-left:5px; }
+.RG_mbox select{ margin-top:8px;*margin-top:4px;}
+.RG_mbox img{ margin:0 5px; height:30px; line-height:30px;vertical-align:bottom; margin-bottom:3px; margin-top:-1px;}
+.Lcfl {clear: left;}
+.RG_mbox .button{  color:#FFF; border:0; padding:8px 10px; font-size:14px; margin-bottom:10px;}
+.reinput,.reinputshort{ height:28px; line-height:20px; width:200px; border:1px solid #ddd;  }
+.reinputshort{ width:80px}
+/*.refresh{ display:inline-block; cursor:pointer; width:14px; height:30px; line-height:30px; vertical-align:bottom; margin-bottom:3px; margin-top:-1px;background:url(../img/refresh.gif) no-repeat 0 10px; font-size:0; text-indent:-9999px;}*/
+
+.rtip{ width:200px; border:5px solid #eee; padding:15px; margin-bottom:15px;}
+.rtip h2{ padding:5px 0 10px; font-size:16px; color:#f00; text-align:center}
+.rtip p{ font-size:14px; line-height:24px; text-indent:0; font-family:"微软雅黑"}
+
+.step2 h1{ padding:15px 10px; font-size:20px; color:#f00 }
+.step2 p{ padding:5px 10px; font-size:14px;}
+.step2 p b,.step2 p a,.step2 p span{ margin:0 3px;}
+
+
+
+.emailtipbox { position:relative; }
+.autoDiv {
+	visibility: hidden;
+	position: absolute;
+	z-index:100;
+	min-width:200px;
+	width:auto !important; 
+	_width:200px;	
+	border: 1px solid #ddd;
+	background-color: White;
+	top:32px !important;
+	left:0px !important;
+}
+.toptipemail,.divauto{ padding:2px 10px 2px 5px}
+.divauto{ cursor:pointer}

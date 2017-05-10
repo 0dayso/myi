@@ -1,0 +1,88 @@
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+    <h2>确认发货：<?=$this->sonum?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('deliveryBox');" title="关闭" class="dialogBoxClose">关闭</a> 
+    </div>
+    <div class="popup-body">
+      <!-- 需要填写的区域-->
+      <table width="550px" border="0" cellpadding="1"  class="producttable table">
+        <tr>
+         <td colspan="2" align="center">
+         <div id="message_sess_son" style="display:none" class="message_sess">
+         <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span>
+         <span id="alert_message_son"></span>
+         </div></td>
+         </tr>
+        <tr height="30px">
+          <th>快递公司</th>
+          <th><span class="title">快递单号</span></th>
+        </tr>
+        <tr align="center">
+          <td><select name="courier" id="courier" onchange="change(this)"> 
+                 <option value="">请选择快递公司</option> 
+                 <?php foreach($this->courier as $v){?>
+                 <option value="<?=$v['id']?>"><?=$v['name']?></option> 
+                 <?php }?>
+               </select></td>
+          <td><textarea name="cou_number" id="cou_number"></textarea>
+          <br/><em>注意</em>：快递单号<em>必须与回执单上的快递单号一致</em>，否则会影响物流跟踪结果</td>
+        </tr>
+      </table>
+      <table width="550px" border="0" cellpadding="1" >
+      <tr><td align="center"><div id="orderbtn"><input type="button" class="btnabig" value="确认" onclick="add()"/></div></td></tr>
+      </table>
+      
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+function change(obj){
+	if(obj.value==3){
+		$(".title").html('说明');
+		$("#cou_number").attr("value",'客户自取');
+	}else{
+		$(".title").html('快递单号');
+		$("#cou_number").attr("value",'');
+	}
+}
+function enter(evt){
+    evt=evt?evt:(window.event?window.event:null);
+    var keyCode = evt.keyCode;
+	if(keyCode==13) add();
+}
+function add()
+{
+    var courier    = document.getElementById('courier').value;
+	var cou_number  = document.getElementById('cou_number').value;
+	if(courier=='') {alert('请选择快递公司');return;}
+	if(courier!=3){
+	   if(cou_number=='') {alert('请填入快递号');return;}
+	}else{
+	   if(cou_number=='') {alert('请填写说明');return;}
+	}
+
+if(confirm('请确认您填写的信息是否正确：'+cou_number))
+{
+	var subtmp = document.getElementById("orderbtn");
+	     subtmp.innerHTML = '<input type="button" class="btnabig"  value="提交中..." />';
+	$.ajax({
+            url: '<?php echo $this->deliveryurl;?>',
+            data: {'soid':'<?=$this->soid?>','sonum':'<?=$this->sonum?>','courier':courier,'cou_number':cou_number},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  location.reload();
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			   subtmp.innerHTML = '<input type="button"  value="确认" class="btnabig"  onclick="editaction()"/>';
+			}
+	});
+}
+}
+</script>

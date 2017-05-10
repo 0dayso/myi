@@ -1,0 +1,168 @@
+<link rel="stylesheet" type="text/css" href="/css/default/directory.css"/>
+<?php 
+//一级标题
+$ftitle =  $stitle =  $ttitle =  '';
+$cname = '';
+foreach($this->first as $fvalue){
+	if($fvalue['id']==$this->subid){
+	$ftitle= '&nbsp;&nbsp;»&nbsp;&nbsp;<span><a href="/list-'.$this->subid.'.html" title="'.$fvalue['name'].'"  class="logclick" rev="prodlist_category" rel="'.$this->subid.'">'.$fvalue['name'].'</a></span>';
+	$cname = $fvalue['name'];
+	}
+}
+
+if($this->subid && $this->secid){
+	for($k=0;$k<count($this->second[$this->subid]);$k++){
+	$svalue = $this->second[$this->subid][$k];
+	if($svalue['id']==$this->secid){
+	   $stitle= '&nbsp;&nbsp;»&nbsp;&nbsp;<span><a href="/list-'.$this->subid.'-'.$this->secid.'.html" title="'.$svalue['name'].'"  class="logclick" rev="prodlist_category" rel="'.$this->secid.'">'.$svalue['name'].'</a></span>';
+	    $cname = $svalue['name'];
+	  }
+   }
+}
+if($this->secid && $this->thiid){
+	foreach($this->third[$this->secid] as $tvalue){
+	if($tvalue['id']==$this->thiid){
+		$ttitle= '&nbsp;&nbsp;»&nbsp;&nbsp;<span title="'.$tvalue['name'].'">'.$tvalue['name'].'</span>';
+		$cname = $tvalue['name'];
+	  }
+   }
+}
+//重新设置headtitle 、 description和keywords等
+$this->viewobj->headTitle(str_ireplace(array("<category_name>"),array($cname),$this->seoconfig->general->prodlist_title),'SET');
+$this->viewobj->headMeta()->setName('description',str_ireplace(array("<category_name>"),array($cname),$this->seoconfig->general->prodlist_description));
+$this->viewobj->headMeta()->setName('keywords',str_ireplace(array("<category_name>"),array($cname),$this->seoconfig->general->prodlist_keywords));
+
+?>
+<div class="w">
+    <div class="breadcrumbs">		
+    	<span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/" title="IC易站"><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/category" title="<?=$this->translate('Menu_ProductCategory')?>"><?=$this->translate('Menu_ProductCategory')?></a><?=$ftitle?><?=$stitle?> <?=$ttitle?>     
+    </div>
+</div>
+
+<div class="w clearfix ld">
+<div class="listleftmenu">
+    <div class="listleftmenu_t"><?=$ftitle?></div>
+	<div id="DoorP" class="listdoorp ">
+      <?php for($k=0;$k<count($this->second[$this->subid]);$k++){
+			$svalue = $this->second[$this->subid][$k];
+	  ?>
+      <a href="/list-<?=$this->subid?>-<?=$svalue['id']?>.html" title="<?=$svalue['name']?>" class="logclick" rev="prodlist_category" rel="<?=$svalue['id']?>">
+      <h2><?=$svalue['name']?><em class="emtriangletopgray5px "></em>
+		 <?=$this->secid==$svalue['id']?'<em class="emtrianglebottomgray5px "></em>':'<em class="emtriangletopgray5px "></em>'?>
+        <?php if($this->secid==$svalue['id'] && !empty($this->third[$svalue['id']])) echo '<em class="emwhite"></em>';?>
+      </h2></a>
+      <div class="listleftcontent <?=$this->secid!=$svalue['id']?'hide':''?>">
+            <ul>
+            	<?php foreach($this->third[$svalue['id']] as $tvalue){?>
+                <li <?=$this->thiid==$tvalue['id']?'class="on"':''?>>
+                <b class="emtriangleright5px"></b>
+                <?=$this->thiid==$tvalue['id']?'<h1>':''?>
+                <a href="/list-<?=$this->subid?>-<?=$svalue['id']?>-<?=$tvalue['id']?>.html" title="<?=$tvalue['name']?>"  class="logclick" rev="prodlist_category" rel="<?=$tvalue['id']?>"><?=$tvalue['name']?></a>
+                <?=$this->thiid==$tvalue['id']?'</h1>':''?>
+                </li>
+                <?php }?>
+            </ul>
+      </div>
+      <?php }?>
+      
+</div>
+</div>
+
+<div class="fr listright">
+	<div class="fl selh">
+    <form id="thisform"  action="" method="get">
+    <?php 
+	if($this->subid) echo '<input type="hidden" name="subid" value="'.$this->subid.'" />';
+	if($this->secid) echo '<input type="hidden" name="secid" value="'.$this->secid.'" />';
+	if($this->thiid) echo '<input type="hidden" name="thiid" value="'.$this->thiid.'" />';
+	?>
+        <select name="brand" id="brand" onchange="theform_menu()">
+           <option value="all">所有品牌</option>
+           <?php
+              foreach ($this->brand as $brand){
+			    $selected=($brand['id']==$this->brandid?'selected':'');
+				echo '<option value="'.$brand['id'].'" '.$selected.'>'.$brand['name'].'</option>';
+			  }
+	        ?>
+        </select>
+        
+        <!--<select name="stock" id="stock" style="width:80px;" onchange="theform_menu()">
+            <option value="all" <?=$this->stock=='all'?'selected':''?>>全部库存</option>
+            <option value="spot" <?=$this->stock=='spot'?'selected':''?>>现货</option>
+            <option value="order" <?=$this->stock=='order'?'selected':''?>>预订</option>
+        </select>-->
+     </form>
+    </div>
+    <table cellpadding="0" cellspacing="0" border="0" class="listtable">
+    	<tbody>
+        <tr>
+        	<th width="150px">型号</th>
+            <th width="60px">品牌</th>
+            <th width="185px">产品描述</th>
+            <th width="40px">库存</th>
+            <th width="100px">阶梯价格</th>
+            <th width="115px">操作</th>
+        </tr>
+        <?php if(empty($this->allProd)){?>
+        <tr>
+        	<td colspan="7" align="center">没有记录</td>
+        </tr>
+        
+        <?php }else{
+			foreach($this->allProd as $k=>$prod){
+			$prod = $this->fun->filterProduct($prod);
+			$break_price='';
+			$stock = 0;$show_price = 0;
+			if($prod['f_show_price_sz']){
+			    $show_price = $prod['f_show_price_sz'];
+				$stock      = $prod['f_stock_sz'];
+				$break_price = $prod['f_break_price_notitle_sz'];
+			}elseif($prod['f_show_price_hk']){
+			    $show_price = $prod['f_show_price_hk'];
+				$stock      = $prod['f_stock_hk'];
+				$break_price = $prod['f_break_price_notitle_hk'];
+			}elseif($prod['f_break_price_notitle_sz']){
+				$break_price = $prod['f_break_price_notitle_sz'];
+			}elseif($prod['f_break_price_notitle_hk']){
+				$break_price = $prod['f_break_price_notitle_hk'];
+			}
+			$bgclass='';
+			if($k%2==1) $bgclass = 'class="bgf9"';
+		?>
+        <tr <?=$bgclass?>>
+        	<td>
+            <p><a target="_blank" href="<?=$prod['f_produrl']?>" class="model logclick" title="<?=$prod['part_no']?>" rev="prodlist_part_id" rel="<?=$prod['id']?>"><?=$prod['part_no']?></a></p></td>
+            <td><?=$prod['bname']?></td>
+            <td><p title="<?=$prod['description']?>" style="word-break:break-all;"><?=$this->fun->utf_substr($prod['description'],68)?></p></td>
+            <td>
+            <?php
+                    if(($prod['f_stock_sz']+$prod['f_stock_hk'])>0){echo '<font color="#469F68">现货</font>';}
+					else {echo '<font color="#FC9C30">订货</font>';}?>
+            </td>
+            <td><div class="price_btn_table"><?=($break_price?$break_price:'--')?></div></td>
+            <td><div class="tabelbtn">
+            <?php if(!$prod['noinquiry']){?>
+                 <a href="javascript:" onclick="openInquiry('<?=$prod['id']?>')" class="abtnquestion logclick" title="询价"  rev="prodlist_part_id" rel="<?=$prod['id']?>">询价</a>
+            <?php }else{?>
+            	<a class="abtnquestion_gray ">询价</a>
+            <?php }?>
+            
+            <?php if($show_price){?><a href="javascript:" onclick="buy('<?=$prod['id']?>.')"  class="abtnbuy logclick" title="购买"  rev="prodlist_part_id" rel="<?=$prod['id']?>">购买</a>
+            <?php }else{?>
+            <a class="abtnbuy_gray ">购买</a>
+            <?php }?></div>
+            </td>
+        </tr>
+        <?php }}?>
+        </tbody>
+        </table>
+    <div class="pagination fr"><?=$this->page_bar?></div>
+</div>
+</div>
+<div class="clr"></div>
+<script type="text/javascript">
+function theform_menu()
+{
+	document.getElementById('thisform').submit();
+}
+</script>

@@ -1,0 +1,107 @@
+<div class="popup" style="width:660px;">
+<div class="popup-header">
+    <h2>修改收货地址</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+</div>
+<div class="popup-body">
+    <table cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+            <tr>
+              <td  width="80" align="right">收 货 人：</td>
+              <td><input type="text" name="shrname" id="shrname" style="width:300px" value="<?php echo $this->addarray['name'];?>" /></td>
+            </tr>
+            <tr>
+              <td  width="80" align="right">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：</td>
+              <td><span id="provinceSpan">
+                      <select id="province" name="province">
+                        <option value="">请选择省</option>
+                      </select>
+                      </span> <span id="citySpan">
+                      <select id="city" name="city">
+                        <option value="">请选择市</option>
+                      </select>
+                      </span> <span id="areaSpan" style="position: relative;">
+                      <select id="area" name="area">
+                        <option value="">请选择区</option>
+                      </select>
+                      </span></td>
+            </tr>
+            <tr>
+              <td width="80" align="right">详细地址：</td>
+              <td><input type="text" name="address" id="address"  style="width:300px" value="<?php echo $this->addarray['address'];?>" /></td>
+            </tr>
+            <tr>
+              <td width="80" align="right">公司名称：</td>
+              <td><input type="text" style="width:300px" name="companyname" id="companyname" value="<?php echo $this->addarray['companyname'];?>" /></td>
+            </tr>
+            <tr>
+              <td width="80" align="right">入仓号：</td>
+              <td><input type="text"  style="width:300px"  name="warehousing" id="warehousing" value="<?php echo $this->addarray['warehousing'];?>" /></td>
+            </tr>
+            <tr>
+              <td width="80" align="right">邮政编码：</td>
+              <td><input type="text"  style="width:300px"  name="zipcode" id="zipcode" value="<?php echo $this->addarray['zipcode'];?>" /></td>
+            </tr>
+            <tr>
+              <td width="80" align="right">手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：</td>
+              <td><input type="text"  style="width:300px" name="mobile" id="mobile" value="<?php echo $this->addarray['mobile'];?>" /></td>
+            </tr>
+            <tr>
+              <td width="80" align="right">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</td>
+              <td><input type="text"  style="width:300px"  name="tel" id="tel" value="<?php echo $this->addarray['tel'];?>" /></td>
+            </tr>
+      </tbody></table>
+    <div class="bottombutton" id="baojiabtn">
+    	<input type="button" onclick="orderaddress()" value="提 交" class="btnabig">
+    </div>
+    <div class="clear"></div>
+</div>
+</div>
+<script type="text/javascript">
+function orderaddress() 
+{
+	var shrname    = $("#shrname").val();
+	var province   = $("#province").val();
+	var city       = $("#city").val();
+	var area       = $("#area").val()
+	var address    = $("#address").val();
+	var companyname= $("#companyname").val();
+	var warehousing= $("#warehousing").val();
+	var zipcode    = $("#zipcode").val();
+	var mobile     = $("#mobile").val();
+	var tel        = $("#tel").val();
+
+    $.ajax({
+            url: '/icwebadmin/OrUnso/orderaddress',
+            data: {'id':'<?php echo $this->addarray['id'];?>','salesnumber':'<?php echo $this->addarray['salesnumber'];?>','shrname':shrname,'province':province,'city':city,'area':area,'address':address,'zipcode':zipcode,'companyname':companyname,'warehousing':warehousing,'mobile':mobile,'tel':tel},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   alert(arr.message);
+			   if(arr.code==0)
+			   {  
+			      location.reload();
+			   }
+            }
+    });
+}
+onloadadd('<?php echo $this->addarray['provinceid'];?>','<?php echo $this->addarray['cityid'];?>','<?php echo $this->addarray['areaid'];?>');
+function selectCity(){
+	var provinceid=$("#province").val();
+	$("#citySpan").load("/common/getcity?provinceid="+provinceid);
+}
+function selectArea(){
+	var cityid=$("#city").val();
+	$("#areaSpan").load("/common/getarea?cityid="+cityid);
+}
+function setArea(value){
+}
+function onloadadd(provinceid,cityid,areaid)
+{
+	$("#provinceSpan").load("/common/getprovince?provinceid="+provinceid);
+	if(provinceid && cityid)
+		$("#citySpan").load("/common/getcity?provinceid="+provinceid+"&cityid="+cityid);
+	if(cityid && areaid)
+		$("#areaSpan").load("/common/getarea?cityid="+cityid+"&areaid="+areaid);
+}
+</script>

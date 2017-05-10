@@ -1,0 +1,37 @@
+<?php echo $this->doctype();?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cn" lang="cn">
+<head>
+<?php echo $this->headMeta();?>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<?php echo $this->headTitle();?>
+<link rel="shortcut icon" href="/images/default/favicon.ico" />
+<script language="JavaScript" type="text/javascript" src="/js/jsplug/jquery.1.8.2.min.js"></script>
+<!-- <script language="JavaScript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>-->
+<script language="JavaScript" type="text/javascript" src="/js/admin/base.js"></script>
+
+<!--<script language="JavaScript" type="text/javascript" src="/js/bootstrap/bootstrap-modal.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/jsplug/validate/jquery.validate.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/jsplug/colorbox/jquery.colorbox.js"></script>-->
+
+<link href="/js/jsplug/jmpopups/style.css" media="screen" rel="stylesheet" type="text/css" />
+
+<!--<link href="/js/jsplug/colorbox/colorbox.css" media="screen" rel="stylesheet" type="text/css" />-->
+
+<link href="/css/admin/style.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/css/admin/menu.css" media="screen" rel="stylesheet" type="text/css" />
+
+<link href="/css/admin/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+
+<link href="/css/admin/adminmain.css" media="screen" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/js/jsplug/csstooltips/tooltips.css"></link>
+<!--jbox-->
+<!--<link id="skin" rel="stylesheet" href="/js/jsplug/jBox/Skins/Red/jbox.css" />-->
+
+</head>
+<body>
+<?php echo $this->render('top.phtml');?>
+<?php echo $this->render('menu.phtml');?>
+<?php echo $this->layout()->content;?>
+<?php echo $this->render('footer.phtml');?>
+</body>
+</html>

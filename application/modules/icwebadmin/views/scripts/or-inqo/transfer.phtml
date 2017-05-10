@@ -1,0 +1,88 @@
+<!--确认转账-->
+<div class="popup">
+  <div class="popup-header">
+    <h2>上传转账凭证：<?=$this->so['salesnumber'];?>
+    </h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('transferBox');location.reload();" title="关闭" class="dialogBoxClose">关闭</a> </div>
+  <div class="popup-body">
+    <table border="0" cellpadding="1">
+      <tr>
+        <td><form name="form" action=""  method="POST" enctype="multipart/form-data">
+            <dl>
+              <dt></dt>
+              <dd> <b><font color="#FF0000">* </font>转账凭证：</b> <img id="loading_ajax" src="/images/admin/ajax-loader.gif" style="display:none;">
+                <input id="fileToUpload" type="file" name="fileToUpload" onchange="return ajaxFileUpload();">
+                <span id="uploadmsg" style="color:#FF0000"></span> <br/>
+                <font color="#999999">可以上传.JPG/.GIF/.PNG 格式的图片，单个文件大小不能超过8M。</font> </dd>
+            </dl>
+            <dl>
+              <dt>&nbsp;</dt>
+              <dd> <span id="uploadimgshow">
+                <?php if(!empty($this->so['receipt']) && file_exists(UP_RECEIPT.$this->so['receipt'])){?>
+                <a href="<?=RECEIPT.$this->so['receipt']?>" target="_blank" title="查看"><img src="<?=RECEIPT.$this->so['receipt']?>" width="100%" height="200"  /></a>
+                <?php }?>
+                </span> </dd>
+            </dl>
+          </form></td>
+      </tr>
+    </table>
+  </div>
+</div>
+<script type="text/javascript" src="/js/jsplug/AjaxFileUploader/ajaxfileupload.js"></script>
+<script type="text/javascript">
+function checksub()
+{
+	var file = document.getElementById("fileToUpload").value;
+	if(file=='') {alert('请上传文件！');return;}
+	else document.form.submit();
+}
+function ajaxFileUpload()
+{    
+	document.getElementById('loading_ajax').style.display="block";
+	$.ajaxFileUpload
+	(
+		{
+				url:'/common/uplodimg',
+				secureuri:false,
+				fileElementId:'fileToUpload',
+				dataType: 'json',
+				data:{part:'<?=UP_RECEIPT?>', newname:'<?=$this->so['salesnumber'];?>'},
+				success: function (data, status)
+				{
+					document.getElementById('loading_ajax').style.display="none";
+					if(typeof(data.error) != 'undefined')
+					{
+						if(data.error != 0)
+						{
+							document.getElementById('uploadmsg').innerHTML=data.message;
+						}else
+						{
+						    var d = new Date();
+							document.getElementById('uploadmsg').innerHTML=data.message;
+							document.getElementById('uploadimgshow').innerHTML ='<a href="<?=RECEIPT?>'+data.filename+'?_'+d.toTimeString()+'" target="_blank" title="查看"><img  width="100%" height="200" src="<?=RECEIPT?>'+data.filename+'?_'+d.toTimeString()+'"/></a>';
+							document.getElementById('fileToUpload').disabled="disabled";
+							//更新
+							updatereceipt(data.filename);
+						}
+					}
+				},
+				error: function (data, status, e)
+				{
+					document.getElementById('loading_ajax').style.display="none";
+					document.getElementById('uploadmsg').innerHTML=e;
+				}
+			}
+		)
+		return false;
+}
+function updatereceipt(filename){
+	$.ajax({
+            url: '/icwebadmin/OrInqo/updatereceipt',
+            data: {'receipt':filename,ordertype:'<?=$this->ordertype?>','salesnumber':'<?=$this->so['salesnumber'];?>'},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            }
+	 });
+}
+</script>

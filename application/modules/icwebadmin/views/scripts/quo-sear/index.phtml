@@ -1,0 +1,85 @@
+<?php 
+$status = array('0'=>'<em>待通知</em>','101'=>'已通知');
+?>
+<div class="conmian">
+<h1><?php echo $this->AreaTitle;?> </h1>
+<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+
+      <!-- 需要填写的区域-->
+      <table class="table ordertable"  border="0" style=" margin-top:-1px;">
+                <thead>
+                <tr>
+                <th>编号</th>
+                <th>part_no</th>
+                <th>品牌</th>
+                <th>用户</th>
+                <th>公司名</th>
+                <th>联系人</th>
+                <th>联系方式</th>
+                <th>日期</th>
+                <th>说明</th>
+                <th>备注</th>
+                <th>通知状态</th>
+                <th>新品上线通知</th>
+                </tr>
+                </thead>
+                <tbody>
+				<?php 
+				foreach($this->serchinq as $data) : ?>
+				<tr>
+                <td><?php echo $data['id'];?></td>
+				<td><?php echo $data['part_no'];?></td>
+                <td><?php echo $data['brand'];?></td>
+                <td><?php echo $data['uname'];?></td>
+                <td><?php echo $data['companyname'];?></td>
+				<td><?php echo $data['contact_name'];?></td>
+				<td><?php echo $data['contact'];?></td>
+				<td><?php echo date('Y-m-d H:i:s',$data['created']);?></td>
+                <td><?php echo $data['explanation'];?></td>
+                <td><?php echo $data['result'];?></td>
+                <td><?php if($data['notice']) echo $status[$data['status']];else echo '不需要';?></td>
+                <td><?php if(!$data['status'] && $data['notice']){?>
+                      <a href="javascript:" onclick="edit('<?=$data['id']?>')" class="btnbuynow mb5">邮件通知</a>
+                <?php }?></td>
+				</tr>
+				<?php endforeach ; ?>
+                </tbody>
+            </table>      
+         <div class="pagination divpage" >
+            <?=$this->page_bar;?>
+        </div>      
+      <br/>
+      <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+function edit(id){
+    $.openPopupLayer({
+        name:'courierBox',
+        url:'<?=$this->editurl?>?id='+id
+    });
+}
+//释放订单
+function editaction(id){
+
+  var result =  document.getElementById('result').value;
+  var part_id =  document.getElementById('part_id').value;
+  if(part_id==''){alert('请填新上线产品ID。');document.getElementById('part_id').focus();return;}
+   var subtmp = document.getElementById("orderbtn");
+	     subtmp.innerHTML = '<input type="button" class="btnabig"  value="提交中..." />';
+	$.ajax({
+            url: '<?=$this->editurl?>',
+            data: {'id':id,'result':result,'part_id':part_id},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	alert(arr.message);
+				if(arr.code == 0) location.reload();
+				subtmp.innerHTML = '<input type="button"  class="btnabig"  value="提交" onclick="editaction(\''+id+'\')"/>';
+            }
+	});
+   
+}
+</script>

@@ -1,0 +1,65 @@
+<div class="popup" style="width:770px;">
+    <div class="popup-header">
+    <h2>审核订单 订单编号#：<?=$this->salesnumber?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a>
+     </div>
+    <div class="popup-body">
+        <!--订单详情-->
+        <div id='soinfo' style="height:900px;"><img src="/images/admin/ajax-loader.gif" /></div>
+    	<!-- end 订单详情-->
+        <div class="bottombutton">
+			<?php if($this->cansqs || $this->soinfo['sqs_code']){?>
+             <div class="passorno ">
+            <dl class="PublicDl" id="yes_release">
+                <dt>&nbsp;</dt>
+                <dd>
+                    <label><input type="checkbox" name="sqscode" id="sqscode" value="1" <?=($this->soinfo['sqs_code']?'checked="checked"':'')?> />此订单走SQS Code流程</label>
+                </dd>
+                <dd>
+                    <em>提示：订单走SQS Code流程不需要在SAP中添加客户，可以简化订单流程。</em>
+                </dd>
+            </dl>
+            </div>
+		    <?php }else{echo '<input type="hidden" name="sqscode" id="sqscode" value="" />';}?>
+            
+            <?php if($this->type==2){?>
+          <input type="button"  class="btnabig"  value="确 认 释 放" onclick="deliverymail('<?=$this->salesnumber?>')"/>
+		  <?php }else{?>
+          <input type="button"  class="btnabig"  value="确 认 释 放" onclick="mailsend('<?=$this->salesnumber?>')"/>
+          <?php }?>
+		  <?php if($this->soinfo['invoiceid']){?>发票信息有误？<a href="javascript:;" onclick="invoicebox('<?=$this->soinfo['invoiceid']?>')">点击修改</a><?php }?>
+          <!--<dl class="PublicDl" id="yes_release">
+                <dt>&nbsp;</dt>
+                <dd>
+            <label><input type="checkbox" name="line_process" id="line_process" value="1" />订单已在走 线下订单评审流程</label>
+                </dd>
+                <dd>
+                    <em>提示：选择此选项，释放订单的邮件会提示CSE，此订单已经在走订单评审流程，避免重复下单。</em>
+                </dd>
+            </dl>-->
+        </div>
+        <?php if(!$this->cansqs){?>
+        <div>
+            订单能走SQS Code流程必须满足的条件：<br/>
+            1、必须通过IC易站向PMSC报价，并且PMSC报回有效价格；<br/>
+            2、订单总金额必须小于：RMB5000，USD1000，HKD5000；<br/>
+            3、订单必须是预付全款；<br/>
+            4、购买产品数量必须小于包装数。</br>
+            (如有特殊情况需要走SQS流程，请联系IC易站工作人员)
+        </div>
+        <?php }?>
+        <div class="clear"></div>
+    </div>
+    
+</div>
+
+<script language="javascript">
+function invoicebox(invoiceid)
+{
+	 $.openPopupLayer({
+        name:'invoicebox',
+        url:'/icwebadmin/OrInqo/editinvoice/invoiceid/'+invoiceid
+    });
+}
+getinqorder('<?=$this->salesnumber?>');
+</script>

@@ -1,0 +1,173 @@
+<style type="text/css">
+.tablenew2014{border:1px #ddd solid;}
+.tablenew2014 th{ background:#006ffa; border:1px solid #fff; line-height:18px; padding:5px 0}
+.tablenew2014 tr:hover{ background:#96bfe8}
+.tablenew2014 td{ text-indent:5px;border:1px solid #ddd}
+.trbg{ background:#e1eeff}
+</style>
+<?php $dep = array('BMP'=>'BMP','BNT'=>'B&T');
+ $weekarray=array("星期日","星期一","星期二","星期三","星期四","星期五","星期六");
+?><script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+	<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?>
+    <?php if($this->orderstrend){?>
+   -> <a href="/icwebadmin/RepoUrep/export?type=<?=$this->type?>&sdata=<?=$this->sdata?>&edata=<?=$this->edata?>&ordertype=<?=$this->ordertype?>" target="_blank" title="将搜索结果导出成Excel">导出Excel</a>
+  <?php }?>
+    </h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+      <form id="myform"  class="form-search" name="myform" action="" method="get">
+      <label><input type="radio"  name="type" value="day"  <?=($this->type=='day'?'checked="checked"':'')?> >单位（日）</label>
+      <label><input type="radio"  name="type" value="week" <?=($this->type=='week'?'checked="checked"':'')?> >单位（周）</label>
+      <label><input type="radio"  name="type" value="month" <?=($this->type=='month'?'checked="checked"':'')?>>单位（月）</label>
+      
+    <label>开始时间：</label>
+    <input type="text"  style="width:80px;" name="sdata" value="<?=$this->sdata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+    <label>结束时间：</label>
+    <input type="text"  style="width:80px;" name="edata" value="<?=$this->edata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+    &nbsp;
+  <select name="ordertype" id="ordertype">
+  <option value="online" <?=$this->ordertype=='online'?'selected':''?>>在线注册用户</option>
+  <option value="outline" <?=$this->ordertype=='outline'?'selected':''?>>线下录入用户</option>
+  <option value="all" <?=$this->ordertype=='all'?'selected':''?>>全部用户</option>
+</select>
+&nbsp;
+    <input type="submit" class="btn" value="确 定"/>
+  </form>
+
+<?php if(empty($this->orderstrend)){?>
+<div style="min-width: 310px; height: 100px; margin: 0 auto; text-align:center"><h2>请选择开始日期统计！</h2></div>
+<?php }else{?>
+
+<div id="user_num" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+<div id="user_su_num" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+      <table cellspacing="0" cellpadding="0" border="1" align="center"  class="tablenew2014">
+      <tr height="20" bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;">
+      <th width="300" >日期</th>
+      <th width="200" >注册总人数</th>
+      <th width="200" >注册人数</th>
+      </tr>
+      <?php
+	   $k = $total =  0;
+	   foreach($this->orderstrend as $d=>$v){
+	   
+	   if($k%2==0) $b = 'class="trbg"';else $b='';
+	   $k++;
+
+	   $total += $v['num'];
+	   ?>
+        <tr <?=$b?>><td><?=$d?></td><font color="#FF0000"></font>
+        <td><?=$v['all']?></td>
+        <td><?=$v['num']?'<font color="#FF0000">'.$v['num'].'</font>':0?></td></tr>
+      <?php }?>
+      <tr><td colspan="2" align="center">总计：</td><td><font color="#FF0000"><?=$total?></font></td></tr>
+      </table>
+     
+      <!-- 结束区域-->
+	</div>
+
+<script src="/js/jsplug/highcharts/highcharts.js"></script>
+<script src="/js/jsplug/highcharts/modules/exporting.js"></script>
+<script type="text/javascript">
+$(function () {
+        $('#user_num').highcharts({
+            title: {
+                text: '注册总人数',
+                x: -20 //center
+            },
+            xAxis: {
+                categories: [<?php $i=1;foreach($this->orderstrend as $d=>$v){ 
+				echo '"'.$d.'"';
+				if($i<count($this->orderstrend)) echo ',';
+				$i++;}?>]
+            },
+            yAxis: {
+                title: {
+                    text: '注册总人数'
+                }
+            },
+            tooltip: {
+                valueSuffix: '  人'
+            },
+			credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: true
+            },
+			drag:{
+			    enabled: false
+			},
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true,
+                        style: {
+                            textShadow: '0 0 3px white, 0 0 3px white'
+                        }
+                    },
+                    enableMouseTracking: true
+                }
+            },
+            series: [{
+                name: '注册总人数',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$v){ 
+				echo $v['all'];if($i<count($this->orderstrend)) echo ',';
+				$i++;}?>]
+            }]
+        });
+		$('#user_su_num').highcharts({
+            title: {
+                text: '注册人数',
+                x: -20 //center
+            },
+            xAxis: {
+                categories: [<?php $i=1;foreach($this->orderstrend as $d=>$v){ 
+				echo '"'.$d.'"';
+				if($i<count($this->orderstrend)) echo ',';
+				$i++;}?>]
+            },
+            yAxis: {
+                title: {
+                    text: '注册人数'
+                }
+            },
+            tooltip: {
+                valueSuffix: '  人'
+            },
+			credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: true
+            },
+			drag:{
+			    enabled: false
+			},
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true,
+                        style: {
+                            textShadow: '0 0 3px white, 0 0 3px white'
+                        }
+                    },
+                    enableMouseTracking: true
+                }
+            },
+            series: [{
+                name: '注册人数',
+                data: [<?php $oldnum = 0;
+				$i=1;
+				foreach($this->orderstrend as $d=>$v){ 
+				echo $v['num'];if($i<count($this->orderstrend)) echo ',';
+				$i++;}?>]
+            }]
+        });
+    });
+   
+		</script>
+ <?php }?>

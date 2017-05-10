@@ -1,0 +1,197 @@
+<div class="w">
+    <div class="breadcrumbs">		
+    	<span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/" ><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/bompurchase"><?=$this->translate('Menu_Bom')?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<span>提交BOM采购</span>     
+    </div>
+</div>
+
+<div class="w lh msg24">
+<div class="<?php if(isset($_SESSION['code']) && $_SESSION['code']==1) echo "ok";?>" id="index_message">
+  <?php echo $_SESSION['message'];unset($_SESSION['code']);unset($_SESSION['message']);?>
+</div>
+<div class="bomorder">
+    <div class="rightbox fr">
+    	<div class="bomorder_tip" style=" height:100px;">
+            <h2 class="titbg1ts">BOM采购提示:<em class="emtriangleright5px"></em></h2>
+            <p>1、IC易站已经自动为你匹配出存在的型号，你可以进行询价或者购买；</p>
+            <p>2、你可以提交IC易站不存在的型号，我们会尽快为你找到你所需要的型号，当型号在IC易站上线后及时通知您。</p>
+        </div>
+    </div>
+	<div class="fl shoplist">
+        <h2>IC易站存在型号：</h2>
+		<table cellpadding="0" cellspacing="0" class="listtable">
+    	<tbody>
+        <tr>
+        	<th width="15%">型号</th>
+            <th width="7%">品牌</th>
+            <th width="10%">最少起订量</th>
+            <th width="15%">购买数量</th>
+            <th width="10%">结算货币</th>
+            <th width="15%">操作</th>
+        </tr>
+        <?php 
+		$haveshow = 0;
+        foreach($_SESSION['alldata'] as $k=>$prodall){
+			if($prodall['product']){
+			$haveshow = 1;
+			$prod = $prodall['product'];
+			$canshow = 0;
+			if($_SESSION['delivery']=='SZ'){
+				if($prod['f_show_price_sz'] && $prod['f_stock_sz']>=$prodall[2]){
+					$canshow = 1;
+				}
+			}elseif($_SESSION['delivery']=='HK'){
+			    if($prod['f_show_price_hk'] && $prod['f_stock_hk']>=$prodall[2]){
+					$canshow = 1;
+				}
+			}
+			$bgclass='';
+			if($k%2==1) $bgclass = 'class="tabletrf9"';
+		?>
+        <tr <?=$bgclass?>>
+        	<td align="left">
+            <a href="<?=$prod['f_produrl']?>" class=" fontb fontwei fontblue" title="<?=$prod['part_no']?>" target="_blank">
+			<?=str_ireplace($this->keyword,'<em>'.strtoupper($this->keyword).'</em>',$prod['part_no']);?></a>
+            </td>
+            <td><?=$prod['bname']?></td>
+            <td><?=$prod['moq']?></td>
+            <td><?=$prodall[2]?></td>
+            <td><?=$_SESSION['currency']?></td>
+            <td>
+			<div class="tabelbtn">
+            <a href="javascript:" onclick="openInquiry('<?=$prod['id']?>','<?=$prodall[2]?>','<?=$_SESSION['currency']?>')" class="abtnquestion" title="询价">询价</a>
+            <?php if($canshow){?><a href="javascript:" onclick="buy('<?=$prod['id']?>','<?=$prodall[2]?>','<?=$_SESSION['currency']?>')"  class="abtnbuy" title="购买">购买</a>
+            <?php }else{?>
+            <a class="abtnbuy_gray ">购买</a>
+            <?php }?></div>
+			</td>
+        </tr>
+        <?php }}?>
+        <?php if(!$haveshow){?>
+         <tr class="tabletrf9"><td colspan="6" align="center">暂无记录</td></tr>
+        <?php }?>
+        </tbody>
+        </table>
+       
+       <h2>IC易站不存在的型号：</h2>
+		<table cellpadding="0" cellspacing="0" class="listtable">
+    	<tbody>
+        <tr>
+        	<th width="18%">型号</th>
+            <th width="7%">品牌</th>
+            <th width="15%">购买数量</th>
+            <th width="15%" style="border-top:1px solid #ddd">目标单价</th>
+            <th width="15%" style="border-top:1px solid #ddd">要求交货日期</th>
+            <th width="18%">备注</th>
+        </tr>
+        <?php 
+		$nohaveshow = 0;
+        foreach($_SESSION['alldata'] as $k=>$prodall){
+			if(!$prodall['product'] && $prodall[1] && $prodall[0] && $prodall[2]){
+			$nohaveshow = 1;
+			$bgclass='';
+			if($k%2==1) $bgclass = 'class="tabletrf9"';
+		?>
+        <tr <?=$bgclass?>>
+        	<td align="left"><?=$prodall[1]?></td>
+            <td><?=$prodall[0]?></td>
+            <td><?=$prodall[2]?></td>
+            <td><?=$prodall[3]?></td>
+            <td><?=($prodall[4]?date('Y/m/d',strtotime($prodall[4])):'')?></td>
+            <td><?=$prodall[5]?></td>
+        </tr>
+        <?php }}?>
+           <?php if(!$nohaveshow){?>
+           <tr class="tabletrf9"><td colspan="6" align="center">暂无记录</td></tr>
+           <?php }?>
+        </tbody>
+        </table>
+        
+        
+     <?php if($nohaveshow){?>
+     <form id='bompost' name="bompost" action='/bompurchase/separateaction' method='post'>   
+       <table cellpadding="0" cellspacing="0" class="table bomtable">
+        <tr>
+            <td align="right"><font color="#FF0000">*</font>结算货币：</td>
+            <td align="left">
+       <select name="currency" id="currency" onchange="changeMbprice(this.value)">
+       <option value="RMB" <?=$_SESSION['currency']=='RMB'?"selected":""?>>人民币(RMB)</option>
+       <option value="HKD" <?=$_SESSION['currency']=='HKD'?"selected":""?>>港币(HKD)</option>
+       <option value="USD" <?=$_SESSION['currency']=='USD'?"selected":""?>>美元(USD)</option>
+       </select>
+      		</td>
+      </tr> 
+      <tr>
+        	<td width="120" align="right"><font color="#FF0000">*</font>交货地：</td>
+            <td align="left" >
+           <input type="hidden" name="delivery" id="delivery" value="<?=isset($_SESSION['delivery'])?$_SESSION['delivery']:"SZ"?>" />
+          <select name="delivery_show" id="delivery_show" disabled="disabled">
+          <option value="SZ" <?php if($_SESSION['delivery'] == 'SZ') echo "selected";?>>国内</option>
+          <option value="HK" <?php if($_SESSION['delivery'] == 'HK') echo "selected";?>>香港</option>
+          </select>
+          </td>
+        </tr>
+         <tr>
+      	<td align="right">说明：</td>
+        <td align="left">
+        <textarea name="description" id="description" rows="3" cols="40"><?=(isset($_SESSION['description'])?$_SESSION['description']:'')?></textarea>
+        <p>如有疑问请致电：<span class="fontorange">400-626-1616</span> 或发邮件：<a href="mailto:sales@ceacsz.com.cn">sales@ceacsz.com.cn</a></p>
+        </td>
+      </tr>
+        <tr>
+          <td colspan="2" align="center">
+          <div id="orderbtn"><input type="submit"  value="提 交"  class="button bigbutton"/></div>
+          </td>
+        </tr>
+    </table>
+    </form>
+       <?php }?>
+    </div>  
+</div>
+</div>
+<div class="clr"></div>
+<script src="/js/default/bompurchase.js" type="text/javascript"></script>
+<script type="text/javascript">
+//提交
+function changeaddress()
+{
+$.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			
+			   if(arr.code==0)
+			   {  
+			   	  var subtmp = document.getElementById("orderbtn");
+			     	$.ajax({
+					url: '/bompurchase/checkuser',
+						data: {},
+						type: 'post',
+						dataType: 'json',
+						success: function(arr) {
+							if(arr.code==0)
+							{
+								document.getElementById('bompost').submit();
+				                subtmp.innerHTML = '<input type="button" class="button bigbutton" value="提交中..." disabled="disabled" style="cursor:default"/>';
+							}else if(arr.code==400)
+							{
+								 $.openPopupLayer({
+								 name: "companyinfoBox",
+								 url: "/center/companyinfo"
+								 });
+							}
+						}
+				    });
+			   }else if(arr.code==100){
+			   	 $.openPopupLayer({
+		             name: "loginBox",
+		             target: "login_box"
+	              });
+			   }else if(arr.code==200){
+			   	   window.location.href ="/user/verification";
+			   }
+            }
+    });	
+}
+</script>

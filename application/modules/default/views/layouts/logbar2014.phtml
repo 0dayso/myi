@@ -1,0 +1,169 @@
+ <style type="text/css">
+  #searchTab li:hover{ background:#eee;}
+  </style>
+
+<script language="javascript">
+$(function(){
+     var searchdiv = $("#searchTab");
+     //搜索类型
+        $(".searchMenu").hover(function(){
+			searchdiv.css("display","block");
+        },function(){
+		    searchdiv.css("display","none");
+        });	
+	  //点击选择
+	  var searchli = $("#searchTab li");
+	  searchli.click(function(){
+	     $("#st").val($(this).attr("id"));
+		 $("#searchSelected").html($(this).html());
+		 searchdiv.css("display","none");
+		 $("#searchTab li").attr("class", "");
+		 $(this).attr("class", "selected");
+      });	
+})
+</script>
+<div class="w" id="header"  style="z-index:102">
+    
+    <?php if(isset($_SESSION['change_logo']) && $_SESSION['change_logo']){ 
+        echo $_SESSION['change_logo'];
+        unset($_SESSION['change_logo']);}else{?>
+  <div id="logo" ><a href="/" hidefocus="true"><img src="/images/default/logo.jpg" title="IC Easy - IC采购，从此Easy !" alt="IC易站"></a></div>
+  <?php }?>
+    
+    <form action="/search" id="searchForm" >
+  <div class="searchbox">
+    <div id="searchboxtmp" class="searchTxt" onmouseover="this.className='searchTxtHover';" onmouseout="this.className='searchTxt';">
+      <div class="searchMenu iconA">
+        <div class="searchSelected icon_t"><span id="searchSelected">
+		<?php if($this->st=='searchmodel') echo '型号';
+		else if($this->st=='searchsolution') echo '方案';
+		else if($this->st=='searchnews') echo '资讯';
+		else if($this->st=='searchwebinar') echo '研讨会';
+		else if($this->st=='searchcode') echo '代码库';
+		else echo '全站';?></span><i style="margin-left:5px;"><em></em><span></span></i></div>
+        <div class="searchTab" id="searchTab" style="z-index:1000">
+          <ul>
+            <li <?php if(!$this->st || $this->st=='searchall') echo 'class="selected"';?>id="searchall">全站</li>
+            <li <?=($this->st=='searchmodel'?'class="selected"':'')?> id="searchmodel">型号</li>
+            <li <?=($this->st=='searchsolution'?'class="selected"':'')?> id="searchsolution">方案</li>
+            <li <?=($this->st=='searchnews'?'class="selected"':'')?> id="searchnews">资讯</li>
+            <li <?=($this->st=='searchwebinar'?'class="selected"':'')?> id="searchwebinar">研讨会</li>
+            <li <?=($this->st=='searchcode'?'class="selected"':'')?> id="searchcode">代码库</li>
+            <li id="searchall" style="display:none">全站</li>
+          </ul>
+        </div>
+      </div>
+      <input type="text" name="keyword" id="keyword" class="searchtext" value="<?=$this->keyword==''?'请输入搜索内容':$this->keyword;?>" onfocus="inputFocus($(this),'请输入搜索内容');" onblur="inputBlur($(this),'请输入搜索内容')" onkeydown="enter(event)" onclick="$('.ac_results').css('display','block');">
+       <input type="hidden" name="st" id="st" value="<?=$this->st?$this->st:'searchall'?>" />
+      <a href="#"><span class="searchicon"></span></a> </div>
+    <div class="searchBtn">
+      <input type="button" value="搜索" class="searchbottom" onclick="searchaction()"/>
+    </div>
+    
+    <!--促销-->
+     <?php
+		//滚动图片
+	    $hpModer = new Default_Model_DbTable_HomePhoto();
+	    $topimageArr = $hpModer->getAllByWhere("status='1' AND type='topinput'",array("displayorder ASC","id DESC"));
+		if(!empty($topimageArr[0])){
+		$url_target = '_self';
+		if($topimageArr[0]['url_target']==2) $url_target = '_blank';
+		?>
+    <div style="position:absolute; top:-25px; left:0px; line-height:26px; vertical-align:middle;z-index:105; font-size:15px; font-weight:bold; ">
+    <a href="<?=$topimageArr[0]['url']?>" style=" color:#ff7600;" target="<?=$url_target?>">
+    <span style="margin-right:5px"><?=$topimageArr[0]['title']?></span><img src="<?=$topimageArr[0]['image']?>" /></a></div>
+    <?php }?>
+  </div>
+  </form>
+      
+	<div class="headbtn2013 ">
+    	<dl class="myself2013 iconA "><s></s>	
+            <dt class="icon_t myself2013dt userinfo_load_menu">
+              <span class="icon"></span>
+              <a href="/center" target="_top" class="name">&nbsp;</a><i><em></em><span></span></i>
+            </dt>
+            <dd>
+            <div class="hoverbox2013 boxshadow" >
+            	<div class="menu-bd-name menu-bd-con" >
+                    <div id="userinfo_drowm_menu"><img src="/images/admin/ajax-loader.gif" /> 加载中...</div>
+                    <div class="clr"></div>
+                </div>
+                
+            </div>
+            </dd>
+          </dl>
+          <dl class="buybox2013 iconA"><s></s>	
+            <dt class="icon_t buybox2013dt cartdropdown_hover">
+              <span class="icon"></span>
+              <a href="/cart">去购物车结算</a><i><em></em><span></span></i>
+              <div class="bubble2013 sleter"><b></b><span class="cartnumber"><?php if(!isset($_SESSION['cartnumber'])) echo 0;else echo $_SESSION['cartnumber'];?></span></div>
+            </dt>
+            <dd>
+            	<div id="cartdropdown">
+                <div class="hoverbox2013_tip boxshadow "><img src="/images/admin/ajax-loader.gif" /> 加载中...</div>
+                </div>
+            </dd>
+          </dl>
+          <dl class="xunbox2013 iconA"><s></s>	
+            <dt class="icon_t xunbox2013dt inquirydropdown_hover">
+              <span class="icon"></span>
+              <a href="/inquiry">提交询价篮</a><i><em></em><span></span></i>
+              <div class="bubble2013 sleter"><b></b><span class="inquirynumber"><?php if(!isset($_SESSION['inquirynumber'])) echo 0;else echo $_SESSION['inquirynumber'];?></span></div>
+            </dt>
+            <dd>
+            <div id="inquirydropdown">
+                <div class="hoverbox2013_tip boxshadow "><img src="/images/admin/ajax-loader.gif" /> 加载中...</div>
+                </div>
+            </dd>
+          </dl>
+          
+		 <div class="clr"></div>
+        
+    </div>
+    <!--活动推广-->
+    <!--<div style="position:absolute; top:45px; left:360px; line-height:26px; vertical-align:middle;z-index:105; font-size:14px; font-weight:bold; display:<?php if(isset($index) && $index=='smallb') echo 'none';else echo 'block';?>;"><a href="/event/201302211" target="_blank" style=" color:#ff7600;" alt="飞思卡尔MCU创意大奖赛" >飞思卡尔MCU创意大奖赛<img src="/images/default/hot.gif" style="margin-left:2px; margin-top:-3px"/></a></div>-->
+</div>
+<script src="/js/jsplug/persontooltip/popup_cart.js" type="text/javascript"></script>
+<script language="javascript">
+function enter(evt){
+    evt=evt?evt:(window.event?window.event:null);
+    var keyCode = evt.keyCode;
+	if(keyCode==13) searchaction();
+}
+function searchaction(){
+	var keywordobj = document.getElementById('keyword');
+	var keyword = keywordobj.value.replace(/[ ]/g,"");
+	if(keyword=='' || keyword=='请输入搜索内容') {keywordobj.value='';keywordobj.focus();return;}
+	else document.getElementById('searchForm').submit();
+}
+	/*$(document).ready(function() {
+			$("#keyword").autocomplete("/search/getajaxtag",
+			{
+				delay:5,
+            	minChars:1,
+            	matchSubset:1,
+            	matchContains:1,
+            	cacheLength:10,
+            	onItemSelect:selectItem,
+            	onFindValue:findValue,
+            	formatItem:formatItem,
+            	autoFill:false,
+				width:450
+        	}
+    		);
+			});
+			function findValue(li) {
+    			if( li == null ) return alert("No match!");
+				if( !!li.extra ) var sValue = li.extra[0];
+				else var sValue = li.selectValue;
+				}
+			function selectItem(li) { findValue(li);}
+			function formatItem(row) { return row[0];//return row[0] + " (id: " + row[1] + ")"//如果有其他参数调用row[1]，对应输出格式Sparta|896
+			}
+			function lookupAjax(){
+			var oSuggest = $("#keyword")[0].autocompleter;
+			oSuggest.findValue();
+			return false;
+			}*/
+</script>
+<!--end topmenu-->

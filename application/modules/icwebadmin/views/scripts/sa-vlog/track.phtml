@@ -1,0 +1,74 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 追踪</h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  <div class="fr u_right">
+    <div class="tab_con mb10">
+      <table border="0" class="producttable table">
+        <thead>
+          <tr>
+          	<th width="60" <?=$this->valuetype=='session_id'?' style="color:#FF6600"':''?>>session_id</th>
+            <th width="100" <?=$this->valuetype=='uid'?' style="color:#FF6600"':''?>>用户</th>
+            <th width="80" <?=$this->valuetype=='ip'?' style="color:#FF6600"':''?>>IP</th>
+            <th width="80" <?=$this->valuetype=='r'?' style="color:#FF6600"':''?>>referrer</th>
+            <th width="80" <?=$this->valuetype=='page'?' style="color:#FF6600"':''?>>page</th>
+            <th width="80" <?=$this->valuetype=='href'?' style="color:#FF6600"':''?>>href</th>
+            <th width="60" <?=$this->valuetype=='agent'?' style="color:#FF6600"':''?>>agent</th>
+            <th width="60" <?=$this->valuetype=='text'?' style="color:#FF6600"':''?>>text</th>
+            <th width="50" <?=$this->valuetype=='title'?' style="color:#FF6600"':''?>>title</th>
+            <th width="100" <?=$this->valuetype=='rev'?' style="color:#FF6600"':''?>>rev</th>
+            <th width="100" <?=$this->valuetype=='rel'?' style="color:#FF6600"':''?>>rel</th>
+            <th width="100" <?=$this->valuetype=='created'?' style="color:#FF6600"':''?>>创建时间</th>
+          </tr>
+        </thead>
+        <tbody>
+         	<?php 
+				foreach($this->alllogs as $alllogs) : ?>
+				<tr>
+                <td><span title="<?=$alllogs['session_id']?>"><?=$this->fun->utf_substr($alllogs['session_id'],13)?></span>
+                <?php if(!in_array('session_id',$this->valuetype_array)){?><a href="<?=$this->indexurl?>/track?valuetype=session_id||<?=$this->valuetype?>&value=<?=$alllogs['session_id'].'||'.$this->value?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                <td><a href="javascript:;" onclick="viewUser('<?=$alllogs['uid']?>')" title="查看详细资料" ><?=($alllogs['companyname']?$alllogs['companyname']:$alllogs['uname'])?></a> 
+				<?php if(!in_array('uid',$this->valuetype_array)){?><a href="<?=$this->indexurl?>/track?valuetype=uid||<?=$this->valuetype?>&value=<?=$alllogs['uid'].'||'.$this->value?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+				<td><?=$alllogs['ip']?>
+                <?php if(!in_array('ip',$this->valuetype_array)){?><a href="<?=$this->indexurl?>/track?valuetype=ip||<?=$this->valuetype?>&value=<?=$alllogs['ip'].'||'.$this->value?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+				<td><span title="<?=$alllogs['r']?>"><?=$this->fun->utf_substr($alllogs['r'],20)?></span>
+                <?php if(!in_array('r',$this->valuetype_array)){?><a href="<?=$this->indexurl?>/track?valuetype=r||<?=$this->valuetype?>&value=<?=$alllogs['r'].'||'.$this->value?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+				<td><span title="<?=$alllogs['page']?>"><?=$this->fun->utf_substr($alllogs['page'],20)?></span>
+                <?php if(!in_array('page',$this->valuetype_array)){?><a href="<?=$this->indexurl?>/track?valuetype=page||<?=$this->valuetype?>&value=<?=$alllogs['page'].'||'.$this->value?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                <td><span title="<?=$alllogs['href']?>"><?=$this->fun->utf_substr($alllogs['href'],20)?></span>
+                <?php if(!in_array('href',$this->valuetype_array)){?><a href="<?=$this->indexurl?>/track?valuetype=href||<?=$this->valuetype?>&value=<?=$alllogs['href'].'||'.$this->value?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                <td><span title="<?=$alllogs['agent']?>"><?=$this->fun->utf_substr($alllogs['agent'],10)?></span>
+                <?php if(!in_array('agent',$this->valuetype_array)){?><a href="<?=$this->indexurl?>/track?valuetype=agent||<?=$this->valuetype?>&value=<?=$alllogs['agent'].'||'.$this->value?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+				<td><?=$alllogs['text']?>
+                <?php if(!in_array('text',$this->valuetype_array)){?><a href="<?=$this->indexurl?>/track?valuetype=text||<?=$this->valuetype?>&value=<?=$alllogs['text'].'||'.$this->value?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+				<td><?=$alllogs['title'];?>
+                <?php if(!in_array('title',$this->valuetype_array)){?><a href="<?=$this->indexurl?>/track?valuetype=title||<?=$this->valuetype?>&value=<?=$alllogs['title'].'||'.$this->value?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                <td><?=$alllogs['rev'];?> 
+				<?php if(!in_array('rev',$this->valuetype_array)){?><a href="<?=$this->indexurl?>/track?valuetype=rev||<?=$this->valuetype?>&value=<?=$alllogs['rev'].'||'.$this->value?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+                <td><?=$alllogs['rel'];?> 
+				<?php if(!in_array('rel',$this->valuetype_array)){?><a href="<?=$this->indexurl?>/track?valuetype=rel||<?=$this->valuetype?>&value=<?=$alllogs['rel'].'||'.$this->value?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+                <td><?=date('Y/m/d H:i:s',$alllogs['created']);?>
+                <?php if(!in_array('created',$this->valuetype_array)){?><a href="<?=$this->indexurl?>/track?valuetype=created||<?=$this->valuetype?>&value=<?=$alllogs['created'].'||'.$this->value?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪当天"/></a><?php }?>
+                </td>
+				</tr>
+				<?php endforeach ; ?>
+        </tbody>
+      </table>
+      <div class="pagination divpage">
+        <?=$this->page_bar?>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <!-- 结束区域-->
+</div>

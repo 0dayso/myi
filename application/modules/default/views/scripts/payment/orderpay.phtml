@@ -1,0 +1,78 @@
+<link rel="stylesheet" type="text/css" href="/css/default/buyprocess.css" />
+<div id="header" class="w">
+  <div id="logo"><a hidefocus="true" href="/"><img alt="IC易站" src="/images/default/logo.jpg"></a></div>
+  <h1>在线支付订单</h1>
+</div>
+<div class="w clearfix ">
+     
+         <div class="col_main">  
+         	 
+            <div class="Order_details ">
+            	<table cellpadding="0" cellspacing="0" class="tableorder table">
+                    <thead>
+                        <tr>
+                            <th>订单号</th>
+                            <th>需支付金额</th>
+                            <th>收货人信息</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                            <a href="/<?=$this->orderarr['so_type']==110?'inquiryorder':'order'?>/view?salesnumber=<?=$this->orderarr['salesnumber']?>" title="查看订单详细" target="_blank">
+		  <?php echo $this->orderarr['salesnumber'];?></a></td>
+                            <td class="fontred">￥<?php echo number_format($this->orderarr['total'],DECIMAL);?></td>
+                            <td><?php echo $this->orderarr['name'];?>&nbsp;&nbsp;&nbsp;&nbsp; <?php echo $this->orderarr['province'].$this->orderarr['city'].$this->orderarr['area'].$this->orderarr['address'];?>&nbsp;&nbsp;&nbsp;&nbsp; <?php echo $this->orderarr['mobile']."  ".$this->orderarr['tel'];?></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <form action="/payment/payaction" method="post" target="_blank">
+      <input type="hidden" name="salesnumber" value="<?php echo $this->orderarr['salesnumber'];?>">
+      <input type="hidden" name="productname" value="IC易站">
+      <input type="hidden" name="paynumber" value="<?php echo $this->orderarr['total'];?>">
+      <input type="hidden" name="remarkexplain" value="付款">
+    			<div class="paymentnow">
+                	<h3>网银支付</h3>
+                    <ul class="bank-list">
+                        <li><input type="radio" name="paytype" id="1" value="ICBCB2C"/><label for="1"><span class="icon ICBC"></span></label></li>
+                <li><input type="radio" name="paytype" id="2" value="CMB"/><label for="2"><span class="icon CMB"></span></label></li>
+                <li><input type="radio" name="paytype" id="3" value="CCB"/><label for="3"><span class="icon CCB"></span></label></li>
+                <li><input type="radio" name="paytype" id="4" value="BOCB2C"><label for="4"><span class="icon BOC"></span></label></li>
+                <li><input type="radio" name="paytype" id="5" value="ABC"/><label for="5"><span class="icon ABC"></span></label></li>
+                <li><input type="radio" name="paytype" id="6" value="COMM"/><label for="6"><span class="icon COMM"></span></label></li>
+                <li><input type="radio" name="paytype" id="7" value="PSBC-DEBIT"/><label for="7"><span class="icon PSBC"></span></label></li>
+                <li><input type="radio" name="paytype" id="8" value="CEBBANK"/><label for="8"><span class="icon CEB"></span></label></li>
+                <li><input type="radio" name="paytype" id="9" value="SPDB"/><label for="9"><span class="icon SPDB"></span></label></li>
+                <li><input type="radio" name="paytype" id="10" value="GDB"><label for="10"><span class="icon GDB"></span></label></li>
+                <li><input type="radio" name="paytype" id="11" value="CITIC"/><label for="11"><span class="icon CITIC"></span></label></li>
+                <li><input type="radio" name="paytype" id="12" value="CIB"/><label for="12"><span class="icon CIB"></span></label></li>
+                <li><input type="radio" name="paytype" id="13" value="SDB"><label for="13"><span class="icon SDB"></span></label></li>
+                <li><input type="radio" name="paytype" id="14" value="CMBC"/><label for="14"><span class="icon CMBC"></span></label></li>
+                <li><input type="radio" name="paytype" id="15" value="BJBANK"/><label for="15"><span class="icon BJBANK"></span></label></li>
+                <li><input type="radio" name="paytype" id="16" value="HZCBB2C"/><label for="16"><span class="icon HZCB"></span></label></li>
+                <li><input type="radio" name="paytype" id="17" value="SHBANK"/><label for="17"><span class="icon SHBANK"></span></label></li>
+                <li><input type="radio" name="paytype" id="18" value="BJRCB"/><label for="18"><span class="icon BJRCB"></span></label></li>
+                <li><input type="radio" name="paytype" id="19" value="SPABANK"/><label for="19"><span class="icon SPABANK"></span></label></li>
+                <li><input type="radio" name="paytype" id="20" value="FDB"/><label for="20"><span class="icon FDB"></span></label></li>
+                <li><input type="radio" name="paytype" id="21" value="WZCBB2C-DEBIT"><label for="21"><span class="icon WZCB"></span></label></li>
+                <li><input type="radio" name="paytype" id="22" value="NBBANK "><label for="22"><span class="icon NBBANK"></span></label></li> 
+                <li><input type="radio" name="paytype" id="23" value="ICBCBTB"/><label for="23"><span class="icon ICBCBTB"></span></label></li>
+                <li><input type="radio" name="paytype" id="24" value="CCBBTB"/><label for="24"><span class="icon CCBBTB"></span></label></li>
+                <li><input type="radio" name="paytype" id="25" value="SPDBB2B"/><label for="25"><span class="icon SPDBBTB"></span></label></li>
+                <li><input type="radio" name="paytype" id="26" value="ABCBTB"/><label for="26"><span class="icon ABCBTB"></span></label></li>
+                    </ul>
+            		<h3>第三方支付平台</h3>
+                    <div class="thirdpayment">
+                    	 <input name="paytype" id="alipay" type="radio" value="alipay" checked="checked"/>
+             			<label for="alipay"><img src="/css/img/alipay.gif"></label>
+                    </div>
+                    <div class="paymentbtn"><input type="submit"  value="确认，去支付"  class="button" onclick="subform()"/></div>
+                </div>     
+            </div>
+        </div>
+</div>
+<script type="text/javascript">
+function subform(){
+   window.location.href='/payment/orderpayshow?salesnumber=<?php echo $this->orderarr['salesnumber'];?>';
+}
+</script>

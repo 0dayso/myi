@@ -1,0 +1,59 @@
+<style>
+.info{ margin-left:10px;}
+</style>
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+    <h2>处理订单：<?=$this->so['salesnumber']?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('deliverychangeBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body" style="width:550px;">
+     <!-- 需要填写的区域-->
+      <table width="90%" border="0" cellpadding="0">
+         <tr height="30px">
+          <td align="right" width="225">原交货日期：</td>
+          <td><?=date('Y-m-d',$this->so['delivery_time'])?></td>
+        </tr>
+        <tr height="30px">
+          <td align="right">申请变更的交货日期：</td>
+          <td><?=date('Y-m-d',$this->so['delivery_change_date'])?></td>
+        </tr>
+        <tr height="30px"><td colspan="2" align="center"><input type="radio" name="status" id="status_yes" value="201"/>
+      <label for="status_yes" style="color:#339900"><b>接受</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="radio" name="status" id="status_no" value="301"/><label for="status_no" style="color:#CC3333"><b>拒绝</b></label></td></tr>
+        <tr height="30px">
+          <td align="center" colspan="2"><div id="orderbtn"><input type="button"  class="btnabig"  value="提 交" onclick="changeaction()"/></div>
+          </td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function changeaction() { 
+       var statusobj = document.getElementsByName('status');
+	   var status='';
+	   for(i=0;i<statusobj.length;i++){
+	   if(statusobj[i].checked){
+	       status = statusobj[i].value;
+	       break;
+	     }
+	   }
+	   if(status==''){alert('请选择审批情况');return;}
+	   var subtmp = document.getElementById("orderbtn");
+	     subtmp.innerHTML = '<input type="button"  value="提交中..." />';
+	   $.ajax({
+		url: '/icwebadmin/OrInqo/deliverychange',
+		data: {'salesnumber':'<?=$this->so['salesnumber']?>','delivery_time':'<?=$this->so['delivery_time']?>','delivery_change_date':'<?=$this->so['delivery_change_date']?>','status':status},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0){
+				 location.reload();
+            }
+			 subtmp.innerHTML = '<input type="button"  value="提 交" onclick="changeaction()"/>';
+		}
+		});
+}
+</script>

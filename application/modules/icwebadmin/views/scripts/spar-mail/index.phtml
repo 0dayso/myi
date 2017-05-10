@@ -1,0 +1,61 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  <table class="table ordertable" border="0" cellpadding="1">
+    <tr>
+      <th>Type</th>
+      <th>标题</th>
+      <th>客户邮件</th>
+      <th>To</th>
+      <th>Cc</th>
+      <th>Bcc</th>
+      <th>To Staff</th>
+      <th>Cc Staff</th>
+      <th>Bcc Staff</th>
+      <th>cc给负责销售</th>
+      <th>CSE分工</th>
+      <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID))
+					echo '<th></th>';
+				?>
+    </tr>
+    <?php
+			  	  if(!empty($this->allemail)){
+                	 foreach ($this->allemail as $k=>$data){
+						$type     = $data['type'];
+						$id = $data['id'];
+						$title = $data['title'];
+						$to = $data['to'];
+						$cc = $data['cc'];
+						$bcc = $data['bcc'];
+						$to_staffid = $data['to_staffid'];
+						$cc_staffid = $data['cc_staffid'];
+						$bcc_staffid = $data['bcc_staffid'];
+						$touser = '<font color="#FF0000">否</font>';
+						if($data['to_user']) $touser = '<font color="#009900">是</font>';
+						echo "<tr>";
+						echo "<td>".$type."</td>";
+						echo "<td>".$title."</td>";
+						echo "<td align=\"center\">".$touser."</td>";
+						echo "<td>".strtr($to,array('|'=>'<br/>'))."</td>";
+						echo "<td>".strtr($cc,array('|'=>'<br/>'))."</td>";
+						echo "<td>".strtr($bcc,array('|'=>'<br/>'))."</td>";
+						echo "<td>".strtr($to_staffid,array('|'=>'<br/>'))."</td>";
+						echo "<td>".strtr($cc_staffid,array('|'=>'<br/>'))."</td>";
+						echo "<td>".strtr($bcc_staffid,array('|'=>'<br/>'))."</td>";
+						echo "<td>".($data['bcc_sell']?'<font color="#009900">是</font>':'<font color="#FF0000">否</font>')."</td>";									  						echo "<td><a title='".$data['other_mail']."'>".$this->fun->utf_substr($data['other_mail'],20)."</a></td>";
+						if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){								
+						echo "<td align=\"center\"><a href=\"/icwebadmin/SparMail/edit?id={$id}\">编辑</a></td>";
+						}
+						
+					    echo "</tr>";
+				    }
+				   }
+	            ?>
+  </table>
+  <br/>
+  <!-- 结束区域-->
+</div>

@@ -1,0 +1,31 @@
+<div id="header" class="w">
+    <div id="logo"><a hidefocus="true" href="/"><img alt="IC易站" src="/images/default/logo.jpg"></a></div>
+    <h1>会员注册</h1>
+</div>
+
+<link href="/css/default/register.css" media="screen" rel="stylesheet" type="text/css" />
+<!--registerted-->
+<div class="w register">
+	<div class="registerline"></div>
+    <div class="steps step-3">
+        <ol>
+            <li>填写注册信息</li>
+            <li>验证邮箱</li>
+            <li>注册成功</li>
+        </ol>
+    </div>
+ 
+    <div class="RG_mbox fl lh">
+        <div class="fl step2">
+            <h1>恭喜您已验证邮箱，完成全部注册！</h1>
+            <p>您今后可使用
+           <span class="fontred"><?php echo $_SESSION['userInfo']['unameSession'];?></span>或<span class="fontred"><?php echo $_SESSION['userInfo']['emailSession'];?></span>登录IC易站。</p>
+            <p>马上进行一站式IC采购吧！</p>
+        	<p><input type="button" class="button" onclick="window.location.href='/'" value="现在就去采购"></p>
+        </div>      	
+    </div>
+	<div class="rtip fr">
+    	<h2>IC易站欢迎您！</h2>
+        <p>IC易站 —— 一站式的电子元器件电子商务交易平台！ 全程设计链、供应链支持，为您提供产品、技术、服务、知识等专业服务！</p>
+    </div>
+</div>

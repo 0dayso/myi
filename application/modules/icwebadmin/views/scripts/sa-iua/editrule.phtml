@@ -1,0 +1,150 @@
+<?php
+if(!empty($this->StaffInfo["staff_area_rule"]) && !empty($this->StaffInfo["right_rule"]))
+{
+	$Staff_Area_Rule_Arr=explode (",", $this->StaffInfo['staff_area_rule']);
+	$Right_Rule_Arr     =explode (",", $this->StaffInfo['right_rule']);
+	for($i=0;$i<count($Staff_Area_Rule_Arr);$i++){
+  		 $Right_Rule_temp[$Staff_Area_Rule_Arr[$i]] = $Right_Rule_Arr[$i];
+	}
+}
+?>
+<div id="myHiddenDiv">
+   <div class="popup" style="width:800px">
+    <div class="popup-header">
+       <h2>编辑用户权限</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('editBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+     <div class="popup-body">
+<table width="700" bgcolor="#FFFFCC" border="0">
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="right" rowspan="6" width="200px"><img src="/upload/admin/head/<?php echo $this->StaffInfo['head']==''?'nohead.jpg':$this->StaffInfo['head']?>" width="145px" height="180px" title="<?php echo $this->StaffInfo['lastname']?><?php echo $this->StaffInfo['firstname']?>"/></td>
+    <td align="right" width="80px" height="25px"><font color="#666600"><b>用户名 : </b></font></td>
+    <td align="left" colspan="2" width="260"><?php echo $this->StaffInfo['staff_id']?></td>
+  </tr>
+  <tr>
+    <td align="right" height="25px"><font color="#666600"><b> 姓名 : </b></font></td>
+    <td align="left" colspan="2"><?php echo $this->StaffInfo['lastname']?><?php echo $this->StaffInfo['firstname']?></td>
+  </tr>
+  <tr>
+    <td   align="right" height="25px"><font color="#666600"><b>邮箱 : </b></font></td>
+    <td colspan="2"  align="left"><?php echo $this->StaffInfo['email']?></td>
+  </tr>
+  <tr>
+    <td   align="right" height="25px"><font color="#666600"><b>部门 : </b></font></td>
+    <td colspan="2"  align="left"><?php echo $this->StaffInfo['department_id']." - ".$this->StaffInfo['department']?></td>
+  </tr>
+  <tr>
+    <td align="right" height="25px"><font color="#666600"><b>级别 : </b></font></td>
+    <td colspan="2" align="left"><?php echo $this->StaffInfo['level_id']." - ".$this->StaffInfo['level']?></td>
+  </tr>
+  <tr>
+    <td   align="right" height="25px"><font color="#666600"><b>状态 : </b></font></td>
+    <td colspan="2" align="left"><?php if($this->StaffInfo['status']){echo '<font color="#339900"><b>&nbsp;ON</b></font>';}
+      
+  if(!$this->StaffInfo['status']){echo '<font color="#CC3333"><b>OFF</b></font>';}?>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td   align="right" valign="top" bgcolor="#FFF4DF"><font color="#666600"><b>区域权限 : </b></font></td>
+    <td valign="top" bgcolor="#FFF4DF" colspan="3"><table width="100%" height="1" border="0" cellpadding="0" cellspacing="1">
+        <?php 
+		   $allArea = array();
+			for($a=0;$a<count($this->Section);$a++){
+				   $section_temp    = $this->Section[$a];
+				   $section_id 		= $section_temp["section_area_id"];
+				   $section_title   = $section_id." - ".$section_temp["section_area_des"];
+				   $area_temp  = $this->Area[$section_id]; 
+				    
+			if(is_array($area_temp)){
+		?>
+        <tr>
+          <td colspan="4">&nbsp;</td>
+        </tr>
+        <tr>
+          <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="430" height="20" align="left" bgcolor="#D3CDFA"><b> <?php echo $section_title;?></b></td>
+              </tr>
+              <tr>
+                <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0" height="1">
+                    <tr>
+                      <td valign="top" width="100%"><b> </b>
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <?php
+						for($i=0;$i<count($area_temp);$i++){
+						 $data	= $area_temp[$i];
+						 $allArea[]= $data["staff_area_id"];
+						 if($i%2==0) $bg="#E8E8E8";
+						 else $bg="#F3F3F3";
+						 
+						 $checkA=$checkW=$checkR=$checkB="";
+						 if(isset($Right_Rule_temp[$data["staff_area_id"]]))
+						 {
+						 	if($Right_Rule_temp[$data["staff_area_id"]]=='A') $checkA="checked";
+						 	if($Right_Rule_temp[$data["staff_area_id"]]=='W') $checkW="checked";
+							if($Right_Rule_temp[$data["staff_area_id"]]=='R') $checkR="checked";
+						 }else $checkB="checked";
+							?>
+                          <tr height="20px"  align="left">
+                            <td  width="31%" bgcolor=<?php echo $bg?>><?php echo $data["staff_area_id"]." - ".$data["staff_area_des"]?></td>
+                            <td width="52%" valign="top">Admin
+                              <input name="Right_Rule<?=$data["staff_area_id"]?>" type="radio" value="A" <?=$checkA?> />
+                              | Write
+                              <input name="Right_Rule<?=$data["staff_area_id"]?>" type="radio" value="W" <?=$checkW?> />
+                              | Read
+                              <input name="Right_Rule<?=$data["staff_area_id"]?>" type="radio" value="R" <?=$checkR?> ?>
+                              | Blocked
+                              <input name="Right_Rule<?=$data["staff_area_id"]?>" type="radio" value="B"  <?=$checkB?>>
+                            </td>
+                          </tr>
+                          <?php }//End for?>
+                        </table></td>
+                    </tr>
+                  </table></td>
+              </tr>
+            </table></td>
+        </tr>
+        <?php }//End if
+          } ?>
+      </table></td>
+  </tr>
+  <tr>
+    <td colspan="4" align="center"><input type="button"  value="保存" onclick="editaction()"/></td>
+  </tr>
+</table>
+</div></div></div>
+<script language="javascript" type="text/javascript">
+function editaction()
+{
+   var allrule = Object();
+   <?php for($i=0;$i<count($allArea);$i++){?>
+    var ruleobj = document.getElementsByName("Right_Rule<?php echo $allArea[$i];?>");
+	for(i=0;i<ruleobj.length;i++){
+	  if(ruleobj[i].checked){
+          allrule['<?php echo $allArea[$i];?>'] = ruleobj[i].value ;
+	  }
+	}
+	<?php }?>
+	$.ajax({
+            url: '<?php echo $this->editruleurl;?>',
+            data: {'staffid':'<?php echo $this->Staff_ID;?>','Right_Rule':allrule},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  $.closePopupLayer('editBox');
+				  showMainInfo('<?php echo $this->Staff_ID;?>');
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			}
+	});
+}
+</script>

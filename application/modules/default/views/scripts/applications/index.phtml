@@ -1,0 +1,94 @@
+<link rel="stylesheet" type="text/css" href="/css/default/scheme.css"/>
+
+<div class="w">
+    <div class="breadcrumbs">		
+    	<span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/" ><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/solutionlist"><?=$this->translate('Menu_Applications')?></a>
+        <?php foreach($this->appLevel1 as $app){
+        	  	 if($this->selectid==$app['id']) echo '&nbsp;&nbsp;»&nbsp;&nbsp;<span>'.$app['name'].'</span>';
+			  }
+	    ?>       
+    </div>
+</div>
+<div class="w clearfix ld " >
+<div class="listleftmenu">
+    <h1><a href="/solutionlist">应用分类</a></h1>
+	<ul class="schemeleft">
+       <?php foreach($this->appLevel1 as $app){?>
+            <li <?php if($this->selectid==$app['id']) echo 'class="on"';?>><span class="fore<?=$app['id']?>"></span><b class="emwhiteright"></b><a href="/solutionlist-<?=$app['id']?>.html" title="<?=$app['name']?>" class="logclick" rev="solutionlist" rel="<?=$app['id']?>"><?=$app['name']?></a></li>
+       <?php }?>
+    </ul>
+
+</div>
+
+
+
+
+<div class="listright fr schemelist">
+
+<?php if($this->brandarr){?>
+<div class="selectbox201312">
+        <dl>
+            <dt>品牌：</dt>
+            <dd>
+                <ul class="catList clearfix">
+                
+                <?php foreach($this->brandarr as $brand){
+if(!in_array($brand['id'],$this->brandselect)){
+?>
+
+<li><a href="?b=<?php if($this->brandid) echo $this->brandid.'_'.$brand['id'];else echo $brand['id'];?>"><input onclick="location.href='?b=<?php if($this->brandid) echo $this->brandid.'_'.$brand['id'];else echo $brand['id'];?>'" type="checkbox" <?=(in_array($brand['id'],$this->brandselect)?'checked="checked"':'')?> /><?=$brand['name']?></a></li>
+<?php }else{?>
+
+<li><a href="?b=<?php 
+$newarr = array();
+foreach($this->brandselect as $bid){ if($brand['id']!=$bid) $newarr[]=$bid; };
+echo implode('_',$newarr);
+?>"><input onclick="location.href='?b=<?php 
+$newarr = array();
+foreach($this->brandselect as $bid){ if($brand['id']!=$bid) $newarr[]=$bid; };
+echo implode('_',$newarr);
+?>'" type="checkbox" <?=(in_array($brand['id'],$this->brandselect)?'checked="checked"':'')?> /><?=$brand['name']?></a></li>
+
+<?php }
+}
+?>   
+                </ul>
+                <!--<a href="javascript:;" class="moreLink ml_category openmoreLink" style="display: inline;" onclick="showcmore('.ml_category')"><span class="ml_category_text">展开</span><i></i></a>-->
+
+            </dd>
+        </dl>
+    </div>
+<?php }?>
+
+	<div class="w_100">
+        <?php if(empty($this->allSol)){?>
+             <p class="tipnothing">暂无数据</p>
+        <?php }else{
+		foreach($this->allSol as $sol){?>
+        <article class="posts">
+            <h2><a href="/solution-<?=$sol['id']?>.html" title="<?=$sol['title']?>" class="logclick" rev="solution" rel="<?=$sol['id']?>" target="_blank"><?=$sol['title']?></a></h2>
+            <div class="postmeta">
+                <?=$sol['solution_no']?'<span>方案编号：</span>'.$sol['solution_no']:'';?>
+                <?=$sol['source']?'<span>来源：</span>'.$sol['source']:''?>
+				<?=$sol['author']?'<span>作者：</span>'.$sol['author']:''?>
+                <span class="ml10">标签：</span><?php 
+					$tip = explode(',',$sol['tags']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+					}?>
+            </div>
+            <div class="row">
+                <p><?=$sol['description']?></p>
+            </div>
+            <div class="read_more">
+                <span class="fontgray">创建时间：<?=date('Y-m-d',$sol['created'])?></span>
+                <a class="redbutton fr logclick" href="/solution-<?=$sol['id']?>.html"  title="<?=$sol['title']?>" rev="solution" rel="<?=$sol['id']?>" target="_blank">查看更多</a>
+            </div>
+        </article>
+        <hr />
+      <?php }}?>
+	</div>
+    <div class="pagination fr"><?=$this->page_bar;?></div>
+</div>
+</div>
+<div class="clr"></div>

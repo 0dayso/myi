@@ -1,0 +1,38 @@
+<!--样片申请成功推荐-->
+<div class="popnew ypapplypop_ok">
+<div class="popnew-tit "> 
+     <span class="popnew-tit_t hide">样片申请</span>
+       <input type="button" title="关闭" class="popnew-closebtn" onclick="$.closePopupLayer('successSamplesBox')">
+    </div> 
+    
+    <div class="popnew-con  ">
+    	<div class="msg24">
+    		<div class="ok ">样片申请成功！</div>
+        </div>
+       <?php if(!empty($this->solution)){?>
+        <div class="poptuijian poptuijian1">
+        	<h4>你可能对下面方案感兴趣</h4>
+               <?php foreach($this->solution as $sv){?>
+        	   <div class="modelbox">
+                  <div class="fl ">
+                    <p><a href="/solution-<?=$sv['id']?>.html" title="<?=$sv['title']?>" target="_blank" class="model logclick" rev="center_part_id" rel="53489">• <?=$sv['title']?></a></p>
+                  </div>
+                </div>
+                <?php }?>
+        </div>
+        <?php }?>
+        <div class="poptuijian poptuijian1">
+        	<h4>你是否还需要其它器件？</h4>
+        	<div class="modelbox">
+              <div class="fl ">
+                <p><a href="/bompurchase" target="_blank" class="gbqfbbig_h">去BOM采购</a></p>
+              </div>
+            </div>
+        </div>
+        <div class="msg">
+    		<div class="tips ">提示！提交BOM单还能赢取积分！</div>
+        </div>
+		<div class="clr"></div>
+    </div> 
+    <div class="clr"></div>
+</div>

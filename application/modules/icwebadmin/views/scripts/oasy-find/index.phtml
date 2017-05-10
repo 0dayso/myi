@@ -1,0 +1,249 @@
+<?php 
+$statusarr = array('101'=>'<font color="#FF0000">待付预付款</font>',
+'102'=>'<font color="009944">处理中</font>',
+'103'=>'<font color="#FF0000">待支付余款</font>',
+'201'=>'<font color="009944">待发货</font>',
+'202'=>'<font color="009944">待确认收货</font>',
+'301'=>'已完成',
+'302'=>'已完成',
+'401'=>'订单被取消','501'=>'退款',
+'502'=>'退货退款');
+$canshowwl = array('202','301','302');
+
+$inqstatusArr = array (
+		'1' => '<font color="#FF0000">待报价</font>',
+		'2' => '<font color="#009944">已报价</font>',
+		'3' => '<font color="#FF912F">议价审核中</font>',
+		'4' => '<font color="#FF912F">审核不通过</font>',
+		'5' => '<font color="#FF912F">已下单</font>',
+		'6' => '<font color="#FF912F">成功下单</font>'
+);
+?>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> ->  <?=$this->find_key?></h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  
+  <h2>询价单：</h2>
+  <table border="1" style="border-collapse:collapse;font-size: 12px;border:1px #999 solid;padding-top:0px;" cellpadding="0" cellspacing="0" width="90%" align="center">
+    <tbody>
+      <tr bgcolor="#CCCCFF" style="line-height:25px;">
+        <th style="border:1px #999 solid;border-top:0px;" width="150px;">单号</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="150px;">型号/数量</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="300px;">客户</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="50px">销售</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="90px;">询价时间</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="200px">询价单状态</th>
+      </tr>
+    </tbody>
+    <tbody>
+    <?php if($this->inqarray){
+	   foreach($this->inqarray as $v){
+	   $partstr = '';
+	     $detnum = count($v['detaile']);
+	     if($detnum){
+				  for($j=0;$j<$detnum;$j++){
+				  	$partstr .= $v['detaile'][$j]['part_no'].'('.$v['detaile'][$j]['pmpq'].')<br/>';
+				  }
+		 }else $partstr = ($v['part_no'].' (<font color="#006600">'.$v['pmpq'].'</font>)');
+	?>
+    <tr height="35px">
+      <td style="border:1px #999 solid;"><p><a href="javascript:;" onclick="openbox2('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'viewinq', 'id'=>$v['id']));?>')" class="xunjiano"  title="查看详情"><strong class="fontorange"><?=$v['inq_number']?></strong></a>
+      &nbsp;&nbsp;<a href="/icwebadmin/QuoInq?type=select&keyword=<?=$v['inq_number']?>" title="搜索此询价" target="_blank" class="gbqfbb">搜索</a></p>
+	  </td>
+      <td><?=$partstr?></td>
+      <td style="border:1px #999 solid;"><p><a href="javascript:;" onclick="viewUser('<?=$v['uid']?>')" title="用户详情" class="company"><?=$v['companyname']?></a>
+      &nbsp;&nbsp;<a href="/icwebadmin/UsUsgl?type=select&keyword=<?=$v['companyname']?>" title="搜索此客户" target="_blank" class="gbqfbb">搜索</a>
+      </p>
+	  </td>
+      
+      <td><?=$v['lastname'].$v['firstname']?></td>
+      <td style="border:1px #999 solid;"><?=date("Y-m-d H:i:s",$v['created'])?></td>
+      <td><?=$inqstatusArr[$v['status']]?></a></td>
+    </tr>
+    <?php }}else{?>
+    <tr>
+      <td style="border:1px #999 solid;" colspan="6" align="center">暂无记录</td>
+    </tr>
+    <?php }?>
+    </tbody>
+  </table>
+  <h2>订单：</h2>
+  <table border="1" style="border-collapse:collapse;font-size: 12px;border:1px #999 solid;padding-top:0px;" cellpadding="0" cellspacing="0" width="90%" align="center">
+    <tbody>
+      <tr bgcolor="#CCCCFF" style="line-height:25px;">
+        <th style="border:1px #999 solid;border-top:0px;" width="150px;">单号</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="150px;">型号/数量</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="300px;">客户</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="50px">销售</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="90px;">下单时间</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="100px">订单状态</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="100px">物流信息</th>
+      </tr>
+    </tbody>
+    <tbody>
+    <?php if($this->soarray){
+	   foreach($this->soarray as $v){
+	     $partstr = '';
+	     $detnum = count($v['detaile']);
+	     if($detnum){
+				  for($j=0;$j<$detnum;$j++){
+				  	$partstr .= $v['detaile'][$j]['part_no'].'('.$v['detaile'][$j]['buynum'].')<br/>';
+				  }
+		 }else $partstr = ($v['part_no'].' (<font color="#006600">'.$v['buynum'].'</font>)');
+				  
+	?>
+    <tr height="35px">
+      <td style="border:1px #999 solid;"><p><a href="javascript:;" onclick="viewSo('<?=$v['salesnumber']?>')" title="查看订单"><strong class="fontorange"><?=$v['salesnumber']?></strong></a>
+      &nbsp;&nbsp;<a href="/icwebadmin/OrOrgl?type=select&salesnumber=<?=$v['salesnumber']?>" title="搜索此订单" target="_blank" class="gbqfbb">搜索</a></p>
+	  </td>
+       <td><?=$partstr?></td>
+      <td style="border:1px #999 solid;"><p><a href="javascript:;" onclick="viewUser('<?=$v['uid']?>')" title="用户详情" class="company"><?=$v['companyname']?$v['companyname']:$v['uname']?></a>
+      &nbsp;&nbsp;<a href="/icwebadmin/UsUsgl?type=select&keyword=<?=$v['companyname']?$v['companyname']:$v['uname']?>" title="搜索此客户" target="_blank" class="gbqfbb">搜索</a>
+      </p>
+	  </td>
+      <td><?=$v['lastname'].$v['firstname']?></td>
+      <td style="border:1px #999 solid;"><?=date("Y-m-d H:i:s",$v['created'])?></td>
+      <td><?=$statusarr[$v['status']]?></td>
+      <td><?php if(in_array($v['status'],$canshowwl)){?>
+      <a href="javascript:;" onclick="courier('<?=$v['salesnumber']?>')" title="查看物流信息" class="gbqfbb">查看</a>
+      <?php }?>
+      </td>
+    </tr>
+    <?php }}
+	if($this->inqsoarray){
+	foreach($this->inqsoarray as $v){
+		$partstr = '';
+	     $detnum = count($v['detaile']);
+	     if($detnum){
+				  for($j=0;$j<$detnum;$j++){
+				  	$partstr .= $v['detaile'][$j]['part_no'].'('.$v['detaile'][$j]['buynum'].')<br/>';
+				  }
+		 }else $partstr = ($v['part_no'].' (<font color="#006600">'.$v['buynum'].'</font>)');
+	?>
+    <tr height="35px">
+      <td style="border:1px #999 solid;"><p><a href="javascript:;" onclick="viewInqSo('<?=$v['salesnumber']?>')" title="查看订单"><strong class="fontorange"><?=$v['salesnumber']?></strong></a>
+      &nbsp;&nbsp;<a href="<?php if($v['back_order']) echo '/icwebadmin/OrUnso/list?type=select&salesnumber='.$v['salesnumber'];else echo '/icwebadmin/OrInqo?type=select&salesnumber='.$v['salesnumber'];?>" title="搜索此订单" target="_blank" class="gbqfbb">搜索</a></p>
+	  </td>
+      <td><?=$partstr?></td>
+      <td style="border:1px #999 solid;"><p><a href="javascript:;" onclick="viewUser('<?=$v['uid']?>')" title="用户详情" class="company"><?=$v['companyname']?></a>
+      &nbsp;&nbsp;<a href="/icwebadmin/UsUsgl?type=select&keyword=<?=$v['companyname']?>" title="搜索此客户" target="_blank" class="gbqfbb">搜索</a>
+      </p>
+	  </td>
+      <td><?=$v['lastname'].$v['firstname']?></td>
+      <td style="border:1px #999 solid;"><?=date("Y-m-d H:i:s",$v['created'])?></td>
+      <td><?=$statusarr[$v['status']]?></td>
+      <td><?php if(in_array($v['status'],$canshowwl)){?>
+      <a href="javascript:" onclick="courierinq('<?=$v['salesnumber']?>')" title="查看物流信息" class="gbqfbb">查看</a>
+      <?php }?>
+      </td>
+    </tr>
+    <?php }}
+	 if(!$this->soarray && !$this->inqsoarray){?>
+    <tr>
+      <td style="border:1px #999 solid;" colspan="6" align="center">暂无记录</td>
+    </tr>
+    <?php }?>
+    </tbody>
+  </table>
+  
+  <h2>样片订单：</h2>
+  <table border="1" style="border-collapse:collapse;font-size: 12px;border:1px #999 solid;padding-top:0px;" cellpadding="0" cellspacing="0" width="90%" align="center">
+    <tbody>
+      <tr bgcolor="#CCCCFF" style="line-height:25px;">
+        <th style="border:1px #999 solid;border-top:0px;" width="150px;">单号</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="150px;">型号/数量</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="300px;">客户</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="50px">销售</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="90px;">申请时间</th>
+        <th style="border:1px #999 solid;border-top:0px;" width="200px">状态</th>
+      </tr>
+    </tbody>
+    <tbody>
+    <?php 
+	$type = array('');
+	if($this->samplesarray){
+	   foreach($this->samplesarray as $v){
+	   $partstr = $v['part_no'].'('.$v['approvenum'].')<br/>';
+
+	?>
+    <tr height="35px">
+      <td style="border:1px #999 solid;"><p><a href="/icwebadmin/SampSqgl?type=<?=$v['status']==300?'already':'send'?>&select=1&salesnumber=<?=$v['salesnumber']?>" class="xunjiano" target="_blank"  title="查看详情"><strong class="fontorange"><?=$v['salesnumber']?></strong></a></p>
+	  </td>
+      <td><?=$partstr?></td>
+      <td style="border:1px #999 solid;"><p><a href="javascript:;" onclick="viewUser('<?=$v['uid']?>')" title="用户详情" class="company"><?=$v['companyname']?></a>
+      &nbsp;&nbsp;<a href="/icwebadmin/UsUsgl?type=select&keyword=<?=$v['companyname']?>" title="搜索此客户" target="_blank" class="gbqfbb">搜索</a>
+      </p>
+	  </td>
+      
+      <td><?=$v['lastname'].$v['firstname']?></td>
+      <td style="border:1px #999 solid;"><?=date("Y-m-d H:i:s",$v['created'])?></td>
+      <td><?=$v['status']==300?'待发货':'已发货'?></a></td>
+    </tr>
+    <?php }}else{?>
+    <tr>
+      <td style="border:1px #999 solid;" colspan="6" align="center">暂无记录</td>
+    </tr>
+    <?php }?>
+    </tbody>
+  </table>
+  <br/>
+  <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+//查看订单
+function viewInqSo(salesnumber){
+	$.openPopupLayer({
+		name: "box",
+		url: "/icwebadmin/OrInqo/viewso?salesnumber="+salesnumber
+	});
+}
+function getinqorder(salesnumber){
+ $.ajax({
+            url: '/icwebadmin/OrInqo/ajaxorderinfo?salesnumber='+salesnumber,
+            data: {},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+            	document.getElementById('soinfo').innerHTML = html;
+				$("#soinfo").height($("#ajaxorderinfo").height()+10);
+            }
+	});
+}
+//查看订单
+function viewSo(salesnumber){
+	$.openPopupLayer({
+		name: "viewsoBox",
+		url: "/icwebadmin/OrOrgl/viewso?salesnumber="+salesnumber
+	});
+}
+function getorder(salesnumber){
+ $.ajax({
+            url: '/icwebadmin/OrOrgl/ajaxorderinfo?salesnumber='+salesnumber,
+            data: {},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+            	document.getElementById('soinfo').innerHTML = html;
+				$("#soinfo").height($("#ajaxorderinfo").height()+10);
+            }
+	});
+}
+//查看物流
+function courier(salesnumber){
+    $.openPopupLayer({
+        name:'courierBox',
+        url:'/icwebadmin/OrOrgl/courier?sonum='+salesnumber
+    });
+}
+//查看物流
+function courierinq(salesnumber){
+    $.openPopupLayer({
+        name:'courierBox',
+        url:'/icwebadmin/OrInqo/courier?sonum='+salesnumber
+    });
+}
+</script>

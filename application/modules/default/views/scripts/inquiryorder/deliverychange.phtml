@@ -1,0 +1,49 @@
+<!--转账信息-->
+<div class="pop pop_inquiry">
+  <div class="popbox">
+    <div class="poptit"> <span class="titbg1ts">申请更改交货期 </span>
+      <input type="button" value=""  class="closebtn" onClick="$.closePopupLayer('deliverychangeBox')"/>
+    </div>
+   <div class="popcon clearfix">
+    <dl> 
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr height="35px">
+          <td align="right">订单号：</td>
+          <td><b style="color:#009900"><?=$this->so['salesnumber'];?></b></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">预计交期：</td>
+          <td><b style="color:#009900"><?=$this->so['delivery_time']==0?$this->so['delivery_about_time']:date('Y-m-d',$this->so['delivery_time'])?></b></td>
+        </tr>
+        <tr height="35px">
+          <td align="right"><font color="#FF0000">*</font>申请更改的交货日期：</td>
+          <td><input type="text" name="delivery_change_date" id='delivery_change_date'  style="width:160px;" readonly="readonly" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" title="点击选择日期"></td>
+        </tr>
+        <tr height="35px">
+          <td  colspan="2" align="center">
+          <input type="button"  value="确认" onclick="changeaction()"  class="button"/>
+          </td>
+        </tr>
+      </table>
+    </dl>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function changeaction() { 
+	   var delivery_change_date = document.getElementById('delivery_change_date').value;
+	    if(delivery_change_date==''){alert('请选择日期');document.getElementById('delivery_change_date').focus();return;}
+	   $.ajax({
+		url: '/inquiryorder/deliverychange',
+		data: {'salesnumber':'<?=$this->so['salesnumber']?>','delivery_change_date':delivery_change_date},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0){
+				 location.reload();
+            }
+		}
+		});
+}
+</script>

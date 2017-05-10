@@ -1,0 +1,174 @@
+<?php 
+//状态
+$statusArr = array (
+		'1' => '<font color="#FF0000">待报价</font>',
+		'2' => '<font color="#009944">已报价</font>',
+		'3' => '<font color="#FF912F">议价审核中</font>',
+		'4' => '<font color="#FF912F">审核不通过</font>',
+		'5' => '<font color="#FF912F">已下单</font>',
+		'6' => '<font color="#FF912F">成功下单</font>'
+);
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$currencyArr = array('RMB'=>'RMB','USD'=>'USD','HKD'=>'HKD');
+
+$selecturl = "&select=$this->select&sdata=$this->sdata&edata=$this->edata&edata=$this->edata&xsname=$this->xsname&delivery=$this->delivery&keyword=$this->keyword";
+$orderurl = "/icwebadmin/QuoBom?type=$this->type".$selecturl;
+
+$oa_status = array('100'=>'<p class="fontred">未提交</p>','101'=>'<p class="fontgreen">已提交</p>','102'=>'<p class="fontgreen">已报价</p>');
+?>
+<script type="text/javascript">
+function showinquiry(id)
+{
+  var trobj = document.getElementById("show_inquiry_"+id);
+  if(trobj.style.display=='none'){
+     trobj.style.display = 'block';
+  }
+  else trobj.style.display = 'none';
+  
+
+  var show_v =  document.getElementById("show_v_"+id);
+  var show_but     =  document.getElementById("show_but_"+id);
+  var type         =  show_v.value;
+  if(type=='1') {show_but.innerHTML = '+';show_v.value=0;}
+  else {show_but.innerHTML = '-';show_v.value=1;}
+  
+}
+</script>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+
+  <div class="fr u_right">
+    <div class="tab_content">
+    	<div class="tab_tit1">
+        <ul class="fl">
+          <li class="on"><a style="width:120px;">待添加型号<em>(<?=$this->waitnum?>)</em><b class="blank3"></b></a></li>
+        
+        </ul>
+        </div>
+    </div>
+    <div class="tab_con ">
+        <table class="tableanew" border="0" cellspacing="0" cellpadding="0"  width="100%"  >
+            <tr>
+                <th width="140"  align="center">BOM编号</th>
+                <th width="200">型号</th>
+                <th width="200">客户名称</th>
+                <th width="60">客户类别</th>
+                <th width="60" align="center">销售</th>
+                <th width="150" align="center">说明</th>
+                <th width="50">交货地</th>
+                <th width="50">货币</th>
+                <th width="100">提交转询价日期</th>
+                <th width="100" align="center">操作</th>
+            </tr>
+             <?php 
+				if(empty($this->inquiry)){?>
+                <tr>
+                  <td colspan="14"><center>
+                      暂无记录。
+                    </center></td>
+                </tr>
+                <?php }else{
+			   foreach($this->inquiry as $k=>$v){
+						$companyname = $v['companyname'];
+						$propertyArr = array('merchant'=>'贸易商','enduser'=>'终端用户');
+						$property    = $propertyArr[$v['property']];
+						$staff = $v['lastname'].$v['firstname'];
+							$remark   = $v['remark']?$v['remark']:'--';
+							$delivery = $deliveryArr[$v['delivery']];
+							$currency = $currencyArr[$v['currency']];
+							$created  = "<p>".date('Y/m/d',$v['created'])."</p><p>".date('H:i',$v['created'])."</p>";
+							$status   = $statusArr[$v['status']];
+							$result_remark   = $v['result_remark']=='--'?'':$v['result_remark'];
+							$modified = $v['modified']==0?'':date('Y/m/d H:i',$v['modified']);
+							$detaile = $v['detaile'];
+						    $detnum = count($detaile);
+				?>
+                 <tr valign="top">
+                <td align="left"><p><a href="javascript:;" onclick="openbox('/icwebadmin/QuoBom/view/id/<?=$v['id']?>')" class="xunjiano"  title="查看详情"><strong class="fontorange"><?=$v['bom_number']?></strong><b class="tipicon"></b></a></p>
+                <p><a class="gbqfbb" href="javascript:;" onclick="openbox('/icwebadmin/QuoBom/view/id/<?=$v['id']?>')" title="查看详情">查看详情</a></p>
+                </td>
+                <td align="left">
+				<?php 
+				  $can_to_inq = true;
+				  $changeinq = explode('<>',$v['changeinq']);
+				  $last      = $changeinq[count($changeinq)-1];
+				  $lastchangeinq = array();
+				  if($last){
+					 $tmp = explode(';',$last);
+					 $lastchangeinq = explode(',',$tmp[1]);
+				  }
+				  for($j=0;$j<$detnum;$j++){
+				    if(in_array($detaile[$j]['id'],$lastchangeinq)){
+				  	    echo '('.($detaile[$j]['brand_name']).')';
+					    if($detaile[$j]['part_id']) echo '<strong ><a title="查看产品信息" target="_blank" href="/proddetails?partid='.$detaile[$j]['part_id'].'">'.$detaile[$j]['part_no'].'</a></strong><br/>';
+					    else {
+						   $can_to_inq = false;
+						   echo '<strong >'.$detaile[$j]['part_no'].'</strong><br/>';
+						}
+					}
+				  }
+				  ?>
+                </td>
+                <td align="left">
+                    <p><a href="javascript:;" onclick="viewUser('<?=$v['uid']?>')" title="用户详情" class="company"><?=$companyname?><b class="tipicon"></b></a></p>
+                </td>
+                <td align="center"><p><?=$property?></p></td>
+                <td align="center"><p><?=$staff?></p></td>
+                <td align="center"><p><?=$remark?></p></td>
+                <td><p><?=$delivery?></p></td>
+                <td><p><?=$currency?></p></td>
+                <td align="center"><p><?=$modified?></p></td>
+
+                <td valign="top">
+<?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>   
+                <?php if($v['status']==2){?>
+				<p><a  class="gbqfb" href="javascript:;" onclick="openbox('/icwebadmin/QuoBtoq/edit/id/<?=$v['id']?>')">添加型号</a></p>
+                   <?php if($can_to_inq){?>
+                   <p><a  class="gbqfb" href="javascript:;" onclick="changetoinq('<?=$this->fun->encryptVerification($v['id']);?>','<?=$v['bom_number']?>')">生成询价单</a></p>
+                   <?php }?>
+				<?php }?>
+<?php }//end check?>
+                </td>
+            </tr>
+		<?php }
+		}?> 
+        </table>
+    <div class="pagination divpage">
+       <?=$this->page_bar;?>
+  </div>
+</div>
+
+</div>
+
+<div id="myHiddenDiv" style="display:none">
+  <div class="popup">
+    <div class="popup-body" style="width:550px;">
+      <!-- 需要填写的区域-->
+      <div><img src="/images/admin/ajax-loader.gif" />BOM单正在转询价单，请耐心等待。如果等待时间过长(超过1分钟)请刷新页面。</div>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+//转询价单
+function changetoinq(id,bom_number){
+  if(confirm('你确定BOM采购单：'+bom_number+'转询价单吗？'))
+  {
+  	$.openPopupLayer({
+		name: "myopeneamil",
+		target: "myHiddenDiv"
+	});
+	$.ajax({
+			url: '/icwebadmin/QuoBtoq/changetoinq',
+			data: {'id':id,'bom_number':bom_number},
+			type: 'post',
+			dataType: 'json',
+			success: function(arr) {
+			    alert(arr.message);
+				if(arr.code == 0) location.reload();
+				$.closePopupLayer('myopeneamil');
+			}
+	});
+  }
+}
+</script>

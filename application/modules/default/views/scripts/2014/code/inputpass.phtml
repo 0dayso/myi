@@ -1,0 +1,41 @@
+<div class="pop pop_inquiry" style="top:100px">
+  <div class="popbox">
+    <div class="poptit"> <span class="titbg1ts">请输入下载密码</span>
+      <input type="button" title="关闭" class="closebtn" onclick="$.closePopupLayer('passBox');">
+    </div>
+    <div class="popcon clearfix msg"><div class="ok" id="message" style="display:none"></div>
+     	<div >
+         <table cellpadding="0" cellspacing="0" width="450px" height="80px">
+              <tbody>
+              <tr>
+                  <td width="100px" align="right"><em>*</em>下载密码：</td>
+                  <td width="120"><input type="text" name="pass" id="pass" class="input120" /></td>
+                  <td><input type="button" onClick="tijiao()" value="提交密码"  class="button"/></td>
+              </tr>
+              <tr>
+              </tr>
+            </tbody>
+        </table>
+    	</div>
+    </div>
+  </div>
+</div>
+<script>
+	function tijiao(){
+	     var pass = document.getElementById('pass').value;
+		 if(pass==''){alert('请输入下载密码');return;}
+	     $.ajax({
+			url: '/code/cscore',
+			data: {'key':'<?=$this->keyvalue?>','pass':pass},
+			type: 'post',
+						dataType: 'json',
+						success: function(arr) {
+							if(arr.code==0) {
+							$.closePopupLayer('passBox');
+							window.location.href='/code/download?key=<?=$this->keyvalue?>&pass='+pass;
+							}
+							else alert(arr.message);
+						}
+		});
+	}
+</script>

@@ -1,0 +1,60 @@
+<div class="popup" style="width:400px;">
+<div class="popup-header">
+    <h2>修改配送方式</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+</div>
+<div class="popup-body">
+    <table cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+            <tr>
+              <td  width="80" align="right">配送方式：</td>
+              <td><?php if($this->soarray['delivery_place']=='SZ'){?>
+                <label><input type="radio" name="delivery_type" value="1" class="delivery_type" <?=($this->soarray['delivery_type']==1?'checked="checked"':'') ?>>国内快递</label>
+                <?php }elseif($this->soarray['delivery_place']=='HK'){?>
+                <label><input type="radio" name="delivery_type" value="2" class="delivery_type" <?=($this->soarray['delivery_type']==2?'checked="checked"':'') ?>>公司配送</label>
+                <label><input type="radio" name="delivery_type" value="3" class="delivery_type" <?=($this->soarray['delivery_type']==3?'checked="checked"':'') ?>>客户自提</span></label>
+                <label><input type="radio" name="delivery_type" value="4" class="delivery_type" <?=($this->soarray['delivery_type']==4?'checked="checked"':'') ?>>客户提供账号</label>
+                <?php }?></td>
+            </tr>
+            <tr>
+            <td  width="80" align="right">运费：</td>
+              <td><input type="text" name="freight" id="freight" onkeyup="<?=ISFLOAT?>" value="<?=$this->soarray['freight']?>">
+              </td>
+            </tr>
+            <tr>
+              <td  width="80" align="right">运费支付方：</td>
+              <td><label><input type="radio" name="exp_paytype" value="1" <?=($this->soarray['exp_paytype']==1?'checked="checked"':'') ?>/>供方付费</label>
+                 <label><input type="radio" name="exp_paytype" value="2" <?=($this->soarray['exp_paytype']==2?'checked="checked"':'') ?>/>需方付费</label></td>
+            </tr>
+      </tbody></table>
+    <div class="bottombutton" id="baojiabtn">
+    	<input type="button" onclick="deliverytype()" value="提 交" class="btnabig">
+    </div>
+    <div class="clear"></div>
+</div>
+</div>
+<script type="text/javascript">
+function deliverytype() 
+{
+	var delivery_type = $('input[name="delivery_type"]:checked').val();
+	if(delivery_type=='' || typeof(delivery_type)=="undefined") {
+	      alert('请选择配送方式');$('input[name="delivery_type"]:checked').focus();return;
+     }
+
+	var exp_paytype = $('input[name="exp_paytype"]:checked').val();
+	var freight  = $('#freight').val();
+    $.ajax({
+            url: '/icwebadmin/OrUnso/deliverytype',
+            data: {'salesnumber':'<?php echo $this->soarray['salesnumber'];?>','freight':freight,'delivery_type':delivery_type,'exp_paytype':exp_paytype},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   alert(arr.message);
+			   if(arr.code==0)
+			   {  
+			      location.reload();
+			   }
+            }
+    });
+}
+</script>

@@ -1,0 +1,118 @@
+<!--购买 弹出框-->
+<?php
+   //过滤产品
+	$prodarr = $this->fun->filterProduct($this->prodarr);
+	//print_r($prodarr);
+	//获得零售价
+	$partid = $prodarr['id'];
+	$moq    = $prodarr['moq'];
+	$mpq    = $prodarr['mpq'];
+	if($this->number>$moq){
+		$moq = ((int)($this->number/$moq))*$moq;
+	}
+	//开始显示的交货地
+	$show_price = 0;
+	$checked_sz  = $checked_hk = '';
+	if($prodarr['f_show_price_sz']){
+		$stock      = $prodarr['f_stock_sz'];
+	    $show_price = $prodarr['f_show_price_sz'];
+	    $sell_price = $prodarr['f_sell_price_sz'];
+	    $sell_total = $sell_price*$moq;
+		$lead_time  = $prodarr['f_lead_time_cn']?$prodarr['f_lead_time_cn']:'--';
+		$checked_sz = 'checked';
+		$unit = $prodarr['f_rmb'];
+		$break_price = $prodarr['f_break_price_sz'];
+		$break_price_title = '含税';
+	}elseif($prodarr['f_show_price_hk']){
+		$stock      = $prodarr['f_stock_hk'];
+	    $show_price = $prodarr['f_show_price_hk'];
+	    $sell_price = $prodarr['f_sell_price_hk'];
+	    $sell_total = $sell_price*$moq;
+		$lead_time  = $prodarr['f_lead_time_hk']?$prodarr['f_lead_time_hk']:'--';
+		$checked_hk  = 'checked';
+		$unit = $prodarr['f_usd'];
+		$break_price = $prodarr['f_break_price_hk'];
+		$break_price_title = '美元';
+	}else{
+		echo '<script>alert("很抱歉，此产品暂时不能购买！");$.closePopupLayer("cartBox");</script>';
+	}
+	if($stock < $moq){
+	  $lead_time = $prodarr['lead_time']?$prodarr['lead_time']:'--';
+	}
+	
+?>
+<!--购买 弹出框-->
+<div class="pop pop_shopbox"  style="top:20px">
+	<div class="popbox">
+    	<div class="poptit1">
+            <input type="button" title="关闭" value="" class="closebtn" onclick="$.closePopupLayer('cartBox')">
+        </div>
+        <div class="popcon clearfix">
+        	<!--梯形价格-->
+            <div class="spboxleft">
+                <div class="price-box">
+                    <h1 class="titbg1ts"><?=$break_price_title?><em class="emtriangleright5px"></em></h1><h2>产品价格</h2>
+                    <?php echo $break_price;?>
+                </div>
+            </div>
+             <input type="hidden" name="part_no" id="part_no" value="<?=$this->prodarr['part_no'];?>" />
+             <input type="hidden" name="partid" id="partid" value="<?=$partid?>" />
+            <div class="spboxright">
+            <h2 class="model"><a href="<?=$prodarr['f_produrl']?>"><?=$this->prodarr['part_no'];?></a></h2>
+            </p>
+                <p>零售价：<strong class="price"><span class="price_unit"><?=$unit?></span><span id="sell_price"><?php echo number_format($sell_price,5);?></span></strong></p>
+            	<p class="goodsNum">数量：
+                <input type="button" name="reducebut" value=" - "  class="btn_sub"  onclick="setAmountBase.reduce('#goodnum','#multiple','<?=$partid?>','<?=$moq?>','<?=$mpq?>','<?=$stock?>')"/>
+            <?php if(($moq%$mpq)==0 && $mpq!=0){ echo $mpq.'*';?>
+<input type="text" id="multiple" name="multiplebut" value="<?=($moq/$mpq)?>" style="width:30px" onkeyup="setAmountBase.multiple('#goodnum','#multiple','<?=$partid?>','<?=$moq?>','<?=$mpq?>','<?=$stock?>')"/>
+            &nbsp;=
+       <input type="text" id="goodnum" name="pamountbut" value="<?=$moq;?>" size="3" disabled="disabled"/>
+            <?php }else{?>
+       <input type="hidden" id="multiple" name="multiplebut"/>
+      <input type="text" id="goodnum" name="pamountbut" value="<?=$moq;?>" onkeyup="setAmountBase.modify('#goodnum','<?=$partid?>','<?=$moq?>','<?=$mpq?>','<?=$stock?>')" size="3"/>
+            <?php }?>
+            
+      <input type="button" name="addbut" value="+"  class="btn_and" onclick="setAmountBase.add('#goodnum','#multiple','<?=$partid?>','<?=$moq?>','<?=$mpq?>','<?=$stock?>')"/>
+                </p>
+                <p>交货地：<?php if($prodarr['f_show_price_sz']){?>
+          	<label><input type="radio" name="delivery_place" value="SZ" <?=$checked_sz?> class="delivery_place" onclick="subtotal('#goodnum')">国内(含增税)</label>
+            <?php }
+			if($prodarr['f_show_price_hk']){?>
+            <label><input type="radio" name="delivery_place" value="HK"  <?=$checked_hk?> class="delivery_place" onclick="subtotal('#goodnum')">香港(美元)</label>
+            <?php }?>
+            </p>
+            
+            <p>参考货期：<span class="lead_time_show"><?=$lead_time?></span></p>
+            	<p>库存：<span class="stock_type"><?php if(($prodarr['f_stock_sz']+$prodarr['f_stock_hk'])>0){echo '<b class="fontgreen">现货</b>';}
+					else {echo '<b class="fontorange">订货</b>';}?></span>
+                </p>
+                <p class="summary"><span class="goodsCar">小计：<strong class="price"><span class="price_unit"><?=$unit?></span><span id="sell_total"><?=number_format($sell_total,DECIMAL);?></span></strong></span></p>
+            	<p class="spbbtndiv"><a class="abutton"  href="javascript:" onClick="buy_details('#goodnum','<?=$this->prodarr['id']?>','<?=$moq;?>');closeBox('#goodnum');" target="_parent">加入购物车</a></p>
+            </div>
+        </div>
+	</div>
+</div>
+<script type="text/javascript">
+function closeBox(obj){
+	 var buynum = parseInt($(obj).val());
+     if(isNaN(buynum) || buynum == 0) {return;}
+	 else $.closePopupLayer('cartBox');
+}
+var break_price_sz = '<h1 class="titbg1ts">含税<em class="emtriangleright5px"></em></h1><h2>产品价格</h2><?=$prodarr['f_break_price_sz']?>';
+var break_price_hk = '<h1 class="titbg1ts">美元<em class="emtriangleright5px"></em></h1><h2>产品价格</h2><?=$prodarr['f_break_price_hk']?>';			
+$(function(){
+		//不同交货地
+        $(".delivery_place").click(function(){
+			if(this.value=='SZ'){
+				$(".price_unit").html('<?=$prodarr['f_rmb']?>');
+				$(".price-box").html(break_price_sz);
+				$(".freetotl").html("<?=$this->freetotl?>");
+			}else if(this.value=='HK'){
+
+				$(".price_unit").html('<?=$prodarr['f_usd']?>');
+				$(".price-box").html(break_price_hk);
+				$(".freetotl").html("<?=$this->freetotl_hk?>");
+			}
+        });
+})
+</script>

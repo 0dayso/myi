@@ -1,0 +1,152 @@
+<?php $type=array('0'=>' ','1'=>'<font color="#009900">代理</font>','2'=>'非代理');?>
+<table class="tableContent">
+    <tr>
+    <td bgcolor="#FFFFFF" align="left" valign="top" width="770"><table width="740" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td height="10" colspan="3">&nbsp;</td>
+        </tr>
+        <tr>
+          <td height="29" bgcolor="#FFFFFF" align="center"><table width="740" border="0" cellpadding="3" cellspacing="0">
+              <tr bgcolor="#334159">
+                <td height="7" align="left" colspan="6"><b><font color="#FFFFFF"> <?php echo $this->AreaTitle;?> : </font>
+                 <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                        <a href="/icwebadmin/CpPpgl/add" class="gbqfb"><font color="#000000">添加品牌+</font></a>  
+                        <a href="#addlogo" id="brand_box" class="gbqfb"><font color="#000000">上传品牌logo+</font></a>
+                  <?php }?>
+                </b> </td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr>
+          <td height="10" colspan="3" align="center"><div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div></td>
+        </tr>
+      </table>
+      <!-- 需要填写的区域-->
+      <table border="1" cellpadding="1">
+              <tr bgcolor="#334159" height="30px">
+                 <td><b><font color="#FFFFFF">编号</font></b></td>
+                <td><b><font color="#FFFFFF">品牌名称</font></b></td>
+                <td><b><font color="#FFFFFF">英文名称</font></b></td>
+                <td><b><font color="#FFFFFF">OA产品线名称</font></b></td>
+                <td width="50"><b><font color="#FFFFFF">类型</font></b></td>
+                <td><b><font color="#FFFFFF">专题</font></b></td>
+                <td><b><font color="#FFFFFF">Logo</font></b></td>
+                <!--<td><b><font color="#FFFFFF">公司简介</font></b></td>-->
+                <td><b><font color="#FFFFFF">宣传图片</font></b></td>
+                <td><b><font color="#FFFFFF">排序</font></b></td>
+                <td><b><font color="#FFFFFF">状态</font></b></td>     
+                <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID))
+					echo '<td width="103"></td>';
+				?>
+              </tr>
+              <?php
+			  	  if(!empty($this->brandlist)){
+                	 foreach ($this->brandlist as $k=>$data){
+						$id     = $data['id'];
+						$name = $data['name'];
+						$name_en = $data['name_en'];
+						$logo = $data['logo'];
+						$introduction = $data['introduction']?$data['introduction']:'--';
+						$displayorder = $data['displayorder'];
+						$status = $data['status'];
+						if($k%2==0)$bg="#E4E4E4";
+						else $bg="#D5C5FE";
+						echo "<tr bgcolor=\"$bg\" height=\"25px\">";
+						echo '<td>'.$id."</td>";
+						echo '<td><a href="/pl/'.$name.'" target="_blank">'.$name."</a></td>";
+						echo "<td>".$name_en."</td>";
+						echo "<td>".$data['oa_name']."</td>";
+						echo "<td>".$type[$data['type']]."</td>";
+						echo "<td>".($data['show']?'<font color="#339900">是</font>':'否')."</td>";
+						echo '<td><img src="/images/default/brand/'.$id.'.png"/></td>';
+						/*echo "<td>".$introduction."</td>";*/
+						echo '<td>';
+						if($data['logo']) {
+							$arr = explode('|',$data['logo']);
+							foreach($arr as $v){
+						       if($v) echo '<img src="'.$v.'" width="100" height="50"/><br/>';
+							}
+						}
+						else echo "--";
+						echo '</td>';
+						echo "<td>".$displayorder."</td>";
+						if($status==1) echo "<td><font color=\"#339900\">ON</font></td>";
+						else echo "<td><font color=\"#CC3333\">OFF</font></td>";
+						if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){								
+						echo "<td align=\"center\">
+						<a href=\"/icwebadmin/CpPpgl/edit?ID={$id}\" class=\"gbqfb\">编辑</a></td>";
+						}
+					    echo "</tr>\r\n";
+				    }
+				   }
+	            ?>
+                <tr><td colspan="8"><div class="pagination"><?php echo $this->page_bar;?></div></td></tr>
+            </table>
+            <br/>
+      <!-- 结束区域-->
+    </td>
+  </tr>
+</table>
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript" language="javascript">
+KindEditor.ready(function(K) {
+			 //品牌logo
+			var spe_head_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplodimg?part=images/default/brand/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=images/default/brand/'
+			});
+			K('#brand_box').click(function() {
+				spe_head_editor.loadPlugin('image', function() {
+					spe_head_editor.plugin.imageDialog({
+						imageUrl : '',
+						clickFn : function(url, title, width, height, border, align) {
+							spe_head_editor.hideDialog();
+						}
+					});
+				});
+			});
+});
+
+function deleteaction(ID)
+{
+	if(confirm('你确定删除："'+ID+'" 吗？'))
+    {
+		$.ajax({
+            url: '<?php echo $this->deleteurl;?>',
+            data: {'ID':ID},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+				    alert(arr.message);
+                    location.reload();
+                }else{
+				    document.getElementById('message_sess').style.display = "block";
+	                document.getElementById('alert_message').innerHTML = arr.message;
+				}
+            }
+	    });
+	}
+}
+function openadd()
+{
+	$.openPopupLayer({
+        name:'addBox',
+        url:'<?php echo $this->addurl;?>'
+    });
+}
+function openedit(ID)
+{ 
+	$.openPopupLayer({
+        name:'editBox',
+        url:'<?php echo $this->editurl;?>'+'?ID='+ID
+    });
+}
+</script>

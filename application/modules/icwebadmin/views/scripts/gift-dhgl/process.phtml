@@ -1,0 +1,90 @@
+
+  <div class="popup" style="width:600px;">
+    <div class="popup-header">
+    <h2>处理兑换：<?=$this->giftexchange['giftname']?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('processBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+     <!-- 需要填写的区域-->
+      <table border="0" cellpadding="1">
+       <?php if($this->giftexchange['gifttype']==1){?>
+       <tr>
+          <td>快递公司：</td>
+          <td><select name="courier" id="courier" onchange="change(this)"> 
+                 <option value="">请选择快递公司</option> 
+                 <?php foreach($this->courier as $v){?>
+                 <option value="<?=$v['id']?>"><?=$v['name']?></option> 
+                 <?php }?>
+               </select></td>
+        </tr>
+        <tr height="30" class="cou_number_tr">
+          <td>快递单号：</td>
+          <td><input name="cou_number" id="cou_number" style="width:300px;"/></td>
+        </tr>
+        <tr>
+          <td>说明：</td>
+          <td><textarea name="notice" id="notice" rows="3" style="width:300px"></textarea></td>
+        </tr>
+        <?php }else{?>
+        <tr>
+          <td>处理结果：</td>
+          <td><textarea name="notice" id="notice" rows="3" style="width:300px"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><font color="#FF0000">请详细说明用户如何才能领取到虚拟物品</font>
+          </td>
+        </tr>
+        <?php }?>
+        <tr>
+          <td>&nbsp;</td>
+          <td>
+          <input type="button"  value="确认"  class="btnabig"  onclick="processaction()"/>
+          </td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+
+<script type="text/javascript">
+function change(obj){
+	if(obj.value==3){
+		$(".cou_number_tr").hide();
+	}else{
+		$(".cou_number_tr").show(); 
+	}
+}
+
+function processaction()
+{
+	 var courier = '';
+	 var cou_number = '';
+	 var notice = $('#notice').val();
+	 <?php if($this->giftexchange['gifttype']==1){?>
+	 	courier    = $('#courier').val();
+		cou_number = $('#cou_number').val();
+		if(courier=='') {alert('请选择快递公司');return;}
+	    if(courier!=3){
+	        if(cou_number=='') {alert('请填入快递号');return;}
+	    }else cou_number='客户自取';
+	 <?php }else{?>
+	   if(notice=='') {
+	      alert('请填写内容');$('#notice').focus();return;
+       }
+	 <?php }?>
+	 $.ajax({
+            url: '/icwebadmin/GiftDhgl/process',
+            data: {'id':'<?=$this->giftexchange['id']?>','courier':courier,'cou_number':cou_number,'notice':notice},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	alert(arr.message);
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+}
+</script>

@@ -1,0 +1,73 @@
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+      <h2><?=$this->property['cname']?>：添加属性值</h2>
+      <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+      <!-- 需要填写的区域-->
+      <table width="700px" border="0" cellpadding="1">
+        <tr>
+          <td height="10" colspan="3" align="center"><div id="message_sess_son" style="display:none" class="message_sess"> <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span> <span id="alert_message_son"></span> </div></td>
+        </tr>
+        <tr>
+          <td colspan="2"><table bgcolor="#CCCCCC" width="100%">
+              
+               <tr>
+                <td width="50" align="right"><font color="#666600"><b>状态 : </b></font></td>
+                <td colspan="3" align="left"> <label><input type="radio" name="status" value="1" <?=($this->propertyvalue['status']?'checked="checked"':'')?>/>
+                 <font color="#339900"><b>ON</b></font></label>
+                  <label><input type="radio" name="status" value="0" <?=($this->propertyvalue['status']?'':'checked="checked"')?>/>
+                  <font color="#CC3333"><b>OFF</b></font></label>
+                </td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><font color="#666600"><b>属性值<em>*</em>: </b></font></td>
+                <td colspan="3"  align="left">
+                <input type="text" name="value" id="value" value="<?=$this->propertyvalue['value']?>"/></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><font color="#666600"><b> 排序 : </b></font></td>
+                <td align="left" colspan="3"><input type="text" name="displayorder" id="displayorder" value="<?=$this->propertyvalue['displayorder']?>" onKeyUp="<?php echo ISNUMBER;?>"/></td>
+              </tr>
+              <tr>
+                <td align="center" colspan="2"><input type="button"  value="编辑" onclick="editaction()" class="btnabig"/>
+                </td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+function editaction()
+{
+	var statusobj = document.getElementsByName('status');
+	for(i=0;i<statusobj.length;i++){
+	  if(statusobj[i].checked){
+	     var status = statusobj[i].value;
+	     break;
+	  }
+	}
+	var value = document.getElementById('value').value;
+	if(value == '') {alert("请填属性值");document.getElementById('value').focus();return;}
+	var displayorder   = document.getElementById('displayorder').value;
+	
+	$.ajax({
+            url: '<?=$this->indexurl?>/editvalue',
+            data: {'pvid':'<?=$this->propertyvalue['id']?>','status':status,'value':value,'displayorder':displayorder},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  location.reload();
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			}
+	});
+}
+</script>

@@ -1,0 +1,214 @@
+<!--content-->
+<?php
+$appstatusarr = array('101'=>'<font color="#FF0000">审核中</font>','201'=>'<font color="009944">通过</font>','202'=>'<font color="#FF0000">不通过</font>');
+?>
+
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 查看 <a href="/icwebadmin/OrInva">返回&gt;&gt;</a></h1>
+      <!-- 需要填写的区域-->
+      <!-- end-->
+      <?php 
+$statusarr = array('101'=>'待付款','201'=>'已付款','202'=>'待确认收货','301'=>'已完成','302'=>'已评价','401'=>'订单被取消');
+$paytypearr = array('transfer'=>'银行转账','online'=>'在线支付','cod'=>'货到付款','mts'=>'款到发货');
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$expressarr = array('HK'=>'公司配送','SZ'=>'国内快递');
+$mess = '
+<table width="800" style="margin-left:10px" border="0" cellpadding="0" cellspacing="0" style=" color:#555555;">
+  <tr>
+    <td style="height:10px;"><div style="font-weight:bold; font-size:14px">状态：'.$appstatusarr[$this->orderarr['iastatus']].'</div></td>
+  </tr>
+  <tr>
+    <td><table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td style="width:250px; height:9px; background-color:#e2e2e2;"></td>
+          <td style="width:470px; height:9px; background-color:#f3f3f3;"></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td style="height:15px;"></td>
+  </tr>
+  <tr>
+    <td><table width="800" border="0" cellspacing="0" cellpadding="0" style="font-size:12px; color:#a10000; line-height:16px;">
+        <tr>
+          <td width="17" height="18"></td>
+          <td width="683" height="30">订单信息</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td><table width="800" border="0" cellspacing="0" cellpadding="5" style="line-height:20px; font-size:12px; border:1px #dfdfdf solid;">
+        <tr>
+          <td style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;">订单号：<b style="color:#ff7800">'.$this->orderarr['salesnumber'].'</b> </td>
+          <td style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;">订单金额：<b style="color:#c00000">'.$this->orderarr['currency'].$this->orderarr['total'].'</b></td>
+          <td style="border-bottom:1px #dfdfdf solid;">下单时间：<b>'.date('Y-m-d H:i:s',$this->orderarr['created']).'</b></td>
+        </tr>
+		<tr>
+          <td style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;">交易货币：<b>'.$this->orderarr['currency'].'</b></td>
+		  <td style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;">付款方式：<b>'.$paytypearr[$this->orderarr['paytype']].'</b></td>
+		  <td style="border-bottom:1px #dfdfdf solid;">交货地：<b>'.$deliveryArr[$this->orderarr['delivery_place']].'</b></td>
+        </tr>
+        <tr>
+          <td style="border-right:1px #dfdfdf solid;">付款方式：<b>'.$paytypearr[$this->orderarr['paytype']].'</b></td>
+          <td style="border-right:1px #dfdfdf solid;">订单状态：<b>'.$statusarr[$this->orderarr['status']].'</b></td>
+          <td>&nbsp;</td>
+        </tr>
+		
+      </table></td>
+  </tr>
+  <tr>
+    <td style="height:15px;"></td>
+  </tr>
+  <tr>
+    <td><table width="800" border="0" cellspacing="0" cellpadding="0" style="font-size:12px; color:#a10000; line-height:16px;">
+        <tr>
+          <td width="17" height="18"></td>
+          <td width="683" height="30">用户信息</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td><table width="800" border="0" cellspacing="0" cellpadding="5" style="line-height:20px; font-size:12px; border:1px #dfdfdf solid;">
+        <tr>
+          <td style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;">用户：<b>'.$this->orderarr['uname'].'</b></td>
+          <td colspan="2" style="border-bottom:1px #dfdfdf solid;">公司名称：<b>'.$this->orderarr['companyname'].'</b></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td style="height:15px;"></td>
+  </tr>
+  <tr>
+    <td><table width="800" border="0" cellspacing="0" cellpadding="0" style="font-size:12px; color:#a10000; line-height:16px;">
+        <tr>
+          <td width="17" height="18"></td>
+          <td width="683" height="30">货物清单</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td><table width="800" border="0" cellpadding="5" cellspacing="1" bgcolor="#eee" style="font-size:14px; line-height:18px; color:#444; border-top:1px #a10000 solid;">
+        <tr bgcolor="#f3f3f3">
+          <th style="border-left:1px #dfdfdf solid;border-right:1px #dfdfdf solid; font-weight:normal" width="40">项次</th>
+          <th style="border-right:1px #dfdfdf solid;font-weight:normal" width="200">产品名称</th>
+          <th style="border-right:1px #dfdfdf solid;font-weight:normal" width="100">品牌</th>
+          <th style="border-right:1px #dfdfdf solid;font-weight:normal" width="50">单位</th>
+          <th style="border-right:1px #dfdfdf solid;font-weight:normal">数量</th>
+          <th style="border-right:1px #dfdfdf solid;font-weight:normal" width="100">单价(含税)</th>
+          <th style="border-right:1px #dfdfdf solid;font-weight:normal">金额</th>
+        </tr>
+        ';
+        foreach($this->orderarr['pordarr'] as $k=>$v){
+        $mess .='
+        <tr>
+          <td height="30" align="center" bgcolor="#FFFFFF" style="border-left:1px #dfdfdf solid;border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;font-weight:bold">'.($k+1).'</td>
+          <td bgcolor="#FFFFFF" align="left" style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;font-weight:bold">'.$v['part_no'].'</td>
+          <td bgcolor="#FFFFFF" align="left" style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;font-weight:bold">'.$v['brand'].'</td>
+          <td bgcolor="#FFFFFF" align="center" style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;font-weight:bold">个</td>
+          <td bgcolor="#FFFFFF" align="center" style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;font-weight:bold">'.$v['buynum'].'</td>
+          <td bgcolor="#FFFFFF" align="center" style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;color:#c00000;font-weight:bold"><b>'.number_format($v['buyprice'],DECIMAL).'</b></td>
+          <td bgcolor="#FFFFFF" align="center" style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;color:#c00000;font-weight:bold"><b>'.number_format($v['buyprice']*$v['buynum'],DECIMAL).'</b></td>
+        </tr>
+        ';
+        }
+        $mess .='
+        <tr>
+          <td colspan="4" align="right" bgcolor="#FFFFFF" style="border-left:1px #dfdfdf solid;border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;font-weight:bold">快递费及专业包装费：<b style="color:#c00000; margin-left:5px;">'.$this->orderarr['currency'].$this->orderarr['freight'].'</b></td>
+          <td colspan="2" bgcolor="#FFFFFF" style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;font-weight:bold"></td>
+          <td colspan="3" align="right" bgcolor="#FFFFFF" style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;font-size:14px; font-weight:bold">合计:<b style="color:#c00000; margin:0 5px;">'.$this->orderarr['currency'].$this->orderarr['total'].'</b></td>
+        </tr>
+       
+      </table></td>
+  </tr>
+  <tr>
+    <td height="15"></td>
+  </tr>
+  ';
+  $mess .='
+  <tr>
+    <td style="height:20px;"><table width="800" border="0" cellspacing="0" cellpadding="0" style="font-size:12px; color:#a10000; line-height:16px;">
+        <tr>
+          <td width="17" height="18"></td>
+          <td width="683" height="30">发票信息：</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td><table width="800" border="0" cellspacing="0" cellpadding="5" style="line-height:20px; font-size:12px; border:1px #dfdfdf solid;">
+        <tr>
+          <td colspan="2" style="border-bottom:1px #dfdfdf solid;">发票类型：<b>';
+            if($this->invoiceFirst['type']==1) $mess .='普通发票';else $mess .='增值税发票(17%)';
+            $mess .='</b></td>
+        </tr>
+        ';
+        if($this->invoiceFirst['type']==1){
+        $mess .='
+        <tr>
+          <td style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;">发票抬头：<b>'.$this->invoiceFirst['name'].'</td>
+          <td style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;">发票内容：<b>';
+            $arr = array('1'=>'明细','2'=>'电子元件','3'=>'耗材');
+            $mess .=$arr[$this->invoiceFirst['contype']];
+            $mess .='</b></td>
+        </tr>
+        ';
+        }else{
+        $mess .='
+        <tr>
+          <td style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;">单位名称：<b>'.$this->invoiceFirst['name'].'</b></td>
+          <td style="border-bottom:1px #dfdfdf solid;">纳税人识别号：<b>'.$this->invoiceFirst['identifier'].'</b></td>
+        </tr>
+        <tr>
+          <td style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;">注册地址：<b>'.$this->invoiceFirst['regaddress'].'</b></td>
+          <td style="border-bottom:1px #dfdfdf solid;">注册电话：<b>'.$this->invoiceFirst['regphone'].'</b></td>
+        </tr>
+        <tr>
+          <td style="border-right:1px #dfdfdf solid;">开户银行：<b>'.$this->invoiceFirst['bank'].'</b></td>
+          <td>银行账户：<b>'.$this->invoiceFirst['account'].'</b></td>
+        </tr>
+        ';
+        }
+        $mess .='
+      </table></td>
+  </tr>
+  ';
+  $mess .='
+  <tr>
+    <td><table width="800" border="0" cellspacing="0" cellpadding="0" style="font-size:12px; color:#a10000; line-height:16px;">
+        <tr>
+          <td width="17" height="18"></td>
+          <td width="683" height="30">快递信息</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td><table width="800" border="0" cellspacing="0" cellpadding="5" style="line-height:20px; font-size:12px; border:1px #dfdfdf solid;">
+        <tr>
+          <td style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;">收件人：<b>'.$this->addressFirst['name'].'</b></td>
+          <td colspan="2" style="border-bottom:1px #dfdfdf solid;">详细地址：<b>'.$this->orderarr['companyname'].'</b></td>
+        </tr>
+        <tr>
+          <td style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;">详细地址：<b>'.$this->addressFirst['province']." ".$this->addressFirst['city']." ".$this->addressFirst['area']." ".$this->addressFirst['address'].'</b></td>
+          <td style="border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;">邮编：<b>'.$this->addressFirst['zipcode'].'</b></td>
+        </tr>
+        <tr>
+          <td style="border-right:1px #dfdfdf solid;">手机：<b>'.$this->addressFirst['mobile'].'</b></td>
+          <td >固定电话：<b>'.$this->addressFirst['tel'].'</b></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td style="height:15px;"></td>
+  </tr>
+  <tr>
+    <td><table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td style="width:470px; height:5px; background-color:#f00000;"></td>
+          <td style="width:250px; height:5px; background-color:#c00000;"></td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+';
+ echo $mess;
+?>
+</div>

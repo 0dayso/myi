@@ -1,0 +1,162 @@
+
+<link href="/css/jifen/css/jifen.css" type="text/css" rel="stylesheet">
+<script type="text/javascript">
+$(function(){
+var tab = $(".new-categorys");
+	   tab.hover(function(){
+		   $(this).find(".mod_cate_bd").css('display','block');
+		   $(this).find(".new-cate_tit_arrow").removeClass("new-arrowdown");
+		   $(this).find(".new-cate_tit_arrow").addClass("new-arrowup");
+	   },function(){
+		   $(this).find(".mod_cate_bd").css('display','none');
+		   $(this).find(".new-cate_tit_arrow").removeClass("new-arrowup");
+		   $(this).find(".new-cate_tit_arrow").addClass("new-arrowdown");
+	   });
+    
+})
+</script>
+<div id="new-menu" class="jf_menu">
+	<div class="w pos-re">
+    	<div class="new-categorys">
+            <div class="new-cate_tit">
+				<div class="new-cate_tit_con">快速导航</div>
+                <i class="new-cate_tit_arrow new-arrowdown"></i>
+            </div>
+            <div class="mod_cate_bd" style="display:none">
+                <ul>
+                    <li class="mod_cate_li"><a href="/">IC易站首页</a></li>
+                    <li class="mod_cate_li mod_cate_li2"><a href="/category">产品目录</a></li>
+                    <li class="mod_cate_li"><a href="/solutionlist">应用方案</a></li>
+                    <li class="mod_cate_li mod_cate_li2"><a href="/news">产品资讯</a></li>
+                    <li class="mod_cate_li"><a href="/webinarlist">技术研讨会</a></li>
+                    <li class="mod_cate_li mod_cate_li2"><a href="/bompurchase">BOM采购</a></li>
+                    <li class="mod_cate_li"><a href="/event/201308012">难寻器件</a></li>
+                    <li class=" mod_cate_li3">
+                        <div class="mod_cate_r1"><a href="/center">我的IC易站</a></div>
+                        <div class="mod_cate_r2"><a href="/center/exchange" >礼品兑换记录</a></div>
+                    </li>
+                </ul>
+                <div class="mod_cate_bg"></div>
+            </div>
+ 		</div>
+        <ul id="new-navul">
+          <li class="seminar <?php if($_SESSION['jifenmenu']=='index') echo 'on';?>" ><a href="/jifen" class="current">积分商城首页</a></li>
+          <li class="seminar <?php if($_SESSION['jifenmenu']=='lottery') echo 'on';?>" ><a href="/jifen/lottery">积分抽奖</a></li>
+          <li class="seminar <?php if($_SESSION['jifenmenu']=='event') echo 'on';?>" ><a href="/jifen/event">积分活动</a></li>
+          <li class="seminar <?php if($_SESSION['jifenmenu']=='rule') echo 'on';?> fr" ><a href="/jifen/rule">积分规则</a></li>
+          <li class="seminar <?php if($_SESSION['jifenmenu']=='list') echo 'on';?>" ><a href="/jifen/list">积分礼品</a></li>
+        </ul>
+         <div class="jf-check">
+            <?php if(isset($_SESSION['userInfo']['unameSession'])){?>
+                <?php if($this->jifenview>0){?>
+    			<a class="receive pos-overlay " href="javascript:void(0);" target="_self" onclick="registr()">签到领积分<s class="icon"></s></a>
+                <?php }else{?>
+    			<div class="receive-done pos-overlay " style="display:block;">
+    				<span style="font-weight:bold;">已签到，<a href="/jifen/list">去兑换</a></span>
+    			</div>
+                <?php }}else{?>
+                <a class="receive pos-overlay " href="javascript:void(0);" target="_self" onclick="registr()">签到领积分<s class="icon"></s></a>
+                <?php }?>
+        </div>
+  	</div>
+   
+</div>
+
+<!---------------------------------------------------------------------公用头部 结束--------------------------------------------------------------------->
+<script type="text/javascript">
+//兑换产品
+$(function(){
+var tab = $(".item");
+	   tab.hover(function(){
+		   $(this).find(".itemtitle").addClass("block");
+		   $(this).find(".fr").addClass("block");
+		   $(this).find(".proinfolayer").addClass("proinfolayer_h");
+	   },function(){
+		   $(this).find(".itemtitle").removeClass("block");
+		   $(this).find(".fr").removeClass("block");
+		   $(this).find(".proinfolayer").removeClass("proinfolayer_h");
+	   });
+})
+
+
+//兑换提交
+function exchange(giftid){
+	$.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   if(arr.code==0)
+			   {  
+			       $.openPopupLayer({
+		            name: "exchangebox",
+		            url: "/jifen/exchange?id="+giftid
+	              });
+			   }else if(arr.code==100){
+				   $.openPopupLayer({
+		             name: "loginBox",
+		             target: "login_box"
+	              });
+			   }else if(arr.code==200){
+			   	   window.location.href ="/user/verification";
+			   }
+            }
+    });
+}
+//弹出更新地址框
+function showadd(){
+    $.closePopupLayer('exchangebox')
+	$.openPopupLayer({
+		name: "alertadd",
+		target: "alertaddbox"
+	});
+}
+//刷新地址
+function changeadd(){
+	$.closePopupLayer('alertadd');
+	exchange('<?=$this->gift['id']?>');
+}
+
+//用户积分排名
+function userintegral(){
+	$.ajax({
+            url: '/publicbox/userintegral',
+            data: {},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+            	document.getElementById("userintegral").innerHTML = html;
+            }
+    });
+}
+//userintegral();
+//热门礼品
+function hotgift(){
+	$.ajax({
+            url: '/publicbox/hotgift',
+            data: {},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+            	document.getElementById("hotgift").innerHTML = html;
+            }
+    });
+}
+
+//hotgift()
+</script>
+<div id="alertaddbox" style="display:none">
+  <div class="pop pop_shopbox " id="pop_shopbox" style="display:block;">
+    <div class="popbox">
+      <div class="poptit1" style="height:25px;">
+        <input type="button" value=""  class="closebtn" onclick="$.closePopupLayer('alertadd');"/>
+      </div>
+      <div class="popcon clearfix msg24">
+      	<div class="login-btn">
+                <a class="button" href="javascript:;" onClick="changeadd()">已更新配送地址</a>
+         </div>
+      </div>
+  </div>
+</div>
+</div>

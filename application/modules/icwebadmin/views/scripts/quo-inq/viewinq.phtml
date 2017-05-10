@@ -1,0 +1,182 @@
+<?php
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$currency = array('RMB'=>'￥','USD'=>'$','HKD'=>'HK$');
+?>
+
+<div class="popup" style="width:840px; margin:10px 100px">
+  <div class="popup-header">
+    <h2>查看 询价编号#：<?php echo $this->inqhistory[0]['inq_number'];?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box2');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+  <div class="popup-body">
+    <div class=" overflowh">
+      <div class="publicOne">
+        <div class="Publictit"> <span class="Publictit_tit">客户信息</span><strong class="fontgreen">用户名：<?php echo $this->user['user'];?></strong> </div>
+        <?php 
+	             foreach($this->inqhistory as $key=>$v){
+		           $detaile = $v['detaile'];
+		           if($key==0){
+	            ?>
+        <table border="0" cellspacing="0" cellpadding="0" class="Publictable">
+          <tbody>
+            <tr>
+              <td width="100">公司名称：</td>
+              <td><strong><?php echo $this->user['companyname'];?></strong></td>
+              <td width="100">企业性质：</td>
+              <td><strong>
+                <?php
+                        $property_tmp = array('enduser'=>'终端用户','merchant'=>'贸易商');
+						echo $property_tmp[$this->user['property']];?>
+                </strong></td>
+            </tr>
+            <tr>
+              <td>联系人：</td>
+              <td><strong><?php echo $this->user['truename'];?></strong></td>
+              <td>联系方式：</td>
+              <td><strong><?php echo $this->user['mobile'].'  '.$this->user['tel'];?></strong></td>
+            </tr>
+            <tr>
+              <td>交货地：</td>
+              <td><strong><?php echo $deliveryArr[$this->inqhistory[0]['delivery']];?></strong></td>
+              <td>交易货币：</td>
+              <td><strong><?php echo $this->inqhistory[0]['currency'];?></strong></td>
+            </tr>
+            <tr>
+              <td>Email：</td>
+              <td><strong>
+                <?=$this->user['email'];?>
+                </strong></td>
+              <td>传真：</td>
+              <td><strong>
+                <?=$this->user['fax'];?>
+                </strong></td>
+            </tr>
+            <tr>
+              <td>询价日期：</td>
+              <td><strong><?php echo date('Y/m/d H:i',$this->inqhistory[0]['created']);?></strong></td>
+              <td>报价时间：</td>
+              <td><strong><?php echo $this->inqhistory[0]['modified']?date('Y/m/d H:i',$this->inqhistory[0]['modified']):'--';?></strong></td>
+            </tr>
+            <?php if($this->inqorder){?>
+            <tr>
+              <td>订单：</td>
+              <td colspan="3">
+                <?php foreach($this->inqorder as $ioarr){?>
+                <a onclick="viewInqSo('<?=$ioarr['salesnumber']?>')" href="javascript:;" >
+                <?=$ioarr['salesnumber']?>
+                </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <?php }?></td>
+              </td>
+            </tr>
+            <?php }?>
+            <?php if($this->inqhistory[0]['bom_number']){?>
+            <tr>
+              <td>BOM采购单：</td>
+              <td colspan="3">
+                 <a href="javascript:;" onclick="openbox('/icwebadmin/QuoBom/view/number/<?=$this->inqhistory[0]['bom_number']?>')" class="xunjiano"  title="查看详情"><?=$this->inqhistory[0]['bom_number']?></a>
+              </td>
+            </tr>
+            <?php }?>
+            <tr>
+              <td>询价说明：</td>
+              <td colspan="3"><strong><?php echo $this->inqhistory[0]['remark']?$this->inqhistory[0]['remark']:'--';?></strong></td>
+            </tr>
+            <tr>
+              <td>报价说明：</td>
+              <td colspan="3"><strong><?php echo $this->inqhistory[0]['result_remark']?$this->inqhistory[0]['result_remark']:'--';?></strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <table cellpadding="0" border="0" cellspacing="0" class="tablelistPrice">
+        <tbody>
+          <tr>
+            <th width="110">型号</th>
+            <th>描述</th>
+            <th>品牌</th>
+            <th>L/T</th>
+            <th>MPQ</th>
+            <th>MOQ</th>
+            <th>采购<br>数量</th>
+            <th>目标单价<br>
+              (<?=$this->inqhistory[0]['currency']?>)</th>
+            <?php if(count($this->inqhistory) >= 2) echo '<th>其它厂家报价</th>';?>
+            <th class="bggreen">标准<br>
+              交期</th>
+            <th class="bggreen">最小<br>
+              起订量</th>
+            <th class="bggreen"><?=$this->inqhistory[0]['currency']=='RMB'?'含税':''?>
+              单价<br>
+              (<?=$this->inqhistory[0]['currency']?>)</th>
+            <th class="bggreen">有效期</th>
+            <th class="bggreen">备注</th>
+          </tr>
+          <?php foreach($detaile as $vd){?>
+          <tr align="center">
+            <td width="150"><div class="productNO"><?php if($vd['part_id']){ ?>
+              <a href="/proddetails?partid=<?=$vd['part_id'];?>" target="_blank" title="查看产品信息"><?=$vd['part_no']?></a>
+              <?php }else echo $vd['part_no2'];?>
+               <?php if($vd['staged']) echo '<sup><span title="Date Code：'.$vd['datecode'].'" class="sup_SALE HOT">特卖</span></sup>';
+			   if($vd['pdnpcn']['pdn']) echo '<sup><span class="sup_PDN HOT">PDN</span></sup>';
+				if($vd['pdnpcn']['pcn']) echo '<sup><span class="sup_PCN HOT">PCN</span></sup>';?>
+               </div>
+            </td>
+            <td><p title="<?=$vd['description']?>"><?=$this->fun->utf_substr($vd['description'],10)?></p></td>
+            <td><?=$vd['brand']?$vd['brand']:$vd['brand_name']?></td>
+            <td><?=$vd['lead_time']?></td>
+            <td><?=$vd['mpq']?></td>
+            <td><?=$vd['moq']?></td>
+            <td><?=$vd['number']?></td>
+            <td><span class="price">
+              <?=$vd['price']>0?$currency[$this->inqhistory[0]['currency']].$vd['price']:'--'?>
+              </span></td>
+            <?php if(count($this->inqhistory) >= 2) echo '<td>'.$vd['other_vendors'].'</td>';?>
+            <td class="myfont"><?=$vd['result_price']?($vd['inq_lead_time']?$vd['inq_lead_time']:$vd['lead_time']):'--'?></td>
+            <td class="myfont"><?=($vd['pmpq']?$vd['pmpq']:'--')?></td>
+            <td><span class="price">
+              <?=$vd['result_price']?$currency[$this->inqhistory[0]['currency']].$vd['result_price']:'--'?>
+              </span></td>
+            <td class="myfont"><?=$vd['expiration_time']?date('Y-m-d',$vd['expiration_time']):'--'?></td>
+            <td class="myfont"><?=$vd['result_remark']?$vd['result_remark']:'--'?></td>
+          </tr>
+          <?php }?>
+        </tbody>
+      </table>
+      <?php }}?>
+      <div class="Publictit"> <span class="Publictit_tit">PMSC信息</span> </div>
+      <table cellpadding="0" border="0" cellspacing="0" class="tablelistPrice">
+        <tr>
+          <th width="110">型号</th>
+
+          <th>询价数量</th>
+
+          <th width="60">预测量<br/>(按年)</th>
+          <th width="60">目标单价</th>
+          <th>说明描述</th>
+          <th class="bggreen">PMSC报价</th>
+          <th class="bggreen">有效期</th>
+          <th class="bggreen">回复备注</th>
+          <th class="bggreen" width="50">报价专员</th>
+        </tr>
+        <?php 
+	    foreach($detaile as $k=>$vd){?>
+        <td><?=$vd['part_no']?$vd['part_no']:$vd['part_no2']?></td>
+          <td><?=$vd['number']?></td>
+          <td><?=($vd['oa_forecast']?$vd['oa_forecast']:'--')?></td>
+          <td><span class="price">
+            <?=($vd['oa_target_price']>0?$vd['oa_target_price']:'--')?>
+            </span></td>
+          <td><?=$vd['ic_inqd_remark']?$vd['ic_inqd_remark']:'--'?></td>
+          <td><span class="price">
+            <?=$vd['oa_result_price']>0?$vd['oa_result_price']:'--'?>
+            </span></td>
+          <td><?=($vd['oa_expiration_time']?date("Y-m-d",$vd['oa_expiration_time']):'--')?></td>
+          <td><?=$vd['oa_inqd_remark']?$vd['oa_inqd_remark']:'--'?></td>
+          <td><?=$vd['oa_pmsc_name']?$vd['oa_pmsc_name']:'--'?></td>
+        </tr>
+        <?php }?>
+      </table>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+</div>

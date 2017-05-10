@@ -1,0 +1,61 @@
+<link href="/js/bootstrap/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+	<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?> : 一共 <?=$this->total?> 条</h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+<form id="myform"  class="form-search" name="myform" action="" method="get">
+    <?php echo $this->vendorSelect('vendor_id',$this->vendor_id);?>
+    <label>未对应产品线：	<input type = "checkbox" name="brand_id" value="-1"  <?php echo ($this->brand_id ==-1) ? "checked" : "";?>></label>
+<input type="submit" class="btn" value="查 找"/>
+</form>          
+	  <!-- 需要填写的区域-->
+      <div class="contentmia">
+      <table class="table ordertable"  border="1" style=" margin-top:-1px;">
+          <thead>
+           <tr>
+            <th>供应商</th>
+            <th>供应商产品线名称</th>
+            <th>ICEasy品牌名称</th>
+            <th>ICEasy品牌ID</th>
+            <th>更新时间</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            </tr>
+            </thead>
+          <tbody>
+            <?php  if(empty($this->product)){?>
+            <tr><td colspan="19"><center>暂无记录。</center></td></tr>
+            <?php }else{
+				 		foreach($this->product as $k=>$data){
+ 				 ?>
+            <tr>
+                <td><?=$data['vendor_name']?></td>
+                <td><?=$data['linecard_name']?></td>
+                 <td>
+                     <a href="#"  id="ic_brand_id" class="bedit" data-type="select" data-pk="<?php echo $data['id'];?>" data-url="<?php echo $this->editurl;?>" data-title="输入IC易站品牌名称"><?php echo ($data['brand_id'] !=-1) ? $data['brand_name'] : '';?></a>
+                 </td>
+                <td><?=$data['brand_id']?></td>
+                <td><?=$data['updated_at']?></td>
+            </tr>
+          <?php }}?>
+          </tbody>
+          
+        </table>
+        <div class="pagination divpage"><?=$this->page_bar;?></div>
+        </div>
+      <!-- 结束区域-->
+	</div>
+<!-- Modal -->
+<script src="/js/bootstrap/bootstrap.min.js"></script>
+<script src="/js/bootstrap/bootstrap-editable/js/bootstrap-editable.js"></script>
+<script type="text/javascript">
+//$.fn.editable.defaults.mode = 'inline'; 				 
+$(document).ready(function() {
+    $('.bedit').editable({
+        prepend: "选中IC易站品牌",
+        source: <?php echo $this->brand_json;?>
+    });  
+});
+</script>

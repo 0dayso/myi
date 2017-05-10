@@ -1,0 +1,213 @@
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<style type="text/css">
+span.tag{
+border: 1px solid #DDD;
+background: #F6F6F6 ;
+font-weight: bold;
+padding:3px;
+margin-right:5px;
+}
+.tag a{ padding-left:5px;}
+#ic-box{ margin-bottom:10px;}
+</style>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 编辑资讯 <a href="<?=$this->indexurl?>">返回&gt;&gt;</a> </h1>
+<?php if (count($this->messages)) : ?>
+<div class="alert alert-error">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+<?php foreach ($this->messages as $message) : ?>
+    <strong><?php echo ($message); ?></strong>
+<?php endforeach; ?>
+ </div>
+<?php endif; ?>  
+<form id="thisform" class="form-horizontal validate-form" style="text-align:left" method="post" action="<?php echo $this->url();?>" enctype="multipart/form-data">
+  <div class="control-group">
+    <label class="control-label" for="contents">立即上线</label>
+    <div class="controls">
+     <input type="checkbox" name="status" value="1" <?=$this->data['status']==1?'checked':''?> >
+    </div>
+  </div>
+   <div class="control-group">
+    <label class="control-label" for="contents">推荐到首页</label>
+    <div class="controls">
+     <input type="checkbox" name="home" value="1" <?=$this->data['home']==1?'checked':''?> >
+    </div>
+  </div>  
+  <div class="control-group">
+    <label class="control-label" for="published"><em>*</em>上线日期</label>
+    <div class="controls">
+      <input type="text" id="published" name="published" class="required input-xlarge" title="required" value="<?=$this->data['published']?>">
+    </div>
+  </div>  
+  <div class="control-group">
+    <label class="control-label" for="title"><em>*</em>标题</label>
+    <div class="controls">
+      <input type="text" id="title" name="title" class="required input-xlarge" title="required" style="width:500px;" value="<?=$this->data['title']?>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="author"><em>*</em>作者</label>
+    <div class="controls">
+      <input type="text" id="author" class="input-xlarge"  placeholder=""  name="author" value="<?=$this->data['author']?>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="source"><em>*</em>来源</label>
+    <div class="controls">
+      <input type="text" id="source"  class="input-xlarge" name="source" value="<?=$this->data['source']?>">
+    </div>
+  </div>  
+ <div class="control-group">
+    <label class="control-label" for="keyword"><em>*</em>关键字</label>
+    <div class="controls">
+      <input  id="keyword"  class="input-xlarge" name="keyword"  type="text" value="<?=$this->data['keyword']?>">
+    </div>
+  </div>     
+   <div class="control-group">
+    <label class="control-label" for="keyword">相关IC</label>
+    <div class="controls">
+      <input  id="related_ic"  class="input-xlarge" name="related_ic"  type="text" value="">
+    </div>
+  </div>  
+    <div class="controls"  id="ic-box">
+  <?php if($this->part_no){
+  					foreach($this->part_no as $key=>$val){
+  	?>
+  				<span class="tag"><span class="tag-label"><?=$val['part_no']?></span><a href="#" class="tag-close">x</a>
+  				<input type="hidden" name="part_id[<?=$val['part_no']?>]"  value="<?=$val['id']?>" >
+  				</span>
+  <?php 		} 
+		}?>
+  </div>
+ <div class="control-group">
+    <label class="control-label" for="news_type_id"><em>*</em>资讯类型</label>
+    <div class="controls">
+    <?php echo $this->newsTypeSelect('news_type_id',$this->data['news_type_id']);?>
+    </div>
+  </div>    
+  <div class="control-group">
+    <label class="control-label" for="app_level"><em>*</em>应用分类</label>
+    <div class="controls">
+		<?php echo $this->appSelect('app_level1',1,$this->data['app_level1']);?>
+		<?php echo $this->appSelect('app_level2',2,$this->data['app_level2']);?>
+    </div>
+  </div>    
+  <div class="control-group">
+    <label class="control-label" for="part_level1">产品分类</label>
+    <div class="controls">
+		<?php echo $this->productCategorySelect('part_level1',1,$this->data['part_level1']);?>
+		<?php echo $this->productCategorySelect('part_level2',2,$this->data['part_level2']);?>
+		<?php echo $this->productCategorySelect('part_level3',3,$this->data['part_level3']);?>
+    </div>
+  </div>      
+   	<div class="control-group">
+    <label class="control-label" for="keyword">品牌</label>
+    <div class="controls">
+		<?php echo $this->brandSelect('brand_id',$this->data['brand_id']);?>
+    </div>
+    </div>
+	<div class="control-group">
+	  <label class="control-label"  for="image">资讯图片 </label>
+	  <div class="controls">
+	    <input type="text" id="image" placeholder="image" name="image" class="input-large required" value="<?=$this->data['image']?>">
+	    <button type="button" class="btn file_manager" style="" id="image-upload">选择图片</button>
+	  </div>
+	</div>  
+  <div class="control-group">
+    <label class="control-label" for="description"><em>*</em>资讯简介</label>
+    <div class="controls">
+      <textarea  id="description"  name="description" rows="3"  style="width:500px;"><?=$this->data['description']?></textarea>
+    </div>
+  </div>       
+  <div class="control-group">
+    <label class="control-label" for="contents"><em>*</em>资讯详细描述</label>
+    <div class="controls">
+      <textarea name="content" id="content" rows="20" class="kindeditor span9"><?php echo $this->data['content'];?></textarea>
+    </div>
+  </div>     
+   <!--微博-->
+  <?php echo $this->render('common/weibo.phtml');?>
+  <div class="control-group">
+    <div class="controls">
+      <input type="submit" value="添加" class="btn" />
+    </div>
+  </div>
+</form>
+        <br>
+      <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+
+$(function(){
+	$( "#published" ).datepicker({'dateFormat':'yy-mm-dd'});
+	$("#app_level2").chained("#app_level1"); 
+	$('#part_level2').chained('#part_level1');
+	$('#part_level3').chained('#part_level2');
+	$('#related_ic').typeahead(
+		{	
+			items:8,
+			minLength:3,			
+		    source: function (query, process) {
+		        return $.getJSON('<?php echo $this->ajax_url?>', { q: query }, function (data) {
+			        var part =[];
+			        map =[];
+			        $.each(data,function(id,item){
+			        	part.push(item);
+			        	map[item] = id;
+				     });
+		            return process(part);
+		        });
+		    },
+		    updater : function(item)
+		    {
+				var part_id = map[item];
+				var button = '<span class="tag"><span class="tag-label">'+item+'</span><a class="tag-close" href="#">x'+'</a>'
+									+'<input type="hidden" name="part_id['+item+']" value="'+part_id+'" ></span>';
+				$('#ic-box').append(button);
+				//$('#part_id')[0].value = part_id;
+				return '';
+		    }
+		    
+
+		}
+	);
+	$('.tag-close').live('click',function(){
+		$(this).parent().remove();
+		return false;
+	});
+});
+
+
+KindEditor.ready(function(K) {
+			var editor =  K.create('#content', {
+		     allowFileManager : true,
+		     newlineTag : "p" //或者为"br"
+	       });
+			 //News Image
+			var spe_head_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/upload?part=upload/default/news/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/news/'
+			});
+			K('#image-upload').click(function() {
+				spe_head_editor.loadPlugin('image', function() {
+					spe_head_editor.plugin.imageDialog({
+						imageUrl : K('#image-upload').val(),
+						clickFn : function(url, title, width, height, border, align) {
+							K('#image-upload').val(url);
+							K('#image').val(url);
+							spe_head_editor.hideDialog();
+						}
+					});
+				});
+			});
+});
+
+
+</script>
+<script src="/js/bootstrap/bootstrap.min.js" type="text/javascript"></script>
+<script src="/js/jsplug/jquery.chained.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>

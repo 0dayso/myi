@@ -1,0 +1,122 @@
+<style type="text/css">
+.tablenew2014{border:1px #ddd solid;}
+.tablenew2014 th{ background:#006ffa; border:1px solid #fff; line-height:18px; padding:5px 0}
+.tablenew2014 tr:hover{ background:#96bfe8}
+.tablenew2014 td{ text-indent:5px;border:1px solid #ddd}
+.trbg{ background:#e1eeff}
+</style>
+<?php $dep = array('BMP'=>'BMP','BNT'=>'B&T');?>
+	<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?> -> Slow Moving P/N & Qty list </h1>
+				
+	  <!-- 需要填写的区域-->
+       <form id="myform"  name="myform" action="" method="get">
+    
+     
+    <b>开始时间：</b>
+    <input type="text"  style="width:150px;" name="sdata" value="<?=$this->sdata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true,lang:'sc'})"/>
+     <label>结束时间：</label>
+    <input type="text"  style="width:150px;" name="etmie" value="<?=$this->etmie?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true,lang:'sc'})"/>
+    &nbsp;
+ <select name="ordertype" id="ordertype">
+  <option value="online" <?=$this->ordertype=='online'?'selected':''?>>线上订单</option>
+  <option value="outline" <?=$this->ordertype=='outline'?'selected':''?>>线下订单</option>
+  <option value="all" <?=$this->ordertype=='all'?'selected':''?>>全部</option>
+</select>
+&nbsp;
+    <input type="submit" class="btn" value="确 定"/>
+
+ </form>
+      <table cellspacing="0" cellpadding="0" border="1" align="center"  class="tablenew2014">
+      <tr height="30" bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;">
+      <th width="80">型号</th>
+      <th width="50">品牌</th>
+      <th width="80">当前库存数量</th>
+      <th width="80">累计销售数量</th>
+      <th width="100">累计销售金额(RMB)</th><th width="100">累计销售金额(USD)</th><th width="100">累计销售总金额(RMB)</th></tr>
+      <?php 
+	  $t1 = $t2 = $t3 = $t4 = $t5 = 0;
+	  foreach($this->arr as $k=>$prod){
+	  $s1 = $s2 = $s3 = $s4 = $s5 = 0;
+	  $s1 = ($prod['hk_stock']+$prod['sz_stock']-$prod['hk_cover']-$prod['sz_cover']);
+	  $s2 = ($this->soprod[$prod['id']]['num']?$this->soprod[$prod['id']]['num']:0);
+	  $s3 = ($this->soprod[$prod['id']]['RMB']?$this->soprod[$prod['id']]['RMB']:0);
+	  $s4 = ($this->soprod[$prod['id']]['USD']?$this->soprod[$prod['id']]['USD']:0);
+	  $s5 = ($this->soprod[$prod['id']]['USD']*$this->USDTOCNY+$this->soprod[$prod['id']]['RMB']);
+	  $t1 +=$s1;$t2 +=$s2;$t3 +=$s3;$t4 +=$s4;$t5 +=$s5;
+	  $b = '';
+	  if($k%2==0) $b = 'class="trbg"';
+	  ?>
+      <tr <?=$b?>><td><?=$prod['part_no']?></td>
+      <td><?=$prod['bname']?></td>
+      <td><?=$s1?></td>
+      <td><?=$s2?></td>
+      <td><?=number_format($s3,0)?></td>
+      <td><?=number_format($s4,0)?></td>
+      <td><?=number_format($s5,0)?></td>
+      </tr>
+      <?php }?>
+      <tr><td colspan="2">总计</td><td><?=$t1?></td><td><?=$t2?></td><td><?=number_format($t3,0)?></td><td><?=number_format($t4,0)?></td><td><?=number_format($t5,0)?></td></tr>
+      
+      <tr><td colspan="7">
+      <div id="container" style="min-width: 400px; height:400px; margin: 0 auto;0"></div>
+      </td></tr>
+      
+      </table>
+	  
+
+
+      <!-- 结束区域-->
+	</div>
+ <script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+ <script src="/js/jsplug/highcharts/highcharts.js"></script>
+<script src="/js/jsplug/highcharts/modules/exporting.js"></script>
+<script type="text/javascript">
+$(function () {
+    $('#container').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: ''
+        },
+        tooltip: {
+    	    pointFormat: '<b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '',
+            data: [
+                {
+                    name: '已经完成销售额(RMB)',
+                    y: <?=($t5/10000000)?>,
+					color: '#4E7FBB',
+                    sliced: true,
+                    selected: false
+                },{
+                    name: '需要完成销售额(RMB)',
+                    y: <?=((10000000-$t5)/10000000)?>,
+					color: '#BE4F4C',
+                    sliced: false,
+                    selected: false
+                }
+            ]
+        }]
+    });
+});
+		</script>

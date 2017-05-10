@@ -1,0 +1,148 @@
+<script type="text/javascript">
+//下拉菜单
+$(function(){
+	$('.iconA').hover(function(){
+		$(this).addClass("iconA-hover");
+	},function(){
+		$(this).removeClass("iconA-hover");
+	});
+	//加载用户信息
+	$('.userinfo_load_top').mouseenter(function(){
+		$("#userinfo_drowm_top").load("/publicbox/userinfo");
+	});
+	//加载用户信息
+	$('.userinfo_load_menu').mouseenter(function(){
+		$("#userinfo_drowm_menu").load("/publicbox/userinfo");
+	});
+	//购物车
+	$('.cartdropdown_hover').mouseenter(function(){
+		$("#cartdropdown").load("/cart/dropdown");
+	});
+	//询价篮
+	$('.inquirydropdown_hover').mouseenter(function(){
+		$("#inquirydropdown").load("/inquiry/dropdown");
+	});
+	
+});
+</script>
+<div id="top_nav">
+	<div class="w">
+    	<div class="fl ">
+        	<ul class="top_nav_ul">
+            	<li><strong style="color:#ff6600; font-size:13px;">中电器材旗下元器件电商平台</strong></li>
+                <li><span style="color:#ddd; margin:0 3px">|</span></li>
+                
+				<?php if(isset($_SESSION['userInfo']['unameSession'])){?>
+                <li>
+                    <div class="iconA logininfo201312 pos-re">
+                        <div class="menu-hd201312 icon_t userinfo_load_top">
+                        	<a href="/center" target="_top" class="name "><?=$_SESSION['userInfo']['unameSession'];?></a><i><em></em><span></span></i>
+                        </div>
+                        <div class="menu-bd-name menu-bd-con">
+                            <div id="userinfo_drowm_top"><img src="/images/admin/ajax-loader.gif" /> 加载中...</div>
+                            <div class="clr"></div>
+                        </div>
+                    </div>
+                </li>
+                <?php }else{?>
+                <li><span>您好，欢迎来到<span class="fontArial">IC</span>易站！</span></li>
+                <li>
+                    <a href="/user/login?url=<?=rawurlencode($_SERVER['REQUEST_URI'])?>">登录</a>
+                    <a href="/user/register">注册</a></span>
+                </li>
+                <?php }?>
+            </ul>
+        </div>
+        <div class="fr">
+        	<ul class="top_nav_ul">
+            	<li><a href="/inquiry">询价篮(<u class="inquirynumber"><?php if(!isset($_SESSION['inquirynumber'])) echo 0;else echo $_SESSION['inquirynumber'];?></u>)</a></li>
+                <li><span style="color:#ddd; margin:0 3px">|</span></li>
+                <li><a href="/cart">购物车(<u class="cartnumber"><?php if(!isset($_SESSION['cartnumber'])) echo 0;else echo $_SESSION['cartnumber'];?></u>)</a></li>
+                <li><span style="color:#ddd; margin:0 3px">|</span></li>
+            	<li>
+                    <div class="iconA myse201312 pos-re">
+                        <div class="menu-hd201312 icon_t">
+                        	<a href="/center" target="_top" >我的IC易站</a><i><em></em><span></span></i>
+                        </div>
+                        <div class="menu-bd-order menu-bd-con">
+                            <div class="uclist">
+                                <div class="fl">          
+                                    <ul class="fore1 ">                              	                  
+                                        <li><a href="/center/order">我的订单</a></li>
+                                        <li><a href="/center/inquiry">我的询价</a></li>
+                                        <li><a href="/center/bom">BOM采购</a></li>
+                                        <li><a href="/center/coupon">我的优惠券</a></li>
+                                        <li><a href="/center/delivery">交期变更</a></li>   
+                                        <li><a href="/center/invoice">发票申请</a></li>                                           
+                                    </ul> 
+                                </div> 
+                                <div class="fr">             
+                                    <ul class="fore1 ">                              	                  
+                                        <li><a href="/center/info">个人资料</a></li>
+                                        <li><a href="/center/address">收货地址</a></li>
+                                        <li><a href="/center/favorites">收藏夹</a></li>
+                                        <li><a href="/center/exchange">礼品兑换</a></li>
+                                        <li><a href="/center/samples">样片申请</a></li>   
+                                        <li><a href="/center/mylaboratory">我的实验室</a></li>                                          
+                                    </ul> 
+                                </div>                                       
+                            </div>
+                            <div class="clr"></div>
+                        </div>
+                    </div>
+                </li>
+                <!--<li><span style="color:#ddd; margin:0 3px">|</span></li>
+                <li>
+                    <div class="iconA myse201312 pos-re">
+                        <div class="menu-hd201312 icon_t">
+                        	<?php if (isset($_COOKIE['style'])){if($_COOKIE['style']=='widescreen') echo '宽屏版';else echo '标准版';} else echo '标准版';?><i><em></em><span></span></i>
+                        </div>
+                        <div class="menu-bd-help menu-bd-con">
+                            <div class="uclist">  
+                                 <div class="fl">          
+                                    <ul class="fore1 ">                              	                  
+                                    <li><a href="javascript:;" onClick="changestyle('style','standard',24*7)">标准版</a></li>
+                                    <li><a href="javascript:;" onClick="changestyle('style','widescreen',24*7)">宽屏版</a></li>
+                                    </ul> 
+                                </div>
+                                                              
+                            </div>
+                            <div class="clr"></div>
+                        </div>
+                    </div>
+                </li>-->
+                <li><span style="color:#ddd; margin:0 3px">|</span></li>
+                <li>
+                    <div class="iconA myse201312 pos-re">
+                        <div class="menu-hd201312 icon_t">
+                        	<a href="/help/customer/type/problem"><?=$this->translate('Foot_CustomerCenter')?></a><i><em></em><span></span></i>
+                        </div>
+                        <div class="menu-bd-help menu-bd-con">
+                            <div class="uclist">
+                                <div class="fl">          
+                                    <ul class="fore1 ">                              	                  
+                                         <li><a href="/help/customer/type/problem" rel="nofollow">常见问题</a></li>
+                                         <li><a href="/help/customer/type/aftermarket" rel="nofollow">售后服务</a></li>
+                                         <li><a href="/help/customer/type/onlineservice" rel="nofollow">在线客服</a></li>
+                                         <li><a href="/help/customer/type/complaint" rel="nofollow">投诉中心</a></li>
+                                         <li><a href="/help/customer/type/servicemail" rel="nofollow">客服邮箱</a></li>                                          
+                                    </ul> 
+                                </div>                                       
+                            </div>
+                            <div class="clr"></div>
+                        </div>
+                    </div>
+                </li>
+                <li><span style="color:#ddd; margin:0 3px">|</span></li>
+                <li><a href="javascript:;" onclick="addfavorite('<?php echo HTTPHOST;?>')">收藏本站</a></li>
+                <li class="menu-bd-tel"><b class="telp">(86) 400-626-1616</b></li>
+            </ul>
+            <?php if (isset($_COOKIE['styleselect']) && $_COOKIE['styleselect']=='alert'){}else{?>
+            <!--<div class="tipbox02" id="tipbox02">
+                <a href="javascript:;" class="sce_tip_close" onclick="addCookie('styleselect','alert',24);document.getElementById('tipbox02').style.display='none';">关闭</a>
+                <a href="javascript:;" onclick="addCookie('styleselect','alert',24);changestyle('style','widescreen',24*7)" class="sce_tip_ofter">立即申请</a>
+            </div>-->
+            <?php }?>
+        </div>
+    </div>
+</div>

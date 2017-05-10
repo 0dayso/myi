@@ -1,0 +1,618 @@
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/dir2013.css"/>
+<link rel="stylesheet" href="/js/jsplug/lightbox/css/lightbox.css" type="text/css" media="screen" />
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+<?php 
+	//过滤产品
+	$prodarr = $this->fun->filterProduct($this->prodarr);
+	//获得零售价
+	$partid = $prodarr['id'];
+	$moq    = $prodarr['moq'];
+	$mpq    = $prodarr['mpq'];
+	//开始显示的交货地
+	$show_price = 0;
+	$checked_sz  = $checked_hk = '';
+	if($prodarr['f_show_price_sz']){
+		$stock      = $prodarr['f_stock_sz'];
+	    $show_price = $prodarr['f_show_price_sz'];
+	    $sell_price = $prodarr['f_sell_price_sz'];
+	    $sell_total = $sell_price*$moq;
+		$lead_time  = $prodarr['f_lead_time_cn']?$prodarr['f_lead_time_cn']:'--';
+		$checked_sz = 'checked';
+		$unit = $prodarr['f_rmb'];
+		$break_price = $prodarr['f_break_price_new_d_sz'];
+		$break_price_title = '含税(17%)';
+	}elseif($prodarr['f_show_price_hk']){
+		$stock      = $prodarr['f_stock_hk'];
+	    $show_price = $prodarr['f_show_price_hk'];
+	    $sell_price = $prodarr['f_sell_price_hk'];
+	    $sell_total = $sell_price*$moq;
+		$lead_time  = $prodarr['f_lead_time_hk']?$prodarr['f_lead_time_hk']:'--';
+		$checked_hk  = 'checked';
+		$unit = $prodarr['f_usd'];
+		$break_price = $prodarr['f_break_price_new_d_hk'];
+		$break_price_title = '美元';
+	}elseif($prodarr['f_break_price_notitle_sz']){
+		$break_price_title = '含税(17%)';
+		$break_price = $prodarr['f_break_price_new_d_sz'];
+	}elseif($prodarr['f_break_price_notitle_hk']){
+		$break_price_title = '美元';
+		$break_price = $prodarr['f_break_price_new_d_hk'];
+	}
+	if(isset($stock) && $stock < $moq){
+	  $lead_time = $prodarr['lead_time']?$prodarr['lead_time']:'--';
+	}
+?>
+<input type="hidden" name="part_no" id="part_no" value="<?=$prodarr['part_no'];?>" />
+<input type="hidden" name="partid" id="partid" value="<?=$partid?>" />
+<?php  
+if($prodarr['part_img']=='' || $prodarr['part_img']=='no.gif') {
+    $img_url = PRODUCTICON.'no_big.gif';
+}else {
+    $img_url = PRODUCTICON.$prodarr['part_img'];
+	$big_url = PRODUCTICONBIG.$prodarr['part_img'];
+}
+?>
+<div class="prode">
+    <div class="w">
+        <div class="prodetail2013 clearfix boxshadow">
+            <div class="proimg fl">
+  <?php if(isset($big_url) && $big_url && $this->fun->checkFile($big_url)){?>
+  <a href="<?=$big_url?>" rel="lightbox"  title="<?=$prodarr['part_no'];?>"><img src="<?=$img_url?>" alt="<?=$prodarr['part_no'];?>" title="<?=$prodarr['part_no'];?>"/></a>
+  <?php }else{?>
+  <img src="<?=$img_url?>" alt="<?=$prodarr['part_no'];?>" title="<?=$prodarr['part_no'];?>"/>
+  <?php }?>  
+   <p class="fontgray">图片仅供参考，请以实物为准</p>
+   <?php if(isset($big_url) && $big_url && $this->fun->checkFile($big_url)){?>
+  <span class="bigicon png_ie6"></span>
+  <?php }?>
+  <div class="sale_price"><p><span class="price" style="font-size:16px;">5折 <br><span style="font-size:12px;">限时限量抢购</span></span></p></div>
+            </div>
+            <div class="proinfo_btn_1">
+    <?php if($prodarr['datasheet']) {
+	
+	        $dsarr = explode('<>',$prodarr['datasheet']);
+    		foreach($dsarr as $dsstr){
+			   if($dsstr){
+			     $datasheet_name = $datasheet = '';
+    			 $tmparr = explode('()',$dsstr);
+				 if(count($tmparr)==2){
+				 	$datasheet_name = $tmparr[0];
+					$datasheet      = $tmparr[1];
+				 }else{
+				 	$datasheet_name = '数据文档';
+					$datasheet      = $tmparr[0];
+				 }
+				 if($datasheet_name){
+				 ?>
+                 <a href="<?=$datasheet?>" target="_blank" title="<?=$prodarr['part_no'].$datasheet_name;?>"  class="gbqfb logclick" rev="prodderails_datasheet" rel="<?=$this->prodarr['id']?>"><i class="icon_download"></i><?=$datasheet_name?></a>
+                 <?php
+				 }
+    		  }
+    	   }
+		}
+	?>
+ <a href="javascript:;" title="收藏该商品"  onclick="favorites('<?=$this->prodarr['id']?>')" class="gbqfb"><i class="icon_save"></i>收藏该商品</a></p>
+            </div>
+            <div class="proinfo fl"  >
+                <div class="proinfo_m fl">
+        <h1 class="model" title="<?=$prodarr['part_no'];?>"><?=$prodarr['part_no'];?></h1>
+    <?php 
+	//其它品牌不显示
+	if($prodarr['bid']!=40){?>
+    <a href="/pl/<?=$prodarr['bname']?><?php if(in_array($actingbrand['comid'],array(17,13))){echo '?t=1';}?>" target="_blank"  title="<?=$prodarr['bname']?>"  class="logclick" rev="prodderails_brand" rel="<?=$this->prodarr['bid']?>"><img src="/images/default/brand/<?=$prodarr['bid']?>_h.png"  height="36" title="<?=$prodarr['bname']?>" class="png_ie6"/></a>
+    <?php }?>
+                </div>
+                <div class="proinfo_data fl dl2013">
+                
+              
+                    <dl class="dl100">
+                        <dt>原&nbsp;&nbsp;&nbsp;单&nbsp;&nbsp;&nbsp;价：</dt><dd><strong class="price"><span class="price_unit">￥</span><span id="sell_price"><?=$prodarr['nxp_list_price']?></span></strong></dd>
+                    </dl>
+               
+
+                    <dl>
+                        <dt>库&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存：</dt><dd>
+                        <?php 
+						if($prodarr['nxp_show_dinghuo']==0){echo '<b class="fontgreen">现货</b>';}
+					else {echo '<b class="fontorange">售罄</b>';}
+					?></dd>
+                    </dl>
+                    <dl>
+                        <dt>发&nbsp;&nbsp;&nbsp;货&nbsp;&nbsp;&nbsp;地：</dt><dd>国内</dd>
+                    </dl>
+                    <dl>
+                        <dt>标准包装：</dt><dd><?=($this->prodarr['mpq']==0?'--':$this->prodarr['mpq'])?></dd>
+                    </dl>
+                    
+                    <!--<dl>
+                        <dt>最小起订量：</dt><dd><?=$moq?$moq:'--';?></dd>
+                    </dl>-->
+                    <dl class="dl100">
+                        <dt>快&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;递：</dt><dd></dd>
+                        <div class="tipsbox" >
+                            <b>免</b>
+                            <span>活动期间免运费及包装费</span>
+                        </div>
+                    </dl>
+                </div>
+                
+                
+                <div class="proinfo_s labelinput dl2013 "><!--jamie 注意：当无法购买时proinfo_s  下面的proinfo_btn加上样式 MT40-->
+                    <dl class="dl100">
+                        <dt>抢购数量：</dt>
+                        <dd><b><?=$prodarr['nxp_sell_number']?></b></dd>
+        
+                        <dd><p class="smdata">原价小计：<strong class="price"><span class="price_unit">￥</span><span id="sell_total"><?=number_format($prodarr['nxp_sell_number']*$prodarr['nxp_list_price'],DECIMAL);?></span></strong></p></dd>
+                       
+                    </dl>
+                    
+                </div>
+               
+                <div class="proinfo_btn ">
+                <?php if(!$this->prodarr['noinquiry']){?>
+                
+    <a href="javascript:" onclick="openInquiry('<?=$this->prodarr['id']?>')" title="询价" class="btnok-new1 logclick" rev="prodderails_part_id" rel="<?=$this->prodarr['id']?>"><i class="icon_buy"></i>询价看看</a>
+    <?php }?>
+    <?php if($prodarr['nxp_show_dinghuo']==0){//可以购买?>
+    <a href="javascript:" onclick="qianggou('<?=$this->prodarr['id']?>')" title="立即抢购" class="btnok-new1 logclick" rev="prodderails_part_id" rel="<?=$this->prodarr['id']?>"><i class="icon_xun"></i>立即抢购</a>
+    <?php }else{?>
+    
+   <a style="padding:0; width:120px; height:36px;" class="gbqfb btnok-new1" href="javascript:" onclick="shouqing('<?=$this->prodarr['id']?>')">售&nbsp;&nbsp;&nbsp;&nbsp;罄</a>
+    <?php }?>
+                </div>
+        
+                
+            </div>
+            <!--梯形价格-->
+            <div class="fr  LadderPrice">
+               <?php if($break_price){?>
+               <h2>产品阶梯价格</h2>
+                <div class="LadderPrice_c" id="break_price_show">
+                    <ul>
+                        <li class="w30">数量</li>
+                        <li class="w70"><?=$break_price_title?></li>
+                    </ul>
+                    <?=$break_price;?>
+               </div>
+              <?php }elseif(!$this->prodarr['noinquiry']){?>
+              <h2>询价提示</h2>
+  <ul>
+    <li>1、24小时内快速提供报价</li>
+    <li>2、提交询价后立即发送确认邮件</li>
+    <li>3、登录我的询价实时查看处理情况</li>
+  </ul>
+           <?php }else{?>
+  <h2>提示</h2>
+  <ul>
+    <li>1、此型号已经不支持询价</li>
+    <li>2、如有需要请联系IC易站客服</li>
+  </ul>
+<?php }?>
+
+            </div>
+            
+        </div>
+    </div>
+    <div class="w ">
+        <div class="prodetail2013_c fl ">
+        	<div class="dl2013 clearfix">
+                <dl>
+                    <dt>厂商：</dt><dd><a href="/pl/<?=$this->prodarr['bname'];?>" target="_blank" title="<?=$this->prodarr['bname'];?>" class="logclick" rev="prodderails_brand" rel="<?=$this->prodarr['bid']?>">
+            <?=$this->prodarr['bname'];?>
+            </a></dd>
+                </dl>
+                <dl>
+                    <dt>标准包装：</dt><dd><?=$this->prodarr['mpq']==0?'--':$this->prodarr['mpq'];?></dd>
+                </dl>
+                <dl>
+                    <dt>封装：</dt><dd><?=($this->prodarr['supplier_device_package']?$this->prodarr['supplier_device_package']:'--')?></dd>
+                </dl>
+                <dl>
+                    <dt>包装：</dt><dd><?=($this->prodarr['packaging']?$this->prodarr['packaging']:'--')?></dd>
+                </dl>
+                <dl>
+                    <dt>类别：</dt><dd><?php if($this->prodarr['cname3']){?>
+            <a href="/list-<?=$this->prodarr['part_level1']?>-<?=$this->prodarr['part_level2']?>-<?=$this->prodarr['part_level3']?>.html" target="_blank" title="<?=$this->prodarr['cname3']?>" class="logclick" rev="prodderails_category" rel="<?=$this->prodarr['part_level3']?>">
+            <?=$this->prodarr['cname3']?>
+            </a>
+            <?php }else{?>
+            <a href="/list-<?=$this->prodarr['part_level1']?>-<?=$this->prodarr['part_level2']?>.html" target="_blank" title="<?=$this->prodarr['cname2']?>" class="logclick" rev="prodderails_category" rel="<?=$this->prodarr['part_level2']?>">
+            <?=$this->prodarr['cname2']?>
+            </a>
+            <?php }?></dd>
+                </dl>
+                <dl>
+                    <dt>无铅情况/ROHS：</dt><dd>
+                    <?=$this->prodarr['rohs']==1?'<img src="/images/default/RoHS.gif"  title="符合"/>':'<img src="/images/default/NO_RoHS.gif" title="不符合"/>';?></dd>
+                </dl>
+                <dl class="dl100">
+                    <dt>产品描述：</dt><dd><?=($this->prodarr['description']?$this->prodarr['description']:'--')?></dd>
+                </dl>
+            </div>
+            <div class="pos_reltab MT20">
+                <ul class="tabbar clearfix">
+                    <li class="selected"><a href="javascript:">产品信息<b class="blank3"></b></a></li>
+                    <?php if($this->prodarr['overview']) {?>
+     <li class=""><a href="javascript:">描述<b class="blank3"></b></a></li>
+      <?php }?> 
+	  <?php if($this->prod_notes) {?>
+      <li class=""><a href="javascript:">技术资料<b class="blank3"></b></a></li> 
+      <?php }?>   
+      <?php if($this->pdn) {?>
+     <li class=""><a href="javascript:">PDN<b class="blank3"></b></a></li>
+      <?php }?>
+      <?php if($this->pcn) {?>
+      <li class=""><a href="javascript:">PCN<b class="blank3"></b></a></li>  
+      <?php }?> 
+                </ul>
+                </div>
+            <div>
+          <div class="tab_con" style="display: block;">
+            <table class="listtable" border="0" cellpadding="0" cellspacing="0"><!--注意:第二行加上 class="trbg"-->
+              <tbody><tr>
+                <th width="30%"  align="left">参数</th>
+                <th width="70%" align="left">数值</th>
+              </tr>
+              <?php if($this->prodarr['parameters'])
+                {
+                   $vtmp = array_filter(explode(';',html_entity_decode($this->prodarr['parameters'])));
+				   foreach($vtmp as $k=>$v){
+				   $value = explode('|', $v);
+				   if($value[0] && $value[1])
+				   {
+						if(!strpos($value[0],"Container") && !strpos($value[0],"Price")  && !strpos($value[0],"Tariff (US)") )
+						{
+						$bg = '';
+						if(($k+1)%2==0){
+						$bg = 'class="trbg"';
+						}
+				   echo '<tr '.$bg.'><td  style="border-right:1px solid #e3e3e3;text-align:left; padding-left:10px;">'.$value[0].'</td><td style="text-align:left; padding-left:10px;">'.$value[1].'</td></tr>';
+					   }
+				   }      
+				  }
+               }
+                ?>
+             </tbody></table>
+          </div>
+          <?php if($this->prodarr['overview']) {?>
+          <div class="tab_con" style="display: none;">
+            <table class="listtable"border="0" cellpadding="0" cellspacing="0">
+              <tbody><tr>
+                <td align="left" colspan="2" style="padding:10px;"><?=$this->prodarr['overview']?></td>
+              </tr>
+            </tbody></table>
+          </div>
+         <?php }?>
+                <?php if($this->prod_notes) {?>
+      <div class="tab_con" style="display: none; ">
+      <h3 style="margin-bottom:15px;">应用笔记</h3>
+        <table  class="listtable" border="0" cellpadding="0" cellspacing="0">
+			<thead>
+			<tr>
+			<th width="60%"  style="text-align:center">主题</th>
+			<th  width="15%" style="text-align:center">文件大小</th>
+			<th  width="15%" style="text-align:center">发布日期</th>
+			<th  width="10%" style="text-align:center">下载</th>
+			</tr>
+			</thead>
+			<?php foreach($this->prod_notes as $note):?>
+			<tr>
+			<td ><?php echo $note['filedesc'];?></td>
+			<td style="text-align:center"><?php echo $this->formatFilesize($note['filesize']);?></td>
+			<td style="text-align:center"><?php echo date('d/m/Y',$note['modified']);?></td>
+			<td style="text-align:center"><a href="<?php echo $note['fileurl']?>"  target="_blank"><img src="/images/default/download_pdf.gif" alt="下载"></a>
+			</tr>
+			<?php endforeach;?>
+        </table>
+      </div>
+      <?php }?> 
+      <?php if($this->pdn) {?>
+      <div class="tab_con" style="display: none; ">
+        <table  class="listtable" border="0" cellpadding="0" cellspacing="0">
+          <thead>
+			<tr>
+			<th width="10%"  style="text-align:center">PDN#</th>
+            <th width="20%"  style="text-align:center">Last Time Buy Date
+</th>
+            <th width="20%"  style="text-align:center">Last Time Ship Date
+</th>
+			<th  width="40%" style="text-align:center">Title Of Change</th>
+            <th  width="10%" style="text-align:center">PDNFileDetail
+</th>
+			</tr>
+			</thead>
+            <?php foreach($this->pdn as $pdn):?>
+			<tr>
+			<td style="text-align:center"><?=$pdn['number'];?></td>
+            <td style="text-align:center"><?=($pdn['last_buy']?$pdn['last_buy']:'--')?></td>
+            <td style="text-align:center"><?=($pdn['last_ship']?$pdn['last_ship']:'--')?></td>
+            <td style="text-align:center"><?=($pdn['title']?$pdn['title']:'--')?></td>
+			<td style="text-align:center">
+            <?php if($pdn['file_detail'] && file_exists('upload/default/pdnpcn/pdn/'.$pdn['file_detail'])){?>
+            <a href="<?='/upload/default/pdnpcn/pdn/'.$pdn['file_detail']?>"  target="_blank"><img src="/images/default/download_pdf.gif" alt="下载"></a>
+            <?php }?>
+			</tr>
+			<?php endforeach;?>
+        </table>
+      </div>
+      <?php }?>     
+      <?php if($this->pcn) {?>
+      <div class="tab_con" style="display: none; ">
+        <table class="listtable" border="0" cellpadding="0" cellspacing="0">
+          <thead>
+			<tr>
+			<th width="10%"  style="text-align:center">PCN#</th>
+            <th width="20%"  style="text-align:center">PCN Effective Date
+</th>
+            <th width="20%"  style="text-align:center">PCN Publish Date
+</th>
+			<th  width="40%" style="text-align:center">Title Of Change</th>
+            <th  width="10%" style="text-align:center">PCNFileDetail
+</th>
+			</tr>
+			</thead>
+            <?php foreach($this->pcn as $pcn):?>
+			<tr>
+			<td style="text-align:center"><?=$pcn['number'];?></td>
+            <td style="text-align:center"><?=($pcn['effective_date']?$pcn['effective_date']:'--')?></td>
+            <td style="text-align:center"><?=($pcn['publish_date']?$pcn['publish_date']:'--')?></td>
+            <td style="text-align:center"><?=($pcn['title']?$pcn['title']:'--')?></td>
+			<td style="text-align:center">
+            <?php if($pcn['file_detail'] && file_exists('upload/default/pdnpcn/pcn/'.$pcn['file_detail'])){?>
+            <a href="<?='/upload/default/pdnpcn/pcn/'.$pcn['file_detail']?>"  target="_blank"><img src="/images/default/download_pdf.gif" alt="下载"></a>
+            <?php }?>
+			</tr>
+			<?php endforeach;?>
+        </table>
+      </div>
+      <?php }?>   
+        </div>
+        </div>
+        <!--应用方案-->
+        <?php if($this->solution){?>
+        <div style="padding: 10px; margin-bottom:15px" class="fr rightbox boxshadow  pos-re">
+        	<div class="subhot  pos-re">
+            	<h2>相关方案</h2>
+                <div class="subshop">
+					<div class="dBoxConS">
+                        <ul class="pmListS">
+                           <?php foreach($this->solution as $k=>$v){?>
+                            <li><i title="资讯" class="icon-s icon-s2"></i><a target="_blank" href="/solution-<?=$v['id']?>.html" title="<?=$v['title']?>"><?=$v['title']?></a></li>
+                            <?php }?>
+                        </ul>
+                    </div>
+                        
+                </div>
+                
+            </div>
+        </div>
+        <?php }?>
+        
+        <div class="fr rightbox boxshadow  pos-re">
+            <!--热销推荐-->
+            <div id='hotpord'></div>
+            
+            <?php if($this->relevance){?>
+        
+            <div class="subhot  pos-re">
+            	<h2>相关商品</h2>
+                <div class="subshop">
+ 						
+ 
+                 <?php foreach($this->relevance as $i=>$prod){
+                     $data = $this->fun->filterProduct($prod);
+                     $break_price='';$stock = 0;$show_price = 0;
+                    if($data['f_show_price_sz']){
+                        $show_price = $data['f_show_price_sz'];
+                        $stock      = $data['f_stock_sz'];
+                        $showprice = $data['f_rmb'].number_format($data['f_lowest_price_sz'],DECIMAL); 
+                        $break_price = $data['f_break_price_notitle_sz'];
+                    }elseif($data['f_show_price_hk']){
+                        $show_price = $data['f_show_price_hk'];
+                        $stock      = $data['f_stock_hk'];
+                        $showprice = $data['f_usd'].number_format($data['f_lowest_price_hk'],DECIMAL); 
+                        $break_price = $data['f_break_price_notitle_hk'];
+                    }
+					
+                     if(($data['f_stock_sz']+$data['f_stock_hk'])>0){
+                         $goodsprice_title = '<strong class="fontorange">现货</strong>';
+                     }else{
+                         $goodsprice_title = '<strong class="">订货</strong>';
+                     }
+                     if($show_price){		
+                         $goodsprice = '<div class="icon_t">低至：<span class="priceti">'.$showprice.'<i><em></em><span></span></i></span><div class="pprice201312_detail">'.$break_price.'</div></div>';
+                     }else{
+                        $goodsprice = '';
+                     }
+                  ?>
+                  <div class="por_box2013 item ">
+                  <a href="<?=$data['f_produrl']?>" title="<?=$data['part_no']?>" class="s-img logclick" rev="related_part_id" rel="<?=$data['id']?>"><img alt="img" src="<?=PRODUCTICON.($data['part_img']==''?'no.gif':$data['part_img'])?>"  title="<?=$data['part_no']?>"></a>
+                            <div class="pbox201312">
+                                <div class="spot201312"></div>
+                                <div class="pmodel201312">
+                                <a href="<?=$data['f_produrl']?>"  title="<?=$data['part_no']?>" class="logclick" rev="related_part_id" rel="<?=$data['id']?>"><?=$this->fun->utf_substr(($data['part_no']),11,'...')?></a></div>
+                                <div class="ptip201312"><?=$goodsprice_title?>-<a href="/list-<?=$data['part_level1']?>-<?=$data['part_level2']?>-<?=$data['part_level3']?>.html"><?=($data['cname3']==''?$data['cname2']:$data['cname3'])?></a></div>
+                                <div class="pprice201312">
+                                    <?=$goodsprice?>
+                                </div>
+                            </div>
+                        </div>
+                  <?php }//end foreach($this->relevance as $i=>$prod)?> 
+            </div>
+        </div>
+    
+        <?php }//end 相关型号?>
+            
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+function openFav(type) {
+   var name = 'myexist';
+   if(type=='ok')  name = 'myok';
+	$.openPopupLayer({
+		name: "favAlert",
+		target: name
+	});
+}
+</script>
+<div class="pop pop_save"  id="myok" style="display:none" >
+  <div class="popbox">
+    <div class="popcon clearfix msg">
+      <h3>
+        <div class="ok">该商品已成功放入收藏夹</div>
+      </h3>
+      <p class="spbbtndiv"><a href="javascript:" onClick="$.closePopupLayer('favAlert')">继续购物</a> <a class="abutton"  href="/center/favorites" target="_parent">
+        <?=$this->translate('Menu_MyFavorites')?>
+        </a></p>
+    </div>
+  </div>
+</div>
+<div class="pop pop_save"  id="myexist" style="display:none" >
+  <div class="popbox">
+    <div class="popcon clearfix msg">
+      <h3>
+        <div class="tips">你已经收藏过该商品</div>
+      </h3>
+      <p class="spbbtndiv"><a href="javascript:" onClick="$.closePopupLayer('favAlert')">继续购物</a> <a class="abutton"  href="/center/favorites" target="_parent">
+        <?=$this->translate('Menu_MyFavorites')?>
+        </a></p>
+    </div>
+  </div>
+</div>
+<script src="/js/jsplug/lightbox/js/lightbox.js"></script>
+<script type="text/javascript">
+//点击售罄
+function shouqing(partid){
+	$.openPopupLayer({
+	    name: "shouqingBox",
+	    url: "/hd/shouqing?partId="+partid
+	});
+}
+//抢购
+function qianggou(partId){
+	$.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   if(arr.code==0)
+			   {  
+			      $.ajax({
+						url: '/user/checkdetailed',
+						data: {},
+						type: 'post',
+						dataType: 'json',
+						success: function(arr) {
+							if(arr.code==0)
+							{
+								 window.location.href="/hd/qianggou?k=<?=$this->fun->encryptVerification($prodarr['id'])?>";
+							}else{
+								$.openPopupLayer({
+								 name: "companyinfoBox",
+								 url: "/center/companyinfo"
+								});
+							}
+						}
+					});
+			   }else if(arr.code==100){
+			   	  $.openPopupLayer({
+		             name: "loginBox",
+		             target: "login_box"
+	              });
+			   }else if(arr.code==200){
+			   	   window.location.href ="/user/verification";
+			   }
+            }
+    });
+}
+$(function(){
+	$('.pprice201312').hover(function(){
+		$(this).addClass("item-hover");
+	},function(){
+		$(this).removeClass("item-hover");
+	});
+});
+
+var break_price_sz = '<ul><li class="w30">数量</li><li class="w70"  class="titbg1ts">含税(17%)</li></ul><?=$prodarr['f_break_price_new_d_sz']?>';
+var break_price_hk = '<ul><li class="w30">数量</li><li class="w70"  class="titbg1ts">美元</li></ul><?=$prodarr['f_break_price_new_d_hk']?>';
+
+$(function(){
+//价格
+          var tab = $(".subhot .goodsprice");
+           tab.hover(function(){
+		       $(this).find(".price").addClass("hover");
+			   $(this).find(".tipprice").addClass("block");
+           },function(){
+		       $(this).find(".price").removeClass("hover");
+			   $(this).find(".tipprice").removeClass("block");
+           });
+		//不同交货地
+        $(".delivery_place").click(function(){
+			if(this.value=='SZ'){
+				
+				$(".price_unit").html('<?=$prodarr['f_rmb']?>');
+				$("#break_price_show").html(break_price_sz);
+				$(".freetotl").html("<?=$this->freetotl?>");
+			}else if(this.value=='HK'){
+
+				$(".price_unit").html('<?=$prodarr['f_usd']?>');
+				$("#break_price_show").html(break_price_hk);
+				$(".freetotl").html("<?=$this->freetotl_hk?>");
+			}
+        });
+})
+
+
+//轮转
+    $(function(){
+        var tab = $(".tabbar li");
+        tab.hover(function(){
+            $(this).addClass("selected").siblings().removeClass("selected");		
+            var index = tab.index(this);
+            $(".tab_con").eq(index).show().siblings().hide();	
+        });
+     })
+
+function favorites(prodid){
+	$.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   if(arr.code==0)
+			   {  
+			   		$.ajax({
+					url: '/proddetails/addfavorites',
+					data: {'partid':prodid},
+					type: 'post',
+					dataType: 'json',
+					success: function(arr) { 
+					   if(arr.code==0) openFav('ok');
+					   else if(arr.code==1) openFav('exist');
+					   else alert(arr.message);
+					   setTimeout('hidAlert()',1500);
+					}
+					});
+			   }else if(arr.code==100){
+			   	 $.openPopupLayer({
+		             name: "loginBox",
+		             target: "login_box"
+	              });
+			   }else if(arr.code==200){
+			   	   window.location.href ="/user/verification";
+			   }
+            }
+    });
+}
+//加载热销
+hotpord();
+function hidAlert(){
+	$.closePopupLayer('favAlert');
+	$.closePopupLayer('cartshowBox');
+}
+</script>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<?php //echo '<pre>';print_r($prodarr);?>

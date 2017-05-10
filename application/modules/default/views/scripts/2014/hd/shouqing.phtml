@@ -1,0 +1,34 @@
+<!--样片申请成功推荐-->
+<div class="popnew ypapplypop_ok">
+<div class="popnew-tit "> 
+       <input type="button" title="关闭" class="popnew-closebtn" onclick="$.closePopupLayer('shouqingBox');<?php if($this->r){?>location.reload();<?php }?>">
+    </div> 
+    
+    <div class="popnew-con  ">
+    	<div class="msg24">
+    		<div class="tips ">此型号已经售罄！近期我们还会有其他活动，尽请关注！</div>
+        </div>
+        <div class="poptuijian poptuijian1">
+        	<h4>如果您需要此型号，可以向我们询价：</h4>
+            <p><a href="javascript:" onclick="openInquiry('<?=$this->partId?>')"  class="gbqfbbig_h">我要询价</a></p>
+        </div>
+         <div class="poptuijian poptuijian1">
+        	<h4>其他热销产品：</h4>
+        	<div class="modelbox"> 
+				<?php foreach($this->hotprod as $data){?>
+                 <div class="fl"><a href="/proddetails?partid=<?=$data['id']?>" target="_blank" class="imgbox"> <img src="<?=PRODUCTICON.($data['part_img']==''?'no.gif':$data['part_img'])?>" width="50px" height="50px"></a></div>
+                  <div class="fl ">
+                    <p><a href="/proddetails?partid=<?=$data['id']?>" target="_blank" class="model logclick"><?=$data['part_no']?></a></p>
+                    <p>品牌：<?=$data['brandname']?></p>
+                    <p>分类：<?=($data['cname3']==''?$data['cname2']:$data['cname3'])?></p>
+                    
+                  </div>
+                </div>
+                <?php }?>
+                
+        </div>
+
+		<div class="clr"></div>
+    </div> 
+    <div class="clr"></div>
+</div>

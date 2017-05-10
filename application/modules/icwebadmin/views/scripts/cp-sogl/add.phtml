@@ -1,0 +1,301 @@
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 添加方案 <a href="<?=$this->indexurl?>">返回&gt;&gt;</a> </h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+                  <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+                  <div id="alert_message"></div>
+                </div>
+
+          <?php if (isset($_SESSION['messages'])) : ?>
+          <div class="alert fade in">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p>
+          </div>
+          <?php endif; ?>
+          <form class="form-horizontal form-validate" style="text-align:left" method="post" action="<?php echo $this->addurl;?>" enctype="multipart/form-data">
+            <div class="control-group">
+              <label class="control-label" for="contents">立即上线</label>
+              <div class="controls">
+                <input type="checkbox" name="status" value="1" <?=$this->processData['status']==1?'checked':''?> >
+              </div>
+            </div>
+            <div class="control-group">
+            <label class="control-label" for="contents">推荐到首页</label>
+            <div class="controls">
+             <input type="checkbox" name="home" value="1" <?=$this->processData['home']==1?'checked':''?> >
+            </div>
+            </div> 
+            <div class="control-group">
+              <label class="control-label" for="title">方案标题</label>
+              <div class="controls">
+                <input type="text" id="title" name="title" class="required" style="width:500px;" value="<?=$this->processData['title']?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="solution_no">方案编号</label>
+              <div class="controls">
+                <input type="text" id="solution_no"  name="solution_no" value="<?=$this->processData['solution_no']?>" >
+              </div>
+            </div>
+             <div class="control-group">
+              <label class="control-label" for="solution_no">作者</label>
+              <div class="controls">
+                <input type="text" id="author"  name="author" value="<?=$this->processData['author']?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="solution_no">来源</label>
+              <div class="controls">
+                <input type="text" id="source"  name="source" value="<?=$this->processData['source']?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="tags">方案标签</label>
+              <div class="controls">
+                <input type="text" id="tags"  name="tags" value="<?=$this->processData['tags']?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="app_level1">应用分类</label>
+              <div class="controls"> <span id="app_level1_Span">
+                <select id="app_level1" name="app_level1">
+                  <option value="">请选择一级分类</option>
+                </select>
+                </span> <span id="app_level2_Span">
+                <select id="app_level2" name="app_level2">
+                  <option value="">请选择二级分类</option>
+                </select>
+                </span> </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="outline">方案简介</label>
+              <div class="controls">
+                <textarea  id="description"  name="description" rows="3"  style="width:500px;"><?=$this->processData['description']?></textarea>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="superiority" >方案概述</label>
+              <div class="controls">
+                <textarea class="kindeditor"  id="outline"  name="outline" rows="10" style="width:700px;"><?=$this->processData['outline']?></textarea>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="description">核心优势</label>
+              <div class="controls">
+                <textarea class="kindeditor"  id="superiority"  name="superiority" rows="10"  style="width:700px;"><?=$this->processData['superiority']?></textarea>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="sol_img">方案图片</label>
+              <div class="controls" id="sol_img_upload">
+                <input type="hidden" id="sol_img" name="sol_img" value="<?=$this->processData['sol_img']?>" />
+                <input type="button" id="sol_img_box"  value="选择图片" />
+                <img src="/upload/default/applications/icon/<?=$this->processData['sol_img']?>" id="show_sol_img"  width="100" height="100" alt="sol log"/> </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="solution_img">方案框图( 可多图 )</label>
+              <div class="controls" id="solution_img_upload">
+                <input type="button" id="solution_img_box"  value="选择图片" />
+                <textarea id="solution_img"  name="solution_img" rows="2"  style="width:200px;"><?=$this->processData['solution_img']?></textarea><font color="#999999"> 多张图片以逗号 , 隔开。 </font>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="datasheet">方案文档</label>
+              <div class="controls" id="datasheet_upload">
+                <input type="hidden" id="datasheet" name="datasheet" value="<?=$this->processData['datasheet']?>" />
+                <input type="button" id="datasheet_box"  value="选择文件" />
+                <span id="show_datasheet"><?=$this->processData['datasheet']?></span> </div>
+            </div>
+             <div class="control-group">
+              <label class="control-label" for="description">核心器件</label>
+              <div class="controls">
+              	<textarea  id="core_parts"  name="core_parts" rows="2"  style="width:300px;"><?=$this->processData['core_parts']?></textarea><font color="#999999"> 填写产品id以逗号 , 隔开。 </font>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="description">周边器件</label>
+              <div class="controls">
+              	<textarea  id="parts"  name="parts" rows="2"  style="width:300px;"><?=$this->processData['parts']?></textarea><font color="#999999"> 填写产品id以逗号 , 隔开。 </font>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="description">BOM清单</label>
+              <div class="controls">
+              	<table cellpadding="0" cellspacing="0" border="0" class="table" style="width:600px;" id="SignFrame">
+                <thead>
+                  <tr id="trHeader">
+                    <th width="120">产品ID</th>
+                    <th width="100">用量</th>
+                    <th width="200">备注</th>
+                    <th width="50"><a href="javascript:;" class="gbqfb" onclick="AddSignRow()">添加产品</a></th>
+                    <input name='txtTRLastIndex' type='hidden' id='txtTRLastIndex' value="2" />
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" name="bom_prod_id[]"  class="input-model" onkeyup="<?=ISNUMBER?>"/></td>
+                    <td><input type="text" name="bom_dosage[]"  class="input-small" onkeyup="<?=ISNUMBER?>"/></td>
+                    <td><input type="text" name="bom_remark[]" style="width:200px"/></td>
+                    <td>&nbsp;</td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+            </div>
+            <!--微博-->
+            <?php echo $this->render('common/weibo.phtml');?>
+            <div class="control-group">
+              <div class="controls">
+                <input type="submit" class="btn" value="添 加">
+              </div>
+            </div>
+          </form>
+          <br>
+          <!-- 结束区域-->
+</div>
+    <script type="text/javascript">
+	
+KindEditor.ready(function(K) {
+			var editor =  K.create('#outline', {
+		     allowFileManager : true
+	       });
+		   var editor2 =  K.create('#superiority', {
+		     allowFileManager : true
+	       });
+		    //方案图片
+			var sol_img_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplodimg?part=upload/default/applications/icon/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/applications/icon/'
+			});
+			K('#sol_img_box').click(function() {
+				sol_img_editor.loadPlugin('image', function() {
+					sol_img_editor.plugin.imageDialog({
+						imageUrl : K('#sol_img').val(),
+						clickFn : function(url, title, width, height, border, align) {
+							K('#sol_img').val(url.replace("/upload/default/applications/icon/",""));
+							K('#show_sol_img').attr("src",url);
+							sol_img_editor.hideDialog();
+						}
+					});
+				});
+			});
+			//方案框图
+			var solution_img_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplodimg?part=upload/default/applications/solve/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/applications/solve/'
+			});
+			K('#solution_img_box').click(function() {
+				solution_img_editor.loadPlugin('image', function() {
+					solution_img_editor.plugin.imageDialog({
+						imageUrl : K('#solution_img').val(),
+						clickFn : function(url, title) {
+							var oldvalue = K('#solution_img').val();
+							oldvalue = oldvalue.replace("/upload/default/applications/solve/","");
+							url = url.replace("/upload/default/applications/solve/","");
+							if(oldvalue!='')  url = url +',' + oldvalue;
+							K('#solution_img').val(url);
+							solution_img_editor.hideDialog();
+						}
+					});
+				});
+			});
+			
+			 //方案文档
+			var datasheet_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplod?part=upload/default/applications/file/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/applications/file/'
+			});
+			K('#datasheet_box').click(function() {
+				datasheet_editor.loadPlugin('image', function() {
+					datasheet_editor.plugin.imageDialog({
+						imageUrl : K('#datasheet').val(),
+						clickFn : function(url, title) {
+							K('#datasheet').val(url);
+							K('#show_datasheet').html(url);
+							datasheet_editor.hideDialog();
+						}
+					});
+				});
+			});
+			
+});
+
+function onloadapp(app_level1,app_level2)
+{
+	$("#app_level1_Span").load("/icwebadmin/common/getapp1?app_level1="+app_level1);
+	if(app_level1)
+	   $("#app_level2_Span").load("/icwebadmin/common/getapp2?app_level1="+app_level1+"&app_level2="+app_level2);
+}
+function selectapp1(){
+	var app_level1=$("#app_level1").val();
+	$("#app_level2_Span").load("/icwebadmin/common/getapp2?app_level1="+app_level1);
+}
+onloadapp('<?=$this->processData['app_level1']?>','<?=$this->processData['app_level2']?>');
+function showvdo(obj){
+	if(obj.value=='vdo'){
+		$("#more_info").css("display","block");
+	}else{
+		$("#more_info").css("display","none");
+	}
+}
+</script>
+<script language="javascript">// Example: obj = findObj("image1");
+function findObj(theObj, theDoc)
+{ 
+   var p, i, foundObj; 
+   if(!theDoc) theDoc = document; 
+   if( (p = theObj.indexOf("?")) > 0 && parent.frames.length) 
+   {    
+       theDoc = parent.frames[theObj.substring(p+1)].document;
+	   theObj = theObj.substring(0,p); 
+   } 
+   if(!(foundObj = theDoc[theObj]) && theDoc.all) foundObj = theDoc.all[theObj]; 
+   for (i=0; !foundObj && i < theDoc.forms.length; i++)
+   foundObj = theDoc.forms[i][theObj]; 
+   for(i=0; !foundObj && theDoc.layers && i < theDoc.layers.length; i++) 
+	 foundObj = findObj(theObj,theDoc.layers[i].document); 
+   if(!foundObj && document.getElementById) 
+   foundObj = document.getElementById(theObj);    
+   return foundObj;
+}
+//添加一个参与人填写行
+function AddSignRow(){ //读取最后一行的行号，存放在txtTRLastIndex文本框中 
+   var txtTRLastIndex = findObj("txtTRLastIndex",document);
+   var rowID = parseInt(txtTRLastIndex.value);
+   var signFrame = findObj("SignFrame",document);
+   //添加行
+   var newTR = signFrame.insertRow(signFrame.rows.length);
+   newTR.id = "SignItem" + rowID;
+   //添加列:型号
+   var newNameTD=newTR.insertCell(0);
+   newNameTD.innerHTML = "<input type='text' name='bom_prod_id[]'  class='input-model' onkeyup=value=value.replace(/[^\\\d]/g,'') />";
+   //添加列:品牌(产品线)
+   var newNameTD=newTR.insertCell(1);
+   newNameTD.innerHTML = "<input type='text' name='bom_dosage[]'  class='input-small' onkeyup=value=value.replace(/[^\\\d]/g,'') />";
+   //客户物料号
+    var newEmailTD=newTR.insertCell(2);
+    newEmailTD.innerHTML = '<input type="text" name="bom_remark[]" style="width:200px"/>';
+   
+ 
+   //添加列:删除按钮
+   var newDeleteTD=newTR.insertCell(3);
+   //添加列内容
+   newDeleteTD.innerHTML = "<a href='javascript:;' class='gbqfb' onclick=\"DeleteSignRow('SignItem" + rowID + "')\">删除</a>";
+   //将行号推进下一行
+   txtTRLastIndex.value = (rowID + 1).toString() ;
+}
+//删除指定行
+function DeleteSignRow(rowid){
+  var signFrame = findObj("SignFrame",document);
+  var signItem = findObj(rowid,document);
+  //获取将要删除的行的Index
+  var rowIndex = signItem.rowIndex;
+  //删除指定Index的行
+  signFrame.deleteRow(rowIndex);
+}
+</script>

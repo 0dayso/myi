@@ -1,0 +1,54 @@
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+    <h2>添加汇率</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('addBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+      <!-- 需要填写的区域-->
+      <table width="350" border="0" cellpadding="1">
+        <tr>
+         <td height="10" colspan="3" align="center">
+         <div id="message_sess_son" style="display:none" class="message_sess">
+         <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span>
+         <span id="alert_message_son"></span>
+         </div></td>
+         </tr>
+        <tr bgcolor="#334159" height="30px">
+          <td><div align="center"><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">汇率对换</font></strong></div></td>
+        </tr>
+        <tr bgcolor="#CCCCCC" align="center">
+          <td><input type="text" name="currency" id="currency" class="input-mini"/> ： <input type="text" name="to_currency" id="to_currency"  class="input-mini"/> = 1 ： <input type="text" name="rate_value" id="rate_value"  class="input-mini"/>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" colspan="2"><input type="button"  value="添加" onclick="addAction()"/>
+          </td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+function addAction()
+{
+    var currency     = document.getElementById('currency').value;
+	var to_currency  = document.getElementById('to_currency').value;
+	var rate_value  = document.getElementById('rate_value').value;
+	$.ajax({
+            url: '<?php echo $this->addurl;?>',
+            data: {'currency':currency,'to_currency':to_currency,'rate_value':rate_value},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  location.reload();
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			}
+	});
+}
+</script>

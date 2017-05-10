@@ -1,0 +1,209 @@
+<?php $dotype = array('A'=>'添加','M'=>'邮件','E'=>'编辑','L'=>'登录','V'=>'浏览');?>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 邀请排行</h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  <div class="fr u_right">
+    <div class="tab_con mb10">
+    外部统计：
+      <table border="0" class="producttable table">
+        <thead>
+          <tr>
+            <th width="20">编号</th>
+            <th width="80">用户</th>
+            <th width="80">手机号码</th>
+            <?php if($this->mycommon->checkA($this->Staff_Area_ID)){?>
+            <th width="50">充值</th>
+            <?php }?>
+            <th width="80">邮箱</th>
+            <th width="50">签到数（<?=$this->jifenviewall?> - <?=$this->jifenviewtop?>）</th>
+            <th width="50">最大连续签到数（<?=$this->jlangtop?>）</th>
+            <th width="80">浏览次数>=6（<?=$this->viewpageall?> - <?=$this->viewpagetop?>）</th>
+            <th width="50">分享数（<?=$this->shareall?> - <?=$this->sharetop?>）</th>
+            <th width="50">最大连续分享数（<?=$this->slangtop?>）</th>
+            <th width="50">浏览页（<?=$this->clickall?> - <?=$this->clicktop?>）</th>
+            <th width="60">邀请数（<?=$this->inviteall?> - <?=$this->invitetop?>）</th>
+            <th>综合</th>
+            <th>邀请用户</th>
+          </tr>
+        </thead>
+        <tbody>
+         	<?php $i=0;
+				foreach($this->topnum as $uid=>$num) : $i++;
+				?>
+				<tr>
+                <td><?=$i?></td>
+                <td><a href="javascript:;" onclick="viewUser('<?=$uid?>')" title="查看详细资料" ><?=($this->top[$uid]['userinfo']['uname'])?></a> 
+				<a href="/icwebadmin/GiftSlog/track?type=default&valuetype=temp5&value=<?=$uid?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a></td>
+                <td><?=($this->top[$uid]['userinfo']['mobile'])?></td>
+                <?php if($this->mycommon->checkA($this->Staff_Area_ID)){?>
+                <td width="50"><span id="chong<?=$uid?>"><?php if($this->chongzhiarr[$uid]==1){?>
+				<a href="javascript:;" title="取消已充" onclick="chongzhi('<?=$uid?>','0')"><font color="#006600">已充</font></a>
+				<?php }else{?>
+                <a href="javascript:;" title="标志已充" onclick="chongzhi('<?=$uid?>','1')"><font color="#FF0000">未充</font></font></a>
+				<?php }?>
+                </span>
+                </td>
+                <?php }?>
+                <td><?=($this->top[$uid]['userinfo']['email'])?></td>
+                <td><?=($this->top[$uid]['jifenviewnum'])?>(%<?=sprintf("%.0f", $this->top[$uid]['jp'])?>)</td>
+                <td><?=($this->top[$uid]['jlang'])?>(%<?=sprintf("%.0f", $this->top[$uid]['jlangp'])?>)</td>
+                <td><?=($this->top[$uid]['viewpagenum'])?>(%<?=sprintf("%.0f", $this->top[$uid]['vp'])?>)</td>
+                <td><?=($this->top[$uid]['sharenum'])?>(%<?=sprintf("%.0f", $this->top[$uid]['sp'])?>)</td>
+                <td><?=($this->top[$uid]['slang'])?>(%<?=sprintf("%.0f", $this->top[$uid]['slangp'])?>)</td>
+                <td><?=($this->top[$uid]['clicknum'])?>(%<?=sprintf("%.0f", $this->top[$uid]['cp'])?>)</td>
+				<td><?=$num?>(%<?=sprintf("%.0f", $this->top[$uid]['ip'])?>)</td>
+                <td>%<?=sprintf("%.0f",$this->top[$uid]['alltoptmp']/$this->alltop*100)?></td>
+				<td><?php foreach($this->top[$uid]['invite'] as $invite){?>
+                	<a href="javascript:;" onclick="viewUser('<?=$invite['uid']?>')" title="查看详细资料" ><?=($invite['uname'])?></a> ,
+                <?php }?>
+                </td>
+				</tr>
+				<?php endforeach ; ?>
+        </tbody>
+      </table>
+      <br/>
+      内部统计：
+      <table border="0" class="producttable table">
+        <thead>
+          <tr>
+            <th width="20">编号</th>
+            <th width="80">用户</th>
+            <th width="80">手机号码</th>
+             <?php if($this->mycommon->checkA($this->Staff_Area_ID)){?>
+            <th width="50">充值</th>
+            <?php }?>
+            <th width="80">邮箱</th>
+            <th width="50">签到数</th>
+            <th width="50">最大连续签到数</th>
+            <th width="80">浏览次数>=6</th>
+            <th width="50">分享数</th>
+            <th width="50">最大连续分享数</th>
+            <th width="50">浏览页</th>
+            <th width="60">邀请数</th>
+            <th>综合</th>
+            <th>邀请用户</th>
+            <th width="50">RMB总额</th>
+            <th width="50">USD总额</th>
+          </tr>
+        </thead>
+        <tbody>
+         	<?php 
+				$im = 0;
+				foreach($this->topnum2 as $uid=>$num) : 
+				$rmb = $usd = 0;
+				$im++;
+				?>
+				<tr>
+                <td><?=$im?></td>
+                <td><a href="javascript:;" onclick="viewUser('<?=$uid?>')" title="查看详细资料" ><?=($this->top[$uid]['userinfo']['uname'])?></a> 
+				<a href="/icwebadmin/GiftSlog/track?type=default&valuetype=temp5&value=<?=$uid?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a></td>
+                <td><?=($this->top[$uid]['userinfo']['mobile'])?></td>
+                <?php if($this->mycommon->checkA($this->Staff_Area_ID)){?>
+                <td width="50"><span id="chong<?=$uid?>"><?php if($this->chongzhiarr[$uid]==1){?>
+				<a href="javascript:;" title="取消已充" onclick="chongzhi('<?=$uid?>','0')"><font color="#006600">已充</font></a>
+				<?php }else{?>
+                <a href="javascript:;" title="标志已充" onclick="chongzhi('<?=$uid?>','1')"><font color="#FF0000">未充</font></font></a>
+				<?php }?>
+                </span>
+                </td>
+                <?php }?>
+                <td><?=($this->top[$uid]['userinfo']['email'])?></td>
+                <td><?=($this->top[$uid]['jifenviewnum'])?>(%<?=sprintf("%.0f", $this->top[$uid]['jp'])?>)</td>
+                <td><?=($this->top[$uid]['jlang'])?>(%<?=sprintf("%.0f", $this->top[$uid]['jlangp'])?>)</td>
+                <td><?=($this->top[$uid]['viewpagenum'])?>(%<?=sprintf("%.0f", $this->top[$uid]['vp'])?>)</td>
+                <td><?=($this->top[$uid]['sharenum'])?>(%<?=sprintf("%.0f", $this->top[$uid]['sp'])?>)</td>
+                <td><?=($this->top[$uid]['slang'])?>(%<?=sprintf("%.0f", $this->top[$uid]['slangp'])?>)</td>
+                <td><?=($this->top[$uid]['clicknum'])?>(%<?=sprintf("%.0f", $this->top[$uid]['cp'])?>)</td>
+				<td><?=$num?>(%<?=sprintf("%.0f", $this->top[$uid]['ip'])?>)</td>
+                <td>%<?=sprintf("%.0f",$this->top[$uid]['alltoptmp']/$this->alltop*100)?></td>
+				<td><?php foreach($this->top[$uid]['invite'] as $invite){?>
+                	<a href="javascript:;" onclick="viewUser('<?=$invite['uid']?>')" title="查看详细资料" ><?=($invite['uname'])?></a>  | 
+                    <?php if($this->top[$uid]['inqorder'][$invite['uid']]){
+						$tarr = $this->top[$uid]['inqorder'][$invite['uid']];
+						foreach($tarr as $a){
+						    if($a['currency']=='RMB') $rmb+=$a['total'];
+							elseif($a['currency']=='USD') $usd+=$a['total'];
+							echo '<a href="javascript:;" onclick="viewInqSo(\''.$a['salesnumber'].'\')" title="查看订单">'.$a['salesnumber'].'</a>('.$a['currency'].$a['total'].'), ';
+						}
+					 }?>
+                     <?php if($this->top[$uid]['order'][$invite['uid']]){
+						$tarr = $this->top[$uid]['order'][$invite['uid']];
+						foreach($tarr as $a){
+						    if($a['currency']=='RMB') $rmb+=$a['total'];
+							elseif($a['currency']=='USD') $usd+=$a['total'];
+							echo '<a href="javascript:;" onclick="viewSo(\''.$a['salesnumber'].'\')" title="查看订单">'.$a['salesnumber'].'</a>('.$a['currency'].$a['total'].'), ';
+						}
+					 }?>
+                    ；<br/>
+                <?php }?>
+                </td>
+                <td valign="middle"><?=$rmb?></td>
+                <td valign="middle"><?=$usd?></td>
+				</tr>
+				<?php endforeach ; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br/>
+  <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+//查看订单
+function viewInqSo(salesnumber){
+	$.openPopupLayer({
+		name: "box",
+		url: "/icwebadmin/OrInqo/viewso?salesnumber="+salesnumber
+	});
+}
+function getinqorder(salesnumber){
+ $.ajax({
+            url: '/icwebadmin/OrInqo/ajaxorderinfo?salesnumber='+salesnumber,
+            data: {},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+            	document.getElementById('soinfo').innerHTML = html;
+				$("#soinfo").height($("#ajaxorderinfo").height()+10);
+            }
+	});
+}
+//查看订单
+function viewSo(salesnumber){
+	$.openPopupLayer({
+		name: "viewsoBox",
+		url: "/icwebadmin/OrOrgl/viewso?salesnumber="+salesnumber
+	});
+}
+function getorder(salesnumber){
+ $.ajax({
+            url: '/icwebadmin/OrOrgl/ajaxorderinfo?salesnumber='+salesnumber,
+            data: {},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+            	document.getElementById('soinfo').innerHTML = html;
+				$("#soinfo").height($("#ajaxorderinfo").height()+10);
+            }
+	});
+}
+function chongzhi(uid,type){
+	$.ajax({
+            url: '/icwebadmin/GiftSlog/chongzhi',
+            data: {'uid':uid,'type':type},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+			    if(type==1){
+            	document.getElementById('chong'+uid).innerHTML = '<a href="javascript:;" title="取消已充" onclick="chongzhi(\''+uid+'\',\'0\')"><font color="#006600">已充</font></a>';
+				}else{
+				document.getElementById('chong'+uid).innerHTML = '<a href="javascript:;" title="标志已充" onclick="chongzhi(\''+uid+'\',\'1\')"><font color="#FF0000">未充</font></font></a>';
+				}
+            }
+	});
+}
+</script>

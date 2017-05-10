@@ -1,0 +1,81 @@
+<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?> 
+     <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                        <a href="<?php echo $this->addurl;?>" >添加+</a>
+     <?php }?></h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+      <div class="fr u_right">
+    <div class="tab_con ">
+        <table class="tableanew" border="0" cellspacing="0" cellpadding="0"  width="100%"  >
+            <tr>
+                <th width="150">奖品</th>
+                <th width="50">活动</th>
+                <th width="80">奖项等级</th>
+                <th width="80">概率值</th>
+                <th width="80">中奖概率</th>
+                <th width="50">价格</th>
+                <th width="50">总库存</th>
+                <th width="80">中奖数量</th>
+                <th width="50">剩余库存</th>
+                <th width="80">添加日期</th>
+                <th width="100" align="center">操作</th>
+            </tr>
+             <?php 
+				if(empty($this->prizeall)){?>
+                <tr>
+                  <td colspan="9"><center> 暂无记录。</center></td>
+                </tr>
+                <?php }else{
+			   foreach($this->prizeall as $k=>$v){
+				?>
+              <tr valign="top">
+                <td align="left"><?=$v['name']?></td>
+                <td align="center"><?=$v['type']?></td>
+                <td align="center"><?=$v['awards']?></td>
+                <td align="center"><?=$v['probability']?></td>
+                <td align="center" style="color:<?=$this->prizerand[$v['id']]>0?'#009900':'#FF0000'?>">%<?=$this->prizerand[$v['id']]?></td>
+                <td align="center">￥<?=$v['market_price']?></td>
+                <td align="center"><?=$v['limitstock']?$v['stock']:'--'?></td>
+                <td align="center"><?=$v['stock_cover']?></td>
+                <td align="center"><?=$v['limitstock']?($v['stock']-$v['stock_cover']):'--'?></td>
+                <td align="center"><?=($v['created']?date('Y/m/d',$v['created']):'--')?></td>
+                <td>
+                <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+              	<p><a class="gbqfb" href="/icwebadmin/GiftPriz/edit/id/<?=$v['id']?>">编辑</a></p>
+                <?php }?>
+                </td>
+            </tr>
+		<?php }
+		}?> 
+        </table>
+    <div class="pagination divpage">
+       <?=$this->page_bar;?>
+  </div>
+</div>
+
+</div>
+ <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+function changestatus(id,status)
+{
+	 $.ajax({
+            url: '/icwebadmin/GiftPriz/changestatus',
+            data: {'id':id,'status':status},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	document.getElementById('message_sess').style.display = "block";
+	            document.getElementById('alert_message').innerHTML = arr.message;
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+}
+</script>

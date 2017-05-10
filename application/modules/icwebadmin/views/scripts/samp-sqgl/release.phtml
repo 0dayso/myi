@@ -1,0 +1,85 @@
+
+  <div class="popup" style="width:600px;">
+    <div class="popup-header">
+    <h2>审核样片申请：</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('processBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+     <!-- 需要填写的区域-->
+      <table border="0" cellpadding="1">
+       
+       <tr>
+          <td align="right"><em>*</em>审核：</td>
+          <td><label style="color:#339900"><input type="radio" name="status" value="200"/>
+      <b>通过</b></label>
+      <label style="color:#CC3333"><input type="radio" name="status" value="400"/>
+      <b>不通过</b></label>
+      </td>
+        </tr>
+        <tr>
+          <td align="right"><em>*</em>批准数量：</td>
+          <td>
+          	<table width="100%" border="1" style="margin-top:5px; margin-bottom:5px;"><tr><td>型号</td><td>品牌</td><td>申请数量</td><td>批准数量</td></tr>
+		  <?php 
+		  foreach($this->apply['detailed'] as $darr){?>
+          <tr><td><?=$darr['part_no']?></td><td><?=$darr['brandname']?></td><td><font color="#006600"><?=$darr['applynum']?></font></td><td><input type="hidden" name="detailedid" value="<?=$darr['id']?>"/>
+          <input type="text" class="input-mini"  name="approvenum" onkeyup="<?=ISNUMBER?>" value="<?=($darr['applynum']?$darr['applynum']:$darr['approvenum'])?>"/></td></tr>
+		  <?php }?></table> 
+          </td>
+        </tr>
+        <tr>
+          <td align="right">项目备注(不对客户公开)：</td>
+          <td><textarea name="remark" id="remark" rows="3" style="width:300px"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>
+          <input type="button"  value="确认"  class="btnabig"  onclick="releaseaction()"/>
+          </td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+
+<script type="text/javascript">
+function releaseaction()
+{
+    var status = $('input[name="status"]:checked').val();
+	if(status=='' || typeof(status)=="undefined") {
+	  alert('请选择审核情况');$('input[name="status"]:checked').focus();return;
+	}
+	var remark = $('#remark').val();
+	/*if(status==400){
+	 if(remark=='') { alert('请填写审核说明');$('#remark').focus();return;}
+	}*/
+	var detailedid  = new Array();
+	var approvenum  = new Array();
+	var detailedid_obj      = document.getElementsByName("detailedid");
+	var approvenum_obj   = document.getElementsByName("approvenum");
+	for (var i=0;i < detailedid_obj.length;i++)
+   {
+		if(detailedid_obj[i].value=='') {alert('id为空');return;}
+		else detailedid[i]= detailedid_obj[i].value;
+		if(status==200){
+		if(approvenum_obj[i].value=='' || approvenum_obj[i].value <= 0) {alert('请输入批准数量');approvenum_obj[i].focus();return;}
+		else if(isNaN(approvenum_obj[i].value)){alert('批准数量必须为数字');approvenum_obj[i].focus();return;}
+		else approvenum[i]= approvenum_obj[i].value;
+		}
+   }
+				   
+	 $.ajax({
+            url: '/icwebadmin/SampSqgl/release',
+            data: {'id':'<?=$this->applyid?>','status':status,'remark':remark,'detailedid':detailedid,'approvenum':approvenum},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	alert(arr.message);
+            	if(arr.code == 0)
+                {
+                    window.location.href='/icwebadmin/SampSqgl?type=proc';
+                }
+            }
+	  });
+}
+</script>

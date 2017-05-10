@@ -1,0 +1,88 @@
+<?php 
+$sptype = array('100'=>'原厂提供','200'=>'库存样片');
+?>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?>  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?><a href="<?=$this->addurl?>">添加+</a><?php }?></h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  <div class="fr u_right">
+  <div class="tab_content">
+    	<div class="tab_tit1">
+        <ul class="fl">
+          <li <?=$this->type=='on'?'class="on"':''?>><a href="?type=on" style="width:120px;">在线<em>(<?=$this->onnum?>)</em><b class="blank3"></b></a></li>
+        </ul>
+        </div>
+    </div>
+    <div class="tab_con">
+      <table class="tableanew" border="0" cellspacing="0" cellpadding="0"  width="100%">
+        <tr>
+          <th width="100">型号</th>
+          <th width="80">品牌</th>
+          <th width="80">推荐</th>
+          <th width="80">是否样片</th>
+          <th width="80" align="center">操作</th>
+        </tr>
+        <?php if(empty($this->samplesall)){?>
+        <tr>
+          <td colspan="11"><center> 暂无记录。</center></td>
+        </tr>
+        <?php }else{
+		foreach($this->samplesall as $k=>$v){
+		?>
+        <tr valign="top">
+          <td align="center">
+          <a href="/proddetails?partid=<?=$v['part_id']?>" target="_blank"><?=$v['part_no']?></a>
+          </td>
+          <td align="center"><?=$v['brandname']?></td>
+ 		  <td align="center"><?=($v['hot_top']==1?'是':'否')?></td>
+          <td align="center"><?=($v['samples']==1?'是':'否')?>
+          <a href="/icwebadmin/CpCpgl/edit/id/<?=$v['part_id']?>" target="_blank">编辑产品</a></td>
+          <td align="left"><?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+        <p><a class="gbqfb" href="<?=$this->editurl?>?id=<?=$v['id']?>">编辑</a>
+        <a class="gbqfb" href="javascript:;" onclick="de(<?=$v['id']?>)">删除</a></p>
+        <?php }?>
+                
+          </td>
+        </tr>
+        <?php }
+		}?>
+       
+      </table>
+      <div class="pagination divpage">
+        <?=$this->page_bar;?>
+      </div>
+    </div>
+  </div>
+  <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+function release(id)
+{
+	 $.openPopupLayer({
+        name:'processBox',
+        url:'/icwebadmin/SampSqgl/release?id='+id
+    });
+}
+function process(id)
+{
+	 $.openPopupLayer({
+        name:'processBox',
+        url:'/icwebadmin/SampSqgl/process?id='+id
+    });
+}
+function de(id){
+	$.ajax({
+            url: '/icwebadmin/SampSpgl/deletl',
+            data: {'id':id},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    alert('删除成功');
+				location.reload();
+			}
+	});
+}
+</script>

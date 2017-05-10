@@ -1,0 +1,101 @@
+<table class="tableContent">
+    <tr>
+    <td bgcolor="#FFFFFF" align="left" valign="top" width="880"><table width="880" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td height="10" colspan="3">&nbsp;</td>
+        </tr>
+        <tr>
+          <td height="29" bgcolor="#FFFFFF" align="center"><table width="880" border="0" cellpadding="3" cellspacing="0">
+        <tr>
+          <td height="29" bgcolor="#FFFFFF" align="center"><table width="880" border="0" cellpadding="3" cellspacing="0">
+              <tr bgcolor="#334159">
+                <td height="7" align="left" colspan="6"><b><font color="#FFFFFF"> <?php echo $this->AreaTitle;?> | 添加企业资料 - </font>
+                 <a href="<?=$this->indexurl?>">返回&gt;&gt;</a></b> </td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr>
+          <td height="10" colspan="3" align="center"><div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div></td>
+        </tr>
+      </table>
+      <br/>
+      
+	 <?php if (isset($_SESSION['messages'])) : ?><div class="alert fade in">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+    <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p></div><?php endif; ?>  
+<form id="thisform" class="form-horizontal validate-form" style="text-align:left" method="post" action="<?php echo $this->addurl;?>">
+
+<div class="control-group">
+    <label class="control-label" for="title">SAP 客户代码</label>
+    <div class="controls">
+      <input type="text" id="sap_code" name="sap_code" value="<?=$this->processData['sap_code']?>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="title"><em>*</em>公司名称</label>
+    <div class="controls">
+      <input type="text" id="companyname" name="companyname" value="<?=$this->processData['companyname']?>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="author">公司英文名称</label>
+    <div class="controls">
+      <input type="text" id="companyname_en" name="companyname_en" value="<?=$this->processData['companyname_en']?>">
+    </div>
+  </div>
+   <div class="control-group">
+    <label class="control-label" for="keyword"><em>*</em>联系人</label>
+    <div class="controls">
+      <input  id="truename"  name="truename"  type="text" value="<?=$this->processData['truename']?>">
+    </div>
+  </div>  
+   <div class="control-group">
+    <label class="control-label" for="keyword">手机</label>
+    <div class="controls">
+      <input  id="mobile"  name="mobile"  type="text" value="<?=$this->processData['mobile']?>">
+    </div>
+  </div>  
+  <div class="control-group">
+    <label class="control-label" for="keyword"><em>*</em>固定电话</label>
+    <div class="controls">
+      <input  id="tel"  name="tel"  type="text" value="<?=$this->processData['tel']?>">
+    </div>
+  </div> 
+  <div class="control-group">
+    <label class="control-label" for="keyword">传真</label>
+    <div class="controls">
+      <input  id="fax"  name="fax"  type="text" value="<?=$this->processData['fax']?>">
+    </div>
+  </div> 
+  <div class="control-group">
+    <label class="control-label" for="keyword"><em>*</em>公司地址</label>
+    <div class="controls">
+      <input  id="address"  name="address"  type="text" value="<?=$this->processData['address']?>">
+    </div>
+  </div>   
+  <div class="control-group">
+    <label class="control-label" for="keyword">公司英文地址</label>
+    <div class="controls">
+      <input  id="address_en"  name="address_en"  type="text" value="<?=$this->processData['address_en']?>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="keyword">邮政编码</label>
+    <div class="controls">
+      <input  id="zipcode"  name="zipcode"  type="text" value="<?=$this->processData['zipcode']?>">
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <input type="submit" value="添加" class="btn" />
+    </div>
+  </div>
+</form>
+        <br>
+      <!-- 结束区域-->
+    </td>
+  </tr>
+</table>

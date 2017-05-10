@@ -1,0 +1,85 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?>
+  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                        <a href="<?php echo $this->addurl;?>" >添加+</a>
+ <?php }?>
+ </h1>
+ <form id="myform"  class="form-search" name="myform" action="" method="get">
+<?php echo $this->newsTypeSelect('news_type_id',$_GET['news_type_id']);?> |
+<?php echo $this->appSelect('app_level1',1,$_GET['app_level1'])?>|
+<select name="status" class="span1">
+<option value="">状态</option>
+<option value="1"  <?php echo $_GET['status'] =='1' ? "selected" : ""; ?>>上线</option>
+<option value="0" <?php echo $_GET['status'] =='0' ? "selected" : "";?>>下线</option>
+</select>|
+<label>资讯标题/关键字：</label>
+<div class="input-append">
+  <input type="text" class="span3 search-query" id="title" value="<?=$_GET['q']?>" name="q" />
+</div>
+<input type="submit" class="btn" value="查 找"/>
+</form>
+<?php if (count($this->messages)) : ?>
+<div class="alert fade in">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+<?php foreach ($this->messages as $message) : ?>
+    <p class="message"><strong><?php echo $this->escape($message); ?></strong></p>
+<?php endforeach; ?>
+ </div>
+<?php endif; ?>      
+<table class="table ordertable"  border="0" style=" margin-top:-1px;">
+                <thead>
+                <tr>
+                <th>编号</th>
+                <th>标题</th>
+                <th>作者</th>
+                <th>来源</th>
+                <th>关键字</th>
+                <th>资讯类型</th>
+                <th>应用分类</th>
+                <th>上线日期</th>
+                <th>首页推荐</th>
+                <th>状态</th>
+                <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+				<?php 
+				foreach($this->data as $data) : ?>
+				<tr>
+                <td><?php echo $data['id'];?></td>
+				<td><?php echo $data['title'];//echo $inquiry->product;?></td>
+				<td><?php echo $data['author'];?></td>
+				<td><?php echo $data['source'];?></td>
+				<td><?php echo $data['keyword'];//echo $inquiry->user;?></td>
+				<td><?php echo $data['news_type'];?></td>
+				<td><?php echo $data['name'];?></td>
+				<td><?php echo $data['published'];//echo $inquiry->user;?></td>
+                <td><?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID))
+				{if($data['home']==1) {?> 
+                <a href="/icwebadmin/NeNews/active/id/<?=$data[id]?>?home=0" title="取消推荐"><font color="#006600">是</font></a>
+				<?php }else {?>
+                <a href="/icwebadmin/NeNews/active/id/<?=$data[id]?>?home=1" title="推荐"><font color="#FF0000">否</font></font></a>
+                <?php }}?>
+                </td>
+                <td><?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID))
+				{if($data['status']==1) {?> 
+                <a href="/icwebadmin/NeNews/active/id/<?=$data[id]?>?flag=0"  title="点击下线"><font color="#006600">已上线</font></a>
+				<?php }else {?>
+                <a href="/icwebadmin/NeNews/active/id/<?=$data[id]?>?flag=1" title="点击上线"><font color="#FF0000">已下线</font></font></a>
+                <?php }}?>
+                </td>
+				<td><a href="<?php echo $this->url(array('id' => $data['id']), 'news')."?preview=1"; ?>" target="_blank">Preview</a>  |<a href="<?php echo $this->url(array('id' => $data['id']), 'news'); ?>" target="_blank">View</a>  
+				<?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                 | <a href="<?php echo $this->url(array('controller'=>'NeNews', 'action'=>'edit', 'id'=>$data['id']));?>" >Edit</a>
+                <?php }?>
+				</td>
+				</tr>
+				<?php endforeach ; ?>
+                </tbody>
+            </table>      
+         <div class="pagination divpage" >
+            <?=$this->page_bar;?>
+        </div>      
+      <!-- 结束区域-->
+</div>
+

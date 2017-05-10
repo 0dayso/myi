@@ -1,0 +1,128 @@
+<link href="/css/jifen/css/jifen.css" type="text/css" rel="stylesheet">
+<div class="popnew  yqpop">
+	<div class="popnew-tit"> 
+    	<span class="popnew-tit_t">邀请好友</span>
+      	<input type="button" title="关闭" class="popnew-closebtn" onclick="$.closePopupLayer('invitebox')">
+    </div>
+    <div class="popnew-con">
+    	<div class="tip fontorange font14">邀<b>1</b>位好友成功注册，即得<strong>20</strong>积分！</div>
+        <div class="jfpop_con">
+        	<div class="panel clearfix" style="display: block;">                
+                <div class="fl yqbox">
+                	<h4>方式1：直接复制邀请链接发送给好友</h4><em>(可以通过QQ，MSN等聊天工具发送您的专属邀请链接给好友)</em>
+                    <div class="yqbox_c ">  
+                        <div class="yq pos-re yqlink"> 
+                            <b class="font20">您的专属邀请链接：</b>
+                           <input type="text" title="复制" class="rulelink" name="inviteurl2" id="inviteurl2" value="<?php echo HTTPHOST."/user/register?invitekey=".$_SESSION['userInfo']['uidSession'];?>" />
+					<a href="javascript:void(0);" title="复制" class="yqbtn" onclick="copyinvite('inviteurl2')">复制邀请链接</a>
+                        </div>
+                      <div>
+                      <div class="sec-share clearfix">
+                      	<i></i>
+                        <!--<em class="bold">发给qq空间、微博好友，更多好朋友看到，更多机会获得奖励！</em>-->
+                        <div id="J-sns-share" class="fshare clearfix">
+                            <div class="fshare-item J-sns-share-type1">
+                               <a data-fid="share_qq" class="fs-tqq" title="分享到腾讯微博" href="javascript:;" onclick="shareBaidu('tqq','<?=$_SESSION['userInfo']['uidSession'];?>');">tqq</a>
+                            <a data-fid="share_sina" class="fs-tsina" title="分享到新浪微博" href="javascript:;" onclick="shareBaidu('tsina','<?=$_SESSION['userInfo']['uidSession'];?>');">tsina</a>
+                            <a data-fid="share_renren" class="fs-renren" title="分享到人人" href="javascript:;" onclick="shareBaidu('renren','<?=$_SESSION['userInfo']['uidSession'];?>');">renren</a>
+                            <a data-fid="share_qqzone" class="fs-qq" title="分享到QQ好友" href="javascript:;" onclick="shareBaidu('qq','<?=$_SESSION['userInfo']['uidSession'];?>');">QQ</a>
+                            <a data-fid="share_qqzone" class="fs-qzone" title="分享到QQ空间" href="javascript:;" onclick="shareBaidu('qzone','<?=$_SESSION['userInfo']['uidSession'];?>');">qzone</a>
+                            </div>
+                        </div>
+                    </div >
+                      
+                      </div>
+                  	</div>
+                </div>
+                <div class="fl yqbox yqmailbox">
+                	<h4>方式2：通过邮件邀请好友</h4><em>（如果您记得好友邮箱可以直接输入，IC易站帮您发送；您也可以登录邮箱，群发给您的好友。）</em>
+                    <div class="yqbox_c">
+                        <div class="yqbox_in">
+                            <p><input type="text" name="friendemail2" id="friendemail2" value="<?php if($this->emailstr) echo $this->emailstr;else echo '在此输入好友邮箱地址，每个邮箱之间用分号隔开';?>" onfocus="inputFocus($(this),'在此输入好友邮箱地址，每个邮箱之间用分号隔开');" onblur="inputBlur($(this),'在此输入好友邮箱地址，每个邮箱之间用分号隔开')" class="input-invite input-invite-m " /></p>
+                            <p><textarea rows="4" name="invitecon2" id="invitecon2" class="input-invite input-invite-textarea ">#IC易站#惊喜来袭，邀请好友注册即可赚积分，抽大奖，您还在等什么，快呼朋唤友来参加吧！ <?php echo HTTPHOST."/user/register?invitekey=".$_SESSION['userInfo']['uidSession'];?>  </textarea></p>
+                            <p><input type="text" class="input-invite input-invite-s " placeholder="验证码" name="verifycode2" id="verifycode2" maxlength="4" value="" autocomplete="off" onkeydown="eventemail2(event)">
+                         <img src="" id="verify2" onClick="getVerify2()">
+                         <a href="javascript:void(0);" class="refresh" onClick="getVerify2()">看不清<br>换一张</a></p>
+                             <p class="sendinvitebutton2">
+                             <input type="button" class="login_rule_small" onclick="sendinvite2()" value="立即邀请" />
+                        </div>
+                        <div class="yqmail">
+                            <div class="yqmailspan">不记得那么多邮箱地址？</div>
+                            <h5>登录自己邮箱</h5>
+                            <ul>
+                                <li><a href="https://mail.qq.com" class="fs fs-qqmail" target="_blank"><i></i>用QQ邮箱邀请</a></li>
+                                <li><a href="http://reg.163.com" class="fs fs-163mail" target="_blank"><i></i>用163邮箱邀请</a></li>
+                                <li><a href="https://mail.google.com/mail" class="fs fs-gmail" target="_blank"><i></i>用Gmail邮箱邀请</a></li>
+                                <li><a href="mailto:" class="fs fs-outlook" ><i></i>用outlook邀请</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>	
+    <div class="clr"></div>
+</div>
+<script type="text/javascript">
+//验证码
+function getVerify2(){
+ var d = new Date();
+ document.getElementById('verify2').src="/common/createcode?t="+d.toTimeString();
+}
+getVerify2();
+function eventemail2(evt){
+    evt=evt?evt:(window.event?window.event:null);
+    var keyCode = evt.keyCode;
+	if(keyCode==13) sendinvite2();
+}
+//发邮件
+function sendinvite2(){
+	$.ajax({
+		url: '/index/checklogin',
+		data: {},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		  if(arr.code==0)
+		  {
+		      var friendemail = $("#friendemail2").val();
+			  var verifycode  = $("#verifycode2").val();
+			  var invitecon   = $("#invitecon2").val();
+			  if(friendemail=='' || friendemail=='在此输入好友邮箱地址，每个邮箱之间用分号隔开'){alert('请输入正确邮箱地址');$("#friendemail2").focus();return;}
+			  if(verifycode==''){alert('请输入验证码');$("#verifycode2").focus();return;}
+			  $(".sendinvitebutton2").html('<input type="button" class="login_rule_small" value="发送中..." />');
+			  $.ajax({
+					url: '/common/sendinvite',
+					data: {'email':friendemail,'verifycode':verifycode,'invitecon':invitecon},
+					type: 'post',
+					dataType: 'json',
+					//timeout: 5000, 
+					error: function(){alert('网络超时');}, 
+					success: function(arr) {
+					    
+						
+						getVerify2();
+						if(arr.code==0){
+							$.closePopupLayer('invitebox');
+						}
+						$.openPopupLayer({
+		                         name: "lotteryResult",
+		                         url: "/jifen/lotteryresult?mess="+encodeURI(arr.mess)+"&t=1"
+	                    });
+						$(".sendinvitebutton2").html('<input type="button" class="login_rule_small" onclick="sendinvite2()" value="立即邀请" />');
+					}
+	          });
+		  }else if(arr.code==100){
+			$.openPopupLayer({
+			   name: "loginBox",
+			   target: "login_box"
+			 });
+		   }else if(arr.code==200){
+			  window.location.href ="/user/verification";
+		  }
+		}
+	});
+}
+</script>

@@ -1,0 +1,91 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+  <div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+ </div>
+	  <!-- 需要填写的区域-->
+	<div class="fr u_right">
+    <div class="tab_content">
+      <div class="tab_tit1">
+        <ul class="fl">
+          <li><a href="/icwebadmin/ReadHome">滚动图片<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/newprod">精品 • 新品<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/actingbrand">代理品牌<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/app">应用分类<b class="blank3"></b></a></li>
+          <li class="on"><a href="/icwebadmin/ReadHome/recbrand">产品分类推荐品牌<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/hotprod">热销产品推荐<b class="blank3"></b></a></li>
+        </ul>
+        <div class="tab_con mb10">
+        <table class="tab_tb"  border="0" style=" margin-top:-1px;">
+        	<tr><td style="padding:10px;">
+                   <?php foreach($this->pc_brand as $data){?>
+					<table width="500px">
+                    <tr><td><b><?=$data['name']?></b>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <?php if($data['status']==1) {?> 
+                  <a href="javascript:;" onclick="changestatus(<?=$data['cat_id']?>,0)" title="点击下线"><font color="#006600">已上线</font></a>
+				    <?php }elseif($data['status']==0 && $data['comid']) {?>
+                  <a href="javascript:;" onclick="changestatus(<?=$data['cat_id']?>,1)" title="点击上线"><font color="#FF0000">已下线</font></font></a> <?php }?>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="javascript:;" onclick="addbrand(<?=$data['cat_id']?>,'<?=$data['name']?>')">添加</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="<?php echo $this->url(array('controller'=>'ReadHome', 'action'=>'rbedit', 'cat_id'=>$data['cat_id']));?>">修改</a>
+                    </td></tr>
+                    <tr><td>
+                       <?php if($data['comid']){
+					   	foreach($data['comid'] as $k=>$bid){?>
+                       <?=$data['brandname'][$k]?>&nbsp;&nbsp;&nbsp;&nbsp;
+                       <?php }}?>
+                    </td></tr>
+                    </table>
+		   	     <?php }?>
+           </td></tr></table>
+        </div>
+      </div>
+     </div>
+     </div>
+      <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+function editchange(type)
+{
+	if(type==1){
+		document.getElementById('brand_view').style.display = "none";
+		document.getElementById('brand_edit').style.display = "block";
+	}else if(type==2){
+		document.getElementById('brand_view').style.display = "block";
+		document.getElementById('brand_edit').style.display = "none";
+	}
+}
+function selectbrand(obj,id)
+{
+	var url = "/images/default/brand/"+obj.value+".jpg";
+	$('#brand_'+id).attr("src",url);
+}
+
+function changestatus(cat_id,status)
+{
+	 $.ajax({
+            url: '/icwebadmin/ReadHome/recbrand',
+            data: {'cat_id':cat_id,'status':status},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    document.getElementById('message_sess').style.display = "block";
+	            document.getElementById('alert_message').innerHTML = arr.message;
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+}
+function addbrand(cat_id,title)
+{
+	 $.openPopupLayer({
+        name:'popBox',
+        url:'/icwebadmin/ReadHome/rbadd?cat_id='+cat_id+'&title='+title
+    });
+}
+</script>

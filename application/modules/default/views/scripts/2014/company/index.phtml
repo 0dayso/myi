@@ -1,0 +1,85 @@
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/se2013.css"/>
+
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+
+<!--<div class="w">
+  <div class="breadcrumbs2013"> 
+  <span><a href="/company" class="focs"> 企业动态</a> </span>
+  </div>
+</div>-->
+
+<div class="news2013 ">  
+	<div class="w" > 
+        <div class="layout rigybg" >
+            <div class="fl infolist MT10">
+            	
+                <div class="list—tit">
+                         <h2>企业动态</h2>
+                </div>
+                <div class="w_100">
+                
+                <?php if(empty($this->records)){?>
+        <div class="posts p15 boxshadow_h">没有记录</div> 
+        <?php }else{
+			foreach($this->records as $sol){?>
+          
+<div class="posts p15 boxshadow_h">
+<h2><span class="ifotip2013"><em><?=date('Y-m-d',$sol['created'])?></em><i></i></span><a href="/news-<?=$sol['id']?>.html" title="<?=$sol['title']?>" class="logclick" rev="news" rel="<?=$sol['id']?>" target="_blank"><?=$sol['title']?></a></h2>
+<div class="postmeta">                
+<span>来源：</span><?=$sol['source']?>
+                <span class="ml10">作者：</span><?=$sol['author']?>
+                <span class="ml10">关键词：</span><?php 
+					$tip = explode(',',$sol['keyword']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+				 }?>             
+</div>
+
+<div class="row">
+<div class="post-thumb">
+<?php if($sol['image']){?>
+<img src="<?php echo $sol['image'];?>" alt ="<?php echo $sol['title'];?>" title="<?php echo $sol['title'];?>" width="200" height="125">
+<?php }?>
+</div>
+<div class="post-cont">
+<p><?=$sol['description']?></p>
+</div>
+<!--<p class="time">2013-10-20</p>-->
+</div>
+
+</div> 
+           
+            
+        
+       <?php }}?>
+
+                </div>  
+                <div class="clr"></div>
+                <div class="page_box"><div class="page clearfix"><?=$this->page_bar;?></div></div> 
+            </div>    
+            <div class="fr righttuij">
+            <div id="hotsearch"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
+            <div id="hotsolution"></div>
+            <div id="hotnews"></div>
+            <div id="hotwebinar"></div>
+            <div id="htocode"></div>
+            </div>
+            <div class="clr"></div>
+        </div>
+    </div>
+</div>
+<script language="javascript">
+	$(function(){
+	
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+		$("#hotsearch").load("/publicbox/hotsearch");
+		$("#hotsolution").load("/publicbox/hotsolution");
+		$("#hotnews").load("/publicbox/hotnews");
+		$("#hotwebinar").load("/publicbox/hotwebinar");
+		$("#htocode").load("/publicbox/htocode");
+	})
+</script>

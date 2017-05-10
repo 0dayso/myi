@@ -1,0 +1,129 @@
+<div class="popup" style="width:950px;">
+    <div class="popup-header">
+        <h2><?=($this->comid?'修改':'添加')?>技术支持：</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('box2');" title="关闭" class="dialogBoxClose">关闭</a> 
+    </div>
+    <div class="popup-body">
+    	<div class=" overflowh">
+        	<div class="publicOne">
+                <table width="700" bgcolor="#FFFFCC" >
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b><em>*</em>姓名: </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="name" id="name" value="<?php echo $this->engineer ['name']?>" style="width:200px"/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b><em>*</em>职位: </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="office" id="office" value="<?php echo $this-> engineer ['office']?>" style="width:200px"/></td>
+            </tr>
+           <tr>
+              <td width="126" align="right"><font color="#666600"><b><em>*</em>电话: </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="tel" id="tel" value="<?php echo $this->engineer['tel']?>" style="width:200px"/></td>
+            </tr>
+            <tr>
+              <td width="126" align="right"><font color="#666600"><b><em>*</em>邮箱: </b></font></td>
+              <td align="left" colspan="3"><input type="text" name="email" id="email" value="<?php echo $this->engineer['email']?>" style="width:200px"/></td>
+            </tr>
+            
+             <tr>
+              <td width="126" align="right"><font color="#666600"><b><em>*</em>简介: </b></font></td>
+              <td align="left" colspan="3"><textarea name="introduction" id="introduction" rows="4" style="width:500px;"><?=$this->engineer['introduction']?></textarea></td>
+            </tr>
+            <input type="hidden" id="uploadimg" name="uploadimg" value="<?=$this->engineer['head']?>" />
+            <tr>
+              <td align="right"><font color="#666600"><b><em>*</em>头像 : </b></font></td>
+              <td colspan="3" align="left">
+              <input type="button" name="but" onclick="openUplod()" value="上传头像"/>
+              <span class="fhint">(只允许上传图片gif|jpg|jpeg|png，不超过200k，145px*180px)</span></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="3"><div id="uploadimgshow"><?php if($this->engineer['head']) echo '<img src="/'.$this->engineer['head'].'"  height="60px" width="50px"/>';?></div></td>
+            </tr>
+            <tr>
+              <td colspan="4">&nbsp;</td>
+            </tr>
+            <tr height="50px">
+              <td colspan="4" align="center">
+              <input type="button" onclick="addengineer()" value="<?=($this->comid?'修 改':'添 加')?>" class="btnabig"></td>
+            </tr>
+          </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/js/jsplug/AjaxFileUploader/ajaxfileupload.js"></script>
+<script type="text/javascript">
+//添加公司
+function addengineer(partid,key)
+{
+	var name = document.getElementById("name").value;
+	if(name=='') {alert('请输入姓名');document.getElementById('name').focus();return;}
+	var office = document.getElementById("office").value;
+	if(office=='') {alert('请输入职位');document.getElementById('office').focus();return;}
+	var tel = document.getElementById("tel").value;
+	if(tel=='') {alert('请输入电话');document.getElementById('tel').focus();return;}
+	var email = document.getElementById("email").value;
+	if(email=='') {alert('请输入邮箱');document.getElementById('email').focus();return;}
+	var introduction = document.getElementById("introduction").value;
+	if(introduction=='') {alert('请输入简介');document.getElementById('introduction').focus();return;}
+	var uploadimg = document.getElementById("uploadimg").value;
+	if(uploadimg=='') {alert('请上传头像');return;}
+	$.ajax({
+		url: '/icwebadmin/CpSogl/addengineer',
+		data: {'engid':'<?=$this->engineer ['id']?>','name':name,'office':office,'tel':tel,'email':email,'introduction':introduction,'uploadimg':uploadimg},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0 || arr.code == 1){
+				chooseengineer('<?=$this->id?>',arr.engid,arr.name,arr.office);
+            }
+		}
+	});
+}
+function openUplod() {
+	$.openPopupLayer({
+		name: "uplodBox",
+		width: 450,
+		url: "<?php echo $this->openpicurl;?>"
+		});
+}
+function ajaxFileUpload()
+{    
+	document.getElementById('loading_ajax').style.display="block";
+	$.ajaxFileUpload
+	(
+		{
+				url:'/icwebadmin/common/uplodimg',
+				secureuri:false,
+				fileElementId:'fileToUpload',
+				dataType: 'json',
+				data:{path:'upload/default/engineer/head/'},
+				success: function (data, status)
+				{
+					document.getElementById('loading_ajax').style.display="none";
+					if(typeof(data.error) != 'undefined')
+					{
+						if(data.error != 0)
+						{
+							document.getElementById('uploadmsg').innerHTML=data.message;
+						}else
+						{
+						    var d = new Date();
+							document.getElementById('uploadmsg').innerHTML=data.message;
+							document.getElementById('uploadimg').value = 'upload/default/engineer/head/'+data.filename;
+							document.getElementById('uploadimgshow').innerHTML ='<img src="/upload/default/engineer/head/'+data.filename+'?_'+d.toTimeString()+'"  height="60px" width="50px"/>';
+							document.getElementById('fileToUpload').disabled="disabled";
+						}
+					}
+				},
+				error: function (data, status, e)
+				{
+					document.getElementById('loading_ajax').style.display="none";
+					document.getElementById('uploadmsg').innerHTML=e;
+				}
+			}
+		)
+		return false;
+}
+</script>

@@ -1,0 +1,586 @@
+<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+<?php echo $this->render('jifen/menu.phtml');?>
+<!-------------------------------------------------活动主体------------------------------------------------->
+<style>
+	.ly-plate{
+		position:relative;
+		width:430px;
+		height:433px;
+		margin:0 auto;
+	}
+	.rotate-bg{
+		width:430px;
+		height:430px;
+		background:url(/js/lottery/rotate/ly-plate.png) no-repeat;
+		position:absolute;
+		top:1px;
+		left:0
+	}
+	.ly-plate_up{ background:url(/js/lottery/rotate/ly-plate_up.png) no-repeat;
+		width:106px;
+		height:106px;
+		position:absolute;
+		top:50%; margin-top:-53px;
+		left:50%;margin-left:-53px;cursor: pointer;}
+	.ly-plate div.lottery-star{
+		width:250px;
+		height:250px;
+		position:absolute;
+		top:50%; margin-top:-125px;
+		left:50%;margin-left:-125px;
+		outline:none; 
+	}
+	.ly-plate div.lottery-star #lotteryBtn{
+		cursor: pointer;
+		position: absolute;
+		top:0;
+		left:0;
+	}
+</style>
+
+
+<!-------------------------------------------------活动主体------------------------------------------------->
+<div class="con-full pos-re huodong">
+	<div class="full-banner-huodong"></div>
+    
+    <div class=" rulebox01">
+    	<div class="w">
+            <div class="fl">
+                <h2>活动规则</h2>
+                <ul>
+                    <li>1. 凡是已经注册的老用户及活动期间注册的新用户，均可参与本次活动。</li>
+
+                    <li>2. 活动期间，成功邀请<b>5位好友</b>完成注册的用户，奖励<strong>20元</strong>电话充值卡。</li>
+                    <li>3. 您还有机会参与抽奖，将<b>iPad mini</b>、<b>Kindle Paperwhite</b>、<b>Nike GPS运动腕表</b>、<br />&nbsp;&nbsp;&nbsp;&nbsp;<b>红米手机</b>等多种豪华大奖抱回家。</li>
+                    <li>4. 活动期间<b>最活跃</b>的用户还可获得超热门的<strong>小米手机3</strong>。</li>
+                </ul>
+            </div>
+            <div class="fr">
+                <h4>注：</h4>
+                <ul>
+                    <li>1. 登录后可在此页面查看您的专属邀请链接，被邀请人必须点击该链接<br />&nbsp;&nbsp;&nbsp;&nbsp;注册并完成邮箱验证，才算邀请成功。</li>
+                    <li>2. 邀请的好友必须是电子行业相关人员。</li>
+                    <li>3. 活跃度评比指标：注册后必须每天签到，浏览页面≥6，分享内容≥5<br />&nbsp;&nbsp;&nbsp;&nbsp;篇。在此基础上结合总浏览页面、分享内容总篇数、在IC易站停留<br />&nbsp;&nbsp;&nbsp;&nbsp;总时间、总访问次数综合评估。</li>
+                    <li>4. 请到<a href="/center/info" target="_blank">个人资料</a>填写手机号码，此号码为成功邀请5位好友完成注册<br />&nbsp;&nbsp;&nbsp;&nbsp;后，需充值的手机号码。每日统一充值时间为下午5-6点。 
+                    </li>
+                </ul>
+            </div>
+            <div class="clr"></div>
+        </div>
+    </div>
+
+    
+    <div class="sec-invite">
+        <div class="w">
+            <div class="panel clearfix" style="display: block;">
+                <h2>邀<b>5</b>位好友成功注册，即得<strong>20</strong>元！</h2>
+                <div class="fl yqbox">
+                	<h4>方式1：直接复制邀请链接发送给好友</h4><em>(可以通过QQ，MSN等聊天工具发送您的专属邀请链接给好友)</em>
+                    <div class="yqbox_c ">
+                         <?php if(isset($_SESSION['userInfo']['unameSession'])){?>
+                        <div class="yq pos-re yqlink"> 
+                         <b class="font20">您的专属邀请链接：</b>
+                            <input type="text" title="复制" class="rulelink" name="inviteurl" id="inviteurl" value="<?php echo HTTPHOST."/user/register?invitekey=".$_SESSION['userInfo']['uidSession'];?>" />
+                  <a href="javascript:void(0);" title="复制" class="yqbtn" onclick="copyinvite('inviteurl')">复制邀请链接</a>
+                        </div>
+                        <?php }else{?>
+                        <div class="yq pos-re yqlogin "> 
+                        <b class="font20">登录后，就可以邀请您的好友了！
+                        <a href="javascript:void(0);" title="登录" onclick="openlogin()" class="yqbtnlogin">现在就登录</a>
+                        还没IC易站账号？<a href="/user/register" target="_blank" title="注册" style="color:#FFFFFF">快速注册</a></b>
+                        </div>
+                        <?php }?>
+                      <div>
+                      <div class="sec-share clearfix">
+                      	<i></i>
+                        <!--<em class="bold">发给qq空间、微博好友，更多好朋友看到，更多机会获得奖励！</em>-->
+                        <div id="J-sns-share" class="fshare clearfix">
+                            <div class="fshare-item J-sns-share-type1">
+                               <?php if(isset($_SESSION['userInfo']['unameSession'])){?>
+                            <a data-fid="share_qq" class="fs-tqq" title="分享到腾讯微博" href="javascript:;" onclick="shareBaidu('tqq','<?=$_SESSION['userInfo']['uidSession'];?>');">tqq</a>
+                            <a data-fid="share_sina" class="fs-tsina" title="分享到新浪微博" href="javascript:;" onclick="shareBaidu('tsina','<?=$_SESSION['userInfo']['uidSession'];?>');">tsina</a>
+                            <a data-fid="share_renren" class="fs-renren" title="分享到人人" href="javascript:;" onclick="shareBaidu('renren','<?=$_SESSION['userInfo']['uidSession'];?>');">renren</a>
+                            <a data-fid="share_qqzone" class="fs-qq" title="分享到QQ好友" href="javascript:;" onclick="shareBaidu('qq','<?=$_SESSION['userInfo']['uidSession'];?>');">QQ</a>
+                            <a data-fid="share_qqzone" class="fs-qzone" title="分享到QQ空间" href="javascript:;" onclick="shareBaidu('qzone','<?=$_SESSION['userInfo']['uidSession'];?>');">qzone</a>
+                            <?php }else{?>
+                            <a class="fs-tqq" title="分享到腾讯微博" href="javascript:void(0)" onclick="openlogin()">tqq</a>
+                            <a class="fs-tsina" title="分享到新浪微博" href="javascript:void(0)" onclick="openlogin()">tsina</a>
+                            <a class="fs-renren" title="分享到人人" href="javascript:void(0)" onclick="openlogin()">renren</a>
+                            <a class="fs-qq" title="分享到QQ好友" href="javascript:void(0)" onclick="openlogin()">QQ</a>
+                            <a class="fs-qzone" title="分享到QQ空间" href="javascript:void(0)" onclick="openlogin()">qzone</a>
+                            <?php }?>
+                            </div>
+                        </div>
+                    </div >
+                      
+                      </div>
+                  	</div>
+                </div>
+                <div class="fl yqbox yqmailbox">
+                	<h4>方式2：通过邮件邀请好友</h4><em>（如果您记得好友邮箱可以直接输入，IC易站帮您发送；您也可以登录邮箱，群发给您的好友。）<?php if(isset($_SESSION['userInfo']['unameSession'])){?><a  href="javascript:;" onclick="openbox('/jifen/inviterecords')" style="color:#2970fe; margin-left:5px">查看您的邀请记录</a><?php }?></em>
+                    <div class="yqbox_c">
+                        <div class="yqbox_in">
+                            <p><input type="text" name="friendemail" id="friendemail" value="在此输入好友邮箱地址，每个邮箱之间用分号隔开" onfocus="inputFocus($(this),'在此输入好友邮箱地址，每个邮箱之间用分号隔开');" onblur="inputBlur($(this),'在此输入好友邮箱地址，每个邮箱之间用分号隔开')" class="input-invite input-invite-m " /></p>
+                            <p><textarea rows="4" name="invitecon" id="invitecon" class="input-invite input-invite-textarea ">#IC易站#惊喜来袭，邀请好友注册即可赚积分，抽大奖，您还在等什么，快呼朋唤友来参加吧！ <?php echo HTTPHOST."/user/register?invitekey=".$_SESSION['userInfo']['uidSession'];?>  </textarea></p>
+                            <p><input type="text" class="input-invite input-invite-s " placeholder="验证码" name="verifycode" id="verifycode" maxlength="4" value="" autocomplete="off" onkeydown="eventemail(event)">
+                         <img src="" id="verify" onClick="getVerify()">
+                         <a href="javascript:void(0);" class="refresh" onClick="getVerify()">看不清<br>换一张</a></p>
+                             <p class="sendinvitebutton"><input type="button" class="login_rule_small" onclick="sendinvite()" value="立即邀请" /></p>
+                        </div>             
+                        <div class="yqmail">
+                            <div class="yqmailspan">不记得那么多邮箱地址？</div>
+                            <h5>登录自己邮箱</h5>
+                            <ul>
+                                <li><a href="https://mail.qq.com" target="_blank" class="fs fs-qqmail" ><i></i>用QQ邮箱邀请</a></li>
+                                <li><a href="http://reg.163.com" target="_blank" class="fs fs-163mail"><i></i>用163邮箱邀请</a></li>
+                                <li><a href="https://mail.google.com/mail" target="_blank" class="fs fs-gmail" ><i></i>用Gmail邮箱邀请</a></li>
+                                <li><a href="mailto:" class="fs fs-outlook" ><i></i>用outlook邀请</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+		</div>
+    </div>
+    
+    <div class="huoyue">
+    <?php if(isset($_SESSION['userInfo']['unameSession'])){
+		$uid = $_SESSION['userInfo']['uidSession'];
+	?>
+        <h4><?=$_SESSION['userInfo']['unameSession']?> 的综合排名：<b>击败全国<?=sprintf("%.0f",$this->top[$uid]['alltoptmp']/$this->alltop*100)?>%的用户</b></h4>
+		<div class="huoyuebox">
+        	<div class="huoyue01 qiantao">
+            	<div class="huoyuebox_icon"></div>
+                <div class="huoyuebox_Degree per<?=sprintf("%.0f",$this->top[$uid]['jp']/10)?>0">
+                	<div class="Degree_up"></div>
+                    <div class="Degree_mid"></div>
+                    <div class="Degree_down"></div>
+                    <p>击败<?=sprintf("%.0f", $this->top[$uid]['jp'])?>%的用户</p>
+                </div>
+                <div class="huoyuebox_Date">
+                	<p>总签到<b><?=($this->top[$uid]['jifenviewnum'])?></b>次</p>
+					<p>最长连续签到<b><?=($this->top[$uid]['jlang'])?></b>天</p>
+                </div>
+                <div class="clr"></div>
+            </div>
+            <div class="huoyue01 liulan">
+            	<div class="huoyuebox_icon"></div>
+                <div class="huoyuebox_Degree per<?=sprintf("%.0f",$this->top[$uid]['cp']/10)?>0">
+                	<div class="Degree_up"></div>
+                    <div class="Degree_mid"></div>
+                    <div class="Degree_down"></div>
+					<p>击败<?=sprintf("%.0f", $this->top[$uid]['cp'])?>%的用户</p>
+                </div>
+                <div class="huoyuebox_Date">
+                	<p>总浏览<b><?=($this->top[$uid]['clicknum'])?></b>个页面</p>
+					<p>最长连续浏览<b><?=($this->top[$uid]['jlang'])?></b>天</p>
+                </div>
+                <div class="clr"></div>
+            </div>
+            <div class="huoyue01 fenxiang">
+            	<div class="huoyuebox_icon"></div>
+                <div class="huoyuebox_Degree per<?=sprintf("%.0f",$this->top[$uid]['sp']/10)?>0">
+                	<div class="Degree_up"></div>
+                    <div class="Degree_mid"></div>
+                    <div class="Degree_down"></div>
+                    <p>击败<?=sprintf("%.0f", $this->top[$uid]['sp'])?>%的用户</p>
+                </div>
+                <div class="huoyuebox_Date">
+                	<p>总分享<b><?=($this->top[$uid]['sharenum'])?></b>篇</p>
+					<p>最长连续分享<b><?=($this->top[$uid]['slang'])?></b>天</p>
+                </div>
+                <div class="clr"></div>
+            </div>
+            <div class="huoyue01 hyyaoqing">
+            	<div class="huoyuebox_icon"></div>
+                <div class="huoyuebox_Degree per<?=sprintf("%.0f",$this->top[$uid]['ip']/10)?>0">
+                	<div class="Degree_up"></div>
+                    <div class="Degree_mid"></div>
+                    <div class="Degree_down"></div>
+                    <p>击败<?=sprintf("%.0f", $this->top[$uid]['ip'])?>%的用户</p>
+                </div>
+                <div class="huoyuebox_Date">
+                	<p>总邀请<b><?=($this->topnum[$uid])?></b>人</p>
+                </div>
+                <div class="clr"></div>
+            </div>
+        </div>
+         <?php }else{?>
+         <h4>登录后可看到您的综合排名 <a href="javascript:void(0);" title="登录" onclick="openlogin()" style="color:#008aff">立即登录</a>
+         <div class="huoyuebox">
+        	<div class="huoyue01 qiantao">
+            	<div class="huoyuebox_icon"></div>
+                <div class="huoyuebox_Degree ">
+                	
+                    
+                    <p></p>
+                </div>
+                <div class="huoyuebox_Date">
+                	<p>总签到<b></b>次</p>
+					<p>最长连续签到<b></b>天</p>
+                </div>
+                <div class="clr"></div>
+            </div>
+            <div class="huoyue01 liulan">
+            	<div class="huoyuebox_icon"></div>
+                <div class="huoyuebox_Degree ">
+                	
+                    
+                    <p></p>
+                </div>
+                <div class="huoyuebox_Date">
+                	<p>总浏览<b></b>个页面</p>
+					<p>最长连续浏览<b></b>天</p>
+                </div>
+                <div class="clr"></div>
+            </div>
+            <div class="huoyue01 fenxiang">
+            	<div class="huoyuebox_icon"></div>
+                <div class="huoyuebox_Degree ">
+                	
+                    
+                    <p></p>
+                </div>
+                <div class="huoyuebox_Date">
+                	<p>总分享<b></b>篇</p>
+					<p>最长连续分享<b></b>天</p>
+                </div>
+                <div class="clr"></div>
+            </div>
+            <div class="huoyue01 hyyaoqing">
+            	<div class="huoyuebox_icon"></div>
+                <div class="huoyuebox_Degree ">
+                	
+                    
+                    <p></p>
+                </div>
+                <div class="huoyuebox_Date">
+                	<p>总邀请<b></b>人</p>
+                </div>
+                <div class="clr"></div>
+            </div>
+        </div>
+         <?php }?>   	
+    </div>
+    
+    <div class="huodongbox">
+    	<div class="w clearfix pos-re"> 
+    		<h1>积分抽大奖，赶紧试试自己的手气吧!</h1>
+            
+            <div class="dqjf">
+            	<p class="dqjfn">您的当前积分：</p>
+                <?php if(isset($_SESSION['userInfo']['unameSession'])){?>
+                <p class="dqjffz userscore"><?=$this->myscore?></p>
+				<?php }else{?>
+				<p class="dqjffz"><a href="javascript:;" onClick="openlogin()">请登录</a></p>
+				<?php }?>
+            </div>
+            
+            <div class="hdzp">
+            	<div class="ly-plate">
+                    <div class="rotate-bg"></div>
+                    <div class="lottery-star"><img src="/js/lottery/rotate/rotate-static.png" id="lotteryBtn" alt="img"></div> <!--加上id后ie10 图片不显示-->
+                    <div class="ly-plate_up" id="lotteryAction"></div>
+                </div>
+            </div>
+
+<script src="/js/lottery/rotate/jQueryRotate.2.2.js" type="text/javascript"></script>
+<script src="/js/lottery/rotate/jquery.easing.min.js" type="text/javascript"></script>
+<script>
+var closerotate = false;
+var peplenum =  <?=(int)($this->joinnum)?>;
+
+function lotteryresult(mess,mess2,type,id,t){
+	$.openPopupLayer({
+		name: "lotteryResult",
+		url: "/jifen/lotteryresult?mess="+encodeURI(mess)+"&mess2="+encodeURI(mess2)+"&type="+type+"&id="+id
+	});
+	closerotate = false;
+	    //更新积分
+	   upscore();
+}
+$(function(){
+	var timeOut = function(text){  //超时函数
+		$("#lotteryBtn").rotate({
+			angle:0, 
+			duration: 10000, 
+			animateTo: 2160, //这里是设置请求超时后返回的角度，所以应该还是回到最原始的位置，2160是因为我要让它转6圈，就是360*6得来的
+			callback:function(){
+				alert(text);
+				//解锁抽奖
+				closerotate = false;
+			}
+		}); 
+	}; 
+	var rotateFunc = function(angle,text,text2,type,id){  //awards:奖项，angle:奖项对应的角度
+		$('#lotteryBtn').stopRotate();
+		$("#lotteryBtn").rotate({
+			angle:0, 
+			duration: 5000, 
+			animateTo: angle+2160, //angle是图片上各奖项对应的角度，1440是我要让指针旋转4圈。所以最后的结束的角度就是这样子^^
+			callback:function(){
+				lotteryresult(text,text2,type,id);
+				//解锁抽奖
+			}
+		}); 
+	};
+	$("#lotteryAction").click(function(){alert("积分活动已经结束，您可以去积分抽奖页面继续抽奖的，谢谢参与！");return;
+            $.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   if(arr.code==0)
+			   {
+			        if(closerotate) {return;};
+			      	$.ajax({
+					url: '/jifen/lottery',
+					data: {},
+					type: 'post',
+					dataType: 'json',
+					timeout: 5000, 
+					error: function(){timeOut('网络超时');}, 
+					success: function(arr) {
+						alert("积分活动已经结束，您可以去积分抽奖页面继续抽奖，谢谢参与！");return;
+						if(arr.code==500){ alert(arr.message);return;}
+						if(arr.code==100){
+							openbox('/jifen/alertbox?t=noscore');return;
+						}else if(arr.code==101){
+						   $.openPopupLayer({
+		                         name: "lotteryResult",
+		                         url: "/jifen/lotteryresult?mess="+encodeURI(arr.mess2)+"&t=1"
+	                        });
+							return;
+						}else if(arr.code==1){
+							rotateFunc(290,arr.prizemessage,arr.mess2,arr.code,arr.logid)
+						}else if(arr.code==2){
+							rotateFunc(60,arr.prizemessage,arr.mess2,arr.code,arr.logid)
+						}else if(arr.code==3){
+							rotateFunc(205,arr.prizemessage,arr.mess2,arr.code,arr.logid)
+						}else if(arr.code==4){
+							rotateFunc(25,arr.prizemessage,arr.mess2,arr.code,arr.logid)
+						}else if(arr.code==5){
+							rotateFunc(160,arr.prizemessage,arr.mess2,arr.code,arr.logid)
+						}else if(arr.code==6){
+							rotateFunc(250,arr.prizemessage,arr.mess2,arr.code,arr.logid)
+						}else if(arr.code==0){
+						    var angle = [110,340];
+							angle = angle[Math.floor(Math.random()*angle.length)];
+							rotateFunc(angle,arr.prizemessage,arr.mess2);
+						}else{
+							alert(arr.mess2);return;
+							//location.reload();
+						}
+						//增加参加人数
+						peplenum++;
+						$('.nopeple').html(pad(peplenum, 5));
+						closerotate = true; 
+					}
+	                });
+				    
+			      }else if(arr.code==100){
+			   	    $.openPopupLayer({
+		               name: "loginBox",
+		               target: "login_box"
+	                 });
+			       }else if(arr.code==200){
+			   	      window.location.href ="/user/verification";
+			      }
+                }
+             });
+        });
+	//验证码
+	getVerify();
+})
+function eventemail(evt){
+    evt=evt?evt:(window.event?window.event:null);
+    var keyCode = evt.keyCode;
+	if(keyCode==13) sendinvite();
+}
+//发邮件
+function sendinvite(){
+	$.ajax({
+		url: '/index/checklogin',
+		data: {},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		  if(arr.code==0)
+		  {
+		      var friendemail = $("#friendemail").val();
+			  var verifycode  = $("#verifycode").val();
+			  var invitecon   = $("#invitecon").val();
+			  if(friendemail=='' || friendemail=='在此输入好友邮箱地址，每个邮箱之间用分号隔开'){alert('请输入邮箱地址');$("#friendemail").focus();return;}
+			  if(verifycode==''){alert('请输入验证码');$("#verifycode").focus();return;}
+			  $(".sendinvitebutton").html('<input type="button" class="login_rule_small" value="邮件发送中..." />');
+			  $.ajax({
+					url: '/common/sendinvite',
+					data: {'email':friendemail,'verifycode':verifycode,'invitecon':invitecon},
+					type: 'post',
+					dataType: 'json',
+					//timeout: 20000, 
+					error: function(){alert('网络超时');}, 
+					success: function(arr) {
+						$.openPopupLayer({
+		                         name: "lotteryResult",
+		                         url: "/jifen/lotteryresult?mess="+encodeURI(arr.mess)+"&t=1"
+	                        });
+						if(arr.code==0){
+							$("#friendemail").val('');
+							$("#verifycode").val('');
+						}
+						$(".sendinvitebutton").html('<input type="button" class="login_rule_small" onclick="sendinvite()" value="立即邀请" />');
+						getVerify();
+					}
+	          });
+		  }else if(arr.code==100){
+			$.openPopupLayer({
+			   name: "loginBox",
+			   target: "login_box"
+			 });
+		   }else if(arr.code==200){
+			  window.location.href ="/user/verification";
+		  }
+		}
+	});
+}
+</script>
+<script type="text/javascript">
+
+/** 
+ *  
+ * jQuery scrollQ plugin li上下滚动插件
+ * @name jquery-scrollQ.js 
+ * @author Q 
+ * @date 2012-03-23 
+ * line 显示li行数 
+ * scrollNum 每次滚动li行数
+ * scrollTime 滚动速度 单位毫秒
+ * 
+ */  
+(function($){  
+    var status = false;  
+    $.fn.scrollQ = function(options){  
+        var defaults = {  
+            line:8,  
+            scrollNum:1,  
+            scrollTime:5000
+        }
+		var options=jQuery.extend(defaults,options);
+		var _self = this;
+		return this.each(function(){  
+			$("li",this).each(function(){
+				$(this).css("display","none");
+			})
+			$("li:lt("+options.line+")",this).each(function(){
+				$(this).css("display","block");
+			})
+			function scroll() {
+				for(i=0;i<options.scrollNum;i++) {
+					var start=$("li:first",_self);
+					start.fadeOut(100);
+					start.css("display","none");
+					start.appendTo(_self);
+					$("li:eq("+(options.line-1)+")",_self).each(function(){
+						$(this).fadeIn(500);
+						$(this).css("display","block");
+					})
+				}
+			}
+			var timer;
+			timer = setInterval(scroll,options.scrollTime);
+			_self.bind("mouseover",function(){
+				clearInterval(timer);
+			});
+			_self.bind("mouseout",function(){
+				timer = setInterval(scroll,options.scrollTime);
+			});
+			
+		});
+    }
+})(jQuery); 
+$(document).ready(function(){
+<?php if(count($this->winners)>8){?>
+ $("#sItem").scrollQ({  
+            line:8,  
+            scrollNum:1,  
+            scrollTime:6000
+        });
+<?php }?>
+ $("#sItem2").scrollQ({  
+            line:<?=(count($this->winners)>8?8:(16-count($this->winners)))?>,  
+            scrollNum:1,  
+            scrollTime:5000
+        });
+});
+</script>
+            <div class="hdno">
+            <?php if($this->winners){?>
+            	<ul class="bja" id="sItem" <?php if(count($this->winners)>8) echo 'style="overflow:hidden; height:260px;"';?>>
+                    <?php foreach($this->winners as $winners){ //$winners['uname']='中国电子科技有限公司';
+					  $showtitle = $winners['uname'].' 抽中：'.$winners['temp4'];
+					?>
+                	<li style="display: block;" title="<?=$showtitle?>"><span class="fl">
+					<?php if($winners['temp5']<3 && $winners['temp5']>0) echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';?><?=$this->fun->utf_substr($winners['uname'],14)?></span>
+                    <span class="fr"><?=$this->fun->utf_substr($winners['temp4'],20)?>
+                    </span><?php if($winners['temp5']<3 && $winners['temp5']>0) echo '<i class="hdnoicon"></i>';?>
+                     <?php }?>
+                </ul>
+             <?php }?>
+                <ul class="sja" id="sItem2">
+                <?php if($this->winners2){foreach($this->winners2 as $winners2){//$winners2['uname']='华为科技有限公司';
+				$winners2['temp4'] = str_replace("积分奖励", "", $winners2['temp4']);
+				?>
+	                <li style="display: block;height: 15px;" title="<?=time_tran($winners2['created']).' '.$winners2['uname'].' 抽中：'.$winners2['temp4']?>"><span class="fl"><?=$this->fun->utf_substr($winners2['uname'],14)?></span>
+                    <span class="fr"><?=$this->fun->utf_substr($winners2['temp4'],20)?> &nbsp; &nbsp;<?=time_tran($winners2['created'])?></span>
+                  <?php }}?>
+                  </ul>
+            </div>
+            <div class="hdrule">
+            	<h2>抽奖活动规则</h2>
+                <ol>
+                	<li><span>1.</span>凡是已经注册的老用户及活动期间注册的新用户，均可参与本次活动。</li>
+     				<li><span>2.</span>成功邀请5位好友注册的用户，每天有<b>1</b>次免积分抽奖机会，当天超出1次后，每参加一次需扣积分10分。<a href="/jifen/rule" style="color: #2970fe;">积分规则</a></li>
+     				<li><span>3.</span>尚未成功推荐5位好友注册的用户，不享有免积分抽奖机会，每参加1次需扣除积分10分。</li>
+                    <li><span>4.</span>中奖后，请于弹出框中输入详细的收货信息，活动结束后，我们将通过您提供的信息发放奖品。</li>
+                </ol>
+            </div>
+            <div class="nopeple"><?=$this->joinnum?></div>
+        </div>
+    </div>
+
+
+<div class="w" style="height:950px;">
+    <wb:topic uid="2975717344" topmid="AiF2H56ZL" column="y" border="n" width="990" height="1000" tags="IC%E6%98%93%E7%AB%99" language="zh_cn" version="base" appkey="3ud7XT" footbar="y" filter="n" ></wb:topic>
+    </div>
+
+	<div class="lipinbox">
+    	<div></div>
+        
+        
+    </div>
+    
+    
+    
+    
+</div>
+<?php function time_tran($the_time){
+   $now_time = time();
+   $show_time = $the_time;
+   $dur = $now_time - $show_time;
+   if($dur < 60){
+    return $dur.'秒前';
+   }else{
+    if($dur < 3600){
+     return floor($dur/60).'分钟前';
+    }else{
+     if($dur < 86400){
+      return floor($dur/3600).'小时前';
+     }else{
+       return floor($dur/86400).'天前';
+     }
+    }
+   }
+}?>

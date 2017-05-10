@@ -1,0 +1,19 @@
+<div class="popup" style="width:400px;">
+    <div class="popup-header">
+        <h2>订单添加成功</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('comBox');window.location.href='/icwebadmin/OrUnso';" title="关闭" class="dialogBoxClose">关闭</a> 
+    </div>
+    <div class="popup-body">
+    	<div class="companyifo">
+            <table width="350" border="0">
+            <tr><td>订单号：</td>
+            <td><?=$this->sodata['salesnumber']?></td></tr>
+            <tr><td>合同：</td>
+            <td><a href="/icwebadmin/OrInqo/iccontract/key/<?=md5(session_id())?>/salesnumber/<?=$this->sodata['salesnumber']?>/<?=$this->sodata['salesnumber'].'_'.($this->sodata['companyname']?$this->sodata['companyname']:$this->sodata['uname'])?>" target="_blank" class="gbqfb">打印合同</a></td></tr>
+            <tr><td>订单：</td>
+            <td><a href="/icwebadmin/OrUnso/list?type=select&ordertype=&orderby=&sdata=&edata=&xsname=&salesnumber=<?=$this->sodata['salesnumber']?>&sap=&delivery_place=" target="_blank"  class="gbqfb">查看订单</a></td></tr>
+            </table>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

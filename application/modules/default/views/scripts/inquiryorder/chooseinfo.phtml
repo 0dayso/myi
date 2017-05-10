@@ -1,0 +1,1102 @@
+<link rel="stylesheet" type="text/css" href="/css/default/buyprocess.css" />
+<?php $oldurl = $this->url(array('controller'=>'inquiryorder', 'action'=>'index', 'inqkey'=>$this->fun->encryptVerification($this->inqid)));?>
+<?php
+$deliveryArr = array('SZ'=>'国内','HK'=>'香港');
+$currencyArr = array('RMB'=>'人民币 RMB','USD'=>'美元 USD','HKD'=>'港币 HKD');
+$annexur_part = COM_ANNEX.$_SESSION['userInfo']['uidSession'].'/';
+$annexurl = $annexur_part.$this->myinfo['annex1'];
+$annexurl2= $annexur_part.$this->myinfo['annex2'];
+?>
+<div id="header" class="w">
+  <div id="logo"><a hidefocus="true" href="/"><img alt="IC易站" src="/images/default/logo.jpg"></a></div>
+  <h1>询价下单</h1>
+</div>
+<!--content-->
+<div class="w buyprocess inquirystep">
+  <div class="registerline"></div>
+  <div class="steps step-2">
+    <ol>
+      <li>我的购物车</li>
+      <li>填写核对信息单</li>
+      <li>成功提交订单</li>
+    </ol>
+  </div>
+</div>
+<div class="w lh Order">
+  <h1>订单详情</h1>
+  <div class="Order_details">
+    <!--运费与快递-->
+    <div id="div_shipment"  class="lines">
+      <h2>配送方式：</h2>
+      <div class="add_address 1h">
+        <dl>
+          <dt>交货地： </dt>
+          <dd><strong><?php echo $deliveryArr[$this->inquiry['delivery']];?></strong></dd>
+        </dl>
+        <dl>
+          <dt>配送方式： </dt>
+          <dd>
+            <?php if($this->inquiry['delivery']=='SZ'){$delivery_type_checked='checked="checked"';?>
+            <label>
+            <input type="radio" name="delivery_type" value="1" class="delivery_type" <?=$delivery_type_checked?> >
+            国内快递</label>
+            <label>
+            <input type="radio" name="delivery_type" value="3" class="delivery_type">
+            客户自提<span style="color:#F5811F">（免运费）</span></label>
+            <?php }elseif($this->inquiry['delivery']=='HK'){$delivery_type_checked='checked="checked"';?>
+            <label>
+            <input type="radio" name="delivery_type" value="2" class="delivery_type" checked="checked">
+            公司配送</label>
+            <label>
+            <input type="radio" name="delivery_type" value="3" class="delivery_type">
+            客户自提<span style="color:#F5811F">（免运费）</span></label>
+             <label>
+            <input type="radio" name="delivery_type" value="4" class="delivery_type">
+            客户提供账号</label>
+            <?php }?>
+          </dd>
+        </dl>
+        <!--合并订单发货-->
+        <?php if($this->shiporder){?>
+        <dl>
+        	<dt>&nbsp;</dt>
+            <dd>
+            	<div class="mergerorder">
+                	<div><label><input type="checkbox" name="needshipoder" id="needshipoder" value="1" onclick="$('.needshipoder_div').toggle();shipoderfreight(this)"/>与现有订单一起发货</label>
+                    </div>
+           		    <div class="tipinfo"><s></s>您可以选择以下订单进行合并发货，合并后收货地址与原订单一致，此订单会免除运费及包装费。</div>
+                   
+                    <div class="needshipoder_div">
+                    <?php foreach($this->shiporder as $shipoder){?>
+			             <div class="one">
+                  			 <label class="number"><?=$shipoder['salesnumber']?></label>
+                             <a href="/inquiryorder/view?salesnumber=<?=$shipoder['salesnumber']?>" title="查看订单详细" target="_blank">查看订单</a>
+                  			 <span class="address"><?=$this->fun->createAddress($shipoder['province'],$shipoder['city'],$shipoder['area'],$shipoder['address'])?>&nbsp;&nbsp;&nbsp;<?=$shipoder['name'].($shipoder['mobile']?' , '.$shipoder['mobile']:'').($shipoder['tel']?' , '.$shipoder['tel']:'')?>&nbsp;</span>
+                         </div>
+                    <?php }?>
+			        </div>
+                    
+                    <div class="needshipoder_div" style="display:none;">
+                    <?php foreach($this->shiporder as $shipoder){?>
+			             <div class="one">
+                  			 <label title="选择合并此订单" class="number"><input type="radio" name="shipoder_salesnumber" value="<?=$shipoder['salesnumber']?>" <?=count($this->shiporder)==1?'checked="checked"':''?> ><?=$shipoder['salesnumber']?></label>
+                             <a href="/inquiryorder/view?salesnumber=<?=$shipoder['salesnumber']?>" title="查看订单详细" target="_blank">查看订单</a>
+                  			 <span class="address"><?=$this->fun->createAddress($shipoder['province'],$shipoder['city'],$shipoder['area'],$shipoder['address'])?>&nbsp;&nbsp;&nbsp;<?=$shipoder['name'].($shipoder['mobile']?' , '.$shipoder['mobile']:'').($shipoder['tel']?' , '.$shipoder['tel']:'')?>&nbsp;</span>
+                         </div>
+                    <?php }?>
+			        </div>
+                    </div>
+            </dd>
+        </dl><?php }else{echo '<input type="hidden" name="needshipoder" id="needshipoder" />';}?>
+        <!--end 合并订单发货-->
+        <dl class="freight_show_1_2" style="display:<?=$delivery_type_checked?'block':'none'?>">
+          <dt>运费及包装费：</dt>
+          <dd>
+            <!--合并订单前-->
+            <table class="needshipoder_div">
+              <tr>
+                <td><b class="fontred"><?php echo $this->inquiry['currency'].' '.number_format($this->freight,DECIMAL)?></b></td>
+              </tr>
+              <tr>
+                <td><img src="/images/default/car_icon.gif" /> <span class="fontgreen" >
+                  <?php if($this->freight==0) echo '您本次购买总金额达到免运费及包装费标准，我们将减免您的运费及包装费。';
+		  else echo '您本次购买总金额没有达到免运费及包装费标准， 购物满('.($this->inquiry['delivery']=='SZ'?'RMB'.$this->freermb:'USD'.$this->freeusd.', HKD'.$this->freehkd).')免运费及包装费。';
+		  ?>
+                  </span></td>
+              </tr>
+            </table>
+            <!--合并订单后-->
+            <table class="needshipoder_div" style="display:none;">
+              <tr>
+                <td><b class="fontred"><?php echo $this->inquiry['currency'].' '.number_format($this->freight/2,DECIMAL)?></b></td>
+              </tr>
+              <tr>
+                <td><img src="/images/default/car_icon.gif" /> <span class="fontgreen" >
+                  <?php if($this->freight==0) echo '您本次购买总金额达到免运费及包装费标准，我们将减免您的运费及包装费。';
+		  else echo '您选择合并订单发货，我们将减免您的运费但会继续收取包装费， 购物满('.($this->inquiry['delivery']=='SZ'?'RMB'.$this->freermb:'USD'.$this->freeusd.', HKD'.$this->freehkd).')免运费及包装费。';
+		  ?>
+                  </span></td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <dl class="freight_show_3" style="display:none">
+          <dt>运费及包装费：</dt>
+          <dd><b class="fontred"><?php echo $this->inquiry['currency'].' '.number_format($this->packageprice,DECIMAL)?></b></dd>
+        </dl>
+        <dl class="freight_show_3" style="display:none">
+          <dt>取货信息：</dt>
+          <dd>
+            <table>
+              <tr>
+                <td> 1)提货地址：
+                  <?php if($this->inquiry['delivery']=='SZ'){echo $this->delivery_add_sz." ；联系电话：".$this->delivery_tel_sz;}
+		                       elseif($this->inquiry['delivery']=='HK'){echo $this->delivery_add_hk." ；联系电话：".$this->delivery_tel_hk;}?>
+                </td>
+              </tr>
+              <tr>
+                <td>2)提货时间：
+                  <?php if($this->inquiry['delivery']=='SZ'){echo $this->delivery_workdate_sz;}
+		                       elseif($this->inquiry['delivery']=='HK'){echo $this->delivery_workdate_hk;}?>
+                </td>
+              </tr>
+              <tr>
+                <td>3)
+                  <?php if($this->inquiry['delivery']=='SZ'){echo $this->delivery_des_sz;}
+		                      elseif($this->inquiry['delivery']=='HK'){echo $this->delivery_des_hk;}?></td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        
+        <dl class="freight_show_4" style="display:none">
+          <dt>运费及包装费：</dt>
+          <dd><b class="fontred"><?php echo $this->inquiry['currency'].' '.number_format($this->packageprice,DECIMAL)?></b></dd>
+        </dl>
+        <dl class="freight_show_4" style="display:none">
+          <dt>发货信息：</dt>
+          <dd>
+            <?php if($this->expressadd){
+				   $address_4 = $this->expressadd['address'];
+				   $name_4 = $this->expressadd['name'];
+				   $tel_4 = $this->expressadd['tel'];
+				   $express_name_4 = $this->expressadd['express_name'];
+				   $express_account_4 = $this->expressadd['express_account'];
+			}
+			?>
+            <table>
+              <tr>
+                <td>1)收货地址：
+                  <input type="text" style="width:500px;" name="address_4" id="address_4" value="<?=$address_4?>"/>  
+				</td>
+              </tr>
+              <tr>
+                <td>2)收&nbsp;货&nbsp;人&nbsp;：
+                  <input type="text" style="width:200px;" name="name_4" id="name_4" value="<?=$name_4?>"/>  
+				</td>
+              </tr>
+              <tr>
+                <td>3)联系方式：
+                  <input type="text" style="width:200px;" name="tel_4" id="tel_4" value="<?=$tel_4?>"/>  
+				</td>
+              </tr>
+              <tr>
+                <td>4)快&nbsp;递&nbsp;商&nbsp;：
+                  <input type="text" style="width:200px;" name="express_name_4" id="express_name_4" value="<?=$express_name_4?>"/>
+                </td>
+              </tr>
+              <tr>
+                <td>5)快递账号：
+                  <input type="text" style="width:200px;" name="express_account_4" id="express_account_4" value="<?=$express_account_4?>"/>
+                </td>
+              </tr>
+              <tr>
+                <td>6)公司名称：
+                  <input type="text" style="width:200px;" name="companyname_4" id="companyname_4" value="<?php if($this->expressadd['companyname']) echo $this->expressadd['companyname'];else echo $this->myinfo['companyname'];?>"/>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+      </div>
+      <div class="clr"></div>
+    </div>
+    <!--end 运费与快递-->
+    <!--收货地址-->
+    <div id="div_consignee" class="lines needshipoder_div" style="display:<?=$delivery_type_checked?'block':'none'?>">
+      <h2><span>收货人信息 (
+        <?=($this->inquiry['delivery']=='HK'?'请填写香港地址':'请填写国内地址')?>
+        )：</span> <span id="addcshow" style="display:<?php if(empty($this->addressFirst['name']))echo 'none';else echo 'block';?>"> <a href="javascript:" onclick="showCgAdd()" class="a_operation">[修改]</a></span> <span id="addclose" style="display:<?php if(empty($this->addressFirst['name']))echo 'block';else echo 'none';?>"> <a href="javascript:" onclick="closeCgAdd()" class="a_operation">[关闭]</a></span> </h2>
+      <div class="add_address 1h" id="showaddress" style="display:<?php if(empty($this->addressFirst['name']))echo 'none';else echo 'block';?>">
+        <dl>
+          <dt>收&nbsp;货&nbsp;人&nbsp;：</dt>
+          <dd><?php echo $this->addressFirst['name'];?></dd>
+        </dl>
+        <dl>
+          <dt>详细地址：</dt>
+          <dd><?php echo $this->addressFirst['province']." ".$this->addressFirst['city']." ".$this->addressFirst['area']." ".$this->addressFirst['address'];?></dd>
+        </dl>
+        <dl>
+          <dt>邮政编码：</dt>
+          <dd><?php echo $this->addressFirst['zipcode'];?></dd>
+        </dl>
+        <dl>
+          <dt>公司名称：</dt>
+          <dd><?php echo $this->addressFirst['companyname'];?></dd>
+        </dl>
+        <dl>
+          <dt>入&nbsp;仓&nbsp;号&nbsp;：</dt>
+          <dd><?php echo $this->addressFirst['warehousing'];?></dd>
+        </dl>
+        <dl>
+          <dt>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：</dt>
+          <dd><?php echo $this->addressFirst['mobile'];?></dd>
+        </dl>
+        <dl>
+          <dt>固定电话：</dt>
+          <dd><?php echo $this->addressFirst['tel'];?></dd>
+        </dl>
+      </div>
+      <!--修改收货地址-->
+      <div id="changeaddress" style="display:<?php if(empty($this->addressFirst['name']))echo 'block';else echo 'none';?>;">
+        <form id='addressform' name="addressform" action='' method='post'>
+          <input type="hidden" name="addressid" id="addressid" value="<?php echo $this->addressFirst['id'];?>" />
+          <input type="hidden" name="tmp" id="tmp" value="<?php if(empty($this->addressFirst['name'])) echo 'add';else echo 'edit';?>" />
+          <input type="hidden" name="addid" id="addid" value="<?php echo $this->addressFirst['id'];?>" />
+          <div class="addresslist">
+            <?php foreach($this->addressArr as $address){
+			if( ($this->inquiry['delivery']=='SZ'  && $address['provinceid']!=810000 )|| ($this->inquiry['delivery']=='HK' && $address['provinceid']==810000)){
+			?>
+            <input type="radio" name="addressradio" id="<?php echo $address['id'];?>" value="<?php echo $address['id'];?>" <?php if($this->addressFirst['id'] == $address['id']) echo "checked";?> onclick="editchange('<?php echo $address['id'];?>','edit')" />
+            <span>
+            <label for="<?php echo $address['id'];?>"><?php echo $address['name']." , ".$address['province']." ".$address['city']." ".$address['area']." ".$address['address']." , ".$address['zipcode']." , ".$address['mobile']." ".$address['tel'];?></label>
+            </span> <a href="javascript:" onclick="deleteaddress('<?php echo $address['id'];?>')" class="fontblue ml10">[删除]</a><br />
+            <?php }}?>
+            <a href="javascript:" onclick="editchange('0','add')" class="a_operation">+添加新地址</a> </div>
+          <div class="add_address 1h">
+            <dl>
+              <dt><em>*</em>收&nbsp;货&nbsp;人&nbsp;：</dt>
+              <dd>
+                <input type="text"  name="shrname" id="shrname" class="input120" value="<?php echo $this->addressFirst['name'];?>"/>
+                <div id="shrnameTip" style="position:absolute; top:0; left:250px;"></div>
+              </dd>
+            </dl>
+            <dl>
+              <dt><em>*</em>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：</dt>
+              <dd>
+                <table>
+                  <tr>
+                    <td><span id="provinceSpan">
+                      <select id="province" name="province">
+                        <option value="">请选择省</option>
+                      </select>
+                      </span> <span id="citySpan">
+                      <select id="city" name="city">
+                        <option value="">请选择市</option>
+                      </select>
+                      </span> <span id="areaSpan" style="position:relative;">
+                      <select id="area" name="area">
+                        <option value="">请选择区</option>
+                      </select>
+                      </span>
+                      <input type="hidden" id="areatmp" name="areatmp" value="<?php echo $this->addressFirst['areaid'];?>"/>
+                    </td>
+                    <td><div id="areatmpTip"></div></td>
+                  </tr>
+                </table>
+              </dd>
+            </dl>
+            <dl>
+              <dt><em>*</em>详细地址：</dt>
+              <dd>
+                <textarea name="address" id="address" class="input340" rows="3" style="width:143px;"><?php echo $this->addressFirst['address'];?></textarea>
+                <div id="addressTip" style="position:absolute; top:0; left:250px;"></div>
+              </dd>
+            </dl>
+            <dl>
+              <dt>邮政编码：</dt>
+              <dd>
+                <input type="text" class="input120" name="zipcode" id="zipcode" value="<?php echo $this->addressFirst['zipcode'];?>"/>
+                <div id="zipcodeTip" style="position:absolute; top:0; left:250px;"></div>
+              </dd>
+            </dl>
+            <dl>
+              <dt>公司名称：</dt>
+              <dd>
+                <input type="text" class="input120" name="companyname" id="companyname" value="<?php if($this->addressFirst['companyname']) echo $this->addressFirst['companyname'];else echo $this->myinfo['companyname'];?>"/>
+                <div id="companynameTip" style="position:absolute; top:0; left:250px;"></div>
+              </dd>
+            </dl>
+            
+            <dl>
+              <dt>入&nbsp;仓&nbsp;号&nbsp;：</dt>
+              <dd>
+                <input type="text" class="input120" name="warehousing" id="warehousing" value="<?php echo $this->addressFirst['warehousing'];?>"/>
+           
+              </dd>
+            </dl>
+            <dl>
+              <dt><em>*</em>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：</dt>
+              <dd>
+                <input type="text" class="input120" name="mobile" id="mobile" value="<?php echo $this->addressFirst['mobile'];?>"/>
+                或者 <span>固定电话：</span>
+                <input type="text" class="input120" name="tel" id="tel" value="<?php echo $this->addressFirst['tel'];?>"/>
+                <span class="fontred" id="phomemsg"></span></dd>
+            </dl>
+            <dl>
+              <dt>设为默认：</dt>
+              <dd>
+                <input type="checkbox" name="default" id="default" value="1" <?php if($this->addressFirst['default']==1) echo "checked";?> />
+              </dd>
+            </dl>
+            <p>
+              <input type="submit"  value="保存并送到这个地址" class="button"/>
+            </p>
+          </div>
+        </form>
+      </div>
+      <!--end修改收货地址-->
+    </div>
+    <!--end 收货地址-->
+    <!-- 付款-->
+    <div id="div_shipment">
+      <h2>付款方式及结算货币：</h2>
+      <div class="addresslist" style=" display:block">
+        <div class="w_100" style="width:840px;">
+          <p>结算货币：<strong><?php echo $this->inquiry['currency'];?></strong></p>
+          <?php //可选择的支付方式
+		     if($this->inquiry['paytype']){
+			 	$paytype_arr = explode("|",$this->inquiry['paytype']);
+			    foreach($paytype_arr as $paytype){
+	      	    //银行汇款
+				if($paytype == 'transfer'){  
+				
+				if(count($paytype_arr)==1) $paymenttype_checked = 'checked="checked"';
+		  ?>
+          <p class="phover">
+            <label>
+            <input type="radio" name="paymenttype" value="transfer" class="paymenttype_change" <?=$paymenttype_checked?> />
+            <b>银行汇款</b></label>
+            <span style="color:#878787; margin-left:5px;">您需要先去银行转帐，所购商品将在款项到达IC易站帐户后发出</span></p>
+          <div id="transfer_show"  style="display:<?=($paymenttype_checked?'block':'none')?>;">
+            <div class="add_address"  style="width:830px;">
+              <?php if($this->inquiry['delivery']=='SZ'){?>
+              <table>
+                <tr>
+                  <td>户名：
+                    <?=BANK_COM?></td>
+                </tr>
+                <tr>
+                  <td>帐号：
+                    <?=BANK_ACCOUNT?></td>
+                </tr>
+                <tr>
+                  <td>开户行：
+                    <?=BANK_NAME?></td>
+                </tr>
+              </table>
+              <?php }elseif($this->inquiry['delivery']=='HK'){?>
+              <table>
+                <tr>
+                  <td>户名：
+                    <?=BANK_HK_COM?></td>
+                </tr>
+                <tr>
+                  <td>帐号：
+                    <?=BANK_HK_ACCOUNT?></td>
+                </tr>
+                <tr>
+                  <td>开户行：
+                    <?=BANK_HK_NAME?></td>
+                </tr>
+              </table>
+              <?php }?>
+            </div>
+          </div>
+          <?php }elseif($paytype == 'online' && $this->inquiry['currency'] =='RMB'){
+				    if(count($paytype_arr)==1) $paymenttype_checked = 'checked="checked"';
+				  ?>
+          <p class="phover">
+            <label>
+            <input type="radio" name="paymenttype" value="online"  class="paymenttype_change" <?=$paymenttype_checked?> />
+            <b>在线支付</b></label>
+            <span style="color:#878787;margin-left:5px;">您需要先拥有已开通网上支付功能的银行卡</span></p>
+          <div id="online_show" style="display:<?=($paymenttype_checked?'block':'none')?>;" class="openpayment">
+            <p>为了保证及时处理您的订单，请您于下单后<span style="color: #FF0000">&nbsp;24小时内&nbsp;</span>完成付款，否则订单将被自动取消 </p>
+            <img src="/images/default/online.jpg"> </div>
+          <?php }elseif($paytype == 'cod'){
+				   if(count($paytype_arr)==1) $paymenttype_checked = 'checked="checked"';
+				   ?>
+          <p class="phover">
+            <label>
+            <input type="radio" name="paymenttype" value="cod"  class="paymenttype_change"  <?=$paymenttype_checked?> />
+            <b>货到付款</b></label>
+            <span style="color:#878787;margin-left:5px;">发货前我们会通知您，请预先准备好货款</span></p>
+          <div id="cod_show" style="display:<?=($paymenttype_checked?'block':'none')?>;">
+            <div class="add_address" style="width:830px;">
+              <table>
+                <tr>
+                  <td>1) 支持支票、现金、银行转账等方式支付；</td>
+                </tr>
+                <tr>
+                  <td>2) 发货前我们会通知您，请预先准备好货款，以免影响收货；</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <?php
+		          }//end if($paytype == 'transfer')
+			 	}//end foreach($paytype_arr as $paytype)
+			 }//end if($this->inquiry['paytype'])
+		  ?>
+        </div>
+        <div class="clr"></div>
+      </div>
+    </div>
+    <!--end 付款-->
+    <!--开发票-->
+    <div class="invoice" style="display:<?=$this->inquiry['delivery']=='HK'?'none':'block';?>">
+      <h2> <span>发票信息：</span> </h2>
+      <input type="checkbox" name="needinvoice" id="needinvoice" value="yes" onclick="changeInvoice()" <?=($this->NeedInvoice=='yes'?'checked="checked"':'');?> />
+      <label for="needinvoice"><b>需要发票</b></label>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #878787">提供增值税发票和普通发票</span>
+      <div id="changeinvoice" style="display: none">
+        <h2> <span id="invcshow" style="display:<?php if(empty($this->invoiceFirst))echo 'none';else echo 'block';?>"> <a href="javascript:" onclick="showInvDiv()" class="a_operation">[修改]</a></span> <span id="invclose" style="display:<?php if(empty($this->invoiceFirst))echo 'block';else echo 'none';?>"> <a href="javascript:" onclick="closeInvDiv()" class="a_operation">[关闭]</a></span> </h2>
+        <!---->
+        <div class="add_address 1h" id="showinvoice" style="display:<?php if(empty($this->invoiceFirst))echo 'none';else echo 'block';?>">
+          <dl>
+            <dt>发票类型：</dt>
+            <dd>
+              <?php $typeArr = array ('1' => '普通发票','2' => '增值税发票' );
+					echo $typeArr [$this->invoiceFirst ['type']];
+			?>
+            </dd>
+          </dl>
+          <?php if($this->invoiceFirst['type']==1){?>
+          <dl>
+            <dt>发票抬头：</dt>
+            <dd><?php echo $this->invoiceFirst['name'];?></dd>
+          </dl>
+          <dl>
+            <dt>发票内容：</dt>
+            <dd>
+              <?php $typeArr = array ('1' => '明细','2' => '电子元件','3' => '耗材' );
+			echo $typeArr [$this->invoiceFirst ['contype']];
+			?>
+            </dd>
+          </dl>
+          <?php }else{?>
+          <dl>
+            <dt>单位名称：</dt>
+            <dd>
+              <?=$this->invoiceidTow['name'];?>
+            </dd>
+          </dl>
+          <dl>
+            <dt>纳税人识别号：</dt>
+            <dd>
+              <?=$this->invoiceidTow['identifier'];?>
+            </dd>
+          </dl>
+          <dl>
+            <dt>注册地址：</dt>
+            <dd>
+              <?=$this->invoiceidTow['regaddress'];?>
+            </dd>
+          </dl>
+          <dl>
+            <dt>注册电话：</dt>
+            <dd>
+              <?=$this->invoiceidTow['regphone'];?>
+            </dd>
+          </dl>
+          <dl>
+            <dt>开户银行：</dt>
+            <dd>
+              <?=$this->invoiceidTow['bank'];?>
+            </dd>
+          </dl>
+          <dl>
+            <dt>银行帐户：</dt>
+            <dd>
+              <?=$this->invoiceidTow['account'];?>
+            </dd>
+          </dl>
+          <dl>
+            <dt>营业执照：</dt>
+            <dd>
+              <?php if(file_exists($annexurl) && $this->myinfo['annex1']){?>
+              <a href="<?='/'.$annexurl?>" target="_blank" title="查看">查看</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 营业执照如有更改，请点击 <a class="a_operation" onclick="showInvDiv()" href="javascript:">此处</a> 重新上传。
+              <?php }?>
+            </dd>
+          </dl>
+          <dl>
+            <dt>税务登记证：</dt>
+            <dd>
+              <?php if(file_exists($annexurl2) && $this->myinfo['annex2']){?>
+              <a href="<?='/'.$annexurl2?>" target="_blank" title="查看">查看</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;税务登记证如有更改，请点击 <a class="a_operation" onclick="showInvDiv()" href="javascript:">此处</a> 重新上传。
+              <?php }?>
+            </dd>
+          </dl>
+          <?php }?>
+        </div>
+        <!--发票地址-->
+        <div id="invoice_add_address"  class="add_address needshipoder_div" style="margin-top:10px;">
+          <dl>
+            <dt></dt>
+            <dd><em>发票发送地址：</em> <span id="invaddvaule">默认为收货地址。</span> <span id="invadd"><a href="javascript:;" onclick="changeinvoiceadd('open')">修改</a></span></dd>
+          </dl>
+          <!--修改收货地址-->
+          <div id="changeinvoiceadd" style="display:none">
+            <div class="addresslist">
+              <?php foreach($this->addressArr as $address){?>
+              <p>
+                <input type="radio" name="invoiceaddressradio" id="<?php echo $address['id'];?>invoice" value="<?php echo $address['id'];?>" <?php if($this->addressFirst['id'] == $address['id']) echo "checked";?>/>
+                <span>
+                <label for="<?php echo $address['id'];?>invoice" id="<?php echo $address['id'];?>invoiceadd"><?php echo $address['name']." , ".$address['province']." ".$address['city']." ".$address['area']." ".$address['address']." , ".$address['zipcode']." , ".$address['mobile']." ".$address['tel'];?></label>
+                </span> </p>
+              <?php }?>
+              <p><a href="javascript:" onclick="saveinvoiceaddress()" class="button">保存</a> &nbsp;&nbsp; <a href="/center/address" target="_blank">去修改或添加收货地址&gt;&gt;</a> </p>
+            </div>
+          </div>
+          <!--end修改收货地址-->
+        </div>
+        <!--end 发票地址-->
+        <!-- -->
+        <div class="invoice_box " id="div_invoice_box"  style="display:<?php if(empty($this->invoiceFirst)) echo 'block';else echo 'none';?>">
+          <div class="invoice_tit">
+            <p>请选择您需要的发票类型：</p>
+            <p>
+              <input type="radio" value="2" name="invoicetype" id="invoicetype2" <?php if($this->invoiceFirst['type']==2 || empty($this->invoiceFirst)) echo "checked";?> onclick="changeInvDiv(2)" />
+              <label for="invoicetype2">增值税发票</label>
+            </p>
+            <p>
+              <input type="radio" value="1" name="invoicetype" id="invoicetype1" <?php if($this->invoiceFirst['type']==1) echo "checked";?> onclick="changeInvDiv(1)" />
+              <label for="invoicetype1">普通发票</label>
+            </p>
+          </div>
+          <!--人民币增值税专用发票-->
+          <form id='zengzhishuiform' name="zengzhishuiform" action='' method='post'>
+            <div class="invoice_con "  style="display:<?php if($this->invoiceFirst['type']==2 || empty($this->invoiceFirst)) echo 'block';else echo 'none';?>" id="zengzhishui">
+              <dl class="fore0">
+                <dt><em>*</em>单位名称：</dt>
+                <dd>
+                  <input type="text" style="width:200px" name="dwname" id="dwname" value="<?php echo $this->invoiceidTow['name'];?>" />
+                  <div id="dwnameTip" style="position: absolute; top: 0; left: 210px;"></div>
+                </dd>
+              </dl>
+              <dl class="fore1">
+                <dt><em>*</em>纳税人识别号：</dt>
+                <dd>
+                  <input type="text" style="width:200px" name="identifier" id="identifier" value="<?php echo $this->invoiceidTow['identifier'];?>" />
+                  <div id="identifierTip" style="position: absolute; top: 0; left: 210px;"></div>
+                </dd>
+              </dl>
+              <dl class="fore2">
+                <dt><em>*</em>注册地址：</dt>
+                <dd>
+                  <input type="text" style="width:200px" name="regaddress" id="regaddress" value="<?php echo $this->invoiceidTow['regaddress'];?>" />
+                  <div id="regaddressTip" style="position: absolute; top: 0; left: 210px;"></div>
+                </dd>
+              </dl>
+              <dl class="fore3">
+                <dt><em>*</em>注册电话：</dt>
+                <dd>
+                  <input type="text" style="width:200px" name="regphone" id="regphone" value="<?php echo $this->invoiceidTow['regphone'];?>" />
+                  <div id="regphoneTip" style="position: absolute; top: 0; left: 210px;"></div>
+                </dd>
+              </dl>
+              <dl class="fore4">
+                <dt><em>*</em>开户银行：</dt>
+                <dd>
+                  <input type="text" style="width:200px" name="bank" id="bank" value="<?php echo $this->invoiceidTow['bank'];?>" />
+                  <div id="bankTip" style="position: absolute; top: 0; left: 210px;"></div>
+                </dd>
+              </dl>
+              <dl class="fore5">
+                <dt><em>*</em>银行帐户：</dt>
+                <dd>
+                  <input type="text" style="width:200px" name="account" id="account" value="<?php echo $this->invoiceidTow['account'];?>" />
+                  <div id="accountTip" style="position: absolute; top: 0; left: 210px;"></div>
+                </dd>
+              </dl>
+              <dl class="fore6">
+                <dt><em>*</em>营业执照：</dt>
+                <dd>
+                  <input type="file" name="fileToUpload" id="fileToUpload" class="w-200">
+                  <div id="fileToUploadTip" style="position:absolute; top:0; left:250px;"></div>
+                  <?php if(file_exists($annexurl) && $this->myinfo['annex1']){?>
+                  <a href="<?='/'.$annexurl?>" target="_blank" title="查看">查看</a>
+                  <?php }?>
+                </dd>
+              </dl>
+              <dl class="fore6">
+                <dt><em>*</em>税务登记证：</dt>
+                <dd>
+                  <input type="file" name="fileToUpload2" id="fileToUpload2" class="w-200">
+                  <div id="fileToUpload2Tip" style="position:absolute; top:0; left:250px;"></div>
+                  <?php if(file_exists($annexurl2) && $this->myinfo['annex2']){?>
+                  <a href="<?='/'.$annexur2?>" target="_blank" title="查看">查看</a>
+                  <?php }?>
+                </dd>
+              </dl>
+              <dl class="fore12" style="background: #efefef">
+                <dt>&nbsp;</dt>
+                <dd>
+                  <input type="submit" class="button" value="保 存" />
+                </dd>
+              </dl>
+              <div class="clr"></div>
+              <div style="margin: 5px;"> <font color="#FF0000">如果您开具的是增值税专用发票，您在下单时需录入以下增值税专用发票资质信息：</font> <br />
+                ——单位名称（必须是您公司营业执照上的全称）；<br />
+                ——纳税人识别号（必须是您公司《税务登记证》的编号，一般为15位，请仔细核对后输入）；<br />
+                ——注册地址（必须是您公司营业执照上的注册地址）；<br />
+                ——注册电话（请提供能与您公司保持联系的有效电话）；<br />
+                ——开户银行（必须是您公司银行开户许可证上的开户银行）；<br />
+                ——银行账号（必须是您公司开户许可证上的银行账号）；<br />
+                ——营业执照（必须真实，可以上传.JPG/.GIF/.PNG/.PDF/.ZIP/.RAR 格式的文件，单个文件大小不能超过3M）。<br />
+                ——税务登记证（必须真实，可以上传.JPG/.GIF/.PNG/.PDF/.ZIP/.RAR 格式的文件，单个文件大小不能超过3M）。<br />
+              </div>
+            </div>
+          </form>
+          <!--end 人民币增值税专用发票-->
+          <!--普通发票-->
+          <form id='putongform' name="putongform" action='' method='post'>
+            <input type="hidden" name="invoiceid" id="invoiceid" value="<?php echo $this->invoiceFirst['id'];?>" />
+            <div class="invoice_con "  style="display:<?php if($this->invoiceFirst['type']==1) echo 'block';else echo 'none';?>"  id="putong">
+              <dl class="fore0">
+                <dt>发票抬头：</dt>
+                <dd>
+                  <input type="text" class="w-150" name="taitouname" id="taitouname" value="<?php echo $this->invoiceFirst['name'];?>" />
+                  <div id="taitounameTip" style="position: absolute; top: 0; left: 160px;"></div>
+                </dd>
+              </dl>
+              <dl class="fore10">
+                <dt>发票内容：</dt>
+                <dd>
+                  <input type="radio" value="1" name="contype" id="contype1" <?php if($this->invoiceFirst['contype']==1 || empty($this->invoiceFirst)) echo "checked";?> />
+                  <label for="contype1">明细</label>
+                  <input type="radio" value="2" name="contype" id="contype2" <?php if($this->invoiceFirst['contype']==2) echo "checked";?> />
+                  <label for="contype2">电子元件</label>
+                  <input type="radio" value="3" name="contype" id="contype3" <?php if($this->invoiceFirst['contype']==3) echo "checked";?> />
+                  <label for="contype3">耗材</label>
+                </dd>
+              </dl>
+              <dl class="fore12" style="background: #efefef">
+                <dt>&nbsp;</dt>
+                <dd>
+                  <input type="submit" class="button" value="保 存" />
+                </dd>
+              </dl>
+            </div>
+          </form>
+        </div>
+        <!--end 普通发票-->
+        <div class="clr"></div>
+      </div>
+    </div>
+    <div class="clr"></div>
+    <!-- end 发票-->
+  </div>
+  <div class="Shopping_cart">
+    <h1>产品清单</h1>
+    <div class="tipfree"><em>*</em>您填写的需求日期仅作为IC易站为您备货的参考日期，不作为约定的最终货期，最终货期以原厂回复为准。</div>
+    <?php
+  $itemtotal=0;
+  $pricetotal=  0;
+  if(!empty($this->inquiry['detaile'])){?>
+    <table border="0" cellpadding="0" cellspacing="0"  class="shopbox table">
+      <tr>
+        <th align="center">型号</th>
+        <th align="center">客户物料号</th>
+        <th align="left">&nbsp;&nbsp;需求日期</th>
+        <th >品牌</th>
+        <th >参考交期</th>
+        <th >标准包装</th>
+        <th >实际单价</th>
+        <th >购买数量</th>
+        <th >小计</th>
+      </tr>
+      <?php 
+	  foreach($this->inquiry['detaile'] as $k=>$item){
+	  	if(in_array($item['id'],$this->items) && $this->multiple[$item['id']] > 0){
+		  $buynum2 = $this->multiple[$item['id']]*$item['pmpq'];
+	  	  $itemtotal += $buynum2;
+		  $pricetmp  = $buynum2*$item['result_price'];
+		  $pricetotal += $buynum2*$item['result_price'];
+	  ?>
+      <tr>
+        <td><?=$item['part_no']?></td>
+        <td><input type="text" name="customer_material" style="width:100px;"/></td>
+        <td align="left">
+        <span id="needs_time_span_<?=$item['part_id']?>" style="float:left">
+        <input type="hidden" name="part_id" value="<?=$item['part_id']?>"/>
+        <input type="hidden" name="buynum" id="buynum_<?=$item['part_id']?>" value="<?=$buynum2?>"/>
+        <input type="text" name="needs_time" style="width:100px;" readonly="readonly" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" title="点击选择日期" />
+        </span>
+		<?php if($item['mpq'] && $buynum2>$item['mpq']){?><span id="can_split_<?=$item['part_id']?>" class="can_split_span" ><a href="javascript:;" class="abutton" onclick="splititem('<?=$this->inquiry['id']?>','<?=$item['part_id']?>')" title="您可以将型号<?=$item['part_no']?>计划分批发货">分批发货</a></span>
+		<?php }?>
+        </td>
+        <td><?=$item['brand'];?></td>
+        <td><?=$item['lead_time']?$item['lead_time']:'--';?></td>
+        <td><?=$item['mpq']?$item['mpq']:'--';?></td>
+        <td><?=$item['result_price'];?></td>
+        <td><?=$buynum2;?><input type="hidden" name="all_buynum" id="all_buynum<?=$item['part_id']?>" value="<?=$buynum2?>"/></td>
+        <td><?=number_format($pricetmp,DECIMAL);?></td>
+      </tr>
+      <?php
+		}//if(in_array($item['id'],$this->items))
+	}//end foreach
+  ?>
+    </table>
+    <?php }//end if(!empty($this->spot))?>
+    <table border="0" cellpadding="0" cellspacing="0" class="table" style="border-top:0;">
+      <tr>
+        <td align="left" width="90">
+          <label><input type="checkbox" name="needremark" id="needremark" value="1" onclick="$('#order_remark').toggle();"/>订单备注：</label>
+        </td>
+        <td align="left"><span id="order_remark" style="display:none">
+         <input type="text" name="remark" id='remark' rows="3"  style="width:400px;" value="<?=trim($value[1])?>"></span></td>
+        <td align="right"><div class="w_100 textr ddc" >
+            <!--需要运费与包装费-->
+            <span id="total_need_freight" style="display:none"> 运费及包装费：<b class="fontred">
+            <?=$this->inquiry['currency']?>
+            </b> <b class="fontred">
+            <?=number_format($this->freight,DECIMAL)?>
+            </b><br/>
+            总计(含运费及包装费)：<b class="fontred">
+            <?=$this->inquiry['currency']?>
+            </b> <b class="fontred">
+            <?=number_format($pricetotal+$this->freight,DECIMAL)?>
+            </b><br/>
+            <?php if($this->inquiry['percentage']>0 && $this->inquiry['percentage']!=100){?>
+            需要预先支付
+            <?=$this->inquiry['percentage']?>
+            %定金：<b class="fontred">
+            <?=$this->inquiry['currency']?>
+            </b> <b class="fontred">
+            <?=number_format(($pricetotal+$this->freight)*($this->inquiry['percentage']*0.01),DECIMAL)?>
+            </b>
+            <?php }elseif($this->inquiry['down_payment']>0){?>
+            需要预先支付定金：<b class="fontred">
+            <?=$this->inquiry['currency']?>
+            </b> <b class="fontred">
+            <?=number_format(($pricetotal+$this->freight)>$this->inquiry['down_payment']?$this->inquiry['down_payment']:($pricetotal+$this->freight),DECIMAL)?>
+            </b>
+            <?php }else{?>
+            全额支付： <b class="fontred">
+            <?=$this->inquiry['currency']?>
+            </b> <b class="fontred">
+            <?=number_format($pricetotal+$this->freight,DECIMAL)?>
+            </b>
+            <?php }?>
+            </span>
+            <!--不需要运费，需要包装费-->
+            <span id="total_no_need_freight" style="display:none"> 运费及包装费：<b class="fontred">
+            <?=$this->inquiry['currency']?>
+            </b> <b class="fontred">
+            <?=number_format($this->packageprice,DECIMAL)?>
+            </b><br/>
+            总计(含运费及包装费)：<b class="fontred">
+            <?=$this->inquiry['currency']?>
+            </b> <b class="fontred">
+            <?=number_format($pricetotal+$this->packageprice,DECIMAL)?>
+            </b><br/>
+            <?php if($this->inquiry['percentage']>0 && $this->inquiry['percentage']!=100){?>
+            需要预先支付
+            <?=$this->inquiry['percentage']?>
+            %定金：<b class="fontred">
+            <?=$this->inquiry['currency']?>
+            </b> <b class="fontred">
+            <?=number_format(($pricetotal+$this->packageprice)*($this->inquiry['percentage']*0.01),DECIMAL)?>
+            </b>
+            <?php }elseif($this->inquiry['down_payment']>0){?>
+            需要预先支付定金：<b class="fontred">
+            <?=$this->inquiry['currency']?>
+            </b> <b class="fontred">
+            <?=number_format(($pricetotal+$this->packageprice)>$this->inquiry['down_payment']?$this->inquiry['down_payment']:($pricetotal+$this->packageprice),DECIMAL)?>
+            </b>
+            <?php }else{?>
+            全额支付： <b class="fontred">
+            <?=$this->inquiry['currency']?>
+            </b> <b class="fontred">
+            <?=number_format($pricetotal+$this->packageprice,DECIMAL)?>
+            </b>
+            <?php }?>
+            </span> </div></td>
+      </tr>
+    </table>
+    <div class="bg_cart">
+      <div class="fl"> <a href="<?=$oldurl?>" class="fontblue"><em></em>返回询价下单，修改产品</a></div>
+      <div class="fr"  id="orderbtn"><a href="javascript:;" onclick="inqorder()" class="button" >提交订单</a></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+//分批发货
+function splititem(inquiry_id,part_id){
+    var buynum = document.getElementById("all_buynum"+part_id).value;
+	$.openPopupLayer({
+	name: "splititem",
+	url: "/inquiryorder/splititem/inquiry_id/"+inquiry_id+"/part_id/"+part_id+'/buynum/'+buynum
+	});	 
+}
+//取消分批发货计划
+function cancel_splititem(part_id,buynum){
+     var html = '<input type="hidden" name="part_id" value="'+part_id+'"/>';
+	 html +='<input type="hidden" name="buynum" id="buynum_'+part_id+'" value="'+buynum+'"/>';
+	 html +='<input type="text" name="needs_time" style="width:100px;" readonly="readonly" onclick="WdatePicker({startDate:\'\',dateFmt:\'yyyy-MM-dd\',alwaysUseStartDate:true,lang:\'sc\'})" title="点击选择日期" />';
+	$("#needs_time_span_"+part_id).html(html);
+	$("#can_split_"+part_id).css("display","block");
+}
+//和并订单改变快递费
+function shipoderfreight(obj){
+    var split_ok = $("#split_ok").val()?true:false;
+    var delivery_type_obj = document.getElementsByName("delivery_type");
+	if(obj.checked){
+		//金额总计
+		$("#total_need_freight").css("display","none");
+		$("#total_no_need_freight").css("display","block");
+	    for (var i=delivery_type_obj.length-1;i>=0;i--)
+	    {
+		    if(delivery_type_obj[i].value==3)  delivery_type_obj[i].disabled = true;
+        }
+		//隐藏拆分发货
+		if(!split_ok){
+		   $('.can_split_span').hide();
+		}
+	}else{
+		//金额总计
+		$("#total_need_freight").css("display","block");
+		$("#total_no_need_freight").css("display","none");
+		for (var i=delivery_type_obj.length-1;i>=0;i--)
+	    {
+		    if(delivery_type_obj[i].value==3)  delivery_type_obj[i].disabled = false;
+        }
+	    //显示拆分发货
+		if(!split_ok){
+		   $('.can_split_span').show();
+		}
+	}
+}
+$(function(){
+        var old_delivery_type = 100;
+		//配送方式
+        $(".delivery_type").click(function(){
+			if(this.value==1 || this.value==2){
+				$(".freight_show_1_2").css("display","block");
+				$(".freight_show_3").css("display","none");
+				$(".freight_show_4").css("display","none");
+				//金额总计
+				$("#total_need_freight").css("display","block");
+				$("#total_no_need_freight").css("display","none");
+				//发票地址
+				$("#invoice_add_address").css("display","block");
+				//合并订单
+				if(old_delivery_type==200){
+				   //收货人信息
+				   $('.needshipoder_div').toggle();
+				   //合并订单
+				   $('.shiporder_div').toggle();
+				   old_delivery_type = 100;
+				}
+			}else if(this.value==3){
+				$(".freight_show_1_2").css("display","none");
+				$(".freight_show_3").css("display","block");
+				$(".freight_show_4").css("display","none");
+				//金额总计
+				$("#total_need_freight").css("display","none");
+				$("#total_no_need_freight").css("display","block");
+				//发票地址
+				$("#invoice_add_address").css("display","none");
+				//合并订单
+				if(old_delivery_type==100){
+				   //收货人信息
+				   $('.needshipoder_div').toggle();
+				   //合并订单
+				   $('.shiporder_div').toggle();
+				   old_delivery_type = 200;
+				}
+			}else if(this.value==4){
+				$(".freight_show_1_2").css("display","none");
+				$(".freight_show_3").css("display","none");
+				$(".freight_show_4").css("display","block");
+				//金额总计
+				$("#total_need_freight").css("display","none");
+				$("#total_no_need_freight").css("display","block");
+				//发票地址
+				$("#invoice_add_address").css("display","none");
+				//合并订单
+				if(old_delivery_type==100){
+				   //收货人信息
+				   $('.needshipoder_div').toggle();
+				   //合并订单
+				   $('.shiporder_div').toggle();
+				   old_delivery_type = 200;
+				}
+			}
+        });
+		//支付方式
+		 $(".paymenttype_change").click(function(){
+			if(this.value=='transfer')
+			{
+				$("#transfer_show").css("display","block");
+				$("#online_show").css("display","none");
+				$("#cod_show").css("display","none");
+			}
+			if(this.value=='online')
+			{
+				$("#online_show").css("display","block");
+				$("#transfer_show").css("display","none");
+				$("#cod_show").css("display","none");
+			}
+			if(this.value=='cod')
+			{
+				$("#cod_show").css("display","block");
+				$("#online_show").css("display","none");
+				$("#transfer_show").css("display","none");
+			}
+        });
+		<?php if($delivery_type_checked){?>
+				//金额总计
+				$("#total_need_freight").css("display","block");
+				$("#total_no_need_freight").css("display","none");
+		<?php }?>
+})
+
+var annexurl=0;
+var annexurl2=0;
+//没有营业执照
+<?php if(!file_exists($annexurl) || !$this->myinfo['annex1']){?>annexurl = 1;<?php }?>
+<?php if(!file_exists($annexurl2) || !$this->myinfo['annex2']){?>annexurl2 = 1;<?php }?>
+var annexur_part='<?=$annexur_part?>';
+var newname1='<?=md5(md5($_SESSION['userInfo']['uidSession']))."1"?>';
+var newname2='<?=md5(md5($_SESSION['userInfo']['uidSession']))."2"?>';
+
+function inqorder()
+{
+    var delivery_type_4_array = new Array();
+    var delivery_type='';
+    var needinvoice  = document.getElementById("needinvoice");
+	var addressid    = document.getElementById("addressid").value;
+	var invoiceid    = document.getElementById("invoiceid").value;
+	var pyobj        = document.getElementsByName("paymenttype");
+	var needremark = document.getElementById("needremark").checked;
+	//合并订单
+	var shipoder_salesnumber = '';
+	var needshipoder_obj=document.getElementById("needshipoder");
+	if(needshipoder_obj.checked){
+		var shipoder_salesnumber_obj = document.getElementsByName("shipoder_salesnumber");
+		for (var i=shipoder_salesnumber_obj.length-1;i>=0;i--){
+		   if(shipoder_salesnumber_obj[i].checked)  shipoder_salesnumber = shipoder_salesnumber_obj[i].value;
+        }
+		if(shipoder_salesnumber==''){
+		   alert('请选择合并发货的订单');window.location.href="#";return;
+		}
+	}
+	var remark = '';
+	if(needremark){
+	   remark  = document.getElementById("remark").value;
+	   if(remark=='') {alert('请填写订单备注');document.getElementById("remark").focus();return;}
+	}
+	var delivery_type_obj = document.getElementsByName("delivery_type");
+	
+	for (var i=delivery_type_obj.length-1;i>=0;i--)
+	{
+		if(delivery_type_obj[i].checked)  delivery_type = delivery_type_obj[i].value;
+    }
+    if(delivery_type=='') {alert('请选择配送方式');window.location.href="#";return;}
+	
+	if(delivery_type==1 || delivery_type==2){
+		if(addressid=='') {alert('请选择收货人信息');window.location.href="#div_shipment";return;}
+	}else if(delivery_type==4){
+	    //客户提供账号
+		delivery_type_4_array[0] = $("#address_4").val();
+		if(delivery_type_4_array[0]==''){alert('请填写收货地址');$("#address_4").focus();return;}
+		delivery_type_4_array[1] = $("#name_4").val();
+		if(delivery_type_4_array[1]==''){alert('请填写收货人');$("#name_4").focus();return;}
+		delivery_type_4_array[2] = $("#tel_4").val();
+		if(delivery_type_4_array[2]==''){alert('请填写联系方式');$("#tel_4").focus();return;}
+		delivery_type_4_array[3] = $("#express_name_4").val();
+		if(delivery_type_4_array[3]==''){alert('请填写快递商');$("#express_name_4").focus();return;}
+		delivery_type_4_array[4] = $("#express_account_4").val();
+		if(delivery_type_4_array[4]==''){alert('请填写快递账号');$("#express_account_4").focus();return;}
+		delivery_type_4_array[5] = $("#companyname_4").val();
+		if(delivery_type_4_array[5]==''){alert('请填写公司名称');$("#companyname_4").focus();return;}
+	}
+	//发票地址
+	var invoiceaddress = '';
+	var invaddobj        = document.getElementsByName("invoiceaddressradio");
+	for (var i=invaddobj.length-1;i>=0;i--)
+	{
+		if(invaddobj[i].checked)  invoiceaddress = invaddobj[i].value;
+    }
+	
+	var paymenttype  ='';
+	for (var i=pyobj.length-1;i>=0;i--)
+	{
+		if(pyobj[i].checked)  paymenttype = pyobj[i].value;
+    }
+	if(paymenttype=='') {alert('请选择付款方式');window.location.href="#div_consignee";return;}
+    //发票
+	var needinvoicevalue='';
+	if(needinvoice.checked){
+	    if(invoiceid=='') {alert('请选择发票信息');window.location.href="#needinvoice";return;}
+		needinvoicevalue = needinvoice.value;
+		var invoicetype='';
+		var invoicetype_obj = document.getElementsByName("invoicetype");
+		for (var i=invoicetype_obj.length-1;i>=0;i--){
+		   if(invoicetype_obj[i].checked)  invoicetype = invoicetype_obj[i].value;
+        }
+		if(invoicetype==2){
+		     if(annexurl==1)
+			{alert('请上传营业执照');window.location.href="#div_invoice_box";return;}
+			 if(annexurl2==1)
+			{alert('请上传税务登记证');window.location.href="#div_invoice_box";return;}
+		}
+	}
+	//产品Item
+	var part_id       = new Array();
+	var part_id_obj=document.getElementsByName("part_id");
+	for(var i=0;i<part_id_obj.length;i++)
+	{
+		part_id[i] = part_id_obj[i].value;
+    }
+	var buynum       = new Array();
+	var buynum_obj=document.getElementsByName("buynum");
+	for(var i=0;i<buynum_obj.length;i++)
+	{
+		buynum[i] = buynum_obj[i].value;
+    }
+	var customer_material       = new Array();
+	var customer_material_obj=document.getElementsByName("customer_material");
+	for(var i=0;i<customer_material_obj.length;i++)
+	{
+		customer_material[i] = customer_material_obj[i].value;
+    }
+	var needs_time = new Array();
+	var needs_time_obj=document.getElementsByName("needs_time");
+    for(var i=0;i<needs_time_obj.length;i++){
+		needs_time[i] = needs_time_obj[i].value;
+    }
+	
+	var subtmp = document.getElementById("orderbtn");
+	subtmp.innerHTML = '<a href="javascript:;" class="button">订单提交中...</a>';
+
+	var multiple = <?php echo json_encode($this->multiple);?>;
+	
+    var spot_part  = new Array();
+
+	$.ajax({
+            url: '/inquiryorder/handle',
+            data: {'key':'<?=$this->key?>','items':'<?=$this->itemstr?>','delivery_type':delivery_type,'delivery_type_4_array':delivery_type_4_array,'multiple':multiple,'addressid':addressid,'invoiceaddress':invoiceaddress,'invoiceid':invoiceid,'paymenttype':paymenttype,'needinvoice':needinvoicevalue,'remark':remark,'shipoder_salesnumber':shipoder_salesnumber,'part_id':part_id,'buynum':buynum,'customer_material':customer_material,'needs_time':needs_time},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+                    window.location.href='/inquiryorder/success?hashkey='+arr.hashkey;
+                }else{
+				   alert(arr.message);
+				   subtmp.innerHTML ='<a href="javascript:;" onclick="inqorder()" class="button" >提交订单</a>';
+				}
+            }
+	});
+}
+</script>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script src="/js/jsplug/formcheck/formValidator-4.1.1.js" type="text/javascript"></script>
+<script src="/js/jsplug/formcheck/formValidatorRegex.js" type="text/javascript"></script>
+<script src="/js/default/order.js" type="text/javascript"></script>
+<script type="text/javascript" src="/js/jsplug/AjaxFileUploader/ajaxfileupload.js"></script>
+<script type="text/javascript">
+ //没有营业执照
+<?php if((!file_exists($annexurl) || !$this->myinfo['annex1']) && $this->invoiceFirst['type']==2){?>showInvDiv(); <?php }?>
+<?php if((!file_exists($annexurl2) || !$this->myinfo['annex2']) && $this->invoiceFirst['type']==2){?>showInvDiv(); <?php }?>
+<?php if($this->NeedInvoice=='yes') echo 'changeInvoice();';?>
+//加载城市和地区
+onloadadd('<?php echo $this->addressFirst['provinceid'];?>','<?php echo $this->addressFirst['cityid'];?>','<?php echo $this->addressFirst['areaid'];?>');
+</script>
+<?php
+unset ( $_SESSION ['NeedInvoice'] );
+?>

@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+</head>
+<body>
+<?php if(array_key_exists($this->paytype,$this->banktypeArray)){?>
+<form name="formtenpay" action="<?php echo $this->reqHandler; ?>" method="post">
+<?php
+foreach($this->params as $k => $v) {
+	echo "<input type=\"hidden\" name=\"{$k}\" value=\"{$v}\" />\n";
+}
+?>
+  <!--<input type="submit" value="sub">-->
+</form>
+<script type="text/javascript">
+function subform(){
+   document.formtenpay.submit();
+}
+setTimeout(subform,100);//以毫秒为单位的.1000代表一秒钟.根据你需要修改这个时间.
+</script>
+<?php 
+}else
+{ 
+    echo $this->alipayhtml;
+}?>
+</body>
+</html>

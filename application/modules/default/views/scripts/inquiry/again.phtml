@@ -1,0 +1,201 @@
+<!--我再议价弹出框-->
+<?php
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+?>
+<div class="pop pop_bargaining"  style="width:750px;">
+  <div class="popbox">
+    <div class="poptit"> 
+    <span class="titbg1ts">再议价</span>
+      <input type="button" title="关闭"  class="closebtn" onClick="$.closePopupLayer('inquiryBox')"/>
+    </div>
+    <div class="popcon clearfix msg24">
+     <div class="ok" id="message" style="display:none"></div>
+     
+        <div id="alert_message_div" class="pop_bargaining_tip ">
+            <h3>再议价须知：</h3>
+            <p>1.我们需要评估您的需求，以便给您更好的价格及更多的资源支持，请务必配合认真填写以下需求信息；</p>
+            <p>2.需求的信息包含您的目标价格，项目信息，项目状态，量产时间，竞争对手相关信息（包含竞争对手价格，价格来源）等；</p>
+            <h3>如有疑问请联系我们</h3>
+            <p><span>Email：<a href="mailto:sales@ceacsz.com.cn">sales@ceacsz.com.cn</a></span>
+            <span>电话：400-626-1616</span></p>
+            <div class="login-btn">
+                <a class="button" href="javascript:;" onClick="accepted()">接 受</a>
+                <a class="buttongray" href="javascript:;"  onClick="$.closePopupLayer('inquiryBox')">不接受</a>
+            </div>
+        </div>
+      
+      <div id="again_div" class="pop_bargaining_table"  style="display:none">
+      <table border="0" cellpadding="0" cellspacing="0" class="table toptable">
+        <tr>
+          <td align="right">交货地：</td>
+          <td><?php echo $deliveryArr[$this->inquiry['delivery']];?></td>
+          <td align="right">结算货币：</td>
+          <td><?php echo $this->inquiry['currency'];?></td>
+        </tr>
+      </table>
+      <table border="0" cellpadding="0" cellspacing="0" class="table midtable">
+        <tr>
+          <th width="120">型号</th>
+          <th>整包数</th>
+          <th><em>*</em>采购数量</th>
+          <th><em>*</em>目标单价</th>
+          <th><em>*</em>年用量</th>
+          <th colspan="3" class="othertd">其它厂商报价</th>
+        </tr>
+        <?php
+			foreach($this->inquiry['detaile'] as $item){
+				$id                 = $item['id'];
+				$inputid            = 'pamount_'.$id;
+				$priceid            = 'price_'.$id;
+				$expected_amount_id = 'expected_amount_'.$id;
+				$other_id           = 'other_'.$id;
+				$other_part_id      = 'other_part_'.$id;
+				$other_price_id     = 'other_price_'.$id;
+			?>
+        <tr>
+          <td class="model"><input type="hidden" name="part_no" value="<?=$item['part_no']?>"/><?=$item['part_no'];?></td>
+          <td><?=$item['mpq'];?><input type="hidden" name="mpq" value="<?=$item['mpq']?>"/></td>
+          <td><input type="hidden" name="part_id" value="<?=$item['part_id']?>"/>
+            <input type="text" id="<?=$inputid;?>" name="pamountbut" size="9" onkeyup="<?=ISNUMBER?>" value="<?=$item['number']?>"/></td>
+          <td><input type="text" id="<?=$priceid;?>"  onkeyup="<?=ISFLOAT?>" name="pricebut" size="9" value="<?=$item['price']?>"/></td>
+          <td><input type="text" id="<?=$expected_amount_id;?>" name="expected_amount" size="9"  onkeyup="<?=ISNUMBER?>" value="<?=$item['expected_amount']?>"/></td>
+          <td class="othertd"> 
+          	<div> 
+                <p>品牌：</p>
+                <p><input type="text" id="<?=$other_id;?>" name="other" size="9"/></p>
+            </div>
+          </td>
+          <td class="othertd"> 
+          	<div> 
+                <p>型号：</p>
+                <p><input type="text" id="<?=$other_part_id;?>" name="other_part" size="9"/></p>
+            </div>
+          </td>
+          <td class="othertd"> 
+          	<div> 
+                <p>价格：</p>
+                <p><input type="text" id="<?=$other_price_id;?>" name="other_price" onkeyup="<?=ISFLOAT?>" size="9"/></p>
+            </div>
+          </td>
+        </tr>
+        <?php }//end foreach ?>
+        </table>
+      <table cellpadding="0" cellspacing="0" class="table bomtable">
+            <tbody>
+                <tr>
+                  <td align="right"><em>*</em>项目名称：</td>
+                  <td align="left"><input type="text" id="project_name" name="project_name"/></td>
+                </tr>
+                <tr>
+                  <td align="right"><em>*</em>项目状态：</td>
+                  <td align="left"><input type="text" id="project_status" name="project_status"/></td>
+                </tr>
+                <tr>
+                  <td align="right"><em>*</em>量产时间：</td>
+                  <td align="left"><input type="text" id="production_time" name="production_time"  style="width:80px;" readonly="readonly" onfocus="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" title="点击选择日期">
+                  </td>
+                </tr>
+                <tr>
+                  <td align="right"><em>*</em>再议价说明：</td>
+                  <td align="left"><textarea name="description" id="description" rows="3" cols="30"></textarea></td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td align="left"><input type="button" onClick="subagain()" value="提 交"  class="button"/></td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function accepted(){
+	document.getElementById("alert_message_div").style.display = 'none';
+	document.getElementById("again_div").style.display = 'block';
+}
+//加入询价
+document.getElementById("message").style.display = 'none';
+function tishi(title,model)
+{
+	var messobj = document.getElementById("message");
+	if(model){
+		messobj.className = 'ok';
+		messobj.style.display = 'block';
+		messobj.innerHTML = title;
+	}else{
+	    messobj.className = 'error';
+		messobj.style.display = 'block';
+		messobj.innerHTML = title;
+	}
+}
+function subagain() 
+{
+   var num    = new Array();
+   var price  = new Array();
+   var amount = new Array();
+   var other = new Array();
+   var other_part = new Array();
+   var other_price = new Array();
+   var part_id    = new Array();
+   var part_no    = new Array();
+   var mpqobj        = document.getElementsByName("mpq");
+   var pamountbut    = document.getElementsByName("pamountbut");
+   var pricebut      = document.getElementsByName("pricebut");
+   var part_idobj    = document.getElementsByName("part_id");
+   var part_noobj    = document.getElementsByName("part_no");
+   var amountobj     = document.getElementsByName("expected_amount");
+   var otherobj      = document.getElementsByName("other");
+   var other_partobj = document.getElementsByName("other_part");
+   var other_priceobj= document.getElementsByName("other_price");
+   
+   for (var i=0;i<pamountbut.length;i++)
+   {
+		if(pamountbut[i].value=='') {alert('请输入采购数量');pamountbut[i].focus();return;}
+		else if(isNaN(pamountbut[i].value)){alert('采购数量必须为数字');pamountbut[i].focus();return;}
+		else if(parseInt(pamountbut[i].value) < parseInt(mpqobj[i].value)){alert('采购数量不少于整包数');pamountbut[i].focus();return;}
+		else num[i]=pamountbut[i].value;
+						
+		if(pricebut[i].value=='')  {alert('请输入目标单价');pricebut[i].focus();return;}
+		else if(!BASEisFloat(pricebut[i].value)) {alert('目标单价必须为数字');pricebut[i].focus();return;}
+		else price[i]=pricebut[i].value;
+		
+		if(amountobj[i].value=='') {alert('请输入年用量');amountobj[i].focus();return;}
+		else if(isNaN(amountobj[i].value)){alert('年用量必须为数字');amountobj[i].focus();return;}
+		else amount[i]=amountobj[i].value;
+
+		other[i]      = otherobj[i].value;
+		other_part[i] = other_partobj[i].value;
+		if(other_priceobj[i].value != '') {
+		   if(!BASEisFloat(other_priceobj[i].value)) {alert('其它厂家报价必须为数字');other_priceobj[i].focus();return;}
+		}
+		other_price[i]=other_priceobj[i].value;
+		
+		part_id[i]    = part_idobj[i].value;
+		part_no[i]    = part_noobj[i].value;
+   }
+   var project_name = document.getElementById('project_name').value;
+   if(project_name==''){alert('请输入项目名称');document.getElementById('project_name').focus();return;}
+   var project_status = document.getElementById('project_status').value;
+   if(project_status==''){alert('请输入项目状态');document.getElementById('project_status').focus();return;}
+   var production_time = document.getElementById('production_time').value;
+   if(production_time==''){alert('请输入量产时间');document.getElementById('production_time').focus();return;}
+   var description = document.getElementById('description').value;
+   if(description==''){alert('请输入再议价说明');document.getElementById('description').focus();return;}
+   $.ajax({
+			url: '/inquiry/again',
+			data: {'id':'<?=$this->inquiry['id']?>','app_1_id':'<?=$this->inquiry['app_1_id']?>','app_2_id':'<?=$this->inquiry['app_2_id']?>','part_id':part_id,'part_no':part_no,'other':other,'other_part':other_part,'other_price':other_price,'num':num,'price':price,'amount':amount,'project_name':project_name,'project_status':project_status,'production_time':production_time,'description':description},
+			type: 'post',
+			dataType: 'json',
+			success: function(arr) {
+				if(arr.code==0)
+				{
+					alert(arr.message);
+					location.reload();
+				}else{
+					alert(arr.message);
+			    }
+		}
+	});
+}
+</script>

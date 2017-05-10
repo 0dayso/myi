@@ -1,0 +1,120 @@
+<?php
+$statusarr = array('100'=>'待审核','101'=>'不通过','200'=>'待使用','201'=>'已经使用');
+$typearr = array('1'=>'型号数量','2'=>'通用金额','3'=>'品牌金额');
+
+$orderurl = "/icwebadmin/GiftCoup?type=$this->type&status=$this->status";
+?>
+	<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?> <a href="javascript:;" onclick="openbox('<?=$this->addurl?>')">+添加优惠券</a></h1>
+    
+<form id="myform"  class="form-search" name="myform" action="" method="get">
+
+<div class="input-append">
+<select name="type" id="type">
+      <option value="" <?=$this->type==''?'selected':''?>>优惠券类型-全部</option>
+      <option value="1" <?=$this->type=='1'?'selected':''?>>型号数量优惠券</option>
+      <option value="2" <?=$this->type=='2'?'selected':''?>>通用金额优惠券</option>
+      <option value="3" <?=$this->type=='3'?'selected':''?>>品牌金额优惠券</option>
+</select>
+</div>
+<div class="input-append">
+<select name="status" id="status">
+      <option value="" <?=$this->status==''?'selected':''?>>状态-全部</option>
+      <option value="can" <?=$this->status=='can'?'selected':''?>>待使用</option>
+      <option value="used" <?=$this->status=='used'?'selected':''?>>已使用</option>
+      <option value="notdue" <?=$this->status=='notdue'?'selected':''?>>还没到期</option>
+      <option value="expired" <?=$this->status=='expired'?'selected':''?>>已经过期</option>
+</select>
+</div>
+&nbsp;
+<input type="submit" class="btn" value="查 找"/>
+</form>
+    
+		<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+    </div>
+	  <!-- 需要填写的区域-->
+      <table class="table ordertable"  border="0" style=" margin-top:-1px;">
+                <thead>
+                <tr>
+                <th>类型</th>
+                <th>优惠券号</th>
+                <th>状态</th>
+                <th>用户</th>
+                <!--<th>公司</th>-->
+                <th>品牌</th>
+                <th>产品型号</th>
+                <th>抵扣数量</th>
+                <th>抵扣金额(RMB)</th>
+                <th>抵扣金额(USD)</th>
+                <th>有效期</th>
+                <th>使用时间</th>
+                <th>使用订单号</th>
+                <th>原因</th>
+                <th>操作</th>
+                <th>操作记录</th>
+                </tr>
+                </thead>
+                <tbody>
+				<?php 
+				foreach($this->data as $data) :?>
+				<tr>
+                <td><?=$typearr[$data['type']];?></td>
+                <td><?php echo $data['code'];?></td>
+                <td><?php echo $statusarr[$data['status']];?></td>
+                <td><a href="javascript:;" onclick="viewUser('<?=$data['uid']?>')" title="查看详细资料" ><?=$data['uname']?></a></td>
+                <!--<td><?=$data['companyname']?></td>-->
+				<td><?=($data['bname']?$data['bname']:$data['bname2'])?></td>
+                <td><?php echo $data['part_no'];?></td>
+				<td><?=($data['buy_number']?$data['buy_number']:'--')?></td>
+                <td><?=$data['money_rmb']>0?$data['money_rmb']:'--';?></td>
+                <td><?=$data['money_usd']>0?$data['money_usd']:'--';?></td>
+				<td><font color="<?=(time()<$data['start_date']?'#006600':'')?>"><?php echo date('Y/m/d',$data['start_date'])?></font>至<font color="<?=(time()>$data['end_date']?'#FF0000':'')?>"><?php echo date('Y/m/d',$data['end_date'])?></font></td>
+                <td><?php echo $data['used_date']?date('Y/m/d H:i:s',$data['used_date']):'';?></td>
+				<td><a href="javascript:;" onclick="viewSo('<?=$data['salesnumber']?>')" title="查看订单"><?php echo $data['salesnumber'];?></a>
+                <?php if($data['customer']) {?>
+                <table><tr><td>使用工具客户名称：</td><td><?=$data['customer']?></td></tr>
+                <tr><td>预计产生的市场效益$/Y：</td><td><?=$data['efficiency']?></td></tr>
+                <tr><td>预计完成的效益时间：</td><td><?=$data['effective_time']?></td></tr>
+                </table>
+                <?php }?>
+                </td>
+                <td><?=$data['remark']?></td>
+                <td><?php 
+				 if($data['status']!=201){?><a href="javascript:;" onclick="openbox('<?=$this->editurl?>/coupid/<?=$data['id'];?>')">编辑</a>
+				 <?php }?></td>
+                 <td>
+                 <span title="添加者:<?=$data['lastname1'].$data['firstname1']?>&#13;添加时间:<?php echo date('Y/m/d H:i',$data['created']);?>&#13;修改者:<?=$data['lastname2'].$data['firstname2']?>&#13;修改时间:<?=($data['modified']?date('Y/m/d H:i',$data['modified']):'--')?>">查看</span>
+                 </td>
+				</tr>
+				<?php endforeach ; ?>
+                </tbody>
+            </table>      
+         <div class="pagination divpage" >
+            <?=$this->page_bar;?>
+        </div> 
+      <!-- 结束区域-->
+	</div>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script language="javascript">
+//查看订单
+function viewSo(salesnumber){
+	$.openPopupLayer({
+		name: "viewsoBox",
+		url: "/icwebadmin/OrOrgl/viewso?salesnumber="+salesnumber
+	});
+}
+function getorder(salesnumber){
+ $.ajax({
+            url: '/icwebadmin/OrOrgl/ajaxorderinfo?salesnumber='+salesnumber,
+            data: {},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+            	document.getElementById('soinfo').innerHTML = html;
+				$("#soinfo").height($("#ajaxorderinfo").height()+10);
+            }
+	});
+}
+</script>

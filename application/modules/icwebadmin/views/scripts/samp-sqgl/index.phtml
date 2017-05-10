@@ -1,0 +1,198 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> <?php if($this->select){?> -><a href="?type=wait" style="width:120px;">返回</a><?php }?></h1>
+
+<?php if($_SESSION['staff_sess']['level_id']!='XS'){?>
+<form id="myform"  class="form-search" name="myform" action="" method="get">
+<input type="hidden" name="select" value="1" />
+<input type="hidden" name="type" value="<?=$this->type?>" />
+
+<div class="input-append">
+<select name="xsname" id="xsname">
+      <option value="" <?=$this->xsname==''?'selected':''?>>跟进销售</option>
+      <option value="alina.shang" <?=$this->xsname=='alina.shang'?'selected':''?>>尚玉(alina.shang)</option>
+      <?php for($i=0;$i<count($this->xs_staff);$i++){?>
+      <option value="<?=$this->xs_staff[$i]['staff_id']?>" <?=$this->xsname==$this->xs_staff[$i]['staff_id']?'selected':''?>><?=$this->xs_staff[$i]['lastname'].$this->xs_staff[$i]['firstname']."(".$this->xs_staff[$i]['staff_id'].")"?></option>
+      <?php }?>
+</select>
+</div>
+<label>订单号：</label>
+<div class="input-append">
+  <input type="text" class="search-query ac_input" id="salesnumber" style="width:135px" value="<?=$this->salesnumber?>" name="salesnumber" autocomplete="off"/>
+</div>
+<input type="submit" class="btn" value="查 找"/>
+</form>
+<?php }?>
+<?php $url = "&xsname=$this->xsname&salesnumber=$this->salesnumber".($this->select?"&select=1":"");?>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  <div class="fr u_right">
+  <div class="tab_content">
+    	<div class="tab_tit1">
+        <ul class="fl">
+          <li <?=$this->type=='wait'?'class="on"':''?>><a href="?type=wait<?=$url?>" style="width:120px;">待审核<em>(<?=$this->waitnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='proc'?'class="on"':''?>><a href="?type=proc<?=$url?>" style="width:120px;">待释放<em>(<?=$this->procnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='already'?'class="on"':''?>><a href="?type=already<?=$url?>" style="width:120px;">已释放<em>(<?=$this->alreadynum?>)</em><b class="blank3"></b></a></li>
+           <li <?=$this->type=='send'?'class="on"':''?>><a href="?type=send<?=$url?>" style="width:120px;">已发货<em>(<?=$this->sendnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='cancel'?'class="on"':''?>><a href="?type=cancel<?=$url?>" style="width:120px;">审核不通过<em>(<?=$this->cancelnum?>)</em><b class="blank3"></b></a></li>
+         
+        </ul>
+        </div>
+    </div>
+    <div class="tab_con">
+      <table class="tableanew" border="0" cellspacing="0" cellpadding="0"  width="100%">
+        <tr>
+          <th width="20"><?=$this->type=='already'?'订单号':'编号'?></th>
+          <th width="100">申请用户</th>
+          <th width="50">申请时间</th>
+          <th width="100">项目名称(状态)</th>
+          <th width="50">项目应用</th>
+          <th width="60" align="left">联系人</th>
+          <!--<th width="60">预计测试周期</th>-->
+          <th width="60">预计后期<br/>年用量</th>
+          <th width="60">预计批量<br/>生产日期</th> 
+          <th width="100">申请说明</th>
+          <th width="250">申请样片</th>
+          <th width="50">销售</th>
+          <th width="50" align="center">操作</th>
+        </tr>
+        <?php if(empty($this->applyall)){?>
+        <tr>
+          <td colspan="12"><center> 暂无记录。</center></td>
+        </tr>
+        <?php }else{
+		foreach($this->applyall as $k=>$v){
+		?>
+        <tr valign="top">
+          <td><?=$v['salesnumber']?$v['salesnumber']:$v['id']?></td>
+          <td align="left">
+          <a href="javascript:;" onclick="viewUser('<?=$v['uid']?>')" title="查看详细资料" ><?=($v['companyname']?$v['companyname']:$v['uname'])?></a>
+          <br/>
+          收货信息：<?=$v['sname'].'；'.$this->fun->createAddress($v['province'],$v['city'],$v['area'],$v['address'])."；".$v['mobile']." ".$v['tel']?>
+          <?php if($v['courierid']){?>
+           <p style="color:#006600">(<?=$v['couname'].' , '.$v['cou_number']?>)</p>
+          <?php }?>
+          </td>
+          <td><?=date('Y/m/d H:i',$v['created'])?></td>
+          <td align="left"><?=$v['projectname']?>(<?=$v['projectstatus']?>)</p>
+          </td>
+          <td align="center"><?=$v['projectapp']?></td>
+          <td align="left">姓名：<?=$v['engineer']?><br/>电话：<?=$v['contact']?></td>
+          <!--<td align="center"><?=$v['testcycle']?></td>-->
+          <td align="center"><?=$v['amount']?$v['amount']:'--'?></td>
+          <td align="center"><?=$v['productiondate']?$v['productiondate']:'--'?></td>
+          <td align="left"><?=$v['instructions']?nl2br($v['instructions']):'--'?></td>
+          
+          <td align="left">
+		  <table width="100%"><tr><td>型号</td><td>阶梯价</td><td>品牌</td><td>数量</td><!--<td>说明</td>--></tr>
+		  <?php 
+		  foreach($v['detailed'] as $k1=>$darr){
+		     $ps = '--';
+		  	 if($darr['break_price'])  $ps = $this->fun->getbreakprice_notitle($darr['break_price'],'$');
+			 elseif($darr['break_price_rmb'])  $ps = $this->fun->getbreakprice_notitle($darr['break_price_rmb'],'￥');
+		     $kenum = $v['id'].$k1;
+		 	 echo '<tr><td><a href="/proddetails?partid='.$darr['part_id'].'" target="_blank">'.$darr['part_no'].'</a><br/><span id="check_oa_'.$kenum.'"><a class="gbqfbb" href="javascript:;" onclick="checkDW(\''.$darr['part_no'].'\',\''.$kenum.'\')">查询库存</a></span></td>
+			 <td>'.$ps.'</td>
+			 <td>'.$darr['brandname'].'</td><td>申请数：'.$darr['applynum'].'<br/>批准数：<font color="#006600">'.$darr['approvenum'].'</font></td><!--<td>'.$darr['d_remark'].'</td>--></tr>';
+		  }
+		  ?></table> 
+          </td>
+          
+          <td><?=$v['lastname'].$v['firstname']?></td>
+          
+          <td align="left"><?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+          		<?php if($v['status']==100){?>
+                <p><a class="gbqfb" href="javascript:;" onclick="release('<?=$v['id']?>')">审核</a></p>
+                <?php }elseif($v['status']==200){?>
+                <p><a class="gbqfb" href="javascript:;" onclick="process('<?=$v['id']?>')" title="释放到CSE处理">释放</a></p>
+                <?php }elseif($v['status']==300){?>
+                <p><a class="gbqfb" href="javascript:;" onclick="process('<?=$v['id']?>')" >查看</a></p>
+                <?php }?>
+                
+                <?php 
+				if(in_array($v['status'],array(301))){?>
+                <div style="margin-top:2px"><a href="javascript:" onclick="courier('<?=$v['id']?>','<?=$v['salesnumber']?>')" class="gbqfb">查看物流</a></div>
+                <?php }?>
+                
+                
+                <?php if(in_array($v['status'],array(100,200))){?>
+                <?php if(!$v['oa_code']){?>
+                        <p><a class="gbqfb" href="javascript:;" onclick="showbox('/icwebadmin/QuoInq/oauserinfo/uid/<?=$v['uid']?>/uoaid/<?=$v['uoaid']?>')">注册OA客户</a></p>
+                <?php }else echo '客户已在OA注册';}?>
+                
+            <?php }?>
+            <?php if($v['remark']) echo '<br/>项目备注：'.$v['remark'];
+			if($v['modified_by']) echo '<br/>处理者：'.$v['modified_by'].'<br/>'.date('Y/m/d H:i',$v['modified']);
+			?>
+          </td>
+        </tr>
+        <?php }
+		}?>
+       
+      </table>
+      <div class="pagination divpage">
+        <?=$this->page_bar;?>
+      </div>
+    </div>
+  </div>
+  <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+function checkDW(part_no,k)
+{
+	var check_oa_obj = document.getElementById("check_oa_"+k);
+	check_oa_obj.innerHTML = '<img src="/images/default/ajax-loader-s.gif" />查询中...';
+	$.ajax({
+            url: '/icwebadmin/SampSqgl/getdw',
+            data: {'part_no':part_no},
+            type: 'post',
+            dataType: 'json',
+			timeout : 30000, //超时时间设置，单位毫秒
+            success: function(arr) {
+			    check_oa_obj.innerHTML = '库存：<font color="#FF0000">'+arr.num+'</font>';
+            },
+			complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+			　　　　if(status=='timeout'){//超时,status还有success,error等值的情况
+			　　　　　  check_oa_obj.innerHTML = '<font color="#FF0000">查询超时</font><a class="gbqfbb" href="javascript:;" onclick="checkDW(\''+part_no+'\')">再查询</a>';
+			　　　　}
+			　　}
+	  });
+}
+<?php if($this->type=='wait'){?>
+$(document).ready(function(){
+<?php foreach($this->applyall as $k=>$v){foreach($v['detailed'] as $k1=>$darr){$kenum = $v['id'].$k1;?>
+	//checkDW('<?=$darr['part_no']?>','<?=$kenum?>');
+<?php }}?>
+});
+<?php }?>  
+function showbox(url)
+{
+	 $.openPopupLayer({
+        name:'box',
+        url:url
+    });
+}
+function release(id)
+{
+	 $.openPopupLayer({
+        name:'processBox',
+        url:'/icwebadmin/SampSqgl/release?id='+id
+    });
+}
+function process(id)
+{
+	 $.openPopupLayer({
+        name:'processBox',
+        url:'/icwebadmin/SampSqgl/process?id='+id
+    });
+}
+//查看物流
+function courier(id,salesnumber){
+    $.openPopupLayer({
+        name:'courierBox',
+        url:'/icwebadmin/OrOrgl/courier?sonum='+salesnumber+'&sonid='+id
+    });
+}
+</script>

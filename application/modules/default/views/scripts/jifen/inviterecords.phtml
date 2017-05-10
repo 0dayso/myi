@@ -1,0 +1,158 @@
+<!--弹出框-->
+<div class="popnew yqokbox">
+	<div class="popnew-tit"> 
+    	<span class="popnew-tit_t">邀请记录</span>
+      	<input type="button" title="关闭" class="popnew-closebtn" onclick="$.closePopupLayer('box')">
+    </div>
+    <div class="tip fontorange font14">邀<b>5</b>位好友成功注册，即得<strong>20</strong>元！</div>
+    <div class="popnew-con popyqform">
+    	
+        <?php if($this->noarr || $this->okarr){?>
+        <div>
+        <div class="yqtit"><h5>您邀请的以下好友尚未激活邮箱，激活邮箱后才算注册成功。</h5></div>
+        <div class="yqtx pos-re">
+            <?php if($this->okarr){?>
+        	<div class="yqtit_tip">激活邮件有效期是1个小时。您的这些好友的激活邮件还在有效期内。</div>
+            <ul class="yqul">
+                <?php foreach($this->okarr as $key=>$oku){?>
+            	<li><a  title="用户名：<?=$oku['uname']?>" class="email" id="oku<?=$key?>"><?=$oku['email']?></a></li>
+                <?php }?>
+            </ul>
+            <?php }?>
+            <?php if($this->noarr){?>
+        	<div class="yqtit_tip">激活邮件有效期是1个小时。您的这些好友的激活邮件已失效，需要重新激活。
+            <a onClick="remind('all')" href="javascript:;">全部提醒一下</a></div>
+            <ul class="yqul">
+                <?php foreach($this->noarr as $key=>$nou){?>
+                <input type="hidden" id="nou<?=$key?>" value="<?=$this->fun->encryptVerification($nou['uid'])?>">
+            	<li><a title="用户名：<?=$nou['uname']?>" class="email" id="nou<?=$key?>"><?=$nou['email']?></a>
+                <span id="nouspan1<?=$key?>"><a href="javascript:;" onClick="remind('<?=$key?>')" class="yqokta">提醒一下</a></span>
+                <span id="nouspan2<?=$key?>" style="display:none"><a href="javascript:;" class="yqokta on">已提醒</a></span></li>
+                <?php }?>
+            </ul>
+            <?php }?>
+            <div class="clr"></div>
+        </div>
+        </div>
+        <?php }?>
+        
+		<?php if(!empty($this->emailarr)){?>
+        <div>
+        <div class="yqtit"><h5>您通过IC易站邀请的以下好友尚未注册，是不是邮箱填错了？</h5></div>
+        
+        <div class="yqno pos-re"><a href="javascript:;" class="allppa" onClick="ivagain('all')">全部再次邀请</a><div class="clr"></div>
+        	<ul class="yqul">
+                <?php 
+				$id=0;foreach($this->emailarr as $e){?>
+            	<li>
+                <span id="span1<?=$id?>">
+                <a class="email" id="email<?=$id?>"><?=$e?></a>
+                <a href="javascript:;" class="emailxg gbqfb" onClick="xiugai('<?=$id?>')">修改</a>
+                <a href="javascript:;" class="yqokta" onClick="ivagain('<?=$id?>')">再次邀请</a></span>
+                
+                <span id="span2<?=$id?>" style="display:none"><input type="text"  value="<?=$e?>" id="input<?=$id?>"/>
+                <a href="javascript:;" class="gbqfb emailxg" onClick="xiugaiok('<?=$id?>')">确定</a>
+                <a href="javascript:;" class="gbqfb emailxg" onClick="xiugaino('<?=$id?>')">取消</a></span>
+                
+                </li>
+                <?php $id++;}?>
+                
+                
+            </ul>
+            <div class="clr"></div>
+        </div>
+        </div>
+        <?php }?>
+        
+        <div>
+        <div class="yqtit">
+        	<h4><?php if(empty($this->ivarr)) echo '您还没邀请成功记录，请快快邀请好友！'; else echo '您邀请的以下好友注册成功！';?></h4>
+            <?php if(count($this->ivarr)<5){?>
+            <div class="yqtit_tip">邀请5位好友成功注册，即得20元！您还差<b><?=(5-count($this->ivarr))?></b>个。<a href="javascript:;" onClick="openinvitebox()">赶紧邀请</a></div>
+            
+            <?php }else{?>
+            <div class="yqtit_tip">您已成功邀请<?=count($this->ivarr)?>位好友注册，获得<b>20元和<?=(count($this->ivarr)*20)?>积分</b>。</div>
+            <div  class="yqtit_tip yqtit_tip1">
+                <div class="fl marfin1">再每邀请1位好友可获得20分积分。<a href="javascript:;" onClick="openinvitebox()">去邀请好友</a></div>
+                <div class="fl">活动期间用积分还可以赢取豪华大奖。<a href="/jifen/event">去参加抽奖</a></div>
+            </div>
+            <?php }?>
+           
+        </div>
+        <?php if($this->ivarr){?>
+        <div class="yqokt pos-re"><div class="clr"></div>
+        	<ul class="yqul">
+                <?php foreach($this->ivarr as $ivarr){?>
+            	<li><a class="email" title="用户名：<?=$ivarr['uname']?>"><?=$ivarr['email']?></a></li>
+                <?php }?>
+            </ul>
+			<div class="clr"></div>
+        </div>
+        <?php }?>
+        </div>
+   
+    </div>	
+    <div class="clr"></div>
+</div>
+<script>
+//修改
+function xiugai(divid){
+	$("#span1"+divid).hide();
+	$("#span2"+divid).show();
+}
+//保存修改
+function xiugaiok(divid){
+    var newemail = $("#input"+divid).val();
+	if(!checkemail($("#input"+divid))) {alert('请输入正确的邮箱地址');return;};
+	$("#email"+divid).html(newemail);
+	$("#span1"+divid).show();
+	$("#span2"+divid).hide();
+}
+//取消修改
+function xiugaino(divid){
+	$("#span1"+divid).show();
+	$("#span2"+divid).hide();
+}
+//再次邀请
+function ivagain(type){
+	var emailstr = '';
+	if(type=='all'){
+		for(i=0;i<<?=count($this->emailarr)?>;i++){
+			emailstr += $("#email"+i).html()+';';
+		}
+	}else{
+	  emailstr = $("#email"+type).html();
+	}
+	 $.openPopupLayer({
+			   name: "inviteagainbox",
+			   url: "/jifen/smagain?emailstr="+emailstr
+	});
+}
+//提醒
+function remind(type){
+	var uidstr = '';
+	if(type=='all'){
+		for(i=0;i<<?=count($this->noarr)?>;i++){
+			uidstr += $("#nou"+i).val()+';';
+			$("#nouspan1"+i).hide();
+	        $("#nouspan2"+i).show();
+		}
+	}else{
+	    uidstr = $("#nou"+type).val();
+		$("#nouspan1"+type).hide();
+	    $("#nouspan2"+type).show();
+	}
+	$.ajax({
+	url: '/jifen/ivagain',
+		data: {'uidstr':uidstr},
+		type: 'post',
+		dataType: 'json',
+		timeout: 10000, 
+		error: function(){}, 
+		success: function(arr) {
+			
+		}
+	});
+	alert('提醒成功');if(type=='all'){location.reload();}
+}
+</script>

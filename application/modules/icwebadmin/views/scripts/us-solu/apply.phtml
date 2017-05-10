@@ -1,0 +1,132 @@
+<?php 
+$property_tmp = array('enduser'=>'终端用户','merchant'=>'贸易商');
+$typename = array('fags'=>'方案概述','hxyx'=>'核心优势','fakt'=>'方案框图',
+		  		'hxqj'=>'核心器件','zbqj'=>'周边器件','bomd'=>'BOM单',
+		  		'cgal'=>'成功案例','sjwd'=>'设计文档','jszq'=>'技术支持');
+?>
+<div class="popup" style="width:800px; margin:10px 100px">
+<div class="popup-header">
+    <h2>审批方案</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+</div>
+<div class="popup-body">
+<!--客户信息-->
+<div class="publicOne">
+    <div class="Publictit">
+        <span class="Publictit_tit">客户信息</span>
+    </div>
+    <table border="0" cellspacing="0" cellpadding="0" class="Publictable" >
+            <tr>
+              <td  width="100">用户名：</td>
+              <td ><strong><?=$this->user['uname']?></strong></td>
+              
+              <td  width="100">公司名：</td>
+              <td ><strong><?=$this->user['companyname']?$this->user['companyname']:'--'?></strong></td>
+            </tr>
+            <tr>
+              <td >公司性质：</td>
+              <td ><strong><?=$property_tmp[$this->user['property']]?></strong></td>
+              <td >行业领域：</td>
+              <td ><strong><?=$this->user['appname']==''?$this->user['personaldesc']:$this->user['appname']?></strong></td>
+            </tr>
+            <tr >
+              <td >联系人：</td>
+              <td ><strong><?=$this->user['truename']?$this->user['truename']:'--'?></strong></td>
+              <td>部门</td>
+               <td ><strong><?=$this->user['department']?$this->user['department']:'--'?></strong></td>
+            </tr>
+            <tr >
+              <td >联系电话：</td>
+              <td ><strong><?=$this->user['tel']?$this->user['tel']:'--'?></strong></td>
+              <td >手机：</td>
+              <td ><strong><?=$this->user['mobile']?$this->user['mobile']:'--'?></strong></td>
+            </tr>
+            <tr>
+              <td >Email：</td>
+              <td ><strong><a href="mailto:<?=$this->user['email']?>"><?=$this->user['email']?></a></strong></td>
+              <td >传真：</td>
+              <td ><strong><?=$this->user['fax']?$this->user['fax']:'--'?></strong></td>
+            </tr>
+            <tr>
+              <td >常用货币：</td>
+              <td ><strong><?=$this->user['currency']?$this->user['currency']:'--'?></strong></td>
+              <td >邮编：</td>
+              <td ><strong><?=$this->user['zipcode']?$this->user['zipcode']:'--'?></strong></td>
+            </tr>
+            <tr>
+              <td >地址：</td>
+              <td colspan="3"><strong><?=$this->fun->createAddress($this->user['province'],$this->user['city'],$this->user['area'],$this->user['address'])?></strong></td>
+            </tr>
+      </table>
+</div>
+
+<div class="publicOne">
+    <div class="Publictit">
+        <span class="Publictit_tit">审批：</span>
+    </div>
+    <table border="0" cellspacing="0" cellpadding="0" class="Publictable" >
+            <tr>
+              <td  width="100">方案：</td>
+              <td><a href="/solution-<?=$this->solarr['did']?>.html" target="_blank" title="查看方案" ><?=$this->solarr['title']?></a></td>
+            </tr>
+            <tr><td rowspan="2">权限：</td><td> <label style="color:#339900"><input type="radio" name="apply" value="2" checked="checked"/><b>通过</b></label>  
+            <label style="color:#CC3333"><input type="radio" name="apply" value="3" <?=$this->solarr['apply']==3?'checked':''?>/><b>不通过</b></label>
+            </td></tr>
+            <tr>
+              <td ><table><?php foreach($typename as $key=>$name){
+			       $area = ($this->solarr['areas']?explode(',', $this->solarr['areas']):array());
+				   $checkA = $checkB = '';
+				   if(in_array($key,$area))$checkA = 'checked';
+			       else $checkB = 'checked';
+			     ?>
+              	<tr height="20px"  align="left">
+                            <td  width="31%"><b><?=$name?></b></td>
+                            <td  width="52%" valign="top"><label style="color:#009900"><input name="Right_Rule<?=$key?>" type="radio" value="A" <?=$checkA?> />激活</label>
+                            | <label style="color:#FF0000"><input name="Right_Rule<?=$key?>" type="radio" value="B" <?=$checkB?>>屏蔽</label>
+                            </td>
+                          </tr>
+              <?php }?>
+              </table>
+              </td>
+            </tr>
+            <tr><td>备注：</td><td>
+            <textarea name="remark" id="remark" rows="3" style="width:600px;"><?=$this->solarr['remark']?></textarea>
+            </td></tr>
+            <tr>
+              <td colspan="2" style="text-align:center"><div class="bottombutton" id="baojiabtn">
+            	 <input type="button" onclick="applyaction()" value="提 交" class="btnabig">
+            </div></td>
+            </tr>
+      </table>
+</div>
+
+</div>
+</div>
+<script language="javascript" type="text/javascript">
+function applyaction()
+{
+   var allrule = Object();
+   <?php foreach($typename as $key=>$name){?>
+    var ruleobj = document.getElementsByName("Right_Rule<?=$key?>");
+	for(i=0;i<ruleobj.length;i++){
+	  if(ruleobj[i].checked){
+          allrule['<?=$key?>'] = ruleobj[i].value ;
+	  }
+	}
+	<?php }?>
+	 var apply = $('input[name="apply"]:checked').val();
+	 var remark = $("#remark").val();
+	$.ajax({
+            url: '/icwebadmin/UsSolu/apply',
+            data: {'uid':'<?=$this->solarr['uid']?>','apply':apply,'key':'<?=$this->fun->encryptVerification($this->solarr['id'])?>','Right_Rule':allrule,'remark':remark},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			  alert(arr.message);
+              if(arr.code == 0){
+			      location.reload();
+              }
+			}
+	});
+}
+</script>

@@ -1,0 +1,105 @@
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 编辑礼品 <a href="<?=$this->indexurl?>">返回&gt;&gt;</a> </h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+                  <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+                  <div id="alert_message"></div>
+                </div>
+
+          <?php if (isset($_SESSION['messages'])) : ?>
+          <div class="alert fade in">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p>
+          </div>
+          <?php endif; ?>
+          <form class="form-horizontal form-validate" style="text-align:left" method="post" action="<?php echo $this->editurl;?>" enctype="multipart/form-data">
+          <input type="hidden" name="id" value="<?=$this->processData['id']?>" />
+            <div class="control-group">
+              <label class="control-label" for="solution_no">活动</label>
+              <div class="controls">
+                <select id="type" name="type">
+                <option value="jifen" selected="selected" >积分商城</option>
+                </select>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="title">名称</label>
+              <div class="controls">
+                <input type="text" id="name" name="name" class="required" style="width:500px;" value="<?=$this->processData['name']?>" >
+              </div>
+            </div>    
+             <div class="control-group">
+              <label class="control-label" for="solution_no">奖项等级</label>
+              <div class="controls">
+                <input type="text" id="awards"  name="awards" value="<?=$this->processData['awards']?>" >
+              </div>
+            </div>
+             <div class="control-group">
+              <label class="control-label" for="solution_no">概率值</label>
+              <div class="controls">
+                <input type="text" id="probability"  name="probability" value="<?=$this->processData['probability']?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="solution_no">市场价格</label>
+              <div class="controls">
+                <input type="text" id="market_price"  name="market_price" value="<?=$this->processData['market_price']?>" onkeyup="<?=ISFLOAT?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="contents">限制库存</label>
+              <div class="controls">
+                <input type="checkbox" name="limitstock" value="1" <?=$this->processData['limitstock']==1?'checked':''?> >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="tags">库存</label>
+              <div class="controls">
+                <input type="text" id="stock"  name="stock" value="<?=$this->processData['stock']?>" onkeyup="<?=ISNUMBER?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="tags">中奖数量</label>
+              <div class="controls">
+                <input type="text" id="stock_cover"  name="stock_cover" value="<?=$this->processData['stock_cover']?>" onkeyup="<?=ISNUMBER?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <input type="submit" class="btn" value="编 辑">
+              </div>
+            </div>
+          </form>
+          <br>
+          <!-- 结束区域-->
+</div>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script type="text/javascript">
+	
+KindEditor.ready(function(K) {
+			//详细内容
+		   var editor2 =  K.create('#content', {
+		     allowFileManager : true
+	       });
+		    //方案图片
+			var images_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplodimg?part=upload/default/prize/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/prize/'
+			});
+			K('#images_box').click(function() {
+				images_editor.loadPlugin('image', function() {
+					images_editor.plugin.imageDialog({
+						imageUrl : K('#images').val(),
+						clickFn : function(url, title, width, height, border, align) {
+							K('#images').val(url.replace("/upload/default/prize/",""));
+							K('#show_images').attr("src",url);
+							images_editor.hideDialog();
+						}
+					});
+				});
+			});
+});
+</script>

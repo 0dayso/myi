@@ -1,0 +1,73 @@
+<?php
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$unitArr = array('HK'=>'香港','SZ'=>'国内');
+?>
+
+<div class="popup" style="width:600px;">
+<div class="popup-header">
+  <h2>更新特殊报价：
+    <?=$this->inqinfo['inq_number']?>
+  </h2>
+  <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+<div class="popup-body">
+  <div class=" overflowh">
+    <div class="passopen passopen0">
+      <table cellpadding="0" border="0" cellspacing="0" class="tablelistPrice">
+        <tr>
+          <th width="110">型号</th>
+          <th>品牌</th>
+          <th><em>*</em>更新价格(<?=($this->inqinfo['currency'])?>)</th>
+        </tr>
+        <?php foreach($this->inqinfo['detaile'] as $k=>$vd){?>
+        <input type="hidden" name="det_id" value="<?=$vd['id'];?>" >
+        <input type="hidden" name="special_result_price_old" value="<?=($vd['special_result_price'])?>" >
+        <tr align="center">
+          <td><?=$vd['part_no']?></td>
+          <td><?=$vd['brand']?></td>
+         </td>
+          <td><input type="text" class="input-small" name="special_result_price" value="<?=($vd['special_result_price'])?>"/></td>
+        </tr>
+        <?php }?>
+      </table>
+    </div>
+    <div class="clear"></div>
+    <div class="bottombutton" id="baojiabtn">
+      <input type="button" onclick="updatepmscprice()" value="更新" class="btnabig">
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<script type="text/javascript">
+function updatepmscprice() {
+
+	   var det_id          = new Array();
+	   var special_result_price = new Array();
+       var special_result_price_old = new Array();
+	   var det_id_obj           = document.getElementsByName("det_id");
+	   var special_result_price_obj  = document.getElementsByName("special_result_price");
+       var special_result_price_old_obj = document.getElementsByName("special_result_price_old");
+	   for (var i=0;i < det_id_obj.length;i++)
+	   {
+			det_id[i] = det_id_obj[i].value;
+			special_result_price[i] = special_result_price_obj[i].value;
+			special_result_price_old[i] = special_result_price_old_obj[i].value;
+	   }
+	   var subtmp = document.getElementById("baojiabtn");
+	   subtmp.innerHTML = '<input type="button" class="btnabig" value="提交中..." style="cursor:default"/>';
+	  
+	   $.ajax({
+		url: '/icwebadmin/QuoInq/updatepmscprice',
+		data: {'inq_number':'<?=$this->inqinfo['inq_number']?>','det_id':det_id,'special_result_price':special_result_price,'special_result_price_old':special_result_price_old},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+			 alert(arr.message);
+			 if(arr.code == 0){
+            	 location.reload();
+             }
+			subtmp.innerHTML = '<button type="button" class="btnabig" onclick="updatepmscprice()">提 交</button>';
+		}
+	  });
+		
+}
+</script>

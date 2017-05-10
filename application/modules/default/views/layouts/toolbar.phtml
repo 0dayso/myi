@@ -1,0 +1,53 @@
+<!--topmenu-->
+<div class="site-nav">
+  <div class="w">
+    <p class="login-info fl"> 
+      <strong style="color:#ff6600">中电器材旗下元器件电商平台</strong><span style="color:#999; margin:0 10px 0 12px; ">|</span>
+      <?php if(isset($_SESSION['userInfo']['unameSession'])){?>
+       <span><a href="/center" title="<?=$this->translate('Menu_Center')?>" class="user_name"><b style="color:red; font-family:Arial; margin-left:5px" title="<?=$_SESSION['userInfo']['unameSession'];?>"><?=($_SESSION['userInfo']['unameSession'])?></b></a> 
+       <a href="/user/logout" style="cursor:pointer;" title="点击退出登录" class="user_act">退出</a></span>
+      <?php }else{?>
+      <span>您好，欢迎来到IC易站！
+      <a href="/user/login?url=<?=rawurlencode($_SERVER['REQUEST_URI'])?>" class="user_act">登录</a>
+      <a href="/user/register" class="user_act">注册</a></span>
+      <?php }?>
+    </p>
+    <div class="menus">
+      <div class="ui_navs cart"> <a href="/inquiry" class="user_act" >询价篮(<u class="inquirynumber"><?php if(!isset($_SESSION['inquirynumber'])) echo 0;else echo $_SESSION['inquirynumber'];?></u>)</a> </div>
+      <span>|</span>
+      <div class="ui_navs cart"> <a href="/cart" class="user_act">购物车(<u class="cartnumber"><?php if(!isset($_SESSION['cartnumber'])) echo 0;else echo $_SESSION['cartnumber'];?></u>)</a> </div>
+      <span>|</span>
+      <div class="ui_navs myselftop">
+        <h3 class="ui_first_nav"><a href="/center"><?=$this->translate('Menu_Center')?></a></h3>
+        <ul class="ui_second_nav">
+            <li><a href="/center/order"><?=$this->translate('Menu_MyOrder')?></a></li>
+            <li><a href="/center/inquiry"><?=$this->translate('Menu_MyInquiry')?></a></li>
+            <li><a href="/center/bom"><?=$this->translate('Menu_Bom')?></a></li>
+            <li><a href="/center/coupon"><?=$this->translate('Menu_MyCoupon')?></a></li>
+            <li><a href="/center/delivery"><?=$this->translate('Menu_MyDelivery')?></a></li>
+            <li><a href="/center/invoice"><?=$this->translate('Menu_MyInvoice')?></a></li>
+            <li><a href="/center/info"><?=$this->translate('Menu_MyInfo')?></a></li>
+            <li><a href="/center/address"><?=$this->translate('Menu_MyAddress')?></a></li>
+            <li><a href="/center/favorites"><?=$this->translate('Menu_MyFavorites')?></a></li>
+            <li><a href="/center/exchange">礼品兑换</a></li>
+            <li><a href="/center/samples">样片申请</a></li>
+        </ul>
+      </div>
+      <span>|</span>
+      <div class="ui_navs">
+        <h3  class="ui_first_nav "><a href="/help/customer/type/problem"><?=$this->translate('Foot_CustomerCenter')?></a></h3>
+        <ul class="ui_second_nav">
+          <li><a href="/help/customer/type/problem" rel="nofollow"><?=$this->translate('Foot_CustomerQuestion')?></a></li>
+          <li><a href="/help/customer/type/aftermarket" rel="nofollow"><?=$this->translate('Foot_Aftermarket')?></a></li>
+          <li><a href="/help/customer/type/onlineservice" rel="nofollow"><?=$this->translate('Foot_Onlineservice')?></a></li>
+          <li><a href="/help/customer/type/complaint" rel="nofollow"><?=$this->translate('Foot_Complaint')?></a></li>
+          <li><a href="/help/customer/type/servicemail" rel="nofollow"><?=$this->translate('Foot_Servicemail')?></a></li>
+        </ul>
+      </div>
+      <span>|</span>
+      <div class="ui_navs"> <a href="javascript:;" onclick="addfavorite('<?php echo HTTPHOST;?>')" rel="nofollow" class="user_act">收藏本站</a> </div>
+      <div class="ui_navs"> <b class="toptel">(86) 400-626-1616</b> </div>
+    </div>
+  </div>
+</div>
+<!--end topmenu-->

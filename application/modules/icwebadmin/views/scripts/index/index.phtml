@@ -1,0 +1,988 @@
+<link rel="stylesheet" type="text/css" href="/js/jsplug/advanced_docking/css/docking.css" />
+<!--滚动-->
+<style type="text/css">
+.up_zzjs {
+	border:0px solid #ccc;
+	padding-top:3px;
+	height:22px;
+	line-height:22px;
+	overflow:hidden;
+}
+.updiv {
+	background-color:#F5F5F5;
+}
+</style>
+<script type="text/javascript">
+function startmarquee(lh,speed,delay,div_id) {
+		var p=false;
+		var t;
+		var o=document.getElementById(div_id);
+		o.innerHTML+=o.innerHTML;
+		o.style.marginTop=0;
+		o.onmouseover=function(){p=true;}
+		o.onmouseout=function(){p=false;}
+	
+		function start(){
+			t=setInterval(scrolling,speed);
+			if(!p) o.style.marginTop=parseInt(o.style.marginTop)-1+"px";
+		}
+	
+	    function scrolling(){
+		    if(parseInt(o.style.marginTop)%lh!=0){
+			   o.style.marginTop=parseInt(o.style.marginTop)-1+"px";
+			   if(Math.abs(parseInt(o.style.marginTop))>=o.scrollHeight/2) o.style.marginTop=0;
+		    }else{
+			   clearInterval(t);
+			   setTimeout(start,delay);
+			}
+		}
+		setTimeout(start,delay);
+	}
+</script>
+<div style="width:870px;float:left;margin-left:5px;margin-bottom:5px">
+  <!--移动块-->
+  <?php //print_r($this->inq['oainq']);?>
+  <!--左边-->
+  <div class="column" id="column1">
+    <?php if($this->inqcan){?>
+    <div class="dragbox" id="item1" >
+      <h2><span class="configure" ><a href="/icwebadmin/QuoInq" target="_blank">更多</a></span>客户询价</h2>
+      <div class="dragbox-content" >
+        <p><a href="/icwebadmin/QuoInq?type=oainq" title="查看" target="_blank">待处理</a>（<em><?=count($this->inq['oainq'])?></em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_inq_oainq">
+            <?php foreach($this->inq['oainq'] as $oainq){
+			 		$partnos = '';
+			        foreach($oainq['detaile'] as $detaile){$partnos .=','.$detaile['part_no'];}
+				$title = $oainq['companyname'].' '.$partnos;
+				$tourl = '<a href="/icwebadmin/QuoInq?type=oainq&keyword='.$oainq['inq_number'].'" target="_blank" title="去处理">'.$oainq['inq_number'].'</a>';
+			?>
+            <div class="updiv">
+              <?=$this->fun->utf_substr($title,40)?>
+              <?=$tourl?>
+            </div>
+            <?php }
+			if(empty($this->inq['oainq'])) echo '<div>暂无待处理项</div>';?>
+          </div>
+        </div>
+        <p><a href="/icwebadmin/QuoInq?type=wait" title="查看" target="_blank">待报价</a>（<em><?=count($this->inq['wait'])?></em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_inq_wait">
+            <?php foreach($this->inq['wait'] as $oainq){
+			 		$partnos = '';
+			        foreach($oainq['detaile'] as $detaile){$partnos .=','.$detaile['part_no'];}
+				$title = $oainq['companyname'].' '.$partnos;
+				$tourl = '<a href="/icwebadmin/QuoInq?type=wait&keyword='.$oainq['inq_number'].'" target="_blank" title="去处理">'.$oainq['inq_number'].'</a>';
+			?>
+            <div class="updiv">
+              <?=$this->fun->utf_substr($title,40)?>
+              <?=$tourl?>
+            </div>
+            <?php }
+			if(empty($this->inq['wait'])) echo '<div>暂无待处理项</div>';?>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script language="javascript">
+		<?php if(count($this->inq['oainq'])>1){?>
+		startmarquee(22,20,8000,'upbox_inq_oainq');
+		<?php }?>
+		<?php if(count($this->inq['wait'])>1){?>
+		startmarquee(22,20,8000,'upbox_inq_wait');
+		<?php }?>
+	</script>
+    <?php }?>
+    <?php if($this->sqscan){?>
+    <div class="dragbox" id="item3" >
+      <h2><span class="configure" ><a href="/icwebadmin/OrOrgl" target="_blank">更多</a></span>在线订单</h2>
+      <div class="dragbox-content" >
+        <p><a href="/icwebadmin/OrOrgl?type=rel" title="查看" target="_blank">待审核</a>（<em><?=count($this->sqsso['rel'])?></em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_sqsso_rel">
+            <?php foreach($this->sqsso['rel'] as $relsqsso){
+				$title = ($relsqsso['companyname']?$relsqsso['companyname']:$relsqsso['uname']).' , '.$relsqsso['partnos'];
+				$tourl = '<a href="/icwebadmin/OrOrgl?type=rel&salesnumber='.$relsqsso['salesnumber'].'" target="_blank" title="去处理">'.$relsqsso['salesnumber'].'</a>';
+			?>
+            <div class="updiv">
+              <?=$this->fun->utf_substr($title,40)?>
+              <?=$tourl?>
+            </div>
+            <?php }
+			if(empty($this->sqsso['rel'])) echo '<div>暂无待处理项</div>';?>
+          </div>
+        </div>
+        <p><a href="/icwebadmin/OrOrgl?type=wpay"  title="查看" target="_blank">待付款</a>（<em><?=count($this->sqsso['wpay'])?></em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_sqsso_wpay">
+            <?php foreach($this->sqsso['wpay'] as $wpaysqsso){
+				$title = ($wpaysqsso['companyname']?$wpaysqsso['companyname']:$wpaysqsso['uname']).' , '.$wpaysqsso['partnos'];
+				$tourl = '<a href="/icwebadmin/OrOrgl?type=wpay&salesnumber='.$wpaysqsso['salesnumber'].'" target="_blank" title="去处理">'.$wpaysqsso['salesnumber'].'</a>';
+			?>
+            <div class="updiv">
+              <?=$title?>
+              <?=$tourl?>
+            </div>
+            <?php }
+			if(empty($this->sqsso['wpay'])) echo '<div>暂无待处理项</div>';?>
+          </div>
+        </div>
+        <p><a href="/icwebadmin/OrOrgl?type=ema"  title="查看" target="_blank">待释放订单</a>（<em><?=count($this->sqsso['ema'])?></em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_sqsso_ema">
+            <?php foreach($this->sqsso['ema'] as $emasqsso){
+				$title = ($emasqsso['companyname']?$emasqsso['companyname']:$emasqsso['uname']).' , '.$emasqsso['partnos'];
+				$tourl = '<a href="/icwebadmin/OrOrgl?type=ema&salesnumber='.$emasqsso['salesnumber'].'" target="_blank" title="去处理">'.$emasqsso['salesnumber'].'</a>';
+			?>
+            <div class="updiv">
+              <?=$title?>
+              <?=$tourl?>
+            </div>
+            <?php }
+			if(empty($this->sqsso['ema'])) echo '<div>暂无待处理项</div>';?>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script language="javascript">
+		<?php if(count($this->sqsso['rel'])>1){?>
+		startmarquee(22,20,8000,'upbox_sqsso_rel');
+		<?php }?>
+		<?php if(count($this->sqsso['wpay'])>1){?>
+		startmarquee(22,20,8000,'upbox_sqsso_wpay');
+		<?php }?>
+		<?php if(count($this->sqsso['ema'])>1){?>
+		startmarquee(22,20,8000,'upbox_sqsso_ema');
+		<?php }?>
+	</script>
+    <?php }?>
+    <!--
+    <?php if($this->unso){?>
+    <div class="dragbox" id="item3" >
+      <h2><span class="configure" ><a href="/icwebadmin/OrUnso" target="_blank">更多</a></span>线下录入订单</h2>
+      <div class="dragbox-content" >
+      	 
+        <p><a href="/icwebadmin/OrUnso/list" target="_blank" title="查看">待上传转账凭证</a>（<em>1</em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_unso_wpay">
+            <div><a href="" target="_blank">RFQ76548</a> 中兴科技有限公司 ISL8107IRZ-T(5)...</div>
+            <div><a href="" target="_blank">RFQ74544</a> 中兴科技有限公司 MK10DX32VFT5(4) IDTQS3257QG8(5)...</div>
+          </div>
+        </div>
+        <p><a href="/icwebadmin/OrUnso/list" target="_blank" title="查看">待上传余款凭证</a>（<em>5</em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_unso_over">
+            <div><a href="" target="_blank">RFQ76548</a> 中兴科技有限公司 ISL8107IRZ-T(5)...</div>
+            <div><a href="" target="_blank">RFQ74544</a> 中兴科技有限公司 MK10DX32VFT5(4) IDTQS3257QG8(5)...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script language="javascript">
+	startmarquee(22,20,8600,'upbox_unso_wpay');
+	startmarquee(22,20,8800,'upbox_unso_over');
+	</script>
+    <?php }?>
+    
+    <?php if($this->amount){?>
+    <div class="dragbox" id="item2" >
+      <h2>金额统计(人民币：万元)<span class="configure" ></span></h2>
+      <div class="dragbox-content" >
+      		<table width="100%" cellspacing="0" cellpadding="0" border="1" align="center" style="border-collapse:collapse;font-size: 12px;border:1px #999 solid; margin:10px 0 10px 0;">
+        <tbody>
+          <tr bgcolor="#00B0F0" align="center" style="color:#FFFFFF; font-weight:bold;">
+            <th>类型</th>
+            <th>Q1</th>
+            <th>Q2</th>
+            <th>Q3</th>
+            <th>Q4</th>
+            <th>Year Total</th>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr align="center">
+            <td>SQS流程订单</td>
+            <td>10</td>
+            <td>10</td>
+            <td>15</td>
+            <td>15</td>
+            <td bgcolor="#FAC090">50</td>
+          </tr>
+          <tr align="center">
+            <td>SAP流程订单</td>
+            <td>10</td>
+            <td>10</td>
+            <td>15</td>
+            <td>15</td>
+            <td bgcolor="#FAC090">50</td>
+          </tr>
+          <tr align="center">
+            <td>线下录入订单</td>
+            <td>10</td>
+            <td>10</td>
+            <td>15</td>
+            <td>15</td>
+            <td bgcolor="#FAC090">50</td>
+          </tr> 
+           <tr align="center">
+            <td>总计</td>
+            <td>10</td>
+            <td>10</td>
+            <td>15</td>
+            <td>15</td>
+            <td bgcolor="#FAC090">50</td>
+          </tr>  
+        </tbody>
+      </table><strong></strong>
+      </div>
+    </div>
+    <?php }?>-->
+  </div>
+  <!--end 左边-->
+  <!--右边-->
+  <div class="column" id="column2" >
+    <?php if($this->inqsocan){?>
+    <div class="dragbox" id="item2" >
+      <h2><span class="configure" ><a href="/icwebadmin/OrInqo" target="_blank">更多</a></span>询价订单</h2>
+      <div class="dragbox-content">
+        <p><a href="/icwebadmin/OrInqo?type=rel" target="_blank" title="查看">待审核</a>（<em><?=count($this->inqso['rel'])?></em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_inqso_rel">
+            <?php foreach($this->inqso['rel'] as $inqso){
+				  $title = $inqso['companyname'].' , '.$inqso['partnos'];
+				  $tourl = '<a href="/icwebadmin/OrInqo?type=rel&&salesnumber='.$inqso['salesnumber'].'" target="_blank" title="去处理">'.$inqso['salesnumber'].'</a>';
+			?>
+            <div class="updiv">
+              <?=$this->fun->utf_substr($title,40)?>
+              <?=$tourl?>
+            </div>
+            <?php }
+			if(empty($this->inqso['rel'])) echo '<div>暂无待处理项</div>';?>
+          </div>
+        </div>
+        <p><a href="/icwebadmin/OrInqo?type=wpay" target="_blank" title="查看">待付款</a>（<em><?=count($this->inqso['wpay'])?></em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_inqso_wpay">
+            <?php foreach($this->inqso['wpay'] as $inqso){
+				  $title = $inqso['companyname'].' , '.$inqso['partnos'];
+				  $tourl = '<a href="/icwebadmin/OrInqo?type=rel&&salesnumber='.$inqso['salesnumber'].'" target="_blank" title="去处理">'.$inqso['salesnumber'].'</a>';
+			?>
+            <div class="updiv">
+              <?=$this->fun->utf_substr($title,40)?>
+              <?=$tourl?>
+            </div>
+            <?php }
+			if(empty($this->inqso['wpay'])) echo '<div>暂无待处理项</div>';?>
+          </div>
+        </div>
+        <p><a href="/icwebadmin/OrInqo?type=ema" target="_blank" title="查看">待释放订单</a>（<em><?=count($this->inqso['ema'])?></em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_inqso_ema">
+            <?php foreach($this->inqso['ema'] as $inqso){
+				  $title = $inqso['companyname'].' , '.$inqso['partnos'];
+				  $tourl = '<a href="/icwebadmin/OrInqo?type=rel&&salesnumber='.$inqso['salesnumber'].'" target="_blank" title="去处理">'.$inqso['salesnumber'].'</a>';
+			?>
+            <div class="updiv">
+              <?=$this->fun->utf_substr($title,40)?>
+              <?=$tourl?>
+            </div>
+            <?php }
+			if(empty($this->inqso['ema'])) echo '<div>暂无待处理项</div>';?>
+          </div>
+        </div>
+        <p><a href="/icwebadmin/OrInqo?type=proc" target="_blank" title="查看">待反馈交期</a>（<em><?=count($this->inqso['proc'])?></em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_inqso_proc">
+            <?php foreach($this->inqso['proc'] as $inqso){
+				  $title = $inqso['companyname'].' , '.$inqso['partnos'];
+				  $tourl = '<a href="/icwebadmin/OrInqo?type=rel&&salesnumber='.$inqso['salesnumber'].'" target="_blank" title="去处理">'.$inqso['salesnumber'].'</a>';
+			?>
+            <div class="updiv">
+              <?=$this->fun->utf_substr($title,40)?>
+              <?=$tourl?>
+            </div>
+            <?php }
+			if(empty($this->inqso['proc'])) echo '<div>暂无待处理项</div>';?>
+          </div>
+        </div>
+        <p><a href="/icwebadmin/OrInqo?type=over" target="_blank" title="查看">待付余款</a>（<em><?=count($this->inqso['over'])?></em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_inqso_over">
+            <?php foreach($this->inqso['over'] as $inqso){
+				  $title = $inqso['companyname'].' , '.$inqso['partnos'];
+				  $tourl = '<a href="/icwebadmin/OrInqo?type=rel&&salesnumber='.$inqso['salesnumber'].'" target="_blank" title="去处理">'.$inqso['salesnumber'].'</a>';
+			?>
+            <div class="updiv">
+              <?=$this->fun->utf_substr($title,40)?>
+              <?=$tourl?>
+            </div>
+            <?php }
+			if(empty($this->inqso['over'])) echo '<div>暂无待处理项</div>';?>
+          </div>
+        </div>
+        
+        <p><a href="/icwebadmin/OrInqo?type=over" target="_blank" title="查看">待通知发货</a>（<em><?=count($this->inqso['send'])?></em>）</p>
+        <div class="up_zzjs">
+          <div id="upbox_inqso_over">
+            <?php foreach($this->inqso['send'] as $inqso){
+				  $title = $inqso['companyname'].' , '.$inqso['partnos'];
+				  $tourl = '<a href="/icwebadmin/OrInqo?type=rel&&salesnumber='.$inqso['salesnumber'].'" target="_blank" title="去处理">'.$inqso['salesnumber'].'</a>';
+			?>
+            <div class="updiv">
+              <?=$this->fun->utf_substr($title,40)?>
+              <?=$tourl?>
+            </div>
+            <?php }
+			if(empty($this->inqso['send'])) echo '<div>暂无待处理项</div>';?>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script language="javascript">
+	   <?php if(count($this->inqso['rel'])>1){?>
+	   startmarquee(22,20,8000,'upbox_inqso_rel');
+	   <?php }?>
+	   <?php if(count($this->inqso['wpay'])>1){?>
+	   startmarquee(22,20,8000,'upbox_inqso_wpay');
+	   <?php }?>
+	   <?php if(count($this->inqso['ema'])>1){?>
+	   startmarquee(22,20,8000,'upbox_inqso_ema');
+	   <?php }?>
+	   <?php if(count($this->inqso['proc'])>1){?>
+	   startmarquee(22,20,8000,'upbox_inqso_proc');
+	   <?php }?>
+	   <?php if(count($this->inqso['over'])>1){?>
+	    startmarquee(22,20,8000,'upbox_inqso_over');
+	   <?php }?>
+	</script>
+    <?php }?>
+  </div>
+  <!--end 右边-->
+  <!--end 移动块-->
+</div>
+<?php if(empty($_SESSION['statistics_rule']['value'])){?>
+<!-- Area Output Starts -->
+<div style="width:870px;float:left;margin-left:5px;margin-bottom:5px">
+  <table border="0">
+    <tr>
+      <td><div style="margin-left:30px; margin-top:10px">
+          <?php
+				$area_count = $section_count=0;
+				
+                foreach($this->Section as $section_array){
+				   $area_string_temp =array();
+				   $section_id=$section_array["section_area_id"];	
+
+				   if(!empty($this->Area[$section_id]))
+				   {
+				   		foreach($this->Area[$section_id] as $v){ 
+                       		$area_string_temp[] = $v["staff_area_id"];
+                   		}
+				   }
+				   if(count(array_intersect($area_string_temp,$_SESSION['staff_area']['value']))){
+                     $temp_count = $row_count =0;
+					 if($area_count%3 == 0) echo "<div class=\"row\">";
+                        ?>
+          <div class="areabox">
+            <h4 class="well-small well">
+              <?=$section_array["section_area_des"]?>
+            </h4>
+            <ul>
+              <?php 
+										   foreach($this->Area[$section_id] as $area_array){ 
+											 $area_id=$area_array["staff_area_id"]; 
+                                             
+											if(in_array($area_id,$_SESSION['staff_area']['value'])){ 
+											  if(!$row_count)?>
+              <li><a href="<?=$area_array["url"]?>"><font color="#005CB9">
+                <?=$area_array["staff_area_des"]?>
+                </font></a></li>
+              <?php $temp_count++;$row_count++; }
+											   }//End for 
+              				      			?>
+            </ul>
+          </div>
+          <?php  
+							  $area_count++;
+							   if($area_count%3 == 0) echo "</div>";
+					 } 
+ 
+			  	} ?>
+        </div></td>
+    </tr>
+  </table>
+</div>
+<!-- Area Output Ends -->
+<?php }else{?>
+<div style="width:870px;float:left;margin-left:5px;margin-bottom:5px">
+<script type="text/javascript">
+function changeyear()
+{
+	var sy = $("#qyesr").val();
+	window.location.href="/icwebadmin?sy="+sy;  
+}
+</script>
+  <table border="0">
+    <?php if(in_array('quarterly',$_SESSION['statistics_rule']['value'])){?>
+    <tr>
+      <td colspan="2" align="left"><table width="850px" cellspacing="0" cellpadding="0" border="1" align="center" style="border-collapse:collapse;font-size: 12px;border:1px #999 solid; margin:10px 0 10px 0;">
+          <tbody>
+            <tr bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;"  align="center">
+              <th colspan="3">Contents</th>
+              <th>Q1</th>
+              <th>Q2</th>
+              <th>Q3</th>
+              <th>Q4</th>
+              <th>Year Total<select name="qyesr" id="qyesr" onchange="changeyear()">
+              <?php 
+			  $ny = date('Y');
+			  $selecty = $_GET['sy']?$_GET['sy']:$ny;
+			  for($i=2013;$i<=$ny;$i++){?>
+              <option value="<?=$i?>" <?=$selecty==$i?' selected="selected"':''?>><?=$i?></option>
+              <?php }?>
+              </select>
+              </th>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr align="center">
+              <td rowspan="4">1</td>
+              <td rowspan="4" width="250"><p>Revenue</p>
+                （通过IC易站进来的新客户新订单，<br/>
+                包含SQS Customer及SAP 注册的<br/>
+                Alina名下的客户订单，以IC易站&amp;财务<br/>
+                每月提供的月度跟踪报表为准）</td>
+              <td>Fcst</td>
+              <td><?=$this->quarterly['new'][1];?></td>
+              <td><?=$this->quarterly['new'][2];?></td>
+              <td><?=$this->quarterly['new'][3];?></td>
+              <td><?=$this->quarterly['new'][4];?></td>
+              <td bgcolor="#FAC090"><?=$this->quarterly['new']['total'];?></td>
+            </tr>
+            <tr align="center">
+              <td><em>Actual</em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[0]['sqstotal'],1)?>
+                </em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[1]['sqstotal'],1)?>
+                </em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[2]['sqstotal'],1)?>
+                </em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[3]['sqstotal'],1)?>
+                </em></td>
+              <td bgcolor="#FAC090"><em>
+                <?=number_format($this->quarterlytotal['sqsall'],1)?>
+                </em></td>
+            </tr>
+            <tr align="center">
+              <td>Actual/Fcst</td>
+              <td><?=number_format($this->quarterlytotal[0]['sqstotal']/$this->quarterly['new'][1]*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[1]['sqstotal']/$this->quarterly['new'][2]*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[2]['sqstotal']/$this->quarterly['new'][3]*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[3]['sqstotal']/$this->quarterly['new'][4]*100,0)?>
+                %</td>
+              <td bgcolor="#FAC090"><?=number_format($this->quarterlytotal['sqsall']/$this->quarterly['new']['total']*100,0)?>
+                %</td>
+            </tr>
+            <tr align="center">
+              <td>Accum.</td>
+              <td><?=number_format($this->quarterlytotal[0]['sqstotal']/$this->quarterly['new']['total']*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[1]['sqstotal']/$this->quarterly['new']['total']*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[2]['sqstotal']/$this->quarterly['new']['total']*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[3]['sqstotal']/$this->quarterly['new']['total']*100,0)?>
+                %</td>
+              <td bgcolor="#FAC090"><?=number_format($this->quarterlytotal['sqsall']/$this->quarterly['new']['total']*100,0)?>
+                %</td>
+            </tr>
+            <tr align="center" bgcolor="#F6F6F6">
+              <td rowspan="4">2</td>
+              <td rowspan="4"><p>Revenue</p>
+                （公司原有客户转移至IC易站进行交易，<br/>
+                此交易额与销售人员Double count, <br/>
+                以IC易站&amp;财务每月提供的月度跟踪报表为准） </td>
+              <td>Fcst</td>
+              <td><?=$this->quarterly['line'][1];?></td>
+              <td><?=$this->quarterly['line'][2];?></td>
+              <td><?=$this->quarterly['line'][3];?></td>
+              <td><?=$this->quarterly['line'][4];?></td>
+              <td bgcolor="#FAC090"><?=$this->quarterly['line']['total'];?></td>
+            </tr>
+            <tr align="center"  bgcolor="#F6F6F6">
+              <td><em>Actual</em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[0]['linetotal'],1)?>
+                </em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[1]['linetotal'],1)?>
+                </em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[2]['linetotal'],1)?>
+                </em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[3]['linetotal'],1)?>
+                </em></td>
+              <td bgcolor="#FAC090"><em>
+                <?=number_format($this->quarterlytotal['lineall'],1)?>
+                </em></td>
+            </tr>
+            <tr align="center"  bgcolor="#F6F6F6">
+              <td>Actual/Fcst</td>
+              <td><?=number_format($this->quarterlytotal[0]['linetotal']/$this->quarterly['line'][1]*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[1]['linetotal']/$this->quarterly['line'][2]*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[2]['linetotal']/$this->quarterly['line'][3]*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[3]['linetotal']/$this->quarterly['line'][4]*100,0)?>
+                %</td>
+              <td bgcolor="#FAC090"><?=number_format($this->quarterlytotal['lineall']/$this->quarterly['line']['total']*100,0)?>
+                %</td>
+            </tr>
+            <tr align="center"  bgcolor="#F6F6F6">
+              <td>Accum.</td>
+              <td><?=number_format($this->quarterlytotal[0]['linetotal']/$this->quarterly['line']['total']*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[1]['linetotal']/$this->quarterly['line']['total']*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[2]['linetotal']/$this->quarterly['line']['total']*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[3]['linetotal']/$this->quarterly['line']['total']*100,0)?>
+                %</td>
+              <td bgcolor="#FAC090"><?=number_format($this->quarterlytotal['lineall']/$this->quarterly['line']['total']*100,0)?>
+                %</td>
+            </tr>
+            <tr align="center">
+              <td rowspan="4">3</td>
+              <td rowspan="4"><p>Revenue</p>
+                （线下录入订单）</td>
+              <td>Fcst</td>
+              <td><?=$this->quarterly['unline'][1];?></td>
+              <td><?=$this->quarterly['unline'][2];?></td>
+              <td><?=$this->quarterly['unline'][3];?></td>
+              <td><?=$this->quarterly['unline'][4];?></td>
+              <td bgcolor="#FAC090"><?=$this->quarterly['unline']['total'];?></td>
+            </tr>
+            <tr align="center">
+              <td><em>Actual</em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[0]['unlinetotal'],1)?>
+                </em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[1]['unlinetotal'],1)?>
+                </em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[2]['unlinetotal'],1)?>
+                </em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[3]['unlinetotal'],1)?>
+                </em></td>
+              <td bgcolor="#FAC090"><em>
+                <?=number_format($this->quarterlytotal['unlineall'],1)?>
+                </em></td>
+            </tr>
+            <tr align="center">
+              <td>Actual/Fcst</td>
+              <td><?=number_format($this->quarterlytotal[0]['unlinetotal']/$this->quarterly['line'][1]*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[1]['unlinetotal']/$this->quarterly['line'][2]*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[2]['unlinetotal']/$this->quarterly['line'][3]*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[3]['unlinetotal']/$this->quarterly['line'][4]*100,0)?>
+                %</td>
+              <td bgcolor="#FAC090"><?=number_format($this->quarterlytotal['unlineall']/$this->quarterly['line']['total']*100,0)?>
+                %</td>
+            </tr>
+            <tr align="center">
+              <td>Accum.</td>
+              <td><?=number_format($this->quarterlytotal[0]['unlinetotal']/$this->quarterly['line']['total']*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[1]['unlinetotal']/$this->quarterly['line']['total']*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[2]['unlinetotal']/$this->quarterly['line']['total']*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[3]['unlinetotal']/$this->quarterly['line']['total']*100,0)?>
+                %</td>
+              <td bgcolor="#FAC090"><?=number_format($this->quarterlytotal['unlineall']/$this->quarterly['line']['total']*100,0)?>
+                %</td>
+            </tr>
+            <tr align="center" bgcolor="#F6F6F6">
+              <td rowspan="4">4</td>
+              <td rowspan="4"><p>Revenue</p>
+                （所有总计）</td>
+              <td>Fcst</td>
+              <td><?=$this->quarterly['total'][1];?></td>
+              <td><?=$this->quarterly['total'][2];?></td>
+              <td><?=$this->quarterly['total'][3];?></td>
+              <td><?=$this->quarterly['total'][4];?></td>
+              <td bgcolor="#FAC090"><?=$this->quarterly['total']['total'];?></td>
+            </tr>
+            <tr align="center"  bgcolor="#F6F6F6">
+              <td><em>Actual</em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[0]['total'],1)?>
+                </em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[1]['total'],1)?>
+                </em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[2]['total'],1)?>
+                </em></td>
+              <td><em>
+                <?=number_format($this->quarterlytotal[3]['total'],1)?>
+                </em></td>
+              <td bgcolor="#FAC090"><em>
+                <?=number_format($this->quarterlytotal['totalall'],1)?>
+                </em></td>
+            </tr>
+            <tr align="center"  bgcolor="#F6F6F6">
+              <td>Actual/Fcst</td>
+              <td><?=number_format($this->quarterlytotal[0]['total']/$this->quarterly['total'][1]*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[1]['total']/$this->quarterly['total'][2]*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[2]['total']/$this->quarterly['total'][3]*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[3]['total']/$this->quarterly['total'][4]*100,0)?>
+                %</td>
+              <td bgcolor="#FAC090"><?=number_format($this->quarterlytotal['totalall']/$this->quarterly['total']['total']*100,0)?>
+                %</td>
+            </tr>
+            <tr align="center"  bgcolor="#F6F6F6">
+              <td>Accum.</td>
+              <td><?=number_format($this->quarterlytotal[0]['total']/$this->quarterly['total']['total']*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[1]['total']/$this->quarterly['total']['total']*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[2]['total']/$this->quarterly['total']['total']*100,0)?>
+                %</td>
+              <td><?=number_format($this->quarterlytotal[3]['total']/$this->quarterly['total']['total']*100,0)?>
+                %</td>
+              <td bgcolor="#FAC090"><?=number_format($this->quarterlytotal['totalall']/$this->quarterly['total']['total']*100,0)?>
+                %</td>
+            </tr>
+            <!--<tr>
+              <td colspan="8" align="right"><a href="/icwebadmin/index/exportquarterly" target="_blank" title="导出Excel">导出Excel</a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            </tr>-->
+          </tbody>
+        </table></td>
+    </tr>
+    <?php }?>
+    <?php if(in_array('income',$_SESSION['statistics_rule']['value'])){?>
+    <tr>
+      <td colspan="2"><div id="income_count" style="width:850px; height:450px; padding:5px 5px 0 0;"></div></td>
+    </tr>
+    <script type="text/javascript">
+//收入统计
+$(function () {  
+        $('#income_count').highcharts({
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: '交易总金额统计'
+            },
+            xAxis: {
+                categories: [
+                    '在线订单',
+                    '询价订单',
+                    '总订单'
+                ]
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table width="200">',
+                pointFormat: '<tr><td style="color:{series.color};padding:0" width="110" align="right">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+			plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function() {
+                            return Highcharts.numberFormat(this.y, 2);
+                        }
+                    }
+                } 
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'HKD',
+                data: [<?=$this->orderNumber['online']['hkd']?>, <?=$this->orderNumber['inquiry']['hkd']?>, ,<?=($this->orderNumber['online']['hkd']+$this->orderNumber['inquiry']['hkd'])?>]
+            },{
+                name: 'USD',
+                data: [<?=$this->orderNumber['online']['usd']?>, <?=$this->orderNumber['inquiry']['usd']?>, ,<?=($this->orderNumber['online']['usd']+$this->orderNumber['inquiry']['usd'])?>]
+            }, {
+                name: 'RMB(不含税)',
+                data: [<?=$this->orderNumber['online']['rmb']/1.18?>, <?=$this->orderNumber['inquiry']['rmb']/1.18?>,<?=($this->orderNumber['online']['rmb']+$this->orderNumber['inquiry']['rmb'])/1.18?> ]
+            },{
+                name: 'RMB(含税)',
+                data: [<?=$this->orderNumber['online']['rmb']?>, <?=$this->orderNumber['inquiry']['rmb']?>,<?=($this->orderNumber['online']['rmb']+$this->orderNumber['inquiry']['rmb'])?> ]
+            },  {
+                name: 'Total(RMB不含税)',
+                data: [<?=$this->orderNumber['online']['totalrmb']/1.18?>, <?=$this->orderNumber['inquiry']['totalrmb']/1.18?>, ,<?=($this->orderNumber['online']['totalrmb']+$this->orderNumber['inquiry']['totalrmb'])/1.18?>]
+            }, {
+                name: 'Total(RMB含税)',
+                data: [<?=$this->orderNumber['online']['totalrmb']?>, <?=$this->orderNumber['inquiry']['totalrmb']?>, ,<?=($this->orderNumber['online']['totalrmb']+$this->orderNumber['inquiry']['totalrmb'])?>]
+            }]
+        });
+    });
+	</script>
+    <?php }?>
+    <?php if(in_array('basic',$_SESSION['statistics_rule']['value'])){?>
+    <tr>
+      <td colspan="2"><div id="brandtotle_count" style="width:850px;height:350px; padding:5px 5px 0 0;"></div></td>
+    </tr>
+    <script type="text/javascript">
+//品牌、研讨会等
+$(function () {
+        $('#brandtotle_count').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '数量统计'
+            },
+            xAxis: {
+                categories: ['数量统计'],
+                title: {
+                    text: null
+                }
+            },
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function() {
+                            return Highcharts.numberFormat(this.y, 0);
+                        }
+                    }
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [
+			{
+                name: '有效注册用户',
+                data: [<?=$this->usertotle?>]
+            },{
+                name: '品牌',
+                data: [<?=$this->commontotle['bandnumber']?>]
+            },{
+                name: '应用方案',
+                data: [<?=$this->commontotle['solutionnumber']?>]
+            },{
+                name: '研讨会',
+                data: [<?=$this->commontotle['seminarnnumber']?>]
+            },{
+                name: '搜索产品数',
+                data: [<?=$this->commontotle['searnumber']?>]
+            },{
+                name: '优惠券数',
+                data: [<?=$this->commontotle['couponnumber']?>]
+            },{
+                name: 'BOM采购',
+                data: [<?=$this->commontotle['bomnumber']?>]
+            },{
+                name: '待报价询价',
+                data: [<?=$this->inquiryNumber['waitnum']?>]
+            },{
+                name: '已报价询价',
+                data: [<?=$this->inquiryNumber['alreadnum']?>]
+            },{
+                name: '已下单询价',
+                data: [<?=$this->inquiryNumber['ordernum']?>]
+            },{
+                name: '总询价',
+                data: [<?=array_sum($this->inquiryNumber)?>]
+            },{
+                name: '在线订单数',
+                data: [<?=$this->orderNumber['onlinetotal']?>]
+            },{
+                name: '询价订单数',
+                data: [<?=$this->orderNumber['inquirytotal']?>]
+            }]
+        });
+    });
+	</script>
+    <?php }
+  if(in_array('product',$_SESSION['statistics_rule']['value'])){
+  ?>
+    <tr>
+      <td colspan="2"><div id="prod_count" style="width:850px;height:350px; padding:5px 5px 0 0;"></div></td>
+    </tr>
+    <tr>
+      <td width="425px"><div id="prodcategory_count" style="width:420px; height:350px;padding:5px 5px 0 0;"></div></td>
+    </tr>
+    
+    <script type="text/javascript">
+//产品分类
+$(function () {
+        $('#prodcategory_count').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '产品分类统计'
+            },
+            xAxis: {
+                categories: ['产品分类'],
+                title: {
+                    text: null
+                }
+            },
+            plotOptions: {
+                column: {
+                   dataLabels: {
+                        enabled: true,
+                        formatter: function() {
+                            return Highcharts.numberFormat(this.y, 0);
+                        }
+                    }
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [
+			<?php foreach($this->pcNumber as $k=>$v){?>
+			{
+                name: '<?=($k+1)?>级分类',
+                data: [<?=$v?>]
+            },
+			<?php }?>
+			{
+                name: '总计',
+                data: [<?=array_sum($this->pcNumber)?>]
+            }
+			]
+        });
+    });
+//产品
+$(function () {
+        $('#prod_count').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '产品数量统计'
+            },
+            xAxis: {
+                categories: ['产品数量'],
+                title: {
+                    text: null
+                }
+            },
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function() {
+                            return Highcharts.numberFormat(this.y, 0);
+                        }
+                    }
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [
+			{
+                name: '总计',
+                data: [<?=($this->prodNumber['onnum']+$this->prodNumber['offnum'])?>]
+            },{
+                name: '在线',
+                data: [<?=($this->prodNumber['onnum'])?>]
+            },
+			{
+                name: '下架',
+                data: [<?=($this->prodNumber['offnum'])?>]
+            },
+			{
+                name: '自有库存',
+                data: [<?=($this->prodNumber['hstocknum'])?>]
+            },
+			{
+                name: 'bpp库存',
+                data: [<?=($this->prodNumber['bppnum'])?>]
+            },{
+                name: '有价格',
+                data: [<?=($this->prodNumber['pricenum'])?>]
+            },{
+                name: '有图片',
+                data: [<?=($this->prodNumber['imgnum'])?>]
+            },{
+                name: 'Datasheet',
+                data: [<?=($this->prodNumber['datasheetnum'])?>]
+            },{
+                name: '应用笔记',
+                data: [<?=($this->prodNumber['notesnum'])?>]
+            }]
+        });
+    });
+</script>
+    <?php }?>
+  </table>
+</div>
+<?php }?>
+<script type="text/javascript" src="/js/jsplug/advanced_docking/js/jquery-1.3.2.js" ></script>
+<script type="text/javascript" src="/js/jsplug/advanced_docking/js/jquery-ui-1.7.2.custom.min.js" ></script>
+<script type="text/javascript" >
+$(function(){
+	$('.dragbox')
+	.each(function(){
+		$(this).hover(function(){
+			$(this).find('h2').addClass('collapse');
+		}, function(){
+			$(this).find('h2').removeClass('collapse');
+		})
+		.find('h2').hover(function(){
+			$(this).find('.configure').css('visibility', 'visible');
+		}, function(){
+			$(this).find('.configure').css('visibility', 'hidden');
+		})
+		.click(function(){
+			$(this).siblings('.dragbox-content').toggle();
+		})
+		.end()
+		.find('.configure').css('visibility', 'hidden');
+	});
+	$('.column').sortable({
+		connectWith: '.column',
+		handle: 'h2',
+		cursor: 'move',
+		placeholder: 'placeholder',
+		forcePlaceholderSize: true,
+		opacity: 0.4,
+		stop: function(event, ui){
+			$(ui.item).find('h2').click();
+			var sortorder='';
+			$('.column').each(function(){
+				var itemorder=$(this).sortable('toArray');
+				var columnId=$(this).attr('id');
+				sortorder+=columnId+'='+itemorder.toString()+'&';
+			});
+			//alert('SortOrder: '+sortorder);
+			/*Pass sortorder variable to server using ajax to save state*/
+		}
+	})
+	.disableSelection();
+});
+</script>
+<script src="/js/jsplug/highcharts/highcharts.js"></script>
+<script src="/js/jsplug/highcharts/modules/exporting.js"></script>
+<script type="text/javascript" src="/js/jsplug/highcharts/themes/grid.js"></script>

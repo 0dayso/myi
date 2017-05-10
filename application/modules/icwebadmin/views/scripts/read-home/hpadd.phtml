@@ -1,0 +1,108 @@
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 添加首页滚动图片 <a href="/icwebadmin/ReadHome">返回&gt;&gt;</a></h1>
+  <div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+ </div>
+<?php if (isset($_SESSION['messages'])) : ?><div class="alert fade in">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+    <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p></div><?php endif; ?>
+
+	  <!-- 需要填写的区域-->
+      <form class="form-horizontal form-validate" style="text-align:left" method="post" action="/icwebadmin/ReadHome/hpadd/" enctype="multipart/form-data">
+            <div class="control-group">
+              <label class="control-label" for="contents">立即上线</label>
+              <div class="controls">
+                <input type="checkbox" name="status" value="1" <?=$this->processData['status']==1?'checked':''?> >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="title">标题</label>
+              <div class="controls">
+                <input type="text" id="title" name="title" class="required" value="<?=$this->processData['title']?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="title">描述</label>
+              <div class="controls">
+                <textarea name="description" id="description" rows="3" cols="80" ><?php echo $this->processData['description'];?></textarea>
+              </div>
+            </div>
+             <div class="control-group">
+              <label class="control-label" for="title">类型</label>
+              <div class="controls">
+              	<select id="type" name="type">
+                <option value="home" <?php if($this->processData['type']=='home') echo 'selected="selected"';?> >首页</option>
+                <option value="jifen" <?php if($this->processData['type']=='jifen') echo 'selected="selected"';?> >积分商城</option>
+                <option value="solution" <?php if($this->processData['type']=='solution') echo 'selected="selected"';?> >首页热门方案</option>
+                <option value="special" <?php if($this->processData['type']=='special') echo 'selected="selected"';?> >首页专题</option>
+                <option value="tophome" <?php if($this->processData['type']=='tophome') echo 'selected="selected"';?> >首页头部</option>
+                <option value="topinput" <?php if($this->processData['type']=='topinput') echo 'selected="selected"';?> >搜索框头部</option>
+                <option value="samples" <?php if($this->processData['type']=='samples') echo 'selected="selected"';?> >样片中心底部</option>
+                 <option value="solhome" <?php if($this->processData['type']=='solhome') echo 'selected="selected"';?> >方案首页</option>
+                </select>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="solution_no">跳转地址</label>
+              <div class="controls">
+                <input type="text" id="url"  name="url" value="<?=$this->processData['url']?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="title">跳转地址方式</label>
+              <div class="controls">
+                <input type="text" id="url_target" name="url_target" class="required" value="<?=$this->processData['url_target']?>" >
+                <font color="#999999"> 说明：1 覆盖当前页，2 弹出新页面</font>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="tags">显示顺序</label>
+              <div class="controls">
+                <input type="text" id="displayorder"  name="displayorder" value="<?=$this->processData['displayorder']?>" >
+                <font color="#999999"> 说明：值越小越靠前</font>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="sol_img">图片</label>
+              <div class="controls" id="sol_img_upload">
+                <input type="hidden" id="image" name="image" value="<?=$this->processData['image']?>" />
+                <input type="button" id="image_box"  value="选择图片" />
+                <img src="<?=$this->processData['image']?>" id="show_image"  width="100" height="100" alt="sol log"/> </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <input type="submit" class="btn" value="添 加">
+              </div>
+            </div>
+          </form>
+      <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+	
+KindEditor.ready(function(K) {
+
+		    //图片
+			var image_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplod?part=upload/default/adpice/home/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/adpice/home/'
+			});
+			K('#image_box').click(function() {
+				image_editor.loadPlugin('image', function() {
+					image_editor.plugin.imageDialog({
+						imageUrl : K('#image').val(),
+						clickFn : function(url, title, width, height, border, align) {
+							K('#image').val(url);
+							K('#show_image').attr("src",url);
+							image_editor.hideDialog();
+						}
+					});
+				});
+			});
+});
+</script>
+<?php $_SESSION['messages']='';?>

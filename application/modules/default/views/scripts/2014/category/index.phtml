@@ -1,0 +1,80 @@
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/dir2013.css"/>
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+<script type="text/javascript">
+$(function(){
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+});
+</script>
+<div class="w hide">
+  <div class="breadcrumbs2013"> <span>
+    <a href="/category" class="focs">产品目录</a> &nbsp;&nbsp;»&nbsp;&nbsp; 
+    <span title="">产品目录</span>
+  </div>
+</div>
+
+<div class="full_dir">  
+	<div class="w" > 
+    <ul class="cat-index clearfix">
+    	<?php
+		$classarr = array('1'=>"A",'3'=>"B",'2'=>"C",'433'=>"D",'434'=>"E",
+		'435'=>"F",'6'=>"G",'476'=>"H",'485'=>"I",'5'=>"J",
+		'7'=>"K",'436'=>"L",'8'=>"M",'9'=>"N",'452'=>"O");
+		foreach($this->first as $k=>$farr){
+		   $ocss = '';
+		   if(strlen($farr['name'])==6) $ocss = 'style="line-height:38px";';
+		   echo '<li class="'.$classarr[$farr['id']].'">
+		   <a class="" href="#PODL'.$farr['id'].'" title="'.$farr['name'].'">
+            <i class="shadow"></i>
+            <i class="icon" '.$ocss.'>'.substr($farr['name'],0,6).'<br/>'.substr($farr['name'],6).'</i>
+            </a>
+		   </li>';
+		}?>
+    </ul>
+    </div>
+</div>
+<div class="w" >
+    <div class="shoplist ">
+    	<?php 
+		foreach($this->first as $k=>$farr){
+		$fid = $farr['id']; 
+		?>
+    	<div class="market-cat "  id="PODL<?=$fid?>" >
+            <div class="title clearfix on">
+                <div class="icon-wrap <?=$classarr[$fid]?>">
+                    <i class="shadow"></i>
+                    <i class="icon"><?=$farr['name']?></i>
+                </div>
+                <h4><a class="logclick" href="/list-<?=$fid?>.html" title="<?=$farr['name']?>" rev="category" rel="<?=$fid?>"><?=$farr['name']?></a></h4>
+            </div>
+            <div class="catlist clearfix boxshadow_h">
+                <ul class="clearfix" >
+                <?php
+		          foreach($this->second[$fid] as $m=>$sarr){
+				  $sid = $sarr['id'];
+				  $pr40 = '';
+				  if(($m+1)/2==1) $pr40 = 'pr40';
+		        ?>
+                <li class="section  <?=$pr40?> clearfix">
+                    <h5 class="subtitle"><a href="/list-<?=$fid?>-<?=$sid?>.html" title="<?=$sarr['name']?>" class="logclick" rev="category" rel="<?=$sid?>"><?=$sarr['name']?><em></em></a></h5>
+                    <div class="sublist">
+                        <ul>
+                        <?php  foreach($this->third[$sid] as $tarr){ 
+					         $tid=$tarr['id'];?>
+                        <li><a href="/list-<?=$fid?>-<?=$sid?>-<?=$tid?>.html" title="<?=$tarr['name']?>" class="logclick" rev="category" rel="<?=$tid?>"><?=$tarr['name']?><em></em></a></li>
+                       <?php }?>
+                        </ul>
+                    </div>
+                </li>
+                <?php }?>
+                
+                </ul>
+            </div>
+		</div>
+        
+        <?php }?>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> <?=$this->area['staff_area_des']?> -> 更新权限 <a href="<?=$this->indexurl?>">返回&gt;&gt;</a></h1>
+	 <?php if (isset($_SESSION['messages'])) : ?><div class="alert fade in">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+    <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p></div><?php endif; ?>  
+
+<form id="thisform" method="post" action="<?php echo $this->updateallruleurl;?>" >
+<input type="hidden" name="staff_area_id" value="<?=$this->area['staff_area_id']?>" />
+      
+<div class="fr u_right">
+	<?php foreach($this->rulearr as $rule=>$staffarr)
+	   {
+		  $ruletmp = array('A'=>'Admin权限','W'=>'Write权限','R'=>'Read权限','B'=>'Blocked权限');
+	?>
+    <div class="tab_content tab_tit1">
+        <ul class="fl">
+          <li class="on"><a><?=$ruletmp[$rule]?><em></em><b class="blank3"></b></a></li>
+        </ul>
+     </div>
+     <div class="tab_con mb10">
+        <table class="producttable table" border="0">
+          <thead>
+              <th width="30%"></th>
+              <th width="10%">用户名</th>
+              <th width="10%">姓名</th>
+              <th width="20%">邮箱</th>
+              <th width="15%">部门</th>
+              <th width="15%">级别</th>
+          </thead>
+              <tbody>
+              <?php if(empty($staffarr)){?>
+                <tr>
+                  <td colspan="6"><center>暂无记录</center></td>
+                </tr>
+                <?php }else{
+				  foreach($staffarr as $staff)
+	            {?>
+                  <tr>
+              <td>Admin<input name="Right_Rule[<?=$staff["staff_id"]?>]" type="radio" value="A" <?=$rule=='A'?'checked':''?> />
+              | Write<input name="Right_Rule[<?=$staff["staff_id"]?>]" type="radio" value="W" <?=$rule=='W'?'checked':''?> />
+              | Read<input name="Right_Rule[<?=$staff["staff_id"]?>]" type="radio" value="R" <?=$rule=='R'?'checked':''?> ?>
+              | Blocked<input name="Right_Rule[<?=$staff["staff_id"]?>]" type="radio" value=""  <?=$rule=='B'?'checked':''?>>
+              </td>
+              <td><?=$staff["staff_id"]?></td>
+              <td><?=$staff["lastname"].$staff["firstname"]?></td>
+              <td><a href="mailto:<?=$staff['email']?>"><?=$staff['email']?></a></td>
+              <td><?=$staff["department_id"].' - '.$staff["dname"]?></td>
+              <td><?=$staff["level_id"].' - '.$staff["lname"]?></td>
+              </tr>
+                <?php }}?>
+              </tbody>
+        </table>
+    </div>
+    <?php }//end foreach($this->rulearr as $rule=>$staffarr)?>
+</div><br/><table border="0" width="100%">
+      <tr><td align="center"><input type="submit" value="编 辑" class="btnabig"/></td></tr>
+      <tr height="35px"><td>&nbsp;</td></tr>
+   </table>
+ </form>
+</div>

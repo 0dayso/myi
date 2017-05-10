@@ -1,0 +1,220 @@
+<?php echo $this->doctype();?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns:wb=“http://open.weibo.com/wb”>
+<head>
+<?php echo $this->headTitle();?>
+<?php echo $this->headMeta();?>
+<link rel="shortcut icon" href="/images/default/favicon.ico" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+<script src="/js/jsplug/jquery.1.8.2.min.js" type="text/javascript"></script>
+<script src="/js/default/base.js" type="text/javascript"></script>
+<meta property="qc:admins" content="150333601761351316375" />
+<meta property="wb:webmaster" content="cdd55eb9910fa03d" />
+
+<!--jbox-->
+<link id="skin" rel="stylesheet"
+	href="/js/jsplug/jBox/Skins/Red/jbox.css" />
+<link rel="stylesheet" type="text/css"
+	href="/js/jsplug/csstooltips/tooltips.css"></link>
+
+<script src="/js/jsplug/ajaxsearch/jquery.autocomplete.js" type="text/javascript"></script>
+<link href="/js/jsplug/ajaxsearch/jquery.default.css" rel="stylesheet">
+
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+
+<?php if($_GET['t']=='2013') {
+	   $_SESSION['old_version'] = 1;
+	   echo '<script type="text/javascript">window.location.href="/";</script>';
+    }
+	if($_GET['t']==2014){
+	   unset($_SESSION['old_version']);
+	   echo '<script type="text/javascript">window.location.href="/";</script>';
+    }
+?>
+
+<?php if($_SESSION['menu'] != 'index' || !isset($_SESSION['new_version'])){?>
+<?php if(!in_array($_SESSION['menu'],array('event','event_view'))){?>
+<link rel="stylesheet" type="text/css" href="/css/default/base<?=$_SESSION['new_version']?>.css" />
+<?php }else{?>
+<link rel="stylesheet" type="text/css" href="/css/default/constyle<?=$_SESSION['new_version']?>.css" />
+<?php }?>
+<?php }?>
+
+<!--新版css-->
+<?php if($_SESSION['new_version']){?>
+     <link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/constyle2013.css" />
+     
+     <?php if(!in_array($_SESSION['menu'],array('jifen','hd','lab','event','event_view','cart','order','inquiryorder','help','samples','user'))){?><!--宽屏样式-->
+     <script type="text/javascript" language="javascript"> widescreen_css();</script>
+      <?php }?>
+     
+<?php }?>
+
+
+<style type="text/css">
+.boxshadow,.popnew,.brand_wall li a:hover{ 
+-moz-box-shadow: 0 0 10px 1px rgba(190,189,189,.6); /* Firefox */ 
+-webkit-box-shadow:0 0 10px 1px rgba(190,189,189,.6); /* Safari and Chrome */ 
+box-shadow:0 0 10px 1px rgba(190,189,189,.6); /* Opera 10.5+, future browsers and IE6+ using IE-CSS3 */ 
+behavior: url(/js/ie-css3.htc); }
+
+.boxshadow1{ 
+-moz-box-shadow: 0 0 10px 2px rgba(190,189,189,.6); /* Firefox */ 
+-webkit-box-shadow:0 0 10px 2px rgba(190,189,189,.6); /* Safari and Chrome */ 
+box-shadow:0 0 10px 2px rgba(190,189,189,.6); /* Opera 10.5+, future browsers and IE6+ using IE-CSS3 */ 
+behavior: url(/js/ie-css3.htc); }
+
+.boxradius,.ulradius a.current,.tabbar1 .selected i,.popnew,.ifotip2013 em{
+-moz-border-radius:2px; /* Firefox */ 
+-webkit-border-radius: 2px; /* Safari and Chrome */ 
+border-radius: 2px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */ 
+behavior: url(/js/ie-css3.htc); }
+
+#top_nav{box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+behavior: url(/js/ie-css3.htc); }
+</style>
+
+
+
+</head>
+<body>
+    <?php $urlarray  = explode("/",$_SERVER['REQUEST_URI']);
+		if(empty($urlarray[1])){
+		//滚动图片
+	    $hpModer = new Default_Model_DbTable_HomePhoto();
+	    $topimageArr = $hpModer->getAllByWhere("status='1' AND type='tophome'",array("displayorder ASC","id DESC"));
+		if(!empty($topimageArr[0])){
+		$url_target = '_self';
+		if($topimageArr[0]['url_target']==2) $url_target = '_blank';
+		?>
+        
+        <script type="text/javascript">
+			if (screen.width >= 1280) { 
+        	document.write('<style type="text/css">.topflashb{margin-top:40px; margin-bottom:-35px; width:1190px; height:300px; z-index:1000;overflow:hidden;}.topflashba a{ width:1190px; height:300px; display:inline-block; font-size:0; line-height:0; position:absolute; z-index:800; top:0; left:0;}.topflashba object,.topflashba embed{ width:1190px; height:300px;}.topflash_close a{position:absolute; z-index:10; top:0px; right:0px; float:left; width:15px; height:15px;  display:inline-block; }</style>');
+		}else {
+			document.write('<style type="text/css">.topflashb{margin-top:40px; margin-bottom:-35px; width:990px; height:250px; z-index:1000;overflow:hidden;}.topflashba a{ width:990px; height:250px; display:inline-block; font-size:0; line-height:0; position:absolute; z-index:8; top:0; left:0;}.topflashba object,.topflashba embed{ width:990px; height:250px;}.topflash_close a{position:absolute; z-index:10; top:0px; right:0px; float:left; width:15px; height:15px;  display:inline-block; }</style>');
+		}
+		</script>
+<div class="w topflashb">
+<!--<div class="topflashba"><a href="<?=$topimageArr[0]['url']?>" target="<?=$url_target?>"></a></div>
+<div class="topflash_close"><a href="javascript:;" onClick="closeflash()">&nbsp;&nbsp;&nbsp;&nbsp;</a></div>-->
+<object class="embed_flash" align="middle" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="FlashIDName"  width="1190" height="300">
+<param value="<?=$topimageArr[0]['image']?>" name="movie" >
+<param value="high" name="quality">
+<param value="#ffffff" name="bgcolor">
+<param name="wmode" value="transparent">
+<param value="always" name="allowScriptAccess">
+<param value="FlashNameList=" name="FlashVars">
+<param value="false" name="loop">
+<embed class="embed_flash" width="1190" height="300" align="middle" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" wmode="transparent" allowscriptaccess="always" bgcolor="#ffffff" quality="high" name="Flash_Net" flashvars="FlashNameList=" src="<?=$topimageArr[0]['image']?>"></embed></object>
+</div>
+	<script type="text/javascript">
+		function flashLink(){
+			window.open('<?=$topimageArr[0]['url']?>','<?=$url_target?>');
+		}
+	    function closeFlash(){
+			$(".topflashb").css({"display":"none"});
+		}
+
+		 function upFlash(){
+        if (screen.width < 1280) {
+            $('.topflashb').animate({height:62},500);
+        }else{
+            $('.topflashb').animate({height:75},500);
+        }
+    }
+    
+		if (screen.width < 1280) {
+             $(".embed_flash").css({"width":"990px","height":"250px"});
+        }
+		
+	</script>
+    <?php }}?>
+    
+	<!--<div id="jifenleft"></div>-->
+    
+    <div id="totop_box"></div>
+    
+<?php if($_SESSION['menu'] != 'event_view'){?>
+<!--<div class="hdfloatbox" >
+    <a href="/jifen/event"><img src="css/img/hdfloat.png" /></a>
+</div>-->
+<?php }?>
+<script type="text/javascript">
+$(function(){
+	$('.pprice201312').hover(function(){
+		$(this).addClass("item-hover");
+	},function(){
+		$(this).removeClass("item-hover");
+	});
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+	$('.boxshadow_h1').hover(function(){
+		$(this).addClass("boxshadow1");
+	},function(){
+		$(this).removeClass("boxshadow1");
+	});
+	$('.item').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+	$('.por_box2013').hover(function(){
+		$(this).addClass("tabelbtn_h");
+	},function(){
+		$(this).removeClass("tabelbtn_h");
+	});
+});
+
+//兑换产品
+$(function(){
+	  /* var daybox = $("#jifenleft");
+	   daybox.hover(function(){
+		  daybox.find(".daybox").css("margin-left","0px");
+	   },function(){
+		  daybox.find(".daybox").css("margin-left","-540px");
+	   });
+	   $("#jifenleft").load("/common/leftmenu");*/
+	   //回到顶部
+	   <?php if(isset($_SESSION['new_version'])){?>
+	    $("#totop_box").load("/publicbox/totop");
+		<?php }?>
+})
+</script>
+<?php echo $this->render('toolbar'.$_SESSION['new_version'].'.phtml');?>
+<?php
+
+if (in_array ( $_SESSION ['menu'], array (
+		'event_view',
+		'jifen' 
+) )) {
+	if (! $_SESSION ['no_logbar_event'])
+		echo $this->render ( 'logbar'.$_SESSION['new_version'].'.phtml' );
+	if (! $_SESSION ['no_menu_event'])
+		echo $this->render ( 'menu'.$_SESSION['new_version'].'.phtml' );
+} elseif (! in_array ( $_SESSION ['menu'], array (
+		'user',
+		'cart',
+		'order',
+		'payment',
+		'inquiryorder',
+		'hd'
+) )) {
+	echo $this->render ( 'logbar'.$_SESSION['new_version'].'.phtml' );
+	echo $this->render ( 'menu'.$_SESSION['new_version'].'.phtml' );
+}
+?>
+<?php echo $this->layout()->content;?> 
+<?php echo $this->render('footer'.$_SESSION['new_version'].'.phtml');?>
+<?php
+
+unset ( $_SESSION ['no_logbar_event'] );
+unset ( $_SESSION ['no_menu_event'] );
+unset ( $_SESSION ['change_logo'] );
+?>
+</body>
+</html>

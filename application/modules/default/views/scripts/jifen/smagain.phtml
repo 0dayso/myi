@@ -1,0 +1,93 @@
+<link href="/css/jifen/css/jifen.css" type="text/css" rel="stylesheet">
+<div class="popnew  yqpop" style="width:500px;">
+	<div class="popnew-tit"> 
+    	<span class="popnew-tit_t">邀请好友</span>
+      	<input type="button" title="关闭" class="popnew-closebtn" onclick="$.closePopupLayer('inviteagainbox')">
+    </div>
+    <div class="popnew-con">
+    	<div class="tip fontorange font14">邀<b>5</b>位好友成功注册，即得<strong>20</strong>元！</div>
+        <div class="jfpop_con">
+        	<div class="panel clearfix" style="display: block;">                
+                
+                <div class="fl yqbox yqmailbox">
+                	<h4>通过邮件邀请好友</h4>
+                    <div class="yqbox_c">
+                        <div class="yqbox_in">
+                            <p><input type="text" name="friendemail2" id="friendemail2" value="<?php if($this->emailstr) echo $this->emailstr;else echo '在此输入好友邮箱地址，每个邮箱之间用分号隔开';?>" onfocus="inputFocus($(this),'在此输入好友邮箱地址，每个邮箱之间用分号隔开');" onblur="inputBlur($(this),'在此输入好友邮箱地址，每个邮箱之间用分号隔开')" class="input-invite input-invite-m " /></p>
+                            <p><textarea rows="4" name="invitecon2" id="invitecon2" class="input-invite input-invite-textarea ">#IC易站#惊喜来袭，重重豪礼等您来拿，邀请好友注册即可领红包，赚积分，抽大奖，您还在等什么，快呼朋唤友来参加吧！ <?php echo HTTPHOST."/user/register?invitekey=".$_SESSION['userInfo']['uidSession'];?>  </textarea></p>
+                            <p><input type="text" class="input-invite input-invite-s " placeholder="验证码" name="verifycode2" id="verifycode2" maxlength="4" value="" autocomplete="off" onkeydown="eventemail2(event)">
+                         <img src="" id="verify2" onClick="getVerify2()">
+                         <a href="javascript:void(0);" class="refresh" onClick="getVerify2()">看不清<br>换一张</a></p>
+                             <p class="sendinvitebutton2">
+                             <input type="button" class="login_rule_small" onclick="sendinvite2()" value="立即邀请" />
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>	
+    <div class="clr"></div>
+</div>
+<script type="text/javascript">
+//验证码
+function getVerify2(){
+ var d = new Date();
+ document.getElementById('verify2').src="/common/createcode?t="+d.toTimeString();
+}
+getVerify2();
+function eventemail2(evt){
+    evt=evt?evt:(window.event?window.event:null);
+    var keyCode = evt.keyCode;
+	if(keyCode==13) sendinvite2();
+}
+//发邮件
+function sendinvite2(){
+	$.ajax({
+		url: '/index/checklogin',
+		data: {},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		  if(arr.code==0)
+		  {
+		      var friendemail = $("#friendemail2").val();
+			  var verifycode  = $("#verifycode2").val();
+			  var invitecon   = $("#invitecon2").val();
+			  if(friendemail=='' || friendemail=='在此输入好友邮箱地址，每个邮箱之间用分号隔开'){alert('请输入正确邮箱地址');$("#friendemail2").focus();return;}
+			  if(verifycode==''){alert('请输入验证码');$("#verifycode2").focus();return;}
+			  $(".sendinvitebutton2").html('<input type="button" class="login_rule_small" value="发送中..." />');
+			  $.ajax({
+					url: '/common/sendinvite',
+					data: {'email':friendemail,'verifycode':verifycode,'invitecon':invitecon},
+					type: 'post',
+					dataType: 'json',
+					//timeout: 5000, 
+					error: function(){alert('网络超时');}, 
+					success: function(arr) {
+					    
+						
+						getVerify2();
+						if(arr.code==0){
+							$.closePopupLayer('invitebox');
+						}
+						$.openPopupLayer({
+		                         name: "lotteryResult",
+		                         url: "/jifen/lotteryresult?mess="+encodeURI(arr.mess)+"&t=1"
+	                    });
+						$(".sendinvitebutton2").html('<input type="button" class="login_rule_small" onclick="sendinvite2()" value="立即邀请" />');
+					}
+	          });
+		  }else if(arr.code==100){
+			$.openPopupLayer({
+			   name: "loginBox",
+			   target: "login_box"
+			 });
+		   }else if(arr.code==200){
+			  window.location.href ="/user/verification";
+		  }
+		}
+	});
+}
+</script>

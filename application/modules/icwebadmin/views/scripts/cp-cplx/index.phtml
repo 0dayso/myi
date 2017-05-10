@@ -1,0 +1,119 @@
+<style type="text/css">
+.cpcplx a{ color:#333333}
+</style>
+<table class="tableContent">
+  <tr>
+    <td bgcolor="#FFFFFF" align="left" valign="top" width="770"><table width="740" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td height="10" colspan="3">&nbsp;</td>
+        </tr>
+        <tr>
+          <td height="29" bgcolor="#FFFFFF" align="center"><table width="740" border="0" cellpadding="3" cellspacing="0">
+              <tr bgcolor="#334159">
+                <td height="7" align="left" colspan="6"><b><font color="#FFFFFF"> <?php echo $this->AreaTitle;?> : </font>
+                  </b> </td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr>
+          <td height="10" colspan="3" align="center"><div id="message_sess" style="display:none" class="message_sess">
+              <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+              <div id="alert_message"></div>
+            </div></td>
+        </tr>
+      </table>
+      <!-- 需要填写的区域-->
+      <table border="1" width="80%">
+      <tr><td colspan="2">
+	  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+            <a href="#edit" onClick="openadd()">添加产品分类 </a>  |  
+            <a href="#cleancache" onClick="cleancache()">清除缓存</a>
+       <?php }?></td></tr>
+      <?php foreach($this->first as $k=>$farr){
+	  $fid = $farr['id'];
+	  if($k%2==0)$bg="#D5C5FE";
+	  else $bg="#E4E4E4";
+	  ?>
+      <tr bgcolor="<?=$bg?>" class="cpcplx">
+      	<td valign="top" width="120">
+        <b><a href="javascript:;" onclick="openedit(<?=$fid?>)" title="<?=$farr['name']?> id: <?=$fid?>" <?=$farr['status']?'':'style="color:#FF0000"'?>><?=$farr['name']?></a></b>
+        </td>
+        <td>
+            <table >
+			<?php
+		      foreach($this->second[$fid] as $sarr){
+				 $sid = $sarr['id'];
+			?>
+             <tr><td valign="top" width="120"  style="border-bottom:1px #334159 dotted"><b><a href="javascript:;" onclick="openedit(<?=$sid?>)" title="<?=$sarr['name']?> id: <?=$sid?>" <?=$sarr['status']?'':'style="color:#FF0000"'?>><?=$sarr['name']?></a></b></td>
+             <td style="border-bottom:1px #334159 dotted">
+            <?php  foreach($this->third[$sid] as $tarr){
+				   $tid=$tarr['id'];
+		     ?>
+                     <a href="javascript:;" onclick="openedit(<?=$tid?>)" title="<?=$tarr['name']?> id: <?=$tid?>" <?=$tarr['status']?'':'style="color:#FF0000"'?>><?=$tarr['name']?></a>&nbsp;|&nbsp;
+             
+			 <?php }?>
+			 
+			 <?php } ?>
+             </td></tr></table>
+        </td>
+      </tr>
+	  <?php	}?>
+      </table>
+		<br/>
+      <!-- 结束区域-->
+    </td>
+  </tr>
+</table>
+<script type="text/javascript" language="javascript">
+function cleancache()
+{
+	if(confirm('你确清除产品分类缓存吗？'))
+    {
+		$.ajax({
+            url: '<?php echo $this->cleancacheurl;?>',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    alert(arr.message);
+            }
+	    });
+	}	
+}
+function deleteaction(ID)
+{
+	if(confirm('你确定删除："'+ID+'" 吗？'))
+    {
+		$.ajax({
+            url: '<?php echo $this->deleteurl;?>',
+            data: {'ID':ID},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+				    alert(arr.message);
+                    location.reload();
+                }else{
+				    document.getElementById('message_sess').style.display = "block";
+	                document.getElementById('alert_message').innerHTML = arr.message;
+				}
+            }
+	    });
+	}
+}
+function openadd()
+{
+	$.openPopupLayer({
+        name:'addBox',
+        url:'<?php echo $this->addurl;?>'
+    });
+}
+function openedit(id)
+{
+	$.openPopupLayer({
+        name:'addBox',
+        url:'<?php echo $this->editurl;?>'+'?id='+id
+    });
+}
+</script>

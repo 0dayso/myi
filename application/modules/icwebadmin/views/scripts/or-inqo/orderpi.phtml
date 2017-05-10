@@ -1,0 +1,274 @@
+<?php 
+$currency = array('RMB'=>'￥','USD'=>'$','HKD'=>'HK$');
+$c_name = array('HK'=>'CEAC TECHNOLOGY HK LIMITED','SZ'=>'中国电子器材深圳有限公司');
+$c_address = array('HK'=>'Unit B on 9/F Unison Industrial Centre Nos. 27-31 Au Pui Wan Street Shatin New Territories','SZ'=>'深圳市福田区侨香路裕和大厦八楼');
+$c_sendtype = array('HK'=>'Loc delivery HK','SZ'=>'国内快递');
+?>
+<div class="popup" style="width:900px;">
+  <div class="popup-header">
+    <h2>填写PI：<?=$this->orderarr['salesnumber']?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+  </div>
+  <div class="popup-body PIbody">
+  	<table cellpadding="0" cellspacing="0" border="0" class="PIbodytittable">
+        <tr><td><h2 style="text-align:left"><?=$c_name[$this->orderarr['delivery_place']]?></h2></td></tr>
+        <tr>
+            <td width="620">
+                <p><?=$c_address[$this->orderarr['delivery_place']]?></p>
+                <p>Contact：<?=$this->sellinfo['lastname'].$this->sellinfo['firstname']?>  Tel：<?=$this->sellinfo['tel']?>  Mobile：<?=$this->sellinfo['phone']?></p>
+            </td>
+            <td>
+                <div>
+                    <dl>
+                        <dt>Invoice No：</dt>
+                        <dd><input type="text" style="width:120px;" name="invoice_no" id="invoice_no"  value="<?=($this->orderarr['invoice_no']?$this->orderarr['invoice_no']:date("YmdHi"))?>"/></dd>
+                    </dl>
+                    <dl>
+                        <dt>Date：</dt>
+                        <dd><?=date("Ymd",$this->orderarr['created'])?></dd>
+                    </dl>
+                </div>
+            </td>
+    	</tr>
+    </table>
+  	<div class="invoicebox">
+    	<h2> PROFORMA  INVOICE </h2>
+    	<div class="invoiceboxcont">
+            <div class="Onedl">
+                <h3>BILL TO :</h3>						
+                <dl>
+                    <dt>Company：</dt><dd><p><?=$this->userinfo['companyname']?></p></dd>
+                </dl>    
+                <dl>
+                    <dt>Address：</dt><dd><p><?=$this->fun->createAddress($this->userinfo['province'],$this->userinfo['city'],$this->userinfo['area'],$this->userinfo['address'])?></p></dd>
+                </dl> 
+                <dl>
+                    <dt>Name：</dt><dd><p><?=$this->userinfo['truename']?></p></dd>
+                </dl> 
+                <dl>
+                    <dt>Telphone：</dt><dd><p><?php if($this->userinfo['tel'] && $this->userinfo['mobile']) echo $this->userinfo['tel'].' , '.$this->userinfo['mobile'];else echo $this->userinfo['tel']?$this->userinfo['tel']:$this->userinfo['mobile']?></p></dd>
+                </dl>                                                 						
+            </div>
+            <div class="line">&nbsp;</div>
+            <div class="Onedl">
+                <h3>SHIP TO :</h3>	
+                
+                <dl><dt>选择：</dt><dd>
+                <?php if($this->addressArr){
+			    foreach($this->addressArr as $address){
+		        ?>
+              <p>
+              <input type="radio" value="<?=$address['id']?>" id="<?=$address['id']?>" name="addressradio" onclick="addshipto('<?=$address['companyname'];?>','<?=$address['province'].$address['city'].$address['area'].$address['address'];?>','<?=$address['name'];?>','<?=$address['mobile']." ; ".$address['tel']?>')" >
+              <label for="<?=$address['id']?>"><?php echo $address['companyname']." , ".$address['name']." , ".$address['province']." ".$address['city']." ".$address['area']." ".$address['address']." , ".$address['mobile']." ".$address['tel'];?></label>
+              </p>
+              <?php }}?>
+                </dd></dl>
+                
+                <input type="hidden" name="ufid" id="ufid" value="<?=$this->orderarr['ufid']?>" />					
+                <dl>
+                    <dt><em>*</em>Company：</dt><dd><input type="text" style="width:300px" name="ufname" id="ufname" value="<?=($this->userforwarder['ufname']?$this->userforwarder['ufname']:$this->orderarr['companyname'])?>"/></dd>
+                </dl>    
+                <dl>
+                    <dt><em>*</em>Address：</dt><dd>
+                    <textarea rows="1" style="width:305px" name="ufaddress" id="ufaddress"><?=($this->userforwarder['ufaddress']?$this->userforwarder['ufaddress']:$this->fun->createAddress($this->orderarr['province_i'],$this->orderarr['city_i'],$this->orderarr['area_i'],$this->orderarr['address_i']))?></textarea>
+                </dl> 
+                <dl>
+                    <dt><em>*</em>Name：</dt><dd><input type="text" style="width:300px" name="ufcontact" id="ufcontact" value="<?=($this->userforwarder['ufcontact']?$this->userforwarder['ufcontact']:$this->orderarr['name_i'])?>"/></dd>
+                </dl> 
+                <dl>
+                    <dt><em>*</em>Telphone：</dt><dd><input type="text" style="width:300px" name="uftel" id="uftel" value="<?=($this->userforwarder['uftel']?$this->userforwarder['uftel']:($this->orderarr['tel_i']?$this->orderarr['tel_i']:$this->orderarr['mobile_i']))?>"/></dd>
+                </dl>                                                 						
+            </div>
+        </div>
+
+  	    <table cellpadding="0" cellspacing="0" border="0" class=" regoainvoice">
+            <!--<tr>
+                <td width="120" height="30" align="right" ><strong><em>*</em>Customer ID：</strong></td>
+                <td width="300"><input type="text" style="width:260px"  name="customer_id" id="customer_id" value="<?=$this->orderarr['customer_id']?>"/></td>
+                <td width="120"height="30" align="right"><strong>Currency：</strong></td>
+                <td><?=$this->orderarr['currency']?></td>
+            </tr>-->
+            <tr>
+                <td width="120"height="30" align="right"><strong>Currency：</strong></td>
+                <td colspan="3"><?=$this->orderarr['currency']?></td>
+            </tr>
+            <tr>
+                <td width="120" height="30"  align="right"><strong><em>*</em>Delivery Terms：</strong></td>
+                <td colspan="3"><input type="text" style="width:260px" name="delivery_terms" id="delivery_terms" value="<?=$this->orderarr['delivery_terms']?$this->orderarr['delivery_terms']:$c_sendtype[$this->orderarr['delivery_place']]?>"/></td>
+            </tr>
+            <tr>
+                <td height="30" align="right"><strong><em>*</em>Payment Terms：</strong></td>
+                <td colspan="3"><input type="text" style="width:260px" name="payment_terms" id="payment_terms" value="<?=$this->orderarr['payment_terms']?$this->orderarr['payment_terms']:'T/T In Advance';?>"/></td>
+            </tr>
+            
+            
+            
+   		</table>
+        <table width="100%" cellpadding="0" border="0" cellspacing="0" class="tableanew"><tbody>
+              <tr>
+                <th>Item</th>
+                <th>MPN</th> 
+                <th>So No/Item No</th>
+                <th>CPN</th>
+                <th>PO No</th>
+                <th>Quantity</th>
+                <th>Unit Price<br />（RMB）</th>
+                <th>Amount</th>
+              </tr>
+              <?php foreach($this->pordarr as $k=>$pordarr):?>
+              <input type="hidden" name="partd_id" value="<?=$pordarr['id']?>" />
+              <tr align="center">
+                <td><?=($k+1)?></td>    
+                <td><?=$pordarr['part_no']?></td>
+                <td><input type="text" style="width:100px;" name="item_no" value="<?=$pordarr['item_no']?>"/></td>	
+                <td><input type="text" style="width:100px;" name="cpn" value="<?=$pordarr['cpn']?>"/></td>	
+                <td><input type="text" style="width:100px;" name="po_no" value="<?=$pordarr['po_no']?>"/></td>	
+                <td><?=$pordarr['buynum']?></td>	
+                <td class="price"><?=$currency[$this->orderarr['currency']].$pordarr['buyprice']?></td>
+                <td class="price"><?=$currency[$this->orderarr['currency']].$pordarr['buynum']*$pordarr['buyprice']?></td>																																												
+              </tr>
+              <?php endforeach;?>
+              <tr>
+                  <td colspan="8" align="right">
+                  	<div class="Totalbox">
+                        <?php if($this->orderarr['freight']>0){?>
+                    	<h4>Shipping：<b class="fontred"><?=$currency[$this->orderarr['currency']].$this->orderarr['freight']?></b> + 
+                            Sub-Total：<b class="fontred"><?=$currency[$this->orderarr['currency']].($this->orderarr['total']-$this->orderarr['freight'])?></b> 
+                            = Total：<b class="fontred"><?=$this->orderarr['currency'].' '.$this->orderarr['total']?></b></h4>
+                        <?php }else{?>
+                        <h4>Sub-Total：<b class="fontred"><?=$this->orderarr['currency'].' '.$this->orderarr['total']?></b></h4>
+                        <?php }?>
+                        <div class="TotalboxAll">
+                            <?php if($this->orderarr['total']!=$this->orderarr['down_payment']){?>
+                            <div class="Totalboxone">
+                                <dl><dt><?=($this->orderarr['percentage']?$this->orderarr['percentage'].'% ':'')?>Deposit：</dt><dd><?=$this->orderarr['currency'].' '.number_format($this->orderarr['down_payment'],DECIMAL)?></dd></dl>
+                                <dl><dt>Bank Charge：</dt><dd>
+                                <input type="text" value="<?=$this->orderarr['down_handling_charge']?>" style="width:130px;" name="down_handling_charge" id="down_handling_charge"  onkeyup="down_handling_charge(this.value,'down_payment_charge','<?=$this->orderarr['down_payment']+$this->orderarr['down_handling_charge']?>');<?=ISFLOAT?>"/></dd></dl>
+                                <dl><dt>Total AmounT：</dt><dd><?=$this->orderarr['currency']?> <span id='down_payment_charge'><?=number_format($this->orderarr['down_payment']+$this->orderarr['down_handling_charge'],DECIMAL)?></span></dd></dl>
+                            </div>
+                            <div class="Totalboxone">
+                                <dl><dt><?=($this->orderarr['percentage']?(100-$this->orderarr['percentage']).'% ':'')?>Balance：</dt><dd><?=$this->orderarr['currency'].' '.number_format(($this->orderarr['total']-$this->orderarr['down_payment']),DECIMAL)?></dd></dl>
+                                <dl><dt>Bank Charge：</dt><dd>
+                                <input type="text" value="<?=$this->orderarr['surplus_handling_charge']?>" style="width:130px;" name="surplus_handling_charge" id="surplus_handling_charge"  onkeyup="down_handling_charge(this.value,'surplus_payment_charge','<?=($this->orderarr['total']-$this->orderarr['down_payment']+$this->orderarr['surplus_handling_charge'])?>');<?=ISFLOAT?>"/></dd></dl>
+                                <dl><dt>Total AmounT：</dt><dd><?=$this->orderarr['currency']?> <span id='surplus_payment_charge'><?=number_format(($this->orderarr['total']-$this->orderarr['down_payment']+$this->orderarr['surplus_handling_charge']),DECIMAL)?></span></dd></dl>
+                            </div>
+                            <?php }else{?>
+                            <input type="hidden" name="surplus_handling_charge" id="surplus_handling_charge" value="" />
+                            <div class="Totalboxone">
+                                <dl><dt><?=($this->orderarr['percentage']?$this->orderarr['percentage'].'% ':'')?>Deposit：</dt><dd><?=$this->orderarr['currency'].' '.number_format(($this->orderarr['total']),DECIMAL)?></dd></dl>
+                                <dl><dt>Bank Charge：</dt><dd>
+                                <input type="text" value="<?=$this->orderarr['down_handling_charge']?>" style="width:130px;" name="down_handling_charge" id="down_handling_charge" onkeyup="down_handling_charge(this.value,'down_payment_charge','<?=$this->orderarr['total']+$this->orderarr['down_handling_charge']?>');<?=ISFLOAT?>;"/></dd></dl>
+                                <dl><dt>Total AmounT：</dt><dd><?=$this->orderarr['currency']?> <span id='down_payment_charge'><?=number_format(($this->orderarr['total']+$this->orderarr['down_handling_charge']),DECIMAL)?></span></dd></dl>
+                            </div>
+                            <?php }?>
+                        </div>
+                    </div>
+                  </td>
+              </tr>
+          </tbody></table>
+          <div class="invoiceboxcont invoiceboxcont01 invoiceboxcont02">
+            <div class="Onedl Onedl01">					
+                <dl>
+                 <?php if($this->orderarr['delivery_place']=='HK'){?>
+                    <dt>Exchange Rate：</dt><dd>USD：HKD=1：<input type="text" style="width:80px;" name="usdtohkd" id="usdtohkd" value="<?=$this->usdtohkd?>"/></dd><?php }elseif($this->orderarr['delivery_place']=='SZ'){?>
+                    <dt>Exchange Rate：</dt><dd>USD：RMB=1：<input type="text" style="width:80px;" name="usdtohkd" id="usdtohkd" value="<?=$this->usdtormb?>"/></dd>
+                    <?php }?>
+                </dl> 
+                <table><tr><td>备注（Remark）：</td><td><textarea rows="1" style="width:305px" name="admin_notes" id="admin_notes"><?=($this->orderarr['admin_notes'])?></textarea></td></tr></table>                                                  						
+            </div>
+        </div>
+    	<div class="clear"></div>
+    </div>
+    <div class="bottombutton" id="baojiabtn">
+         <input type="button" onclick="orderpiAction()" value="提 交" class="btnabig">
+    </div>
+    <div class="clear"></div>
+      
+  </div>
+</div>
+<script type="text/javascript">
+//
+function addshipto(ufname,ufaddress,ufcontact,uftel){
+	$('#ufname').val(ufname);
+	$('#ufaddress').val(ufaddress);
+	$('#ufcontact').val(ufcontact);
+	$('#uftel').val(uftel);
+}
+//计算
+function down_handling_charge(value,type,total){
+	if(value){
+	   value = parseFloat(value);
+	   if(value==parseFloat(value)){
+	      var total = parseFloat(total)+value;
+	      $('#'+type).html(number_format(total));
+	   }else{
+	   	  $('#'+type).html(number_format(parseFloat(total)));
+	   }
+	}else{
+	  $('#'+type).html(number_format(parseFloat(total)));
+	}
+}
+//提交
+function orderpiAction(){
+	   var invoice_no = document.getElementById("invoice_no").value;
+	   var ufid = document.getElementById("ufid").value;
+	   
+	   var ufname = document.getElementById("ufname").value;
+	   if(ufname=='') {alert('请输入Company');document.getElementById('ufname').focus();return;}
+	   var ufaddress = document.getElementById("ufaddress").value;
+	   if(ufaddress=='') {alert('请输入Address');document.getElementById('ufaddress').focus();return;}
+	   var ufcontact = document.getElementById("ufcontact").value;
+	   if(ufcontact=='') {alert('请输入Name');document.getElementById('ufcontact').focus();return;}
+	   var uftel = document.getElementById("uftel").value;
+	   if(uftel=='') {alert('请输入Telphone');document.getElementById('uftel').focus();return;}
+	   
+	   var customer_id = '';//document.getElementById("customer_id").value;
+	   //if(customer_id=='') {alert('请输入Customer ID');document.getElementById('customer_id').focus();return;}
+	   var delivery_terms = document.getElementById("delivery_terms").value;
+	   if(delivery_terms=='') {alert('请输入Delivery Terms');document.getElementById('delivery_terms').focus();return;}
+	   var payment_terms = document.getElementById("payment_terms").value;
+	   if(payment_terms=='') {alert('请输入Payment Terms');document.getElementById('payment_terms').focus();return;}
+	   
+	   var partd_id = new Array();
+	   var item_no  =new Array();
+	   var cpn      =new Array();
+	   var po_no    = new Array();
+	   
+	   var partd_id_obj = document.getElementsByName("partd_id");
+	   var item_no_obj  = document.getElementsByName("item_no");
+	   var cpn_obj      = document.getElementsByName("cpn");
+	   var po_no_obj    = document.getElementsByName("po_no");
+
+	   for(i=0;i<partd_id_obj.length;i++){
+	    	partd_id[i] = partd_id_obj[i].value;
+			item_no[i]  = item_no_obj[i].value;
+			cpn[i]      = cpn_obj[i].value;
+			po_no[i]    = po_no_obj[i].value;
+	   }
+	   var down_handling_charge    = document.getElementById("down_handling_charge").value;
+	   var surplus_handling_charge = document.getElementById("surplus_handling_charge").value;
+	   
+	   var usdtohkd = document.getElementById("usdtohkd").value;
+	   var sendemail='';
+	   /*var sendemail_obj =  document.getElementById("sendemail");
+	   if(sendemail_obj.checked== true){
+	   	   sendemail = 'y';
+	   }*/
+	   var admin_notes =  document.getElementById("admin_notes").value;
+	   var subtmp = document.getElementById("baojiabtn");
+	   subtmp.innerHTML = '<input type="button"  value="提 交 中..." class="btnabig">';
+	   $.ajax({
+		url: '/icwebadmin/OrInqo/orderpi',
+		data: {'salesnumber':'<?=$this->orderarr['salesnumber']?>','invoice_no':invoice_no,'ufid':ufid,'ufname':ufname,'ufaddress':ufaddress,'ufcontact':ufcontact,'uftel':uftel,'customer_id':customer_id,'delivery_terms':delivery_terms,'payment_terms':payment_terms,'partd_id':partd_id,'item_no':item_no,'cpn':cpn,'po_no':po_no,'down_handling_charge':down_handling_charge,'surplus_handling_charge':surplus_handling_charge,'usdtohkd':usdtohkd,'admin_notes':admin_notes},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0){
+				  location.reload();
+             }
+			subtmp.innerHTML = '<input type="button" onclick="orderpiAction()" value="提 交" class="btnabig">';
+		}
+		});
+}
+</script>

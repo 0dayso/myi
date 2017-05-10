@@ -1,0 +1,48 @@
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+    <h2>添加推荐品牌：<?=$this->title?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('popBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body" style="width:550px;">
+     <!-- 需要填写的区域-->
+      <table width="740px" border="0" cellpadding="1">
+        <tr>
+         <td height="10" colspan="3" align="center">
+         <div id="message_sess_son" style="display:none" class="message_sess">
+         <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span>
+         <span id="alert_message_son"></span>
+         </div></td>
+         </tr>
+        <tr>
+          <td>品牌ID：</td>
+          <td><input type="text" name="brandid" id="brandid" /></td>
+        </tr>
+        <tr>
+          <td align="center" colspan="2"><input type="button"  value="确认" onclick="addaction('<?=$this->cat_id?>')"/>
+          </td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function addaction(cat_id)
+{
+	var brandid = document.getElementById('brandid').value;
+	if(brandid==''){alert('请填写品牌ID');return;}
+	$.ajax({
+            url: '/icwebadmin/ReadHome/rbadd',
+            data: {'cat_id':cat_id,'brandid':brandid},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    alert(arr.message);
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+}
+</script>

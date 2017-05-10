@@ -1,0 +1,112 @@
+
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/se2013.css"/>
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+
+
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a href="/code" class="focs"> 代码库</a> 
+  </div>
+</div>
+
+<div class="code2013 ">  
+	<div class="w" > 
+        <div class="layout rigybg" >
+            <div class="fl infolist MT10">
+                <div class="codetj">
+                    <div id="pushinfo"><img src="/images/default/ajax-loader-s.gif"></div>
+                    <a href="javascript:;" class="changebtn" onClick="rf();">换一换</a>
+		<script type="text/javascript">
+			$(function(){
+                rf();
+            })
+			function rf(){
+			     $("#pushinfo").html('<img src="/images/default/ajax-loader-s.gif">');
+				$("#pushinfo").load("/code/push");
+			}
+		</script>
+                </div>
+                <div class="list—tit">
+                         <h2>代码库</h2>
+                    <ul class="stabl clearfix">
+                        <?php 
+					$url = 'code';
+					if($this->selectid){
+						$url = "codelist-".$this->selectid.".html";
+					}?>
+                    <li <?=($this->o!='m'?'class="on fore"':'class="fore"')?>><a href="<?=$url?>">最新代码</a></li>
+                    <li <?=($this->o=='m'?'class="on"':'')?>><a href="<?=$url?>?o=m">最多下载</a></li>
+                    </ul>
+                </div>
+                <div class="w_100">
+                
+                <?php if(empty($this->all)){?>
+        <div class="posts p15 boxshadow_h">没有记录</div> 
+        <?php }else{
+			foreach($this->all as $arr){?>
+<div class="posts p15 boxshadow_h">
+<h2><span class="ifotip2013"><em><?=$arr['appname']?></em><i></i></span><a href="/code-<?=$arr['id']?>.html" title="<?=$arr['title']?>" class="logclick" rev="news" rel="<?=$arr['id']?>" target="_blank"><?=$arr['title']?></a>
+<?php if($arr['need_pass']==1){?>
+<span class="fontorange">需要密码</span>
+<?php }else{?>
+<?=$arr['spendpoints']?'<span><ins class="jficon" style="vertical-align:middle;"></ins>'.$arr['spendpoints'].'</span>':'<span class="fontorange">免费</span>'?>
+<?php }?>
+</h2>
+<div class="postmeta">                
+<span>来源：</span><?=$arr['source']?>
+                <span class="ml10">作者：</span><?=$arr['author']?>
+                <span class="ml10">关键词：</span><?php 
+					$tip = explode(',',$arr['keyword']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+				 }?>      
+</div>
+
+<div class="row">
+<div class="post-cont fl">
+<p><?=$arr['description']?></p>
+</div>
+<div class="proinfo_btn fr">
+<a href="javascript:;" onClick="downloadcode('<?=$this->fun->encryptVerification($arr['id'])?>')" class="btnok-new1"><i class="icon_down"></i>立即下载</a>
+</div> 
+<div class="w_100">
+<p class="time"><?=date('Y-m-d',$arr['created'])?></p>
+</div>
+</div>
+
+</div> 
+       <?php }}?>
+
+                </div>  
+                <div class="clr"></div>
+                <div class="page_box">
+<div class="page clearfix">
+<?=$this->page_bar;?></div>
+</div> 
+            </div>    
+            <div class="fr righttuij">
+            <div id="hotsearch"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
+            <div id="hotsolution"></div>
+            <div id="hotnews"></div>
+            <div id="hotwebinar"></div>
+            <div id="htocode"></div>
+            </div>
+            <div class="clr"></div>
+        </div>
+    </div>
+</div>
+<script language="javascript">
+	$(function(){
+	
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+		$("#hotsearch").load("/publicbox/hotsearch");
+		$("#hotsolution").load("/publicbox/hotsolution");
+		$("#hotnews").load("/publicbox/hotnews");
+		$("#hotwebinar").load("/publicbox/hotwebinar");
+		$("#htocode").load("/publicbox/htocode");
+	})
+</script>

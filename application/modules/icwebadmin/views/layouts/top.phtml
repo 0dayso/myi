@@ -1,0 +1,53 @@
+<?php 
+require_once 'Iceaclib/common/fun.php';
+$this->fun = new MyFun();
+$online = $this->fun->setOnline();
+?>
+<form name="findform" id="findform" action="/icwebadmin/OasyFind"  method="post">
+  <div class="topheader">
+    <div class="logo"><a href="/icwebadmin"><img src="/images/admin/logo.jpg" alt="logo" border="0" /></a></div>
+    <?php if(in_array('Find',$_SESSION['staff_area']['value'])){?>
+    <div class="topsearch">
+      <select name="find_type" id="find_type">
+        <option value="order" <?=$this->find_type=='order'?'selected="selected"':''?> >订单号</option>
+        <option value="inq" <?=$this->find_type=='inq'?'selected="selected"':''?> >询价单号</option>
+        <option value="product" <?=$this->find_type=='product'?'selected="selected"':''?> >型号</option>
+        <option value="companyname" <?=$this->find_type=='companyname'?'selected="selected"':''?> >客户</option>
+      </select>
+      <input type="text"  value="<?=$this->find_key?>" name="find_key" id="find_key" onkeydown="enter(event)"/>
+      <input type="button" value="查 找" class="btn" onclick="searchaction()"/>
+    </div>
+    <?php }?>
+    <div class="topinfo" style=" width:200px;">
+      <p><b class="name">欢迎您，<?php echo $_SESSION['staff_sess']['lastname'].$_SESSION['staff_sess']['firstname'].' - '.$_SESSION['staff_sess']['staff_id'];?></b> <span class="fontgray"></span></p>
+      <ul class="nostyleul">
+        <li><a href="/icwebadmin/index/loginout">退出</a></li>
+        <li> | </li>
+        <li><a href="<?php echo HTTPHOST;?>" target="_blank">IC易站</a></li>
+        <li> | </li>
+        <li><a href="/icwebadmin">后台首页</a></li>
+      </ul>
+      <?php if(in_array('online',$_SESSION['statistics_rule']['value'])){?>
+      <p>IC易站在线人数：<font color="#006600">
+        <?=$online['total']?>
+        </font> 登录人数：<font color="#006600">
+        <?=$online['login_total']?>
+        </font></p>
+      <?php }?>
+    </div>
+    <div class="clear"></div>
+  </div>
+</form>
+<script language="javascript">
+function enter(evt){
+    evt=evt?evt:(window.event?window.event:null);
+    var keyCode = evt.keyCode;
+	if(keyCode==13) searchaction();
+}
+function searchaction(){
+	var find_key_obj = document.getElementById('find_key');
+	var find_key = find_key_obj.value.replace(/[ ]/g,"");
+	if(find_key=='') {find_key_obj.value='';alert('请输入查找内容');find_key_obj.focus();return;}
+	else document.getElementById('findform').submit();
+}
+</script>

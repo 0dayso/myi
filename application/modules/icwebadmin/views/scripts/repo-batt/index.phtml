@@ -1,0 +1,210 @@
+<style type="text/css">
+.tablenew2014{border:1px #ddd solid;}
+.tablenew2014 th{ background:#006ffa; border:1px solid #fff; line-height:18px; padding:5px 0}
+.tablenew2014 tr:hover{ background:#96bfe8}
+.tablenew2014 td{ text-indent:5px;border:1px solid #ddd}
+.trbg{ background:#e1eeff}
+</style>
+<?php $dep = array('BMP'=>'BMP','BNT'=>'B&T');?>
+	<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?> -> <a href="<?=$this->indexurl?>/trend" target="_blank">订单走势</a> | 
+    <a href="<?=$this->indexurl?>/qtylist" target="_blank">Slow Moving P/N & Qty list</a>
+    </h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+      <form id="myform"  name="myform" action="" method="post">
+    
+     <b>销售：</b> <table>
+      <?php $i=0;foreach($this->staff as $staff){
+	        if(in_array($staff['department_id'],array('BMP','BNT'))){
+			if(($i+1)%10==0) echo '<tr>';?>
+      <td><label><input type="checkbox"  value="<?=$staff['staff_id']?>" name="staff[]" <?php if(in_array($staff['staff_id'],$this->staffchose)){echo 'checked="checked"';}?> /><?=$staff['lastname'].$staff['firstname']?>(<?=$dep[$staff['department_id']]?>)</label>
+      <input type="text" style="width:20px;" value="<?=$staff['disroder']?>"  onkeyup="<?=ISFLOAT?>" onblur="<?=ISFLOAT?>;uporderby('<?=$staff['staff_id']?>',this)"/>&nbsp;&nbsp;&nbsp;&nbsp;
+      
+      </td>
+    <?php $i++;}}?> 
+    </table>
+    <b>开始时间：</b>
+    <input type="text"  style="width:150px;" name="sdata" value="<?=$this->sdata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true,lang:'sc'})"/>
+     <label>结束时间：</label>
+    <input type="text"  style="width:150px;" name="etmie" value="<?=$this->etmie?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true,lang:'sc'})"/>
+    &nbsp;
+    <select name="ordertype" id="ordertype">
+  <option value="online" <?=$this->ordertype=='online'?'selected':''?>>线上订单</option>
+  <option value="outline" <?=$this->ordertype=='outline'?'selected':''?>>线下订单</option>
+  <option value="all" <?=$this->ordertype=='all'?'selected':''?>>全部</option>
+</select>
+&nbsp;
+    <input type="submit" class="btn" value="确 定"/>
+
+ </form>
+      <table width="150" cellspacing="0" cellpadding="0" class="tablenew2014" style="float:left">
+      <tr height="60" bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;">
+      <th width="50">部门</th><th width="100">销售</th></tr>
+      <?php 
+	  foreach($this->xiaoshou as $b=>$v){
+	  	foreach($v as $k=>$arr){
+		$bg = '';
+	     if($k%2==1) $bg = 'class="trbg"';
+	  ?>
+      <tr <?=$bg?>><?php if($k==0){?><td rowspan="<?=count($v);?>"><?=$dep[$b]?></td><?php }?><td><?=$arr[1]?></td></tr>
+      <?php }
+	  }?>
+      <tr><td colspan="2" align="center">总计：</td></tr>
+      </table>
+	  
+      <table width="350" cellspacing="0" cellpadding="0" border="1" align="center"  class="tablenew2014"  style="float:left">
+
+      <tr height="60" bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;"><th width="60">订单数量</th><th width="100">人民币(￥)</th><th width="100">美元($)</th><th width="100">总计(RMB)</th></tr>
+      <?php
+	  $deptotal = array('BMP'=>array(),'BNT'=>array());
+	  $noorder  = array('BMP'=>array(),'BNT'=>array());
+	  $numorder_1 = array('BMP'=>0,'BNT'=>0);
+	  $numorder_2 = array('BMP'=>0,'BNT'=>0);
+	  $rmborder_1 = array('BMP'=>0,'BNT'=>0);
+	  $rmborder_2 = array('BMP'=>0,'BNT'=>0);
+	  $usdorder_1 = array('BMP'=>0,'BNT'=>0);
+	  $usdorder_2 = array('BMP'=>0,'BNT'=>0);
+      $numtotal = $rmbtotal = $usdtotal = 0; 
+	  $om_tmp1 = $om_tmp2 = $om_tmp3 = array();
+	  foreach($this->xiaoshou as $b=>$v){
+	    
+	  	foreach($v as $k=>$arr){
+		  $arraytmp = $this->countarray[$arr[0]];
+		  $rmb = $usd = 0;
+		  if(!empty($arraytmp)){
+		      
+			  foreach($arraytmp as $cv){
+			      //个人数量
+				  if(!in_array($cv[4],$om_tmp3)){
+		             $num[$arr[0]]++;
+			         $om_tmp3[] = $cv[4];
+		          }
+				  if($cv[0]=='RMB') $rmb +=  $cv[1];
+				  elseif($cv[0]=='USD') $usd +=  $cv[1];
+				  
+				  //订单数
+				  if($cv[2]>0){
+				    if(!in_array($cv[4],$om_tmp1)){
+					  $numorder_1[$b] += 1; 
+					  $om_tmp1[] = $cv[4];
+					}
+					if($cv[0]=='RMB') $rmborder_1[$b] +=  $cv[2];
+					elseif($cv[0]=='USD') $usdorder_1[$b] +=  $cv[2];
+				  }else{
+				    if(!in_array($cv[4],$om_tmp1)){
+					  $numorder_2[$b] += 1; 
+					  $om_tmp1[] = $cv[4];
+					}
+					if($cv[0]=='RMB') $rmborder_2[$b] +=  $cv[3];
+					elseif($cv[0]=='USD') $usdorder_2[$b] +=  $cv[3];
+				  }
+			  }
+			 
+		  }
+		  //没订单人
+		  if($num[$arr[0]]<=0) $noorder[$b][] =  $arr;
+		  $numtotal += $num[$arr[0]];
+		  $rmbtotal += $rmb;
+		  $usdtotal += $usd;
+		  	$bg = '';
+	     if($k%2==1) $bg = 'class="trbg"';
+		  
+	  ?>
+      <tr <?=$bg?>><td align="center"><font color="<?=($num[$arr[0]]?'#FF0000':'')?>"><?=$num[$arr[0]]?$num[$arr[0]]:0?></font></td>
+      <td><font color="<?=($rmb?'#FF0000':'')?>"><?=number_format($rmb,0)?></font></td>
+      <td><font color="<?=($usd?'#FF0000':'')?>"><?=number_format($usd,0)?></font></td>
+      <td><b><?=number_format($rmb+($this->USDTOCNY*$usd),0)?></b></td>
+      </tr>
+      <?php }
+	  }
+	  $deptotal = array('BMP'=>array(count($this->xiaoshou['BMP']),count($noorder['BMP'])),'BNT'=>array(count($this->xiaoshou['BNT']),count($noorder['BNT'])));
+	  ?>
+      <tr style="color:#FF0000; font-weight:bold;"><td align="center"><?=$numtotal?></td><td><?=number_format($rmbtotal,0)?></td><td><?=number_format($usdtotal,0)?></td>
+      <td><b><?=number_format(($rmbtotal+($this->USDTOCNY*$usdtotal)),0)?></b></td>
+      </tr>
+      </table>
+    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+     <table width="700" cellspacing="0" cellpadding="0"  class="tablenew2014" style="margin-left:20px;">
+      	<tr bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;"><th width="50">部门</th><th width="50">人数</th>
+        <th width="50">接单人数</th>
+        <th width="50">订单总数</th>
+        <th width="100">订单类别</th>
+        <th width="50">订单数</th>
+        <th width="100">金额(RMB)</th><th width="100">金额(USD)</th>
+        <th width="100">总计(RMB)</th>
+        </tr>
+        <tr align="center"><td rowspan="2">BMP</td><td rowspan="2"><?=$deptotal['BMP'][0]?></td>
+        <td rowspan="2"><?=($deptotal['BMP'][0]-$deptotal['BMP'][1])?></td>
+        <td rowspan="2"><?=($numorder_1['BMP'] + $numorder_2['BMP'])?></td>
+        <td>代理线</td>
+        <td><?=($numorder_1['BMP']+$numorder_2['BMP']-$this->bmp['ordernum'])?></td>
+        <td><?=number_format(($rmborder_1['BMP']+$rmborder_2['BMP']-$this->bmp['RMB']),0)?></td>
+        <td><?=number_format(($usdorder_1['BMP']+$usdorder_2['BMP']-$this->bmp['USD']),0)?></td>
+        <td><?=number_format(($rmborder_1['BMP']+$this->USDTOCNY*$usdorder_1['BMP']+$rmborder_2['BMP']+$this->USDTOCNY*$usdorder_2['BMP']-$this->bmp['total']),0)?></td>
+        </tr>
+        <tr align="center">
+        <td><font color="#FF0000">非代理线(通用)</font></td>
+        <td><font color="#FF0000"><?=$this->bmp['ordernum']?$this->bmp['ordernum']:0?></font></td>
+        <td><font color="#FF0000"><?=number_format($this->bmp['RMB']?$this->bmp['RMB']:0,0)?></font></td>
+        <td><font color="#FF0000"><?=number_format($this->bmp['USD']?$this->bmp['USD']:0,0)?></font></td>
+        <td><font color="#FF0000"><?=number_format(($this->bmp['total']?$this->bmp['total']:0),0)?></font></td>
+        </tr>
+        
+        <tr align="center"><td rowspan="2">B&amp;T</td><td rowspan="2"><?=$deptotal['BNT'][0]?></td>
+        <td rowspan="2"><?=($deptotal['BNT'][0]-$deptotal['BNT'][1])?></td>
+        <td rowspan="2"><?=($numorder_1['BNT'] + $numorder_2['BNT'])?></td>
+        <td>代理线</td>
+        <td><?=($numorder_1['BNT']+$numorder_2['BNT']-$this->bnt['ordernum'])?></td>
+        <td><?=number_format(($rmborder_1['BNT']+$rmborder_2['BNT']-$this->bnt['RMB']),0)?></td>
+        <td><?=number_format(($usdorder_1['BNT']+$usdorder_2['BNT']-$this->bnt['USD']),0)?></td>
+        <td><?=number_format(($rmborder_1['BNT']+$this->USDTOCNY*$usdorder_1['BNT']+$rmborder_2['BNT']+$this->USDTOCNY*$usdorder_2['BNT']-$this->bnt['total']),0)?></td>
+        <tr align="center">
+        <td><font color="#FF0000">非代理线(通用)</font></td>
+        <td><font color="#FF0000"><?=$this->bnt['ordernum']?$this->bnt['ordernum']:0?></font></td>
+        <td><font color="#FF0000"><?=number_format($this->bnt['RMB']?$this->bnt['RMB']:0,0)?></font></td>
+        <td><font color="#FF0000"><?=number_format($this->bnt['USD']?$this->bnt['USD']:0,0)?></font></td>
+        <td><font color="#FF0000"><?=number_format(($this->bnt['total']?$this->bnt['total']:0),0)?></font></td>
+        </tr>
+        
+        <tr style="font-weight:bold; text-align:center"><td>总计：</td>
+        <td><?=($deptotal['BMP'][0]+$deptotal['BNT'][0])?></td>
+        <td><?=($deptotal['BMP'][0]+$deptotal['BNT'][0])-($deptotal['BMP'][1]+$deptotal['BNT'][1])?></td>
+        <td><?=($numorder_1['BMP'] + $numorder_2['BMP']+$numorder_1['BNT'] + $numorder_2['BNT'])?></td>
+        <td></td>
+        <td><?=($numorder_1['BMP'] + $numorder_2['BMP']+$numorder_1['BNT'] + $numorder_2['BNT'])?></td>
+        <td><?=number_format(($rmborder_1['BMP']+$rmborder_2['BMP']+$rmborder_1['BNT']+$rmborder_2['BNT']),0)?></td>
+        <td><?=number_format(($usdorder_1['BMP']+$usdorder_2['BMP']+$usdorder_1['BNT']+$usdorder_2['BNT']),0)?></td>
+        <td><?=number_format((($rmborder_1['BMP']+$this->USDTOCNY*$usdorder_1['BMP'])+($rmborder_2['BMP']+$this->USDTOCNY*$usdorder_2['BMP'])+($rmborder_1['BNT']+$this->USDTOCNY*$usdorder_1['BNT'])+($rmborder_2['BNT']+$this->USDTOCNY*$usdorder_2['BNT'])),0)?></td></tr>
+      </table><br/>
+      <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+      
+      <table width="400" cellspacing="0" cellpadding="0"  class="tablenew2014">
+      	<tr bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;"><th width="200" colspan="2">没接单名单</th></tr>
+         <?php 
+	  foreach($noorder as $b=>$v){
+	  	foreach($v as $k=>$arr){
+		$bg = '';
+	     if($k%2==1) $bg = 'class="trbg"';
+	  ?>
+      <tr <?=$bg?>><?php if($k==0){?><td rowspan="<?=count($v);?>"><?=$dep[$b]?></td><?php }?><td><?=$arr[1]?></td></tr>
+      <?php }
+	  }?>
+      </table>
+      <!-- 结束区域-->
+	</div>
+    <script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script type="text/javascript">
+function uporderby(staffid,obj){
+	$.ajax({
+            url: '/icwebadmin/RepoBatt/changeorder',
+            data: {'staff_id':staffid,'disroder':obj.value},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {}
+	 });
+}
+ </script>

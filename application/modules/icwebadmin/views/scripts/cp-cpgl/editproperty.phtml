@@ -1,0 +1,65 @@
+<div class="conmian">
+  <h1><a href="<?=$this->indexurl;?>"><?php echo $this->AreaTitle;?></a> -> 编辑产品选型 -> 分类：<a href="/icwebadmin/CpSele/selection/cid/<?=$this->cid?>" target="_blank"><?=$this->category['name']?></a> -> 型号：<a href="<?=$this->editurl.'/id/'.$this->product['id']?>" title="编辑"><?=$this->product['part_no']?></a></h1>
+  <!-- 需要填写的区域-->
+  <form name="selection_form" method="post" action="">
+     <input type="hidden" name="pid" value="<?=$this->product['id']?>" />
+     <table>
+      <tbody>
+        <tr>
+          <td><table id="tb1" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td><table class="bottom" cellspacing="0" border="0" style="border-collapse:collapse;">
+                      <tbody>
+                        <tr>
+                          <td><table cellpadding="0" cellspacing="0">
+                              <tbody>
+                                <tr>
+                                  <?php for($i=0;$i<count($this->propertycategory);$i++){
+								        $pc_arr = $this->propertycategory[$i];
+										$pp_arr = $this->productproperty[$pc_arr['pid']];
+								  ?>	
+                                  <td>
+                                  <table>
+                                      <tbody>
+                                        <tr>
+                                          <td><b id="property_<?=$pc_arr['pid']?>"><?=$pc_arr['cname']?></b></td>
+                                        </tr>
+                                        <tr>
+                                          <td><select size="7" name="pc[<?=$pc_arr['pid']?>]" id="pc_<?=$pc_arr['pid']?>">
+                                          	  <option value="<?=$pp_arr['id'].'_'?>" selected="selected">--空--</option>
+											  <?php foreach($pc_arr['property_value'] as $pv_arr){?>
+                                              <option value="<?=$pp_arr['id'].'_'.$pv_arr['id']?>" <?php if($pp_arr['value_id']==$pv_arr['id'] && $pp_arr['status']) echo 'selected="selected"';?>><?=$pv_arr['value']?></option>
+                                              <?php }?>
+                                            </select>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    </td>
+                                  <td valign="bottom" style="width: 15px;">&nbsp;</td>
+                                  <?php }?>
+                                </tr>
+                              </tbody>
+                            </table></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table class="ApplyFilter">
+                      <tbody>
+                        <tr>
+                          <td><input type="submit" value="更 新 属 性"  class="btn">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table></td>
+                </tr>
+              </tbody>
+            </table></td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+  <br/>
+  <!-- 结束区域-->
+</div>

@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="webService/helloWorld" targetNamespace="http://test.order.iceasy.com/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://test.order.iceasy.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema elementFormDefault="unqualified" targetNamespace="http://test.order.iceasy.com/" version="1.0" xmlns:tns="http://test.order.iceasy.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="chackLogin" type="tns:chackLogin"/>
+<xs:element name="chackLoginResponse" type="tns:chackLoginResponse"/>
+<xs:element name="snsDoLogin" type="tns:snsDoLogin"/>
+<xs:element name="snsDoLoginResponse" type="tns:snsDoLoginResponse"/>
+<xs:complexType name="chackLogin">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="chackLoginResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="snsDoLogin">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="snsDoLoginResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="chackLoginResponse">
+    <wsdl:part element="tns:chackLoginResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="snsDoLoginResponse">
+    <wsdl:part element="tns:snsDoLoginResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="chackLogin">
+    <wsdl:part element="tns:chackLogin" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="snsDoLogin">
+    <wsdl:part element="tns:snsDoLogin" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="HelloWorld">
+    <wsdl:operation name="chackLogin">
+      <wsdl:input message="tns:chackLogin" name="chackLogin">
+    </wsdl:input>
+      <wsdl:output message="tns:chackLoginResponse" name="chackLoginResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="snsDoLogin">
+      <wsdl:input message="tns:snsDoLogin" name="snsDoLogin">
+    </wsdl:input>
+      <wsdl:output message="tns:snsDoLoginResponse" name="snsDoLoginResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="webService/helloWorldSoapBinding" type="tns:HelloWorld">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="chackLogin">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="chackLogin">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="chackLoginResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="snsDoLogin">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="snsDoLogin">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="snsDoLoginResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="webService/helloWorld">
+    <wsdl:port binding="tns:webService/helloWorldSoapBinding" name="HelloWorldImplPort">
+      <soap:address location="http://192.168.50.215/user/service.php"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

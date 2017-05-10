@@ -1,0 +1,136 @@
+<div style="width:770px;margin:10px 100px " class="popup">
+    <div class="popup-header">
+    <h2><?php if(!$this->apply['salesnumber']){?>释放样片订单<?php }else{?>订单号：<?php echo $this->apply['salesnumber'];}?></h2>
+    <a class="dialogBoxClose" title="关闭" onclick="$.closePopupLayer('processBox');" href="javascript:;">关闭</a>
+     </div>
+    <div class="popup-body">
+    	<div id="soinfo">
+<div id="ajaxorderinfo">
+<!--订单详情-->
+<div class="publicOne">
+
+<!--发票信息-->
+<div class="publicOne">
+  <div class="Publictit"> <span class="Publictit_tit">销售相关</span> </div>
+    <table cellspacing="0" cellpadding="0" border="0" class="Publictable">
+    <tbody>
+      <tr>
+        <td width="100">销售：</td>
+        <td><strong><?=$this->apply['lastname'].$this->apply['firstname']?></strong></td>
+
+        <td width="100">部门：</td>
+        <td><strong><?=$this->apply['department']?></strong></td>
+      </tr>
+      <tr>
+        <td width="100">手机：</td>
+        <td><strong><?=$this->apply['phone']?></strong></td>
+
+        <td width="100">固话：</td>
+        <td><strong><?=$this->apply['sttel'].'-'.$this->apply['ext']?></strong></td>
+      </tr>
+      <tr>
+        <td>邮箱：</td>
+        <td colspan="3"><strong><a href="mailto:<?=$this->apply['email']?>"><?=$this->apply['email']?></a></strong></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="Publictit"> <span class="Publictit_tit">订单详情</span> </div>
+  
+  <table cellspacing="0" cellpadding="0" border="0" class="Publictable">
+    <tbody>
+      <tr>
+        <td>客户名称：</td>
+        <td colspan="3"><strong><?=$this->apply['companyname']?$this->apply['companyname']:$this->apply['uname']?></strong></td>
+      </tr>
+      <tr>
+        <td width="100">订单类型：</td>
+        <td><strong><font color="#FF0000">样片订单</font></strong></td> 
+        <td>提交时间：</td>
+        <td><strong><?=date('Y-m-d H:i',$this->apply['created'])?></strong></td>
+      </tr>
+      <tr>
+        <td>订单金额：</td>
+        <td><strong class="fontred"><span class="fuhao">RMB</span> 0</strong></td>
+        <td>交货地：</td>
+        <td><strong>国内</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <table cellspacing="0" cellpadding="0" border="0" class="producttable1">
+    <tbody>
+      <tr>
+        <th width="35">项次</th>
+        <th>产品型号</th>
+        <th>品牌</th>
+        <th>数量</th>
+      </tr>
+      <?php 
+      foreach($this->apply['detailed'] as $k=>$v){
+        echo '
+        <tr>
+          <td>'.($k+1).'</td>
+          <td><div class="productNO">'.$v['part_no'].'</div></td>
+          <td>'.$v['brandname'].'</td>
+          <td>'.$v['approvenum'].'</td>
+        </tr>
+        ';
+        }
+	 ?>
+    </tbody>
+  </table>
+</div>
+<!-- 优惠券-->
+
+<!--收货信息-->
+<div class="publicOne">
+  <div class="Publictit"> <span class="Publictit_tit">收货信息</span> </div>
+    <table cellspacing="0" cellpadding="0" border="0" class="Publictable">
+    <tbody>
+      <tr>
+        <td width="100">收货人：</td>
+        <td><strong><?=$this->apply['sname']?></strong></td>
+        <td>手机：</td>
+        <td><strong><?=$this->apply['mobile']?></strong></td>
+      </tr>
+      <tr>
+        <td>固定电话：</td>
+        <td><strong><?=$this->apply['tel']?></strong></td>
+        <td>详细地址：</td>
+        <td><strong><?=$this->apply['province'].$this->apply['city'].$this->apply['area'].$this->apply['address']?></strong></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <?php if(!$this->apply['salesnumber']){?>
+  <table width="100%">
+  <tr><td align="center" ><div id="orderbtn"> <input type="button"  class="btnabig"  value="确认释放" onclick="processaction()"/></div>
+          </td>
+        </tr>
+  </table>
+  <?php }?>
+</div></div>
+    </div>
+</div>
+<script type="text/javascript">
+//审核订单
+function processaction(){
+if(!confirm('你确定释放此样片订单到CSE吗？')){return;}
+
+     var subtmp = document.getElementById("orderbtn");
+    subtmp.innerHTML = '<input type="button"  class="btnabig" value="提交中..." />';
+	$.ajax({
+            url: '/icwebadmin/SampSqgl/process',
+            data: {'id':'<?=$this->apply['id']?>'},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	alert(arr.message);
+				if(arr.code == 0) window.location.href='/icwebadmin/SampSqgl?type=already';
+				subtmp.innerHTML = '<input type="button"  class="btnabig"  value="确认释放" onclick="processaction()"/>';
+            }
+	});
+   
+}
+</script>

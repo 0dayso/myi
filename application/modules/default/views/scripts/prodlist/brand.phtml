@@ -1,0 +1,98 @@
+<link rel="stylesheet" type="text/css" href="/css/default/directory.css"/>
+<div class="w">
+    <div class="breadcrumbs">
+    	<span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/" title="IC易站"><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/category" title="<?=$this->translate('Menu_ProductCategory')?>"><?=$this->translate('Menu_ProductCategory')?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<span>品牌</span>&nbsp;&nbsp;»&nbsp;&nbsp;<span title="<?=$this->brandname?>"><?=$this->brandname?></span>        
+    </div>
+</div>
+
+<div class="w clearfix ld">
+
+<div class="listleftmenu">
+    <h1>品牌</h1>
+	<div id="DoorP" class="listdoorp">
+      
+      <div class="listleftcontent">
+            <ul>
+             <?php foreach($this->allbrand as $brand){?>
+                <li <?=$brand['id']==$this->brandid?'class="on"':''?>><b <?=$brand['id']==$this->brandid?'class="emtriangleright5px"':''?>></b>
+                <?=$brand['id']==$this->brandid?'<h1>':''?>
+                <a href="/pl/<?=$brand['name']?>" title="<?=$brand['name']?>" class="logclick"  rev="brandlist_brand" rel="<?=$brand['id']?>"><?=$brand['name']?></a>
+                <?=$brand['id']==$this->brandid?'</h1>':''?>
+                </li>
+             <?php }?>
+            </ul>
+      </div>
+</div>
+</div>
+
+<div class="fr listright">
+	<div class="fl selh" >
+    <!--<form id="thisform"  action="" method="get">
+        <select name="stock" id="stock" style="width:80px;" onchange="theform_menu()">
+            <option value="all" <?=$this->stock=='all'?'selected':''?>>全部库存</option>
+            <option value="spot" <?=$this->stock=='spot'?'selected':''?>>现货</option>
+            <option value="order" <?=$this->stock=='order'?'selected':''?>>预订</option>
+        </select>
+     </form>-->
+    </div>
+    <table cellpadding="0" cellspacing="0" class="listtable">
+    	<tbody>
+        <tr>
+            <th width="140px">型号</th>
+            <th width="60px">品牌</th>
+            <th width="150px">产品描述</th>
+            <th width="40px">库存</th>
+            <th width="100px">阶梯价格</th>
+            <th width="115px">操作</th>
+        </tr>
+        <?php if(empty($this->allProd)){?>
+        <tr>
+        	<td colspan="7" align="center">没有记录</td>
+        </tr>
+        
+        <?php }else{
+			foreach($this->allProd as $k=>$prod){
+			$prod = $this->fun->filterProduct($prod);
+			$break_price='';$stock = 0;$show_price = 0;
+			if($prod['f_show_price_sz']){
+			    $show_price = $prod['f_show_price_sz'];
+				$stock      = $prod['f_stock_sz'];
+				$break_price = $prod['f_break_price_notitle_sz'];
+			}elseif($prod['f_show_price_hk']){
+			    $show_price = $prod['f_show_price_hk'];
+				$stock      = $prod['f_stock_hk'];
+				$break_price = $prod['f_break_price_notitle_hk'];
+			}
+			$bgclass='';
+			if($k%2==1) $bgclass = 'class="bgf9"';
+		?>
+        <tr <?=$bgclass?>>
+        	<td><p><a  target="_blank" href="<?=$prod['f_produrl']?>" class="model logclick" title="<?=$prod['part_no']?>"  rev="brandlist_part_id" rel="<?=$prod['id']?>"><?=$prod['part_no']?></a></p></td>
+            <td><?=$prod['bname']?></td>
+            <td><p title="<?=$prod['description']?>"><?=$this->fun->utf_substr($prod['description'],68)?></p></td>
+            <td><?php
+                    if(($prod['f_stock_sz']+$prod['f_stock_hk'])>0){echo '<font color="#469F68">现货</font>';}
+					else {echo '<font color="#FC9C30">订货</font>';}?>
+			</td>
+            <td><div class="price_btn_table"><?=($break_price?$break_price:'--')?></div></td>
+            <td><div class="tabelbtn">
+            <a href="javascript:" onclick="openInquiry('<?=$prod['id']?>')" class="abtnquestion logclick" title="询价"  rev="brandlist_part_id" rel="<?=$prod['id']?>">>询价</a>
+            <?php if($show_price){?><a href="javascript:" onclick="buy('<?=$prod['id']?>.')"  class="abtnbuy logclick" title="购买"  rev="brandlist_part_id" rel="<?=$prod['id']?>">>购买</a>
+            <?php }else{?>
+            <a class="abtnbuy_gray ">购买</a>
+            <?php }?></div>
+            </td>
+        </tr>
+        <?php }}?>
+        </tbody>
+        </table>
+    <div class="pagination fr"><?=$this->page_bar?></div>
+</div>
+</div>
+<div class="clr"></div>
+<script type="text/javascript">
+function theform_menu()
+{
+	document.getElementById('thisform').submit();
+}
+</script>

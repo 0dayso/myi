@@ -1,0 +1,69 @@
+<div class="popup" style="width:400px;">
+<div class="popup-header">
+    <h2>修改结算货币</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+</div>
+<div class="popup-body">
+<div  class="div_dl">
+             <dl>
+              <dt>结算货币：</dt>
+              <dd class="labelinput">
+               <select name="currency" id="currency" onchange="changeMbprice(this.value)">
+              <option value="RMB" <?=($this->soarray['currency']=='RMB'?'selected="selected"':'')?> >人民币(RMB)</option>
+              <option value="HKD" <?=($this->soarray['currency']=='HKD'?'selected="selected"':'')?>>港币(HKD)</option>
+              <option value="USD" <?=($this->soarray['currency']=='USD'?'selected="selected"':'')?>>美元(USD)</option>
+            </select>
+              </dd>
+             </dl>
+             <dl>
+              <dt>交货地：</dt>
+                <dd class="labelinput">
+                <select name="delivery" id="delivery" disabled="disabled">
+              <option value="SZ" <?=($this->soarray['delivery']=='SZ'?'selected="selected"':'')?> >国内</option>
+              <option value="HK" <?=($this->soarray['delivery']=='HK'?'selected="selected"':'')?> >香港</option>
+            </select>
+                </dd>
+            </dl>
+            </div>
+    <div class="bottombutton" id="baojiabtn">
+    	<input type="button" onclick="currency()" value="提 交" class="btnabig">
+    </div>
+    <div class="clear"></div>
+</div>
+</div>
+<script type="text/javascript">
+function currency() 
+{
+	 var currency = $('#currency').val();
+	 var delivery = $('#delivery').val();
+     $.ajax({
+            url: '/icwebadmin/OrUnso/currency',
+            data: {'salesnumber':'<?php echo $this->soarray['salesnumber'];?>','currency':currency,'delivery':delivery},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   alert(arr.message);
+			   if(arr.code==0)
+			   {  
+			      location.reload();
+			   }
+            }
+    });
+}
+//改变货币
+function changeMbprice(v)
+{
+	if(v=='RMB')
+	{
+	   $("#delivery").val('SZ');
+	}
+	else if(v=='HKD')
+	{
+	    $("#delivery").val('HK');
+	 }
+	else{ 
+		 $("#delivery").val('HK');
+	}
+
+}
+</script>

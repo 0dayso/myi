@@ -1,0 +1,87 @@
+<?php 
+$title = array('default_title'=>'默认标题',
+'default_description'=>'默认描述',
+'default_keywords'=>'默认关键字',
+'category_title'=>'产品目录页标题',
+'category_description'=>'产品目录页描述',
+'category_keywords'=>'产品目录页关键字',
+'details_title'=>'产品详细页标题',
+'details_description'=>'产品详细页描述',
+'details_keywords'=>'产品详细页关键字',
+'brand_title'=>'品牌分类页标题',
+'brand_description'=>'品牌分类页描述',
+'brand_keywords'=>'品牌分类关页键字',
+'prodlist_title'=>'产品分类页标题',
+'prodlist_description'=>'产品分类页描述',
+'prodlist_keywords'=>'产品分类页关键字',
+'applications_title'=>'应用方案标题',
+'applications_keywords'=>'应用方案关键字',
+'applications_description'=>'应用方案描述',
+'applications_app_title'=>'应用方案分类页标题',
+'applications_app_description'=>'应用方案分类页描述',
+'applications_app_keywords'=>'应用方案分类页关键字',
+'applications_details_title'=>'方案详细页标题',
+'applications_details_description'=>'方案详细页描述',
+'applications_details_keywords'=>'方案详细页关键字',
+'seminar_title'=>'技术研讨会标题',
+'seminar_keywords'=>'技术研讨会关键字',
+'seminar_description'=>'技术研讨会描述',
+'seminar_app_title'=>'技术研讨会分类页标题',
+'seminar_app_description'=>'技术研讨会分类页描述',
+'seminar_app_keywords'=>'技术研讨会分类页关键字',
+'seminar_details_title'=>'技术研讨会详细页标题',
+'seminar_details_description'=>'技术研讨会详细页描述',
+'seminar_details_keywords'=>'技术研讨会详细页关键字',
+'bom_title'=>'BOM采购标题',
+'bom_description'=>'BOM采购描述',
+'bom_keywords'=>'BOM采购关键字',
+'news_title'=>'产品资讯标题',		
+'news_keywords'=>'产品资讯关键字',
+'news_description'=>'产品资讯描述',		
+'news_app_title'=>'产品资讯分类标题',
+'news_app_keywords'=>'产品资讯分类关键字',
+'news_app_description'=>'产品资讯分类描述',		
+);
+?>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+      <!-- 需要填写的区域-->
+      <form id='thisform' name="thisform" action='' method='post'>
+      <table cellpadding="1" border="1" width="900px" style=" margin-top:10px;">
+      <?php if($this->configArr){
+	  	foreach($this->configArr as $key=>$config){
+	  ?>
+<!--       <input type="hidden" name="<?=$key?>" value="<?=$key?>" />-->
+       <tr height="25px"><td width="70"><?=$key?></td><td>
+	   		<table>
+            	<?php for($i=1;$i<count($config);$i++){
+					 $value = $config[$i];
+					 if($value[1]){
+					 ?>
+                	 <tr height="25px"><td width="370" align="right"><?=$title[$value[0]].'('.$value[0].')：'?></td><td>
+                     <?php if(!in_array($value[0],array())){?>
+                     <textarea  name="<?=trim($value[0])?>" rows="5"  style="width:550px;"><?=trim($value[1])?></textarea>
+                     <?php }else{?>
+                     <input type="text" style="width:300px" name="<?=trim($value[0])?>" value="<?=trim($value[1])?>" />
+                     <?php }?>
+                     </td></tr>
+                <?php }}?>
+            </table>
+       </td></tr> 
+      <?php }}?>
+      <tr height="35"><td colspan="2" align="center"><input type="submit"   class="btnabig"  value="更 新"/></td></tr>
+      </table>
+      </form>
+      <br/>
+      <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+<?php if(isset($_SESSION['remess'])){?>
+document.getElementById('message_sess').style.display = "block";
+document.getElementById('alert_message').innerHTML = "<?=$_SESSION['remess']?>";
+<?php unset($_SESSION['remess']);}?>
+</script>

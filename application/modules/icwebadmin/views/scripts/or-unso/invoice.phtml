@@ -1,0 +1,40 @@
+<div class="popup" style="width:400px;">
+<div class="popup-header">
+    <h2>修改发票</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+</div>
+<div class="popup-body">
+    <table cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+            <tr>
+              <td  width="80" align="right">发票：</td>
+              <td><label><input type="radio"  class="invoicetype" name="invoicetype" value="2" <?=($this->soarray['ivtype']==2?'checked="checked"':'')?>>增值税发票</label>
+                 <label><input type="radio"  class="invoicetype" name="invoicetype" value="1" <?=($this->soarray['ivtype']==1?'checked="checked"':'')?>>普通发票</label>
+                 <label><input type="radio"  class="invoicetype" name="invoicetype" value="" <?=(!$this->soarray['ivtype']?'checked="checked"':'')?>>不需要发票</label></td>
+            </tr>
+      </tbody></table>
+    <div class="bottombutton" id="baojiabtn">
+    	<input type="button" onclick="invoice()" value="提 交" class="btnabig">
+    </div>
+    <div class="clear"></div>
+</div>
+</div>
+<script type="text/javascript">
+function invoice() 
+{
+	var invoicetype = $('input[name="invoicetype"]:checked').val();
+    $.ajax({
+            url: '/icwebadmin/OrUnso/invoice',
+            data: {'salesnumber':'<?php echo $this->soarray['salesnumber'];?>','invoicetype':invoicetype},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   alert(arr.message);
+			   if(arr.code==0)
+			   {  
+			      location.reload();
+			   }
+            }
+    });
+}
+</script>

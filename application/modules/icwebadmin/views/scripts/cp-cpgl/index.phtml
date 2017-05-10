@@ -1,0 +1,253 @@
+<link href="/js/jsplug/ajaxselect/jquery.autocomplete.css" rel="stylesheet">
+<script src="/js/jsplug/ajaxselect/jquery.autocomplete.js" type="text/javascript"></script>
+<?php 
+$selecturl = "&brand=$this->selectbrand&ats=$this->ats";
+?>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> <a href="<?=$this->addurl?>">添加+</a></h1>
+  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)) {?>
+  <a href="#addlogo" id="datasheet_box">上传datasheet+</a> 
+  
+    <a style="margin-left:10px;" href="/icwebadmin/CpCpgl/import" id="batch_update">批量更新产品+</a>
+     <a style="margin-left:10px;" href="/icwebadmin/CpCpgl/report"  id="report">产品统计报表+</a>
+    <a href="#" style="margin-left:10px;"  id="big_box">上传产品大图+</a>
+  <?php }?>
+  | <a href="/icwebadmin/CpCpgl/export" target="_blank" title="将样片导出成Excel">导出样片Excel</a>
+<form id="myform"  class="form-search" name="myform" action="" method="get">
+<input type="hidden" name="type" value="<?=$this->type?>" />
+<?php echo $this->productCategorySelect('part_level3',3,$this->part_level3);?> 
+<select name="brand">
+<option value="">产品线-全部</option>
+<?php foreach($this->brand as $bd){?>
+<option value='<?=$bd['id']?>' <?=$bd['id']==$this->selectbrand?'selected':''?>><?=$bd['name']?></option>
+<?php }?>
+</select>
+<select name="part_img" class="span1">
+<option value="">图片</option>
+<option value="Y"  <?php echo $this->part_img =='Y' ? "selected" : ""; ?>>图片 - Y</option>
+<option value="N" <?php echo $this->part_img =='N' ? "selected" : "";?>>图片 - N</option>
+</select>
+<select name="datasheet" class="span1">
+<option value="" >文档</option>
+<option value="Y"  <?php echo $this->datasheet =='Y'  ? "selected" : "";?>>文档 -Y</option>
+<option value="N" <?php echo $this->datasheet =='N'  ? "selected" : "";?>>文档 -N</option>
+</select>
+<select name="params" class="span1">
+<option value="">参数</option>
+<option value="Y"  <?php echo $this->params =='Y' ? "selected" : "";?>>参数 - Y</option>
+<option value="N" <?php echo $this->params =='N'  ? "selected" : "";?>>参数 - N</option>
+</select>
+<label>Part No.：</label>
+<div class="input-append">
+  <input type="text" class="span3 search-query" style="width:60px;" id="partno" value="<?=$this->partno?>" name="partno" />
+</div>
+
+ <label><input type="checkbox" name="ats" <?=$this->ats?'checked':''?> />ATS</label>
+ 
+ <label><input type="checkbox" name="cansell" <?=$this->cansell?'checked':''?> />可购买</label>
+ <label><input type="checkbox" name="caninq" <?=$this->caninq?'checked':''?> />可询价</label>
+ <label><input type="checkbox" name="cansamp" <?=$this->cansamp?'checked':''?> />样片</label>
+&nbsp;
+
+
+<a href="/icwebadmin/CpCpgl"  id = "seachsub" class="btn" target="_self">查 找</a>
+
+<a href="/icwebadmin/CpCpgl/derive"  id = "derive" class="btn" target="_blank">导出</a>
+<select name="offset" class="span1">
+<option value="">记录数</option>
+<?php for($i=0;$i<$this->exportPageNum;$i++):?>
+	<option value="<?php echo $i*$this->exportLimit;?>">第（<?php echo ($i*$this->exportLimit+1);?>）条</option>
+<?php endfor;?>
+
+</select>
+</form>
+          
+  <div class="message_sess" style="display:none" id="message_sess"> 
+          <div onclick="document.getElementById('message_sess').style.display='none'" class="but" title="关闭">&nbsp;</div>
+          <div id="alert_message"></div> 
+  </div>
+    <div class="fr u_right">
+    <div class="tab_content">
+    <div class="tab_tit1">
+        <ul class="fl">
+         <li <?php if($this->type=='on') echo 'class="on"';?>><a href="/icwebadmin/CpCpgl?type=on<?=$selecturl?>">在线产品<em>(<?=$this->onnum?>)</em></a></li>
+          <li <?php if($this->type=='off') echo 'class="on"';?>><a href="/icwebadmin/CpCpgl?type=off<?=$selecturl?>">下架产品<em>(<?=$this->offnum?>)</em></a></li>
+          <li <?php if($this->type=='nstock') echo 'class="on"';?>><a href="/icwebadmin/CpCpgl?type=nstock<?=$selecturl?>">缺货产品<em>(<?=$this->nstocknum?>)</em></a></li>
+          <li <?php if($this->type=='hstock') echo 'class="on"';?>><a href="/icwebadmin/CpCpgl?type=hstock<?=$selecturl?>">有货产品<em>(<?=$this->hstocknum?>)</em></a></li>
+          <li <?php if($this->type=='staged') echo 'class="on"';?>><a href="/icwebadmin/CpCpgl?type=staged<?=$selecturl?>">滞仓产品<em>(<?=$this->stagednum?>)</em></a></li>
+        </ul>
+        </div>
+      </div>
+      <div class="tab_con mb10">
+       <table class="table ordertable"  border="0">
+          <thead>
+           <tr>
+            <th>型号</th>
+            <th>品牌</th>
+            <th>香港库存</th>
+            <th>国内库存</th>
+           <!-- <th>BPP库存</th>-->
+            <th>总库存</th>
+            <th>阶梯价格(USD)</th>
+            <th>阶梯价格(RMB)</th>
+            <th>最小起订量</th>
+            <th>最小包装量</th>
+            <th>通用交期</th>
+            <th>香港精确交期</th>
+            <th>国内精确交期</th>
+            <th>产品分类</th>
+            <th>封装</th>
+            <th>包装</th>
+            <th>限制品</th>
+            <th>图片</th>
+            <th>操作</th>
+            </tr>
+            </thead>
+          <tbody>
+            <?php  if(empty($this->product)){?>
+            <tr><td colspan="19"><center>暂无记录。</center></td></tr>
+            <?php }else{
+				 		foreach($this->product as $k=>$data){
+						if($k%2==0) $bg = '';
+						else $bg='class="tablebg"';
+ 				 ?>
+            <tr <?=$bg?>>
+                <td><div class="productNO"><a href="/proddetails?partid=<?=$data['id']?>" target="_blank"><?=$data['part_no']?></a>
+                <?php if($data['staged']) echo '<sup><span title="Date Code：'.$data['datecode'].'" class="sup_SALE HOT">特卖</span></sup>';
+				if($data['pdnpcn']['pdn']) echo '<sup><span class="sup_PDN HOT">PDN</span></sup>';
+				if($data['pdnpcn']['pcn']) echo '<sup><span class="sup_PCN HOT">PCN</span></sup>';
+				if(in_array($data['id'],$this->tongyong)) echo '<sup><span class="sup_TY">通用</span></sup>';
+				?>
+                </div>
+                </td>
+                <td><?=$data['bname']?></td>
+                <td><?=$data['hk_stock']?></td>
+                <td><?=$data['sz_stock']?></td>
+               <!-- <td><?=$data['bpp_stock']?></td>-->
+                <td><?=$data['hk_stock']+$data['sz_stock']+$data['bpp_stock']?></td>
+                <td><?=strtr($data['break_price'],array(';'=>'<br/>'))?></td>
+                <td><?=strtr($data['break_price_rmb'],array(';'=>'<br/>'))?></td>
+                <td><?=$data['moq']?></td>
+                <td><?=$data['mpq']?></td>
+                <td><?=$data['lead_time']?></td>
+                <td><?=$data['lead_time_hk']?></td>
+                <td><?=$data['lead_time_cn']?></td>
+                <td><?=$data['pcname']?></td>
+                <td><?=$data['supplier_device_package']?></td>
+                <td><?=$data['packaging']?></td>
+                <td><?=$data['restricted']==1?'是':'否';?></td>
+                <td><img src="<?php echo ($data['part_img']) ? PRODUCTICON.$data['part_img'] : PRODUCTICON."no.gif" ;?>"  width="50" height="50" alt="img"/></td>
+                <td><a href="<?=$this->editurl.'/id/'.$data['id']?>">编辑</a> <!--| <br/>
+                <a href="<?=$this->editpropertyurl.'/id/'.$data['id']?>">编辑选型</a>-->
+                </td>
+            </tr>
+          <?php }}?>
+          </tbody>
+          
+        </table>
+    <div class="pagination divpage"><?=$this->page_bar;?></div>
+  </div>
+</div>
+</div>
+
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript" language="javascript">
+$(function(){
+	$('#derive').click(function(){
+		$('#myform')[0].action = this.href;
+		$('#myform')[0].target="_blank";
+		$('#myform').submit();
+		return false;
+	});
+	$('#seachsub').click(function(){
+		$('#myform')[0].action = this.href;
+		$('#myform')[0].target ="_self";
+		$('#myform').submit();
+		return false;
+	});
+	
+});
+				
+KindEditor.ready(function(K) {
+			 //datasheet
+			var datasheet_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplod?part=upload/default/datasheet/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/datasheet/'
+			});
+			K('#datasheet_box').click(function() {
+				datasheet_editor.loadPlugin('insertfile', function() {
+					datasheet_editor.plugin.fileDialog({
+						fileUrl : '',
+						clickFn : function(url, title) {
+							datasheet_editor.hideDialog();
+						}
+					});
+				});
+			});		
+			
+			//产品大图
+			var spe_head_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplodimg?part=upload/default/product/big/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/product/big/'
+			});
+			K('#big_box').click(function() {
+				spe_head_editor.loadPlugin('insertfile', function() {
+					spe_head_editor.plugin.fileDialog({
+						fileUrl : '',
+						clickFn : function(url, title) {
+							spe_head_editor.hideDialog();
+						}
+					});
+				});
+			});	
+			
+});
+$('.colorbox').colorbox({ 
+		'width':"60%",
+		'opacity':0.1});
+//查看订单
+function openEdit(){
+	$.openPopupLayer({
+		name: "editBox",
+		url: "<?=$this->editurl.'/id/'.$data['id']?>"
+	});
+}
+	function check(){
+		var partno = document.getElementById('partno').value;
+		if(partno=="") {alert("请填入Part No.！");document.getElementById('partno').focus();return;}
+		else $('#myform').submit();
+	}
+
+	$(document).ready(function() {
+			$("#partno").autocomplete("<?=$this->ajaxtag?>",
+			{
+				delay:5,
+            	minChars:3,
+            	matchSubset:1,
+            	matchContains:1,
+            	cacheLength:10,
+            	onItemSelect:selectItem,
+            	onFindValue:findValue,
+            	formatItem:formatItem,
+            	autoFill:false
+        	}
+    		);
+			});
+			function findValue(li) {
+    			if( li == null ) return alert("No match!");
+				if( !!li.extra ) var sValue = li.extra[0];
+				else var sValue = li.selectValue;
+				}
+			function selectItem(li) { findValue(li);}
+			function formatItem(row) { return row[0];//return row[0] + " (id: " + row[1] + ")"//如果有其他参数调用row[1]，对应输出格式Sparta|896
+			}
+			function lookupAjax(){
+			var oSuggest = $("#partno")[0].autocompleter;
+			oSuggest.findValue();
+			return false;
+			}
+</script>

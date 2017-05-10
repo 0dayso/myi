@@ -1,0 +1,134 @@
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/brand2014.css"/>
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+<script  type="text/javascript">
+//轮转
+    $(function(){
+        var tab = $(".tabbar li");
+        tab.hover(function(){
+            $(this).addClass("selected").siblings().removeClass("selected");		
+            var index = tab.index(this);
+            $(".brandcon").eq(index).show().siblings().hide();	
+        });
+		
+		var tab2 = $(".brandZm_s li");
+        tab2.hover(function(){
+            $(this).addClass("on").siblings().removeClass("on");		
+            var index = tab2.index(this);
+            $(".brand_list_sp").eq(index).show().siblings().hide();
+			if(index==0){
+				$(".brandall_zm").addClass("on");
+			}	
+        });
+     })
+
+	function showbrand(c){
+		$('.boxbrand'+c).show();
+		$("#showli"+c).html('<a href="javascript:;" onclick="hidebrand(\''+c+'\')" title="收起品牌">收起品牌>></a>');
+	}
+	function hidebrand(c){
+		 $('.boxbrand'+c).hide();
+		$("#showli"+c).html('<a href="javascript:;" onclick="showbrand(\''+c+'\')" title="查看更多品牌">查看更多品牌>></a>');
+	}
+</script>
+<div class="w ">
+  <div class="breadcrumbs2013"> <span> <a href="/" class="focs">首页</a> &nbsp;&nbsp;»&nbsp;&nbsp; <span title="">品牌</span> </div>
+</div>
+<div class="w">
+<ul class="tabbar clearfix">
+  <li class="selected"><a href="javascript:">全部品牌<b class="blank3"></b></a></li>
+  <li class=""><a href="javascript:">代理品牌<b class="blank3"></b></a></li>
+</ul>
+<div>
+  <div class="brandcon">
+    <ul class="brandZm ">
+      <li class="brandZm_t">字母查看:</li>
+      <?php foreach($this->allbrand as $c=>$arr){?>
+      <li <?=($c=='其它'?'class="other"':'""')?>><a href="#<?=$c?>">
+        <?=$c?>
+        </a></li>
+      <?php }?>
+    </ul>
+    <div class="brand_list clearfix ">
+      <?php foreach($this->allbrand as $c=>$arr){?>
+      <dl id="<?=$c?>">
+        <dt> <em class="zm_a <?=($c=='其它'?'zm_c':'""')?>"> 
+          <?=$c?>
+          </em> </dt>
+        <dd>
+          <ul>
+            <?php foreach($arr as $k=>$v){
+			if($v['name']!='Other'){
+			
+			   if($v['name'] == "National Semiconductor") { $url = "/pl/TI";}
+			   else {$url = "/pl/".$v['name'];}
+			?>
+            <li class="boxshadow_h boxbrand<?=($k>13?$c:"")?>" style="display:<?=($k>13?"none":"block")?>"> 
+            
+              <a href="<?=$url?><?php if(in_array($v['id'],array(17,13))){echo '?t=1';}?>"  class="brand_list_img logclick"  target="_blank" rev="brand_home" rel="<?=$v['id']?>" title="<?=$v['name']?>"><img src="/images/default/brand/<?=$v['id']?>.png" /><br />
+              </a> <a href="<?=$url?><?php if(in_array($v['id'],array(17,13))){echo '?t=1';}?>" title="<?=$v['name']?>" class="logclick" rev="brand_home" rel="<?=$v['id']?>" target="_blank">
+             <?=$this->fun->utf_substr($v['name'],10)?>
+              </a> 
+              
+            </li>
+              
+            <?php }}?>
+			
+			<?php if(count($arr)>14){?>
+             <li class="boxshadow_h" style="margin-top:30px; color:#000000; font-size:14px;" id="showli<?=$c?>"> <a href="javascript:;" onclick="showbrand('<?=$c?>')" title="查看更多品牌">查看更多品牌>></a></li>
+              <?php }?>
+              
+          </ul>
+        </dd>
+      </dl>
+      <?php }?>
+    </div>
+  </div>
+  <div class="brandcon" style="display:none">
+    <ul class="brandZm brandZm_s">
+      <li class="brandZm_t ">字母搜索:</li>
+      <li class="other on brandall_zm"><a href="">全部</a></li>
+      <?php foreach($this->proxybrand as $c=>$arr){if($c!='其它'){?>
+      <li><a href="#<?=$c?>">
+        <?=$c?>
+        </a></li>
+      <?php }}?>
+    </ul>
+    <div>
+    
+    <div class="brand_list clearfix brand_list_sp">
+      <ul><?php foreach($this->proxyallbrand as $v){?>
+        <li class="boxshadow_h"> 
+        <a href="/pl/<?=$v['name']?><?php if(in_array($v['id'],array(17,13))){echo '?t=1';}?>"  class="brand_list_img logclick"  target="_blank" rev="brand_home" rel="<?=$v['id']?>" title="<?=$v['name']?>"><img src="/images/default/brand/<?=$v['id']?>.png" /><br />
+              </a> <a href="/pl/<?=$v['name']?><?php if(in_array($v['id'],array(17,13))){echo '?t=1';}?>" title="<?=$v['name']?>" class="logclick" rev="brand_home" rel="<?=$v['id']?>" target="_blank">
+              <?=$v['name']?>
+          </a></li>
+		  <?php }?>
+      </ul>
+    </div>
+    
+    <div class="brand_list clearfix brand_list_sp" style="display:none">
+      <ul><?php foreach($this->proxyallbrand as $v){?>
+        <li class="boxshadow_h"> 
+        <a href="/pl/<?=$v['name']?><?php if(in_array($v['id'],array(17,13))){echo '?t=1';}?>"  class="brand_list_img logclick"  target="_blank" rev="brand_home" rel="<?=$v['id']?>" title="<?=$v['name']?>"><img src="/images/default/brand/<?=$v['id']?>.png" /><br />
+              </a> <a href="/pl/<?=$v['name']?><?php if(in_array($v['id'],array(17,13))){echo '?t=1';}?>" title="<?=$v['name']?>" class="logclick" rev="brand_home" rel="<?=$v['id']?>" target="_blank">
+              <?=$v['name']?>
+          </a></li>
+		  <?php }?>
+      </ul>
+    </div>
+    
+    <?php foreach($this->proxybrand as $c=>$arr){?>
+    <div class="brand_list clearfix brand_list_sp" style="display:none">
+      <ul><?php foreach($arr as $v){?>
+        <li class="boxshadow_h"> 
+        <a href="/pl/<?=$v['name']?><?php if(in_array($v['id'],array(17,13))){echo '?t=1';}?>"  class="brand_list_img logclick"  target="_blank" rev="brand_home" rel="<?=$v['id']?>" title="<?=$v['name']?>"><img src="/images/default/brand/<?=$v['id']?>.png" /><br />
+              </a> <a href="/pl/<?=$v['name']?><?php if(in_array($v['id'],array(17,13))){echo '?t=1';}?>" title="<?=$v['name']?>" class="logclick" rev="brand_home" rel="<?=$v['id']?>" target="_blank">
+              <?=$v['name']?>
+          </a></li>
+		  <?php }?>
+      </ul>
+    </div>
+    <?php }?>
+    </div>
+  </div>
+</div>

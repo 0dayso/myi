@@ -1,0 +1,64 @@
+<div class="conmian">
+  <h1><a href="<?=$this->indexurl?>"><?php echo $this->AreaTitle;?></a> -> 添加</h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+                  <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+                  <div id="alert_message"></div>
+                </div>
+
+          <?php if (isset($_SESSION['messages'])&&$_SESSION['messages']) : ?>
+          <div class="alert fade in">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p>
+          </div>
+          <?php endif; ?> 
+<form id="thisform" class="form-horizontal validate-form" style="text-align:left" method="post" action="<?php echo $this->addurl;?>" enctype="multipart/form-data">
+  <div class="control-group">
+    <label class="control-label" for="contents">立即上线</label>
+    <div class="controls">
+     <input type="checkbox" name="status" value="1" <?=$this->processData['status']==1?'checked':''?> >
+    </div>
+  </div>
+<div class="control-group">
+    <label class="control-label" for="contents">logo</label>
+    <div class="controls">
+     <input type="checkbox" name="logbar" value="1" <?=$this->processData['logbar']==1?'checked':''?> >
+    </div>
+  </div>
+   <div class="control-group">
+    <label class="control-label" for="contents">menu</label>
+    <div class="controls">
+     <input type="checkbox" name="menu" value="1" <?=$this->processData['menu']==1?'checked':''?> >
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="title"><em>*</em>标题</label>
+    <div class="controls">
+      <input type="text" id="title" name="title" class="required" style="width:500px;" title="required" value="<?=$this->processData['title']?>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="author">Head Title</label>
+    <div class="controls">
+      <textarea name="headtitle" id="headtitle" rows="3"><?=$this->processData['headtitle']?></textarea>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="source">Description</label>
+    <div class="controls">
+       <textarea name="description" id="description" rows="3"><?=$this->processData['description']?></textarea>
+    </div>
+  </div>  
+  <div class="control-group">
+    <label class="control-label" for="source">Keywords</label>
+    <div class="controls">
+     <textarea name="keywords" id="keywords" rows="3"><?=$this->processData['keywords']?></textarea>
+    </div>
+  </div>  
+  <div class="control-group">
+    <div class="controls">
+      <input type="submit" value="添加" class="btn" />
+    </div>
+  </div>
+</form>
+      <!-- 结束区域-->
+</div>

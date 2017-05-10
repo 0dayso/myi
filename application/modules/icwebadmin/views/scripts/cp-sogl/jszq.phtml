@@ -1,0 +1,100 @@
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<div class="conmian">
+  <h1><a href="<?=$this->indexurl?>"><?php echo $this->AreaTitle;?></a> -> <?=$this->processData['title']?> -> 技术支持 | <a href="/icwebadmin/CpSogl/cgal/id/<?=$this->processData['id']?>">成功案例</a> | <a href="/icwebadmin/CpSogl/sjwd/id/<?=$this->processData['id']?>">设计文档</a></h1>
+<div id="message_sess" style="display:none" class="message_sess">
+                  <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+                  <div id="alert_message"></div>
+                </div>
+<?php if (isset($_SESSION['messages'])) : ?>
+          <div class="alert fade in">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p>
+          </div>
+ <?php endif; ?>
+<form class="form-horizontal form-validate" style="text-align:left" method="post" action="" enctype="multipart/form-data">
+           <input type="hidden" name="solid" value="<?=$this->processData['id']?>" />
+           <br/>
+                <table cellpadding="0" cellspacing="0" border="0" class="table" style="width:800px;" id="SignFrame">
+                <thead>
+                  <tr id="trHeader">
+                    <th width="200">姓名</th>
+                    <th width="300">职位</th>
+                    <th width="50"><a href="javascript:;" class="gbqfb" onclick="AddSignRow()">添加技术支持</a></th>
+                    <input name='txtTRLastIndex' type='hidden' id='txtTRLastIndex' value="<?=count($this->jszq)?>" />
+                  </tr>
+                </thead>
+                <tbody>
+                <?php foreach($this->jszq as $k=>$v){?>
+                  <tr id="SignItem<?=($k)?>">
+                    <td><input type="hidden" name="engineer_id[]" id="engineer_id_<?=$k?>" value="<?=$v['engineer_id']?>"/>
+					<span id="name_<?=$k?>"><?=$v['name']?></span> 
+                    &nbsp;<a href="javascript:;" onclick="openbox('/icwebadmin/CpSogl/engineer?id=<?=$k?>')">选择&gt;&gt;</a></td>
+                    <td><span id="office_<?=$k?>"><?=$v['office']?></span> </td>
+                    <td><a href='javascript:;' class='gbqfb' onclick="DeleteSignRow('SignItem<?=($k)?>')">删除</a></td>
+                  </tr>
+                   <?php }?>
+                </tbody>
+              </table>
+            <div class="control-group">
+              <div class="controls">
+                <input type="submit" class="btn" value="更 新">
+              </div>
+            </div>
+          </form>
+          <br>
+          <!-- 结束区域-->
+</div>
+<script language="javascript">// Example: obj = findObj("image1");
+function findObj(theObj, theDoc)
+{ 
+   var p, i, foundObj; 
+   if(!theDoc) theDoc = document; 
+   if( (p = theObj.indexOf("?")) > 0 && parent.frames.length) 
+   {    
+       theDoc = parent.frames[theObj.substring(p+1)].document;
+	   theObj = theObj.substring(0,p); 
+   } 
+   if(!(foundObj = theDoc[theObj]) && theDoc.all) foundObj = theDoc.all[theObj]; 
+   for (i=0; !foundObj && i < theDoc.forms.length; i++)
+   foundObj = theDoc.forms[i][theObj]; 
+   for(i=0; !foundObj && theDoc.layers && i < theDoc.layers.length; i++) 
+	 foundObj = findObj(theObj,theDoc.layers[i].document); 
+   if(!foundObj && document.getElementById) 
+   foundObj = document.getElementById(theObj);    
+   return foundObj;
+}
+//添加一个参与人填写行
+function AddSignRow(){ //读取最后一行的行号，存放在txtTRLastIndex文本框中 
+   var txtTRLastIndex = findObj("txtTRLastIndex",document);
+   var rowID = parseInt(txtTRLastIndex.value);
+   var signFrame = findObj("SignFrame",document);
+   //添加行
+   var newTR = signFrame.insertRow(signFrame.rows.length);
+   newTR.id = "SignItem" + rowID;
+   //添加列:型号
+   var newNameTD=newTR.insertCell(0);
+   newNameTD.innerHTML = '<input type="hidden" name="engineer_id[]" id="engineer_id_'+rowID+'"/><span id="name_'+rowID+'"></span> &nbsp;<a href="javascript:;" onclick="openbox(\'/icwebadmin/CpSogl/engineer?id='+rowID+'\')">选择&gt;&gt;</a>';
+   
+   //添加列:品牌(产品线)
+   var newNameTD=newTR.insertCell(1);
+   newNameTD.innerHTML = '<span id="office_'+rowID+'"></span>';
+ 
+   //添加列:删除按钮
+   var newDeleteTD=newTR.insertCell(2);
+   //添加列内容
+   newDeleteTD.innerHTML = "<a href='javascript:;' class='gbqfb' onclick=\"DeleteSignRow('SignItem" + rowID + "')\">删除</a>";
+   //将行号推进下一行
+   txtTRLastIndex.value = (rowID + 1).toString() ;
+}
+//删除指定行
+function DeleteSignRow(rowid){
+  var signFrame = findObj("SignFrame",document);
+  var signItem = findObj(rowid,document);
+  //获取将要删除的行的Index
+  var rowIndex = signItem.rowIndex;
+  //删除指定Index的行
+  signFrame.deleteRow(rowIndex);
+}
+</script>

@@ -1,0 +1,156 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)) {?>
+                  <a href="#add" onClick="openadd()"><font color="#CCCCCC">添加+</font></a></b></font>
+                  <?php }?></h1>
+<div id="message_sess" style="display:none" class="message_sess"> <span title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</span> <span id="alert_message"></span> </div></td>
+       
+      <!-- 需要填写的区域-->
+      <table width="870" border="0" cellspacing="0" cellpadding="0">
+        <tr bgcolor="99FFFF">
+          <td height="29" align="left" bgcolor="#FFFFFF"><table width="99%" border="0" cellspacing="2" cellpadding="2">
+              <tr>
+                <td height="10">&nbsp;</td>
+              </tr>
+              <?php
+					$i = 0;
+			        foreach($this->staffall as $data){
+					  $Status  = $data['status'];
+					  if($Status == 1){
+				         $ID_temp       = $data['staff_id'];
+				         $Dp_ID         =$data['department_id'];
+				         $FirstName     = $data['firstname'];
+				         $LastName      = $data['lastname'];
+				         if($i%5==0) echo "<tr>";
+			        ?>
+              <?php if($ID_temp && $Status){?>
+              <td><div id="<?=$ID_temp?>"> 
+              <a href="#"  title="点击查看" onclick="showMainInfo('<?=$ID_temp?>')"><font color="#334159">
+                    <?="($Dp_ID) ".$LastName.$FirstName." ".$ID_temp;?>
+                    </font></a></div></td>
+                <?php $i++;} 
+						  }
+						}
+						?>
+              </tr>
+            </table>
+            <a id='hrefa1' href="#" onclick="displaydiv();return false;">以下用户已经被屏蔽，点击显示/隐藏>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>></a>
+            <div id="noctivstaff" style="display:none;">
+              <table width="99%" border="0" cellspacing="2" cellpadding="2">
+                <?php
+			$NoActivStaff_tmp=array();
+			$i = 0;
+			foreach($this->staffall as $data){
+			   $Status  = $data['status'];
+			   if($Status != 1){
+				$ID_temp    = $data['staff_id'];
+				$Dp_ID         =$data['department_id'];
+				$FirstName  = $data['firstname'];
+				$LastName   = $data['lastname'];
+				$NoActivStaff_tmp[] = $ID_temp;
+				if($i%5==0) echo "<tr>";
+			  ?>
+                <?php if($ID_temp && !$Status){?>
+                    <td><div id="<?=$ID_temp?>"  style="float:left">
+                    <a href="#"  title="点击查看" onclick="showMainInfo('<?=$ID_temp?>')"><font color="#999999"><?="($Dp_ID) ".$LastName.$FirstName." ".$ID_temp;;?></font></a></div></td>
+                    <?php $i++;} } }?>
+                </tr>
+              </table>
+            </div></td>
+        </tr>
+        <tr>
+          <td height="10">&nbsp;</td>
+        </tr>
+        <tr>
+          <td><div id="MainInfo" style="text-align:center"></div></td>
+        </tr>
+        <tr height="50px"><td>&nbsp;</td></tr>
+      </table>
+      <!-- 结束区域-->
+</div>
+<input type="hidden" id="oldID" value="<?php echo $_SESSION['staff_sess']['staff_id']?>"/>
+<script type="text/javascript" language="javascript">
+function openadd()
+{
+	$.openPopupLayer({
+        name:'addBox',
+        url:'<?php echo $this->addurl;?>'
+    });
+}
+function openeditinfo(ID)
+{
+	$.openPopupLayer({
+        name:'editBox',
+        url:'<?php echo $this->editinfourl;?>'+'?ID='+ID
+    });
+}
+function openeditapp(ID)
+{
+	$.openPopupLayer({
+        name:'editBox',
+        url:'<?php echo $this->editappurl;?>'+'?ID='+ID
+    });
+}
+function openeditrule(ID)
+{
+	$.openPopupLayer({
+        name:'editBox',
+        url:'<?php echo $this->editruleurl;?>'+'?ID='+ID
+    });
+}
+function displaydiv()
+{
+  $("#noctivstaff").slideToggle();
+ 
+}
+<?php if(in_array($ChooseID,$NoActivStaff_tmp)) echo "displaydiv();";?>
+function showMainInfo(ID)
+{
+	choose(ID);
+	document.getElementById("oldID").value=ID;
+	document.getElementById("MainInfo").innerHTML='<img src="/images/admin/ajax-loader.gif"/>';
+	$.ajax({
+         url: '<?php echo $this->getinfourl;?>',
+         data: {'Staff_ID':ID},
+         type: 'post',
+         dataType: 'html',
+         success: function(arr) {
+			 document.getElementById("MainInfo").innerHTML=arr;
+         }
+	});
+}
+function choose(ID)
+{
+	var oldID=document.getElementById("oldID").value;
+	document.getElementById(oldID).style.background="#FFFFFF";
+	document.getElementById(ID).style.background="#FFFF00";
+}
+showMainInfo('<?php echo $_SESSION['staff_sess']['staff_id'];?>');
+
+function editappaction(staffid)
+{
+	var app_ruleobj = document.getElementsByName("app_rule");
+	var app_rule = new Array();
+	for (i=0;i<app_ruleobj.length;i++)
+	{
+		
+		if(app_ruleobj[i].checked){
+		   app_rule[i] = app_ruleobj[i].value;
+    	}
+	}
+	$.ajax({
+            url: '<?php echo $this->editappurl;?>',
+            data: {'app_rule':app_rule,'staffid':staffid},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) { 
+			    alert(arr.message);
+            	if(arr.code == 0)
+                {
+                    showMainInfo(staffid);
+					$.closePopupLayer('editBox');
+                }
+            }
+	});
+}
+
+</script>

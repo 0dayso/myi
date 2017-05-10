@@ -1,0 +1,65 @@
+<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?></h1>
+		<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+      <div class="fr u_right">
+      <div class="tab_con mb10">
+       <table class="table ordertable"  border="0">
+          <thead>
+           <tr>
+            <th>OA产品线</th>
+            <th>物料号</th>
+            <th>物料类型</th>
+            <th>库存</th>
+            <th>地区</th>
+            <th>货币</th>
+            <th>平均价</th>
+            <th>建议售价</th>
+            <th>利润率</th>
+            <th>IC易站型号</th>
+            <th>IC易站产品线</th>
+            <th>IC易站阶梯价(USD)</th>
+            <th>IC易站阶梯价(RMB)</th>
+            <th>MOQ</th>
+            <th>MPQ</th>
+            </tr>
+            </thead>
+          <tbody>
+            <?php  if(empty($this->product)){?>
+            <tr><td colspan="19"><center>暂无记录。</center></td></tr>
+            <?php }else{
+				 		foreach($this->product as $k=>$data){
+						if($k%2==0) $bg = '';
+						else $bg='class="tablebg"';
+ 				 ?>
+            <tr <?=$bg?>>
+                <td><?=$data['productline']?></td>
+                <td><?=$data['material']?></td>
+                <td><?=$data['group_type']?></td>
+                <td><?=$data['qty']?></td>
+                <td><?=$data['area_identity']?></td>
+                <td><font color="#FF0000"><?=$data['currency']?></font></td>
+                <td><?=$data['avg_price']?></td>
+                <td><font color="#006600"><?=$data['suggestedprice']?></font></td>
+                <td><?=$data['margin']?>%</td>
+                
+                <td><a href="/proddetails?partid=<?=$data['partid']?>" target="_blank"><?=$data['part_no']?></a></td>
+                <td><?=$data['brandname']?></td>
+                <td><?=$data['break_price']?></td>
+                <td><?=$data['break_price_rmb']?></td>
+                <td><?=$data['moq']?></td>
+                <td><?=$data['mpq']?></td>
+            </tr>
+          <?php }}?>
+          </tbody>
+          
+        </table>
+    <div class="pagination divpage"><?=$this->page_bar;?></div>
+  </div>
+</div>
+      
+      <!-- 结束区域-->
+	</div>

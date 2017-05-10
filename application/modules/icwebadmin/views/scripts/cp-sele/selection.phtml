@@ -1,0 +1,131 @@
+<div class="conmian">
+  <h1><a href="<?=$this->indexurl;?>"><?php echo $this->AreaTitle;?></a> -> 选型：<?=$this->category['name']?></h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  <h3><a href="<?=$this->indexurl?>/editcategoryproperty/cid/<?=$this->category['id']?>">+编辑产品分类与属性关系</a></h3>
+  <form name="selection_form" method="get" action="<?=$this->selectionurl?>/cid/<?=$this->category['id']?>">
+    <input type="hidden" name="cid" value="<?=$this->category['id']?>" />
+     <table>
+      <tbody>
+        <tr>
+          <td><table id="tb1" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td><table class="bottom" cellspacing="0" border="0" style="border-collapse:collapse;">
+                      <tbody>
+                        <tr>
+                          <td><table cellpadding="0" cellspacing="0">
+                              <tbody>
+                                <tr>
+                                  <?php for($i=0;$i<count($this->propertycategory);$i++){
+								     $pc_arr = $this->propertycategory[$i];
+								  ?>	
+                                  <td>
+                                  <table>
+                                      <tbody>
+                                        <tr>
+                                          <td><b id="property_<?=$pc_arr['pid']?>"><?=$pc_arr['cname']?></b></td>
+                                        </tr>
+                                        <tr>
+                                          <td><select size="7" name="pc[<?=$pc_arr['pid']?>]" id="pc_<?=$pc_arr['pid']?>">
+                                          	  <?php foreach($pc_arr['property_value'] as $pv_arr){?>
+                                              <option value="<?=$pv_arr['id']?>" <?=($this->pc_name[$pc_arr['pid']]==$pv_arr['id']?'selected="selected"':'')?>><?=$pv_arr['value']?></option>
+                                              <?php }?>
+                                            </select>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td><a title="点击以删除列表中的选项。" href="javascript:;" onclick="resetone('<?=$pc_arr['pid']?>')">重置</a> </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    </td>
+                                  <td valign="bottom" style="width: 15px;">&nbsp;</td>
+                                  <?php }?>
+                                </tr>
+                              </tbody>
+                            </table></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table class="ApplyFilter">
+                      <tbody>
+                        <tr>
+                          <td><input type="button" onclick="resetall()" value="重置全部" class="btn">
+                            &nbsp;&nbsp; </td>
+                          <td><input type="submit" value="应用过滤器"  class="btn">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table></td>
+                </tr>
+              </tbody>
+            </table></td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+  <br/>
+  <table class="table ordertable"  border="0">
+          <thead>
+           <tr>
+            <th>型号</th>
+            <th>阶梯价格(USD)</th>
+            <th>阶梯价格(RMB)</th>
+            <th>最小起订量</th>
+            <th>最小包装量</th>
+            <th>封装</th>
+            <th>包装</th>
+            <?php for($i=0;$i<count($this->propertycategory);$i++){
+			    $pc_arr = $this->propertycategory[$i];
+			 	echo "<th>".$pc_arr['cname']."</th>";
+			 }
+			?>	                    
+            </tr>
+            </thead>
+          <tbody>
+            <?php  if(empty($this->product)){?>
+            <tr><td colspan="19"><center>暂无记录。</center></td></tr>
+            <?php }else{
+				 		foreach($this->product as $k=>$data){
+						if($k%2==0) $bg = '#EFEFEF';
+						else $bg='';
+ 				 ?>
+            <tr bgcolor="<?=$bg?>">
+                <td><a href="/icwebadmin/CpCpgl/editproperty/id/<?=$data['id']?>" title="编辑选型" target="_blank"><?=$data['part_no']?></a></td>
+                <td><?=strtr($data['break_price'],array(';'=>'<br/>'))?></td>
+                <td><?=strtr($data['break_price_rmb'],array(';'=>'<br/>'))?></td>
+                <td><?=$data['moq']?></td>
+                <td><?=$data['mpq']?></td>
+                <td><?=$data['supplier_device_package']?></td>
+                <td><?=$data['packaging']?></td>
+                 <?php for($i=0;$i<count($this->propertycategory);$i++){
+			         $pc_arr = $this->propertycategory[$i];
+			 	     echo "<td>";
+					 foreach($data['property_array'] as $parr){
+					 	if($parr['property_id']==$pc_arr['pid']) echo $parr['value'];
+					 }
+					 echo "</td>";
+			     }?>
+            </tr>
+          <?php }}?>
+          </tbody>
+          
+        </table>
+    <div class="pagination divpage"><?=$this->page_bar;?></div>
+  <!-- 结束区域-->
+</div>
+<script type="text/javascript" language="javascript">
+function resetone($pid)
+{
+    var pc_obj = document.getElementById("pc_"+$pid);
+	for(i=0;i<pc_obj.length;i++){pc_obj.options[i].selected=false}
+}
+function resetall($pid)
+{
+   $("select>option").attr("selected",false);
+}
+</script>

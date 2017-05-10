@@ -1,0 +1,75 @@
+<?php echo $this->render('jifen/menu.phtml');?>
+<!-------------------------------------------------活动主体------------------------------------------------->
+<div class="con-full pos-re">
+	<div class="w">
+    	<div class="breadcrumbs"> <span>您当前的位置：</span><a href="/jifen">积分商城首页</a>&nbsp;&nbsp;»&nbsp;&nbsp;<span class="on">积分礼品</span></div>
+    </div>
+    <?php if($this->in=='0-'.$this->myscore){?>
+     <div class="w">
+    	<div class="jflist_m"><h2>我能兑换的礼品</h2><span>(<?=$this->total?>)</span></div>
+    </div>
+    <?php }?>
+<div class="w jifenlist" >
+	<div class="clearfix levler">
+      <p class="fl">
+      <strong class="font14">积分分段：</strong>
+      <span><a href="/jifen/list?in=0-10000" <?=($this->in=='0-10000'?'class="on"':'')?>>0-10000</a></span>
+      <span><a href="/jifen/list?in=10000-50000" <?=($this->in=='10000-50000'?'class="on"':'')?>>10000-50000</a></span>
+      <span class="noborder"><a href="/jifen/list?in=50000-" <?=($this->in=='50000-'?'class="on"':'')?>>50000以上</a></span>
+      </p>
+      <?php if(isset($_SESSION['userInfo']['unameSession'])){?>
+      <div class="fr"><a href="/jifen/list?in=0-<?=$this->myscore?>" onclick="return check_jf();">查看我能兑换的礼品&gt;&gt;</a></div>
+      <?php }?>
+    </div>	
+	<div class=" clearfix sort">
+    	<?php if($this->sortstr_1=='2_0_0') $ico_1 = '<i class="up"></i>';
+		  else $ico_1 = '<i class="down"></i>';
+		  if($this->sortstr_2=='0_2_0') $ico_2 = '<i class="up"></i>';
+		  else $ico_2 = '<i class="down"></i>';
+		  if($this->sortstr_3=='0_0_2') $ico_3 = '<i class="up"></i>';
+		  else $ico_3 = '<i class="down"></i>';
+	    ?>
+        <div class="fl"><p class="fl">排序：</p>
+        <span><a href="/jifen/list?sort=<?=$this->sortstr_1?>" class="gbqfb jifenb">时间<?=$ico_1?></a></span>
+        <span><a href="/jifen/list?sort=<?=$this->sortstr_2?>" class="gbqfb jifenb">积分<?=$ico_2?></a></span>
+        <span><a href="/jifen/list?sort=<?=$this->sortstr_3?>" class="gbqfb jifenb">库存<?=$ico_3?></a></span></div>
+        <div class="fr ">共<span><a><?=$this->total?></a></span>个积分礼品</div>
+
+    </div>
+    <div class="jfhomebox clearfix pos-re">
+    	<ul class="shop_lastest clearfix"  >
+        		<?php foreach($this->allgift as $k=>$v){?>
+                <li class="s1_mod" data-hover="s1_mod_hover" >
+                	<div class="s1_mod_c">
+                    <div class="s1_pic">
+                        <img src="/upload/default/gift/<?=$v['images']?>"  width="309" height="255" >
+                    </div>
+                    <div class="s1_info">
+                    	<span class="s1_info_name clearfix fl"><?=$v['name']?></span>
+                        <span class="s1_info_jifen clearfix fl">
+                        	<span>换购积分：</span><span class="font20 fontbold"><?=$v['score']?></span><br />
+                        	<del>市场价：¥<?=number_format($v['market_price'],2)?></del>
+                        </span>
+                        <span class="s1_info_btn clearfix fl">
+                        <?php if($this->myscore<$v['score'] && isset($_SESSION['userInfo']['unameSession'])){?>
+                        <a href="javascript:;" onClick="openbox('/jifen/alertbox?t=noscore')" class="font20" >立即兑换</a>
+						<?php }else{?>
+                        <a href="javascript:;" onClick="exchange('<?=$v['id']?>')" class="font20" >立即兑换</a>
+                        <?php }?>
+                        </span>
+                    </div>
+                    <?php if($k<2) echo '<div class="s1_new"></div>';
+					else echo '<div class="s1_tuijian"></div>';?>
+                    </div>
+                    <div class="sl_shadow"></div>
+                </li>
+                <?php }?>
+            </ul>      
+	</div>
+	<div class="clr"></div>
+	<div class="page_box">
+    <div class="page clearfix"><?=$this->page_bar?></div>
+    </div>
+</div>    
+
+</div>

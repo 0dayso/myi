@@ -1,0 +1,72 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 被屏蔽的用户 <a href="<?=$this->indexurl?>">返回&gt;&gt;</a></h1>
+
+  <div class="contentmia">
+   <div id="message_sess" style="display:none" class="message_sess">
+              <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+              <div id="alert_message"></div>
+            </div>
+    <table width="100%" cellpadding="1" border="1" class="producttable table">
+      <thead>
+        <tr>
+        <th>用户名</th>
+                <th>姓名</th>
+                <th>邮箱</th>
+                <th>公司名称</th>
+                <th>公司性质</th>
+                <th>公司电话</th>
+                <th>公司传真</th> 
+                <th>详细地址</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      	<?php
+			  	  if(!empty($this->user)){
+                	 foreach ($this->user as $k=>$data){
+					    $annex_part = '/'.COM_ANNEX.$data['uid'].'/';
+						$property_tmp = array('enduser'=>'终端用户','merchant'=>'贸易商');
+
+						echo "<tr>";
+						echo "<td>".$data['uname']."</td>";
+						echo "<td>".$data['truename']."</td>";
+						echo "<td>".$data['email']."</td>";
+						echo "<td>".$data['companyname']."</td>";
+						echo "<td>".$property_tmp[$data['property']]."</td>";
+						echo "<td>".$data['tel']."</td>";
+						echo "<td>".$data['fax']."</td>";
+						echo "<td>".$data['province'].$data['city'].$data['area'].$data['address']."</td>";
+						echo '<td><a href="javascript:;" onclick="shield(\''.$data['uid'].'\',\''.$data['uname'].'\')">开启</a></td>';
+					    echo "</tr>";
+				    }
+				   }
+	            ?>
+      </tbody>
+    </table>
+    <div class="pagination">
+        <?=$this->page_bar;?>
+      </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+function shield(uid,uname)
+{
+   if(confirm('你确定开启此用户："'+uname+'" 吗？'))
+   {
+	 $.ajax({
+            url: '<?php echo $this->shieldurl;?>',
+            data: {'uid':uid,'type':'open'},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    document.getElementById('message_sess').style.display = "block";
+	            document.getElementById('alert_message').innerHTML = arr.message;
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+   }
+}
+</script>

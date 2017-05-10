@@ -1,0 +1,47 @@
+ <?php if(count($this->items) < 1){?>
+ <div class="hoverbox2013_tip boxshadow ">购物车中还没有商品，赶紧选购吧!</div>
+ <?php }else{?>
+<div class="hoverbox2013 boxshadow ">
+  <table border="0" cellpadding="0" cellspacing="0" class="hoverbox_table2013" >
+    <tbody>
+      <tr>
+        <th width="140" align="center">型号</th>
+        <th width="80" align="center">品牌</th>
+        <th width="40" align="center">数量</th>
+        <th width="50" align="center">单价</th>
+        <th width="70" align="center">小计</th>
+        <th width="40" align="center">&nbsp;</th>
+      </tr>
+    </tbody>
+  </table>
+  <div class="hoverbox2013_tablecon ">
+    <table border="0" cellpadding="0" cellspacing="0" class="hoverbox_table2013">
+      <tbody>
+       <?php
+			foreach($this->items as $item){
+				if(is_array($item)){
+			?>
+      <tr>
+        <td width="140">
+            <p><a href="/item-0-0-<?=$item['pord_id'];?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank" class="model"><?=$item['part_no'];?></a></p>
+          </td>
+        <td width="80"><?=$item['options']['brand'];?></td>
+        <td width="40"><?=$item['qty'];?></td>
+        <td width="50"><?=$item['unit'].number_format($item['byprice'],DECIMAL);?></td>
+        <td width="70"><?=$item['unit'].number_format($item['qty']*$item['byprice'],DECIMAL);?></td>
+        <td width="40"><a href="javascript:" onclick="delectcart('<?=$item['rowid']?>')"  class="fblue">删除</a></td>
+      </tr>
+      <?php }//end if(is_array($item))
+		 }//end foreach
+	  ?>
+      </tbody>
+    </table>
+  </div>
+  <div class="bottomtable ">
+    <p>共<b class="fontred"><?=count($this->items)?></b>件产品 <a  href="/cart" class="btnok-new">去结算</a></p>
+  </div>
+</div>
+<?php }?>
+<script type="text/javascript">
+$(".cartnumber").html('<?=count($this->items)?>');
+</script>

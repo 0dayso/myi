@@ -1,0 +1,151 @@
+<?php
+$annexur_part = COM_ANNEX.$this->soinfo['uid'].'/';
+$annexurl = $annexur_part.$this->soinfo['annex1'];
+$annexurl2= $annexur_part.$this->soinfo['annex2'];
+?>
+<div id="myHiddenDiv">
+  <div class="popup" style="width:770px;">
+    <div class="popup-header">
+    <h2>添加订单发票：</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box2');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+     <!-- 需要填写的区域-->
+       <table border="0" cellpadding="1" width="770px" style="font-weight:bold"> 
+       <tr height="50"><td align="right" width="270">发票类型：</td>
+       <td width="100"><label><input type="radio" value="2" name="invoicetype" checked  class="invoicetype"/>增值税发票</label></td>
+       <td><label><input type="radio" value="1" name="invoicetype" class="invoicetype"/>普通发票</label></td></tr>
+       </table>
+      <table border="0" cellpadding="1" width="770px" class="invoice_2"> 
+        <tr height="35px">
+          <td align="right" width="270">单位名称：</td>
+          <td><input type="text" id="dwname" name="dwname" style="width:250px"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">纳税人识别号：</td>
+          <td><input type="text" id="identifier" name="identifier" style="width:250px"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">注册地址：</td>
+          <td><input type="text" id="regaddress" name="regaddress" style="width:250px"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">注册电话：</td>
+          <td><input type="text" id="regphone" name="regphone" style="width:250px"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">开户银行：</td>
+          <td><input type="text" id="bank" name="bank" style="width:250px"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">银行帐户：</td>
+          <td><input type="text" id="account" name="account" style="width:250px"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">营业执照：</td>
+          <td><span class="annex1">
+		  <?php if(file_exists($annexurl) && $this->soinfo['annex1']){?>
+           已经存在，<a href="<?='/'.$annexurl?>" target="_blank" title="查看">查看</a>
+		    | <a  href="javascript:;" onclick="openbox('/icwebadmin/UsUsgl/uploadannex/uid/<?=$this->soinfo['uid']?>')">修改</a>
+		   <?php }else{?>
+           <a class="gbqfb" href="javascript:;" onclick="openbox('/icwebadmin/UsUsgl/uploadannex/uid/<?=$this->soinfo['uid']?>')">添加</a>
+           <?php }?></span></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">税务登记证：</td>
+          <td><span class="annex2">
+		  <?php if(file_exists($annexurl2) && $this->soinfo['annex2']){?>
+          已经存在，<a href="<?='/'.$annexurl2?>" target="_blank" title="查看">查看</a>
+		   | <a  href="javascript:;" onclick="openbox('/icwebadmin/UsUsgl/uploadannex/uid/<?=$this->soinfo['uid']?>')">修改</a>
+		   <?php }else{?>
+           <a class="gbqfb" href="javascript:;" onclick="openbox('/icwebadmin/UsUsgl/uploadannex/uid/<?=$this->soinfo['uid']?>')">添加</a>
+           <?php }?></span></td>
+        </tr>
+      </table>
+      <table border="0" cellpadding="1" width="770px" class="invoice_1" style="display:none;"> 
+      <tr height="35px">
+          <td align="right" width="270">发票抬头：</td>
+          <td><input type="text" value="<?=$this->invoice['name']?>" id="taitouname" name="taitouname" style="width:250px"></td>
+        </tr>
+        <tr height="35px">
+          <td align="right">发票内容：</td>
+          <td><label><input type="radio" name="contype" value="1" >明细</label>
+              <label><input type="radio" name="contype" value="2" >电子元件</label>
+              <label><input type="radio" name="contype" value="3" >耗材</label></td>
+        </tr>
+      </table>
+      <table border="0" cellpadding="1" width="770px"> 
+      <tr>
+          <td align="center"><span id="baojiabtn"><input type="button"  class="btnabig"  value="确认添加" onclick="addinvoice()"/></span></td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script language="javascript">
+$(function(){
+		 $(".invoicetype").click(function(){
+			if(this.value=='2')
+			{
+				$(".invoice_2").css("display","block");
+				$(".invoice_1").css("display","none");
+			}else if(this.value=='1')
+			{
+				$(".invoice_2").css("display","none");
+				$(".invoice_1").css("display","block");
+			}
+        });
+
+})
+function addinvoice(){
+    var type = 2;
+	var invoicetype_obj = document.getElementsByName("invoicetype");
+	for (var i=invoicetype_obj.length-1;i>=0;i--){
+		  if(invoicetype_obj[i].checked)  type = invoicetype_obj[i].value;
+    }
+	var taitouname = '';
+	var contype  ='';
+	var dwname ='';
+	var identifier = '';
+	var regaddress = '';
+	var regphone = '';
+	var bank = '';
+	var account = '';
+	if(type==1){
+		taitouname = document.getElementById('taitouname').value;
+		var contype_obj = document.getElementsByName("contype");
+	    for (var i=contype_obj.length-1;i>=0;i--)
+	    {
+		    if(contype_obj[i].checked)  contype = contype_obj[i].value;
+        }
+		if(taitouname==''){alert('请填写发票抬头');return;}
+		if(contype==''){alert('请选择发票内容');return;}
+	}else if(type==2){
+	    dwname = document.getElementById('dwname').value;
+		if(dwname==''){alert('请填写单位名称');return;}
+		identifier = document.getElementById('identifier').value;
+		if(identifier==''){alert('请填写纳税人识别号');return;}
+		regaddress = document.getElementById('regaddress').value;
+		if(regaddress==''){alert('请填写注册地址');return;}
+		regphone = document.getElementById('regphone').value;
+		if(regphone==''){alert('请填写注册电话');return;}
+		bank = document.getElementById('bank').value;
+		if(bank==''){alert('请填写开户银行');return;}
+		account = document.getElementById('account').value;
+		if(account==''){alert('请填写银行帐户');return;}
+	}else {alert('发票信息错误');return;}
+	var subtmp = document.getElementById("baojiabtn");
+	subtmp.innerHTML = '<input type="button" class="btnabig" value="提交中..."/>';
+	$.ajax({
+            url: '<?=$this->indexurl?>/addinvoice',
+            data: {'salesnumber':'<?=$this->soinfo['salesnumber']?>','type':type,'taitouname':taitouname,'taitouname':taitouname,'contype':contype,'dwname':dwname,'identifier':identifier,'regaddress':regaddress,'regphone':regphone,'bank':bank,'account':account},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+				alert(arr.message);
+				if(arr.code == 0) {location.reload();}
+				subtmp.innerHTML = '<input type="button"  class="btnabig"  value="确认添加" onclick="addinvoice()"/>';
+            }
+	});
+}
+</script>

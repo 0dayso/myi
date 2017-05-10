@@ -1,0 +1,239 @@
+<!--拆分产品Item-->
+<div class="pop pop_inquiry" style="width:500px">
+  <div class="popbox">
+    <div class="poptit"> <span class="titbg1ts">分批发货计划</span>
+      <input type="button" title="关闭" class="closebtn" onclick="$.closePopupLayer('splititem');">
+    </div>
+    <div class="popcon clearfix">
+        <p>型号：<b><?=$this->partarray['part_no']?></b>
+        &nbsp;&nbsp;&nbsp;&nbsp;标准包装：<b><?=$this->partarray['mpq']?$this->partarray['mpq']:'--'?></b>
+        &nbsp;&nbsp;&nbsp;&nbsp;总购买数量：<b><?=$this->buynum?></b></p>
+        <p style="color:#F5780C; height:25px; vertical-align:middle;">提示：计划数量必须为标准包装的整数倍</p>
+        <table border="0" cellpadding="0" cellspacing="0" id="SignFrame"  width="100%" class="table">
+        <tr id="trHeader">
+          <th width="50">序号</th>
+          <th width="150"><em>*</em>计划数量</th>
+          <th width="150"><em>*</em>需求日期</th>
+          <th width="100" align="center">
+          <span id="addsignrow_span"><a href="javascript:;" onClick="AddSignRow()" class="abutton">添加计划+</a></span>
+          <input name='txtTRLastIndex' type='hidden' id='txtTRLastIndex' value="2"/></th>
+        </tr>
+        <tr id="SignItem1"><td>1</td>
+        <td>
+        <input type="hidden" name="all_buynum" id="all_buynum" value="<?=$this->buynum?>"/>
+        <span id="all_buynum_show"><?=$this->buynum?></span></td>
+        <td><input type="text" title="点击选择日期" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" style="width:100px;" name="needs_time_split"></td>
+        <td>&nbsp;</td></tr>
+       </table>
+       <p class="spbbtndiv" style="text-align:center;">
+       <br/><input type="button" onclick="splitOK()" class="button bigbutton" value="确 定">
+       </p>
+     </div>
+  </div>
+</div>
+<script type="text/javascript">
+//标准包装数
+var mpq = <?=$this->partarray['mpq']?$this->partarray['mpq']:0?>;
+function buynumber_change(obj,id){
+    var num = obj.value;
+	var all_buynum =  parseInt($("#all_buynum").val());
+    if(num){ 
+	  if(num>=all_buynum){
+	      alert('计划数量不能大于数量：'+all_buynum);
+		  obj.value = '';
+		  $("#all_buynum_show").html(all_buynum);
+		  return;
+	  }else{
+	    var surplus_number = parseInt(all_buynum) - parseInt(num);
+	    $("#all_buynum_show").html(surplus_number);
+	  }
+	}else{
+	   $("#all_buynum_show").html(all_buynum);
+	}
+}
+//添加一个参与人填写行
+function AddSignRow(){ 
+   //读取最后一行的行号，存放在txtTRLastIndex文本框中
+   var txtTRLastIndex = findObj("txtTRLastIndex",document);
+   var rowID = parseInt(txtTRLastIndex.value);
+   var signFrame = findObj("SignFrame",document);
+   //如果已经添加计划，需要判断前计划的数量正确性
+   if(rowID > 2){
+       var before_obj = $("#buynum"+(rowID-1));
+   	   var beforenumber = before_obj.val();
+	   if(beforenumber > 0){
+	      //剩余购买总数
+	      var all_buynum =  parseInt($("#all_buynum_show").html());
+		  if(beforenumber%mpq!=0){
+		      alert('持拆分数量必须为整包装数'+mpq+'的倍数。');
+			  before_obj.focus();
+			  return;
+		  }
+		  if(all_buynum==mpq){
+		  	  alert('很抱歉，剩余数量刚好为一整包装，不支持再拆分。');
+			  return;
+		  }
+		  if(all_buynum < mpq){
+		      alert('很抱歉，剩余数量'+all_buynum+'已经少于整包装数'+mpq+'，不支持再拆分。');
+			  return;
+		  }
+	   }else{
+	       alert('请填入计划数量。');
+		   before_obj.focus();
+		   return;
+	   }
+	   //不能继续编辑删除
+	   before_obj.attr("disabled","disabled");
+	   $("#addsignrow_span_"+(rowID-1)).css("display","none");
+   }
+   //赋值剩余数量
+   $("#all_buynum").val(parseInt($("#all_buynum_show").html()));
+   
+   //添加行
+   var newTR = signFrame.insertRow(signFrame.rows.length);
+   newTR.id = "SignItem" + rowID;
+   
+   //添加列:序号
+   var newNameTD=newTR.insertCell(0);
+   newNameTD.innerHTML = newTR.rowIndex.toString();
+   
+   //添加列:计划数量
+   var newNumberTD=newTR.insertCell(1);
+   newNumberTD.innerHTML = "<input type=text name=buynum_split id=buynum"+rowID+" style='width:60px;text-align:center;' onkeyup=value=value.replace(/[^\\\d]/g,'');buynumber_change(this,"+rowID+") />";
+   
+   //添加列:需求日期
+   var newNeedTimeTD=newTR.insertCell(2);
+   newNeedTimeTD.innerHTML = '<input type="text" name="needs_time_split" style="width:100px;" onclick="WdatePicker({startDate:\'\',dateFmt:\'yyyy-MM-dd\',alwaysUseStartDate:true,lang:\'sc\'})" title="点击选择日期" />';
+   
+   //添加列:删除按钮
+   var newDeleteTD=newTR.insertCell(3);
+   newDeleteTD.innerHTML = "<span id='addsignrow_span_"+ rowID +"'><a href='javascript:;' class='abutton' onclick=\"DeleteSignRow('SignItem" + rowID + "')\">删除计划-</a></samp>";
+   
+   //将行号推进下一行
+   txtTRLastIndex.value = (rowID + 1).toString() ;
+   //获取焦点
+   $("#buynum"+rowID).focus();
+}
+
+//删除指定行
+function DeleteSignRow(rowid){
+  var signFrame = findObj("SignFrame",document);
+  var signItem = findObj(rowid,document);
+  //最后行数
+  var lastrowID =  parseInt(signFrame.rows.length)-1;
+  //重新记录行数
+  var txtTRLastIndex  = findObj("txtTRLastIndex",document);
+  txtTRLastIndex.value = lastrowID;
+  //最后行变可编辑
+  $("#buynum"+(lastrowID-1)).removeAttr("disabled");
+  $("#addsignrow_span_"+(lastrowID-1)).css("display","block");
+  //恢复数据
+  var num = $("#buynum"+lastrowID).val()>0?$("#buynum"+lastrowID).val():0;
+  var buynum =  parseInt(num)+ parseInt($("#all_buynum_show").html());
+  $("#all_buynum").val(buynum);
+  $("#all_buynum_show").html(buynum);
+  
+  //获取将要删除的行的Index
+  var rowIndex = signItem.rowIndex;
+  //删除指定Index的行
+  signFrame.deleteRow(rowIndex);
+  //重新排列序号，如果没有序号，这一步省略
+  for(i=rowIndex;i<signFrame.rows.length;i++){
+    signFrame.rows[i].cells[0].innerHTML = i.toString();
+  }
+  
+}
+function findObj(theObj, theDoc)
+{ 
+   var p, i, foundObj; 
+   if(!theDoc) theDoc = document; 
+   if( (p = theObj.indexOf("?")) > 0 && parent.frames.length) 
+   {    
+       theDoc = parent.frames[theObj.substring(p+1)].document;
+	   theObj = theObj.substring(0,p); 
+   } 
+   if(!(foundObj = theDoc[theObj]) && theDoc.all) foundObj = theDoc.all[theObj]; 
+   for (i=0; !foundObj && i < theDoc.forms.length; i++)
+   foundObj = theDoc.forms[i][theObj]; 
+   for(i=0; !foundObj && theDoc.layers && i < theDoc.layers.length; i++) 
+	 foundObj = findObj(theObj,theDoc.layers[i].document); 
+   if(!foundObj && document.getElementById) 
+   foundObj = document.getElementById(theObj);    
+   return foundObj;
+}
+//确定分批计划
+function splitOK(){
+    var nowdate = '<?=date('Y-m-d')?>';
+	var rowID = parseInt($("#txtTRLastIndex").val());
+	if(rowID <= 2){
+	   alert('请添加分批发货计划。');return;
+	}else{
+	   var before_obj = $("#buynum"+(rowID-1));
+   	   var beforenumber = before_obj.val();
+	   if(beforenumber > 0){
+	      //剩余购买总数
+	      var all_buynum =  parseInt($("#all_buynum").val());
+		  if(beforenumber%mpq!=0){
+		      alert('持拆分数量必须为整包装数'+mpq+'的倍数。');
+			  before_obj.focus();
+			  return;
+		  }
+		  if(all_buynum==mpq){
+		  	  alert('很抱歉，剩余数量刚好为一整包装，不支持再拆分。');
+			  return;
+		  }
+		  if(all_buynum < mpq){
+		      alert('很抱歉，剩余数量'+all_buynum+'已经少于整包装数'+mpq+'，不支持再拆分。');
+			  return;
+		  }
+	   }else{
+	       alert('请填入计划数量。');
+		   before_obj.focus();
+		   return;
+	   }
+	    //计算总条数
+		var buynum_total = parseInt($("#all_buynum_show").html());
+		var buynum_split_obj=document.getElementsByName("buynum_split");
+		for(var i=0;i<buynum_split_obj.length;i++)
+		{
+			buynum_total +=parseInt(buynum_split_obj[i].value);
+		}
+		if(buynum_total!=<?=$this->buynum?>){
+		   alert('总计划数量出现错误，与购买数不相等，请检查！');return;
+		}
+		var needs_time_split_obj=document.getElementsByName("needs_time_split");
+		for(var i=0;i<needs_time_split_obj.length;i++)
+		{
+			if(needs_time_split_obj[i].value==''){
+			   alert('请选择需求日期');needs_time_split_obj[i].focus();return;
+			}else if(needs_time_split_obj[i].value <= nowdate){
+			   alert('需求日期必须大于今天');needs_time_split_obj[i].focus();return;
+			}
+		}
+		//成功后，返回table给yem
+		var html_table = '<table><tr><td>序号</td><td>计划数量</td><td>需求日期</td></tr>';
+		//第一条
+		html_table += '<tr><td>1</td><td>'+parseInt($("#all_buynum_show").html())+'</td><td>'+needs_time_split_obj[0].value+'</td></tr>';
+		//隐藏变量
+		html_table += '<input type="hidden" name="part_id" value="<?=$this->partarray['part_id']?>" />';
+		html_table += '<input type="hidden" name="buynum" value="'+parseInt($("#all_buynum_show").html())+'" />';
+		html_table += '<input type="hidden" name="needs_time" value="'+needs_time_split_obj[0].value+'" />';
+		for(var i=0;i<buynum_split_obj.length;i++)
+		{
+			html_table += '<tr><td>'+(i+2)+'</td><td>'+parseInt(buynum_split_obj[i].value)+'</td><td>'+needs_time_split_obj[i+1].value+'</td></tr>';
+			//隐藏变量
+		    html_table += '<input type="hidden" name="part_id" value="<?=$this->partarray['part_id']?>" />';
+		    html_table += '<input type="hidden" name="buynum" value="'+parseInt(buynum_split_obj[i].value)+'" />';
+		    html_table += '<input type="hidden" name="needs_time" value="'+needs_time_split_obj[i+1].value+'" />';
+		}
+		html_table += '</table>';
+		//取消
+		html_table += '<a href="javascript:;" class="abutton" onclick="cancel_splititem(\'<?=$this->partarray['part_id']?>\',\'<?=$this->buynum?>\')" title="取消分批发货计划">取消计划</a></span>';
+		//标志选择分批发货
+		html_table += '<input type="hidden" name="split_ok" id="split_ok" value="1" />';
+		$("#needs_time_span_"+<?=$this->partarray['part_id']?>).html(html_table);
+		$("#can_split_"+<?=$this->partarray['part_id']?>).css("display","none");
+		$.closePopupLayer('splititem');
+	}
+}
+</script>

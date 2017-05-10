@@ -1,0 +1,49 @@
+<div class="daybox"  style="margin-left:-540px;">
+<div class="fl dayinfo">
+		<div class="dayinfo_t">
+        <?php if(isset($_SESSION['userInfo']['unameSession'])){?>
+        <strong class="fl"><?=$_SESSION['userInfo']['unameSession']?></strong><span class="fl">当前积分：<b class="userscore"><?php echo $this->MyScore();?></b></span>
+        
+        <a href="javascript:;" onclick="openbox('/jifen/inviterecords')" class="fr">我的邀请记录</a>
+        <?php }else{?>
+        <strong class="fl"><a href="javascript:;" onClick="openlogin()">登录</a></strong>
+        <?php }?>
+        <!--<span class="fr"><a class="fr gbqfb " href="/jifen" target="_self">积分商城</a></span>-->
+        </div>
+		<ul>  
+           <?php if(isset($_SESSION['userInfo']['unameSession']) && $this->jifenview<=0){?>
+           <li>
+                <p class="fl">您已经签到，获得<b>1</b>个积分</p>
+                <a class="fr gbqfb " href="/jifen" target="_self">去兑换</a>
+            </li>
+           <?php }else{?>
+           <li>
+                <p class="fl">每天签到能获取<b>1</b>个积分</p>
+                <a class="fr gbqfb " href="javascript:void(0);" target="_self" onclick="registr()">签到领积分</a>
+            </li>
+            <?php }?>
+             <?php $url = array('/solutionlist','/news','/webinarlist');
+			 if(isset($_SESSION['userInfo']['unameSession']) && $this->viewpage<=0){?>
+             <li>
+                
+				<p class="fl">今天您已经浏览<b>≥6</b>个页面，成功获得<b>2</b>积分。</p>
+                <a class="fr gbqfb" href="<?=$url[array_rand($url)]?>">去看看</a>
+			</li>
+             <?php }else{?>
+			<li>
+				<p class="fl">每日浏览<b>≥6</b>个页面，获得<b>2</b>积分。<?php if(isset($_SESSION['userInfo']['unameSession']) && $_SESSION['viewnumber']) echo '(已浏览<em>'.$_SESSION['viewnumber'].'</em>个页面)';?></p>
+                <a class="fr gbqfb" href="<?=$url[array_rand($url)]?>">去看看</a>
+			</li>
+            <?php }?>
+			<li>
+				<p class="fl">每分享产品、产品资讯、技术研讨会或应用方案获得<b>1</b>积分。(<em>5</em>积分封顶<?php if(isset($_SESSION['userInfo']['unameSession'])) echo '，已获得<b>'.($this->shareview>0?($this->sharenum>5?5:$this->sharenum):5).'</b>分';?>)</p>
+                <a class="fr gbqfb" href="<?=$url[array_rand($url)]?>">去分享</a>
+			</li>
+		</ul>
+	</div>
+    <div class="daysep">
+    	<p class="fl">活动期间，邀请好友可获得现金大礼包，还有机会抽豪华大奖。</p>
+        <a class="fr gbqfb" href="javascript:;" onClick="openinvitebox()">邀请好友</a>
+    </div>
+	<div class="fl newsbtn"><img src="/css/jifen/img/day.png" alt="每日任务"></div>
+</div>

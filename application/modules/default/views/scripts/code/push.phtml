@@ -1,0 +1,9 @@
+<ul>
+  <?php foreach($this->showarr as $arr){if($arr){?>
+  <li>
+    <h3><a href="/code-<?=$arr['id']?>.html" title="<?=$arr['title']?>" target="_blank"><?=$this->fun->utf_substr($arr['title'],30,'')?></a></h3>
+    <?=$arr['spendpoints']?'<span class="money">'.$arr['spendpoints'].'</span>':'<span class="fontorange">免费</span>'?>
+    <p>开发环境：<?=$arr['dep_environment']?></p>
+  </li>
+  <?php }}?>
+</ul>

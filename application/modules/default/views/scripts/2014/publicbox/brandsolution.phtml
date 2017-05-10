@@ -1,0 +1,53 @@
+
+<script>
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+</script>
+<style>
+.post-cont {
+    height: 100px;
+    overflow: hidden;
+}
+</style>
+<div class="layout" style="margin-top:10px;">
+                <div class="w_100">
+                
+        <?php if(empty($this->allSol)){?>
+             <div class="posts p15 boxshadow_h">此品牌暂无应用方案</div>
+        <?php }else{
+		foreach($this->allSol as $sol){
+		$pricearr = explode(',',$sol['solution_img']);
+		?>
+        
+<div class="posts p15 boxshadow_h">
+<h2><span class="ifotip2013"><em><?=$sol['appname']?></em><i></i></span>
+<a href="/solution-<?=$sol['id']?>.html" title="<?=$sol['title']?>" class="logclick" rev="solution" rel="<?=$sol['id']?>" target="_blank"><?=$sol['title']?></a></h2>
+<div class="postmeta">
+                <?=$sol['solution_no']?'<span>方案编号：</span>'.$sol['solution_no'].'<span class="fontgray"> |</span>':'';?>
+                <?=$sol['source']?'<span>来源：</span>'.$sol['source'].'<span class="fontgray"> |</span>':''?>
+				<?=$sol['author']?'<span>作者：</span>'.$sol['author'].'<span class="fontgray"> |</span>':''?>
+                <span class="ml10">标签：</span><?php 
+					$tip = explode(',',$sol['tags']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+					}?>   
+</div>
+<div class="row">
+<div class="post-thumb">
+<img src="<?=($sol['sol_img'])?(APPICON.$sol['sol_img']):(SOLUTIONICON.$pricearr[0])?>"  alt="<?=$sol['title']?>" width="200" height="125">
+</div>
+<div class="post-cont">
+<p><?=$sol['description']?> <a href="/solution-<?=$sol['id']?>.html" title="<?=$sol['title']?>" class="logclick" rev="solution" rel="<?=$sol['id']?>" target="_blank">[详细]</a></p>
+</div>
+<p class="time">创建时间：<?=date('Y-m-d',$sol['created'])?></p>
+</div>
+</div>
+      <?php }}?>
+                </div>  
+                <div class="clr"></div>
+                <div class="page_box">
+<div class="page clearfix"><?=$this->page_bar;?></div></div> 
+</div>

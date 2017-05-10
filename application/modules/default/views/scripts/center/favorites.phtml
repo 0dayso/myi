@@ -1,0 +1,124 @@
+<link rel="stylesheet" type="text/css" href="/css/default/myself.css"/>
+<script src="/js/jsplug/flyoff/flyoffpage.full.js" type="text/javascript"></script>
+<!--content-->
+<div class="w">
+    <div class="breadcrumbs">		
+    	<span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/"><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/center"><?=$this->translate('Menu_Center')?></a> &nbsp;&nbsp;»&nbsp;&nbsp;<span><?=$this->translate('Menu_MyFavorites')?></span>        
+    </div>
+</div>
+<div class="blank10"></div>
+<div class="w clearfix ">
+	<!--左边导航-->
+    <?php echo $this->render('center/leftmenu.phtml');?>
+    
+	<div class="fr u_right msg24">
+    
+<div class="<?php if(isset($_SESSION['favmessage']) && $_SESSION['favmessage']) echo "ok";?>" id="favmessage"><?php if(isset($_SESSION['favmessage'])){echo $_SESSION['favmessage'];unset($_SESSION['favmessage']);}?></div>
+
+     <div class="col_main" id="onlineorder">
+            <h1><?=$this->translate('Menu_MyFavorites')?></h1>
+             <div class="table_box favorites" >
+                <table class="vac_table table"  border="0"  cellpadding="0" cellspacing="0">
+                <thead>
+                <th width="50"></th>
+                <th width="120" class="textl pl15">型号</th>
+                <th width="60">品牌</th>
+                <th width="200">产品描述</th>
+                <th width="50">库存</th>
+                <th width="100" class="lrb">阶梯价格</th>
+                <th width="110px">操作</th>
+                <th width="50px"></th>
+                </thead>
+         <tbody>
+        <?php if(empty($this->allProd)){?>
+        <tr>
+        	<td colspan="8" align="center">暂无记录</td>
+        </tr>
+        
+        <?php }else{
+			foreach($this->allProd as $k=>$prod){
+			$prod = $this->fun->filterProduct($prod);
+			$break_price='';$stock = 0;$show_price = 0;
+			if($prod['f_show_price_sz']){
+			    $show_price = $prod['f_show_price_sz'];
+				$stock      = $prod['f_stock_sz'];
+				$break_price = $prod['f_break_price_notitle_sz'];
+			}elseif($prod['f_show_price_hk']){
+			    $show_price = $prod['f_show_price_hk'];
+				$stock      = $prod['f_stock_hk'];
+				$break_price = $prod['f_break_price_notitle_hk'];
+			}
+			
+			$bgclass='';
+			if($k%2==1) $bgclass = 'tabletrf9';
+		?>
+        <tr class="fly<?=$prod['fid']?> <?=$bgclass?>">
+            <td><img src="<?php echo PRODUCTICON.($prod['part_img']==''?'no.gif':$prod['part_img']);?>"  width="50" height="50" alt="img"/></td>
+        	<td  style="text-align:left; padding-left:10px;"><a href="<?=$prod['f_produrl']?>" class=" fontb fontwei fontblue logclick" target="_blank"  rev="favorites_part_id" rel="<?=$prod['id']?>"><?=$prod['part_no']?></a></td>
+            <td><?=$prod['bname']?></td>
+            <td><p title="<?=$prod['description']?>"><?=$this->fun->utf_substr($prod['description'],68)?></p></td>
+            <td>
+            <?php
+                    if(($prod['f_stock_sz']+$prod['f_stock_hk'])>0){echo '<font color="#469F68">现货</font>';}
+					else {echo '<font color="#FC9C30">订货</font>';}?></td>
+            <td align="center"><div class="price_btn_table"><?=($break_price?$break_price:'--')?></div></td>
+            <td class="tablebtn"> 
+            <?php if(!$prod['noinquiry']){?>
+            <a href="javascript:" onclick="openInquiry('<?=$prod['id']?>')" class="abtnquestion logclick" title="询价"  rev="favorites_part_id" rel="<?=$prod['id']?>">询价<em></em></a>
+             <?php }else{?>
+            	<a class="abtnquestion_gray ">询价</a>
+            <?php }?>
+            
+            <?php if($show_price){?><a href="javascript:" onclick="buy('<?=$prod['id']?>.')"  class="abtnbuy logclick" title="购买"  rev="favorites_part_id" rel="<?=$prod['id']?>">购买<em></em></a>
+            <?php }else{?>
+            <a class="abtnbuy_gray ">购买</a>
+            <?php }?>
+            </td>
+            <td>
+            <a href="javascript:" onclick="changefav('d','<?=$prod['fid']?>')"  class="button">删除</a></td>
+            </tr>
+            <?php }
+			}?>   
+             </tbody> 
+            </table>
+            
+            <div class="pagination fr"> <?=$this->page_bar;?></div>
+        </div>
+	 
+    
+   </div>
+
+</div>
+
+<div class="clr"></div>
+
+<script type="text/javascript">
+function changefav(type,fid)
+{
+   if(type=='d'){
+   $('.fly'+fid).flyOffPage({
+		retainSpace: {
+			height: 0,
+			width: 0,
+			margin: 0
+		},
+		direction: 'topRight'
+    });
+   }
+	$.ajax({
+		url: '/proddetails/changefav',
+		data: {'type':type,'fid':fid},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+			if(arr.code==0) {
+			   location.reload();
+			}
+		}
+    })
+}
+setTimeout('hidFavMessage()',3000);
+function hidFavMessage(){
+	document.getElementById("favmessage").style.display = 'none';
+}
+</script>

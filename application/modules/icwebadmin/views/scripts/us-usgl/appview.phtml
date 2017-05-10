@@ -1,0 +1,246 @@
+<div class="conmian">
+  <h1><a href="<?=$this->indexurl?>"><?php echo $this->AreaTitle;?></a> -> <a href="<?=$this->indexurl?>/comapprove">注册OA客户审核</a></h1>
+  <div class="contentmia">
+    <?php if (isset($_SESSION['messages'])) : ?><div class="alert fade in">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p></div><?php endif; ?> 
+        <table class="table">
+            <tr>
+              <td colspan="2"><h2>客户基本资料</h2></td>
+            </tr>
+            <tr>
+              <td width="70" align="right">中文名称：</td>
+              <td><b><?=$this->userapply['client_cname']?></b>&nbsp;&nbsp;
+                英文名称：
+               <b><?=$this->userapply['client_ename']?></b>&nbsp;&nbsp;
+            </tr>
+            <tr>
+              <td align="right">简称：</td>
+              <td><b><?=$this->userapply['abbreviation']?></b>&nbsp;&nbsp;
+                客户类型：<b><?=$this->userapply['territory']==1?'境内':'境外'?></b> &nbsp;&nbsp;
+				负责销售：<b><?=$this->userapply['sname']?></b>&nbsp;&nbsp;
+                类别：<b><?=$this->oadictionary['CutClass_Category'][$this->userapply['category']]?></b>&nbsp;&nbsp;
+                <!--Top标志：
+                <input type="checkbox" name="top_flag" value="1" <?=$this->userapply['top_flag']?'checked':''?> disabled="disabled"/>
+                冻结标志：
+                <input type="checkbox" name="freeze_flag" value="1" <?=$this->userapply['freeze_flag']?'checked':''?>  disabled="disabled"/>-->
+                </td>
+            </tr>
+            <tr>
+              <td align="right">客户行业：</td>
+              <td><b><?=$this->oadictionary['Segment_Category'][$this->userapply['industry']]?></b>&nbsp;&nbsp;
+                客户领域：
+                <b><?=$this->oadictionary['SubSegment_Category'][$this->userapply['field']]?></b>&nbsp;&nbsp;
+                性质：
+                <b><?=$this->oadictionary['CutType_Category'][$this->userapply['nature']]?></b>&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+              <td align="right">法人代表：</td>
+              <td><b><?=$this->userapply['legal']?></b>&nbsp;&nbsp;
+                成立日期：
+                <b><?=$this->userapply['creation_date']?></b>&nbsp;&nbsp;
+                注册资金：
+                <b><?=$this->userapply['registered_capital']?></b>万元&nbsp;&nbsp;
+                净资产：
+                <b><?=$this->userapply['net_assets']?></b>万元&nbsp;&nbsp;
+                总资产：
+                <b><?=$this->userapply['total_assets']?></b>万元&nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+              <td align="right">供应商1：</td>
+              <td><b><?=$this->userapply['suppliers_1']?></b>&nbsp;&nbsp;
+                供应商2：
+                <b><?=$this->userapply['suppliers_2']?></b>&nbsp;&nbsp;
+                供应商3：
+                <b><?=$this->userapply['suppliers_3']?></b>&nbsp;&nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td align="right">员工数：</td>
+              <td><b><?=$this->oadictionary['CutSize_Category'][$this->userapply['employees']]?></b>&nbsp;&nbsp;
+                经营面积：
+                <b><?=$this->userapply['area_operations']?></b>平方米&nbsp;&nbsp;
+                年销售额：
+                <b><?=$this->userapply['annual_sales']?></b>万元&nbsp;&nbsp;</td>
+            </tr>
+            <tr>
+              <td align="right">股东1：</td>
+              <td><b><?=$this->userapply['shareholder_1']?></b>&nbsp;&nbsp;
+                投资比例<b><?=$this->userapply['investment_ratio_1']?></b>(%)&nbsp;&nbsp;
+                股东2：
+                <b><?=$this->userapply['shareholder_2']?></b>&nbsp;&nbsp;
+                投资比例<b><?=$this->userapply['investment_ratio_2']?></b>(%)&nbsp;&nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td align="right">关系企业：</td>
+              <td><b><?=$this->userapply['affiliates']?></b>&nbsp;&nbsp;
+                最终客户：
+                <b><?=$this->userapply['end_customers']?></b>&nbsp;&nbsp;</td>
+            </tr>
+            <tr>
+              <td align="right">国家：</td>
+              <td><b><?=$this->userapply['countryname']?></b>&nbsp;&nbsp;
+                地区：
+                <b><?=$this->userapply['provincename']?></b>&nbsp;&nbsp;
+                城市：
+                <b><?=$this->userapply['cityname']?></b>&nbsp;&nbsp;
+                邮编：
+                <b><?=$this->userapply['zipcode']?></b>&nbsp;&nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td align="right">中文地址：</td>
+              <td><b><?=$this->userapply['caddress']?></b>&nbsp;&nbsp;</td>
+            </tr>
+            <tr>
+              <td align="right">英文地址：</td>
+              <td><b><?=$this->userapply['eaddress']?></b>&nbsp;&nbsp;</td>
+            </tr>
+            <tr>
+              <td align="right">电话：</td>
+              <td><b><?=$this->userapply['telephone']?></b>&nbsp;&nbsp;
+                传真：
+                <b><?=$this->userapply['fax']?></b>&nbsp;&nbsp;
+                Email：
+                <b><?=$this->userapply['email']?></b>&nbsp;&nbsp;
+                网站：
+               <b><?=$this->userapply['website']?></b>&nbsp;&nbsp;</td>
+            </tr>
+            <tr>
+              <td align="right" valign="top">客户简介：</td>
+              <td><b><?=$this->userapply['customer_profile']?></b>&nbsp;&nbsp;</td>
+            </tr>
+            <tr>
+              <td colspan="2"><h2>客户联系人资料</h2></td>
+            </tr>
+            <tr>
+              <td align="right">姓名：</td>
+              <td><b><?=$this->usercontact['contact_name']?></b>&nbsp;&nbsp;
+                性别：
+                <b><?=$this->oadictionary['Sex_Category'][$this->usercontact['sex']]?></b>&nbsp;&nbsp;
+                关系类型：
+                <b><?=$this->oadictionary['CpClass_Category'][$this->usercontact['relationship']]?></b>&nbsp;&nbsp;
+                关系程度：
+                <b><?=$this->oadictionary['CpReLevel_Category'][$this->usercontact['relationship_degree']]?></b>&nbsp;&nbsp;
+                部门：
+                <b><?=$this->usercontact['department']?></b>&nbsp;&nbsp;
+                职务：
+                <b><?=$this->usercontact['position']?></b>&nbsp;&nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td align="right">电话：</td>
+              <td><b><?=$this->usercontact['truename']?></b>&nbsp;&nbsp;
+                手机：
+                <b><?=$this->usercontact['phone']?></b>&nbsp;&nbsp;
+                Email：
+                <b><?=$this->usercontact['email']?></b>&nbsp;&nbsp;
+                传真：
+                <b><?=$this->usercontact['fax']?></b>&nbsp;&nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td align="right">办公地点：</td>
+              <td><b><?=$this->usercontact['office_location']?></b>&nbsp;&nbsp;
+                家庭住址：
+                <b><?=$this->usercontact['home_address']?></b>&nbsp;&nbsp;
+                爱好：
+                <b><?=$this->usercontact['hobby']?></b>&nbsp;&nbsp;
+              </td>
+            </tr>
+            <td align="right">称谓：</td>
+              <td><b><?=$this->usercontact['appellation']?></b>&nbsp;&nbsp;
+                婚姻：
+                <b><?php if($this->usercontact['marriage']=='Y') echo '已';elseif($this->usercontact['marriage']=='N') echo '未';?></b>&nbsp;&nbsp;
+                配偶：
+                <b><?=$this->usercontact['spouse']?></b>&nbsp;&nbsp;
+                生日
+                <b><?=$this->usercontact['birthday']?></b>&nbsp;&nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"><h2>申请信息</h2></td>
+            </tr>
+            <tr>
+              <td align="right" valign="top">申请人：</td>
+              <td><b><?php echo $this->userapply['lastname'].$this->userapply['firstname'];?></b></td>
+            </tr>
+            <tr>
+              <td align="right" valign="top">申请备注：</td>
+              <td><b><?=$this->userapply['remark']?></b></td>
+            </tr>
+          </table>
+  <?php if($this->userapply['status']==100 && $this->userapply['approval_staffid']==$_SESSION['staff_sess']['staff_id']) {?>
+  <form action='<?=$this->indexurl.'/appview/uid/'.$this->userapply['uid']?>' method='post'>
+  <input type="hidden" name="uid" value="<?=$this->userapply['uid']?>" />
+  <input type="hidden" name="id" value="<?=$this->userapply['id']?>" />
+      <table>
+      <tr>
+         <td colspan="2"><h2>审核信息</h2></td>
+      </tr>
+      <tr>
+        <td valign="top" align="right">重新分配负责销售：</td>
+        <td>
+        <select name="oa_sales">
+            <?php foreach($this->oa_employee as $dv){?>
+           <option value="<?=$dv['id']?>" <?=($this->userapply['oa_sales']==$dv['id']?'selected="selected"':'')?>><?=$dv['name']?></option>
+           <?php }?>
+         </select>
+        </td></tr>
+      <tr height="35">
+        <td align="right">审核：</td>
+        <td align="left">
+          <label><input type="radio" name="status" value="101" <?=$this->processData['status']==101?'checked':''?>/>
+          <font color="#339900">通过并向OA注册新客户</font></label>&nbsp;&nbsp;&nbsp;&nbsp;
+          <label> <input type="radio" name="status" value="102" <?=$this->processData['status']==102?'checked':''?>/>
+          <font color="#CC3333">不通过</font></label></td>
+      </tr>
+      <tr>
+        <td valign="top" align="right">审核说明：</td>
+        <td>
+        <textarea name="result_remark" rows="3" cols="8" placeholder="请输入审核说明"><?=$this->processData['result_remark']?></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" align="right"></td>
+        <td><input type="submit" class="btnabig"  value="确认" onclick="addaction()"/>
+        </td>
+      </tr>
+    </table>
+    </form>
+    <?php }else{?>
+      <table>
+      <tr>
+         <td colspan="2"><h2>审核信息</h2></td>
+      </tr>
+      <tr>
+              <td align="right" valign="top">审核人：</td>
+              <td><b><?php echo $this->userapply['applastname'].$this->userapply['appfirstname'];?></b></td>
+            </tr>
+            <tr>
+              <td align="right" valign="top">审核时间：</td>
+              <td><b><?php echo date('Y-m-d H:i:s',$this->userapply['modified']);?></b></td>
+            </tr>
+      <tr>
+        <td align="right">审核：</td>
+        <td align="left"><b>
+          <?php
+          if($this->userapply['status']==100) echo '审核中';
+		  elseif($this->userapply['status']==101)echo '<font color="#006600">通过</font>';
+		  elseif($this->userapply['status']==102)echo '<font color="#FF0000">不通过</font>';
+		  ?>
+          </b>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top">审核说明：</td>
+        <td><b><?=$this->userapply['result_remark']?></b></td>
+      </tr>
+    </table>
+    <?php }?>
+    <!-- 结束区域-->
+  </div>
+</div>

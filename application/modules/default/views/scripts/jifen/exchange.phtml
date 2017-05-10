@@ -1,0 +1,98 @@
+<div class="popnew jfpop">
+  <div class="popnew-tit"> <span class="popnew-tit_t">积分兑换礼品</span>
+    <input type="button" title="关闭" class="popnew-closebtn" onclick="$.closePopupLayer('exchangebox')">
+  </div>
+  <div class="popnew-con" style="background-color:#FFFFFF;">
+    <?php if($this->error){?>
+    <div class="tip fontorange font14">错误提示</div>
+    <div class="jfpop_con">
+      <p style="color:#FF0000">
+        <?=$this->mess?>
+      </p>
+    </div>
+    <?php }else{?>
+    <div class="fontorange font14">注意：积分兑换的实物礼品，邮费需要用户承担。</div>
+    <div class="jfpop_con">
+      <div class="jfpop_dl">
+        <dl>
+          <dt>兑换礼品：</dt>
+          <dd><?=$this->gift['name']?></dd>
+        </dl>
+        <dl>
+          <dt>需要积分：</dt>
+          <dd><span class="fontred"><?=$this->gift['score']?></span><em>(您还剩<b><?=$this->myscore?></b>积分)</em></dd>
+        </dl>
+        <?php if($this->gift['type']==1){?>
+        <?php if(!$this->addressArr){?>
+        <dl>
+          <dt>请选择配送地址：</dt>
+          <dd>
+            <p style="color:#FF0000">您没有配送地址，请去配送地址管理添加。</p>
+            <p><a href="/center/address" target="_blank" onclick="$.closePopupLayer('exchangebox')">配送地址管理&gt;&gt;</a></p>
+          </dd>
+        </dl>
+        <?php }else{?>
+        <dl>
+          <dt>请选择配送地址：</dt>
+          <dd >
+            <div class="address_choose">
+              <?php  foreach($this->addressArr as $address){?>
+              <p>
+                <label>
+                <input type="radio" name="addressradio" value="<?php echo $address['id'];?>" <?php if($this->addressFirst['id'] == $address['id']) echo "checked";?> />
+                <?php echo $address['name']." , ".$address['province']." ".$address['city']." ".$address['area']." ".$address['address']." , ".$address['zipcode']." , ".$address['mobile']." ".$address['tel'];?></label>
+              </p>
+              <?php }?>
+              <p><label><a href="/center/address" target="_blank" onclick="$.closePopupLayer('exchangebox')">管理配送地址&gt;&gt;</a></label></p>
+            </div>
+          </dd>
+        </dl>
+        <?php }?>
+        <?php }?>
+        <dl>
+          <dt>备注：</dt>
+          <dd>
+            <textarea name="remark" id="remark" rows="3" cols="60"></textarea>
+          </dd>
+        </dl>
+        <dl>
+          <dt>&nbsp;</dt>
+          <dd> 
+          <span id="tijiaobut"><a class="btnok-new" href="javascript:;" onclick="exchangeaction()">提交兑换</a></span>
+           <a class="btncancel-new" href="javascript:;" onclick="$.closePopupLayer('exchangebox')">取消兑换</a> </dd>
+        </dl>
+      </div>
+    </div><div class="clr"></div>
+    <?php }?>
+  </div>
+</div>
+<script type="text/javascript">
+//添加兑换
+function exchangeaction(){
+	 var addressid = '';
+     <?php if($this->gift['type']==1){?>
+	 addressid = $('input[name="addressradio"]:checked').val();
+     if(addressid=='' || typeof(addressid)=="undefined") {
+	      alert('请选择配送地址');return;
+     }
+	 <?php }?>
+	 var remark = $('#remark').val();
+	 var subtmp=document.getElementById("tijiaobut");
+	 subtmp.innerHTML = '<a class="btnok-new" href="javascript:;">提交中...</a>';
+	 $.ajax({
+            url: '/jifen/exchange',
+            data: {'giftid':'<?=$this->gift['id']?>','addressid':addressid,'remark':remark},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    alert(arr.message);
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }else{
+				   subtmp.innerHTML ='<a class="btnok-new" href="javascript:;" onclick="exchangeaction()">提交兑换</a>';
+				}
+            }
+	});
+}
+</script>

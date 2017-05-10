@@ -1,0 +1,186 @@
+<div class="popup" style="width:1000px;">
+<div class="popup-header">
+    <h2>修改产品</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+</div>
+<div class="popup-body">
+    <div  class="mergerorder">
+          <div  class="div_dl">
+          		<table cellpadding="0" cellspacing="0" border="0" class="table"  id="SignFrame">
+                <thead>
+                  <tr id="trHeader">
+                    <th width="120">型号<em>*</em></th>
+                    <th width="100">品牌<br/>(产品线)<em>*</em></th>
+                    <th width="100">客户物料号</th>
+                    <th width="100">单价<em>*</em></th>
+                    <th width="100">购买数量<em>*</em></th>
+                    <th width="100">需求日期</th>
+                    <th width="100">标准货期</th>
+                    <th width="100">备注</th>
+                    <th width="100"><a href="javascript:;" class="gbqfb" onclick="AddSignRow()">添加产品</a></th>
+                    <input name='txtTRLastIndex' type='hidden' id='txtTRLastIndex' value="<?=(count($this->pordarr)+1)?>" />
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach($this->pordarr as $k=>$pordarr){?>
+                  <input name="id" type="hidden" value="<?=$pordarr['id']?>" />
+                  <tr id="SignItem<?=($k+1)?>">
+                    <td><input type="text" name="part_no"  class="input-small input-model" value="<?=$pordarr['part_no']?>"/></td>
+                    <td><select name="oa_productline"><option value="">请选择</option>
+					<?php foreach($this->oaproductline as $bd){?>
+                    <option value="<?=$bd['oa_name']?>" <?=($pordarr['brand']==$bd['oa_name']?'selected="selected"':'')?> ><?=$bd['oa_name']?></option><?php }?>
+                    </select></td>
+                    <td><input type="text" name="customer_material"  class="input-small" value="<?=$pordarr['customer_material']?>"/></td>
+                    <td><input type="text" name="price"  class="input-small"  onkeyup="<?=ISFLOAT?>" value="<?=$pordarr['buyprice']?>"/></td>
+                    <td><input type="text" name="buy_number"  class="input-small" onkeyup="<?=ISNUMBER?>" value="<?=$pordarr['buynum']?>"/></td>
+                    <td><input type="text" name="needs_time"  style="width:80px;" onclick="WdatePicker({startDate:'<?=($pordarr['needs_time']?date('Y-m-d',$pordarr['needs_time']):'')?>',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" title="点击选择日期"  value="<?=($pordarr['needs_time']?date('Y-m-d',$pordarr['needs_time']):'')?>"></td>
+                    <td><input type="text" name="standard_delivery"  class="input-small" value="<?=$pordarr['standard_delivery']?>"/></td>
+                    <td><input type="text" name="remark" class="input-small" value="<?=$pordarr['remark']?>"/></td>
+                    <td><a href='javascript:;' class='gbqfb' onclick="DeleteSignRow('SignItem<?=($k+1)?>')">删除</a></td>
+                  </tr>
+                  <?php }?>
+                </tbody>
+              </table>
+          </div>
+        </div>
+        
+    <div class="bottombutton" id="baojiabtn">
+    	<input type="button" onclick="product()" value="提 交" class="btnabig">
+    </div>
+    <div class="clear"></div>
+</div>
+</div>
+<script type="text/javascript">
+function product() 
+{
+	//订单信息
+	 var id        = new Array();
+	 var part_no        = new Array();
+	 var oa_productline = new Array();
+	 var customer_material = new Array();
+	 var price          = new Array();
+	 var buy_number     = new Array();
+	 var needs_time  = new Array();
+	 var standard_delivery = new Array();
+	 var remark = new Array();
+	 var id_obj     = document.getElementsByName("id");
+	 var part_no_obj     = document.getElementsByName("part_no");
+	 var oa_productline_obj  = document.getElementsByName("oa_productline");
+	 var customer_material_obj  = document.getElementsByName("customer_material");
+	 var price_obj       = document.getElementsByName("price");
+	 var buy_number_obj  = document.getElementsByName("buy_number");
+	 var needs_time_obj  = document.getElementsByName("needs_time");
+	 var standard_delivery_obj  = document.getElementsByName("standard_delivery");
+	 var remark_obj      = document.getElementsByName("remark");
+	 for (var i=0;i < id_obj.length;i++)
+	 {
+	 	id[i] = id_obj[i].value;
+	 }
+	 if(part_no_obj.length<=0) {alert('请添加产品');return;}
+	 for (var i=0;i < part_no_obj.length;i++)
+	 {
+		if(part_no_obj[i].value=='') {alert('请输入型号');part_no_obj[i].focus();return;}
+		else part_no[i]= part_no_obj[i].value;
+		if(oa_productline_obj[i].value=='') {alert('请选择品牌(产品线)');oa_productline_obj[i].focus();return;}
+		else oa_productline[i]= oa_productline_obj[i].value;
+		customer_material[i] = customer_material_obj[i].value;
+		if(price_obj[i].value=='') {alert('请输入单价');price_obj[i].focus();return;}
+		else price[i]= price_obj[i].value;
+		
+		if(buy_number_obj[i].value=='' || buy_number_obj[i].value <= 0) {alert('请输入购买数');buy_number_obj[i].focus();return;}
+		else if(isNaN(buy_number_obj[i].value)){alert('购买数必须为数字');buy_number_obj[i].focus();return;}
+		else buy_number[i]= buy_number_obj[i].value;
+		needs_time[i]        = needs_time_obj[i].value;
+		standard_delivery[i] = standard_delivery_obj[i].value;
+		remark[i]            = remark_obj[i].value;
+	  }
+	  //提交订单
+    var subtmp = document.getElementById("baojiabtn");
+	subtmp.innerHTML = '<input type="button" value="提 交 中..." class="btnabig">';
+    $.ajax({
+            url: '/icwebadmin/OrUnso/product',
+            data: {'salesnumber':'<?=$this->salesnumber?>','id':id,'part_no':part_no,'oa_productline':oa_productline,'customer_material':customer_material,'price':price,'buy_number':buy_number,'needs_time':needs_time,'standard_delivery':standard_delivery,'remark':remark},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   alert(arr.message);
+			   if(arr.code==0)
+			   {  
+			      location.reload();
+			   }
+			   subtmp.innerHTML = '<input type="button" onclick="product()" value="提 交" class="btnabig">';
+            }
+    });
+}
+
+function findObj(theObj, theDoc)
+{ 
+   var p, i, foundObj; 
+   if(!theDoc) theDoc = document; 
+   if( (p = theObj.indexOf("?")) > 0 && parent.frames.length) 
+   {    
+       theDoc = parent.frames[theObj.substring(p+1)].document;
+	   theObj = theObj.substring(0,p); 
+   } 
+   if(!(foundObj = theDoc[theObj]) && theDoc.all) foundObj = theDoc.all[theObj]; 
+   for (i=0; !foundObj && i < theDoc.forms.length; i++)
+   foundObj = theDoc.forms[i][theObj]; 
+   for(i=0; !foundObj && theDoc.layers && i < theDoc.layers.length; i++) 
+	 foundObj = findObj(theObj,theDoc.layers[i].document); 
+   if(!foundObj && document.getElementById) 
+   foundObj = document.getElementById(theObj);    
+   return foundObj;
+}
+//添加一个参与人填写行
+function AddSignRow(){ //读取最后一行的行号，存放在txtTRLastIndex文本框中 
+   var txtTRLastIndex = findObj("txtTRLastIndex",document);
+   var rowID = parseInt(txtTRLastIndex.value);
+   var signFrame = findObj("SignFrame",document);
+   //添加行
+   var newTR = signFrame.insertRow(signFrame.rows.length);
+   newTR.id = "SignItem" + rowID;
+   //添加列:型号
+   var newNameTD=newTR.insertCell(0);
+   newNameTD.innerHTML = '<input type="text" name="part_no"  class="input-small input-model"/>';
+   //添加列:品牌(产品线)
+   var newNameTD=newTR.insertCell(1);
+   newNameTD.innerHTML = '<select name="oa_productline"><option value="">请选择</option><?php foreach($this->oaproductline as $bd){?><option value="<?=$bd["oa_name"]?>"><?=$bd["oa_name"]?></option><?php }?></select>';
+   //客户物料号
+    var newEmailTD=newTR.insertCell(2);
+    newEmailTD.innerHTML = '<input type="text" name="customer_material"  class="input-small"/>';
+   
+   //添加列:单价
+   var newEmailTD=newTR.insertCell(3);
+   newEmailTD.innerHTML = "<input type='text' name='price'  class='input-small'  onkeyup=value=value.replace(/[^\\\d\\\.]/g,'') />";
+   //添加列:购买数量
+   var newTelTD=newTR.insertCell(4);
+   newTelTD.innerHTML = "<input type='text' name='buy_number' class='input-small' onkeyup=value=value.replace(/[^\\\d]/g,'') />";
+   //添加列:日期
+   var newMobileTD=newTR.insertCell(5);
+   newMobileTD.innerHTML = '<input type="text" name="needs_time" style="width:80px;" onclick="WdatePicker({startDate:\'\',dateFmt:\'yyyy-MM-dd\',alwaysUseStartDate:true,lang:\'sc\'})" title="点击选择日期" />';;
+   
+   //添加列:标准货期
+   var newCompanyTD=newTR.insertCell(6);
+   newCompanyTD.innerHTML = "<input name='standard_delivery' type='text' class='input-small' />";
+   
+   //添加列:备注
+   var newCompanyTD=newTR.insertCell(7);
+   newCompanyTD.innerHTML = "<input name='remark' type='text'  class='input-small'/>";
+   
+   //添加列:删除按钮
+   var newDeleteTD=newTR.insertCell(8);
+   //添加列内容
+   newDeleteTD.innerHTML = "<a href='javascript:;' class='gbqfb' onclick=\"DeleteSignRow('SignItem" + rowID + "')\">删除</a>";
+   //将行号推进下一行
+   txtTRLastIndex.value = (rowID + 1).toString() ;
+}
+//删除指定行
+function DeleteSignRow(rowid){
+  var signFrame = findObj("SignFrame",document);
+  var signItem = findObj(rowid,document);
+  //获取将要删除的行的Index
+  var rowIndex = signItem.rowIndex;
+  //删除指定Index的行
+  signFrame.deleteRow(rowIndex);
+}
+</script>

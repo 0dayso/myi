@@ -1,0 +1,139 @@
+<?php
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$unitArr = array('HK'=>'香港','SZ'=>'国内');
+?>
+<div class="popup" style="width:840px;">
+    <div class="popup-header">
+        <h2>不通过BOM单：编号 <?php echo $this->bom['bom_number'];?></h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+    </div>
+    <div class="popup-body">
+    	<div class=" overflowh">
+      <div class="publicOne">
+        <div class="Publictit"> <span class="Publictit_tit">客户信息</span><strong class="fontgreen">用户名：<?php echo $this->user['user'];?></strong> </div>
+        <table border="0" cellspacing="0" cellpadding="0" class="Publictable">
+          <tbody>
+            <tr>
+              <td width="100">公司名称：</td>
+              <td><strong><?php echo $this->user['companyname'];?></strong></td>
+              <td width="100">企业性质：</td>
+              <td><strong>
+                <?php
+                        $property_tmp = array('enduser'=>'终端用户','merchant'=>'贸易商');
+						echo $property_tmp[$this->user['property']];?>
+                </strong></td>
+            </tr>
+            <tr>
+              <td>联系人：</td>
+              <td><strong><?php echo $this->user['truename'];?></strong></td>
+              <td>联系方式：</td>
+              <td><strong><?php echo $this->user['mobile'].'  '.$this->user['tel'];?></strong></td>
+            </tr>
+            <tr>
+              <td>交货地：</td>
+              <td><strong><?php echo $deliveryArr[$this->bom['delivery']];?></strong></td>
+              <td>交易货币：</td>
+              <td><strong><?php echo $this->bom['currency'];?></strong></td>
+            </tr>
+            <tr>
+              <td>Email：</td>
+              <td><strong>
+                <?=$this->user['email'];?>
+                </strong></td>
+              <td>传真：</td>
+              <td><strong>
+                <?=$this->user['fax'];?>
+                </strong></td>
+            </tr>
+            <tr>
+              <td>提交日期：</td>
+              <td><strong><?php echo date('Y/m/d H:i',$this->bom['created']);?></strong></td>
+              <td>转询价时间：</td>
+              <td><strong><?php echo $this->bom['modified']?date('Y/m/d H:i',$this->bom['modified']):'--';?></strong></td>
+            </tr>
+            <tr>
+              <td>说明：</td>
+              <td colspan="3"><strong><?php echo $this->bom['remark']?$this->bom['remark']:'--';?></strong></td>
+            </tr>
+            <?php if($this->bom['inq_numbers']){ 
+			 $inqs = explode(',',$this->bom['inq_numbers']);?>
+            <tr>
+              <td>询价编号：</td>
+              <td colspan="3">
+                <?php foreach($inqs as $inqnumber){if($inqnumber){?>
+                <a onclick="openbox2('/icwebadmin/QuoInq/viewinq/inq_number/<?=$inqnumber?>')" href="javascript:;" >
+                <?=$inqnumber?>
+                </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <?php }}?></td>
+              </strong>
+              </td>
+            </tr>
+            <?php }?>
+            
+          </tbody>
+        </table>
+      </div>
+      <table cellspacing="0" cellpadding="0" border="0" class="tablelistPrice">
+        <tbody>
+          <tr>
+            <th>编号</th>
+            <th width="110">型号</th>
+            <th>品牌</th>
+            <th>需求数量</th>
+            <th>目标单价</th>
+            <th>要求交货日期</th>
+            <th>备注</th>
+          </tr>
+          <?php 
+		  $changeinq = explode('<>',$this->bom['changeinq']);
+		  $last      = $changeinq[count($changeinq)-1];
+		  $lastchangeinq = array();
+		  if($last){
+		  	 $tmp = explode(';',$last);
+			 $lastchangeinq = explode(',',$tmp[1]);
+		  }
+		  foreach($this->bom['detaile'] as $k=>$v){?>
+          <tr align="center">
+            <td><?=($k+1)?></td>
+            <td width="150"><div class="productNO">
+            <?php if($v['part_id']) echo '<strong ><a title="查看产品信息" target="_blank" href="/proddetails?partid='.$v['part_id'].'">'.$v['part_no'].'</a></strong>('.$v['brand'].')<br/>';
+					else echo '<strong >'.$v['part_no'].'</strong><br/>';?>
+            </div>
+            </td>
+            <td><?=$v['brand_name']?></td>
+            <td><?=$v['number']?></td>
+            <td><?=$v['price']>0?$currency[$this->bom['currency']].$v['price']:'--'?></td>
+            <td><?=$v['deliverydate']?date('Y-m-d',$v['deliverydate']):'--'?></td>
+            <td><?=$v['description']?></td>
+          </tr>
+          <?php }?>
+            </tbody>
+      </table>
+    </div>
+        说明：<textarea name="result_remark" id="result_remark"  rows="4" style=" width:650px;"></textarea>
+        <div class="pbtn" id="baojiabtn"><input type="button" onclick="cancelAction()" value="不通过" class="btnabig"></div>
+        <div class="clear"></div>
+    </div>
+</div>
+<script type="text/javascript">
+function cancelAction() {
+	   var result_remark     = document.getElementById("result_remark").value;
+	   if(result_remark==''){alert('请输入说明');document.getElementById('result_remark').focus();return;}
+	   var subtmp = document.getElementById("baojiabtn");
+	   subtmp.innerHTML = '<input type="button" class="btnabig" value="提交中..." disabled="disabled" style="cursor:default"/>';
+	   $.ajax({
+		url: '/icwebadmin/QuoBom/cancel',
+		data: {'id':'<?=$this->bom['id']?>','bom_number':'<?=$this->bom['bom_number']?>','result_remark':result_remark},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0){
+				  location.reload();
+            }
+			subtmp.innerHTML = '<input type="button" onclick="cancelAction()" value="不通过" class="btnabig">';
+		}
+		});
+		
+}
+</script>

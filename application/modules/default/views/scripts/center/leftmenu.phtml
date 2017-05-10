@@ -1,0 +1,16 @@
+<div class="col_side">
+<h3 class="title"><a href="/center"><?=$this->translate('Menu_Center')?></a></h3>
+<ul class="u_left">
+    <li <?php if(in_array($_SESSION['leftmenu_select'],array('order','inqorder'))) echo 'class="on"';?>><s></s><a href="/center/order"><span><?=$this->translate('Menu_MyOrder')?></span><b></b></a></li>
+    <li <?php if($_SESSION['leftmenu_select']=='inquiry') echo 'class="on"';?>><s></s><a href="/center/inquiry"><span><?=$this->translate('Menu_MyInquiry')?></span><b></b></a></li>
+    <li <?php if($_SESSION['leftmenu_select']=='bom') echo 'class="on"';?>><s></s><a href="/center/bom"><span><?=$this->translate('Menu_Bom')?></span><b></b></a></li>
+    <li <?php if($_SESSION['leftmenu_select']=='coupon') echo 'class="on"';?>><s></s><a href="/center/coupon"><span><?=$this->translate('Menu_MyCoupon')?></span><b></b></a></li>
+    <li <?php if($_SESSION['leftmenu_select']=='delivery') echo 'class="on"';?>><s></s><a href="/center/delivery"><span><?=$this->translate('Menu_MyDelivery')?></span><b></b></a></li>
+    <li <?php if($_SESSION['leftmenu_select']=='invoice') echo 'class="on"';?>><s></s><a href="/center/invoice"><span><?=$this->translate('Menu_MyInvoice')?></span><b></b></a></li>
+    <li <?php if($_SESSION['leftmenu_select']=='info') echo 'class="on"';?>><s></s><a href="/center/info"><span><?=$this->translate('Menu_MyInfo')?></span><b></b></a></li>
+    <li <?php if($_SESSION['leftmenu_select']=='address') echo 'class="on"';?>><s></s><a href="/center/address"><span><?=$this->translate('Menu_MyAddress')?></span><b></b></a></li>
+    <li <?php if($_SESSION['leftmenu_select']=='favorites') echo 'class="on"';?>><s></s><a href="/center/favorites"><span><?=$this->translate('Menu_MyFavorites')?></span><b></b></a></li>
+    <li <?php if($_SESSION['leftmenu_select']=='exchange') echo 'class="on"';?>><s></s><a href="/center/exchange"><span>礼品兑换</span><b></b></a></li>
+    <li <?php if($_SESSION['leftmenu_select']=='samples') echo 'class="on"';?>><s></s><a href="/center/samples"><span>样片申请</span><b></b></a></li>
+</ul>
+</div>

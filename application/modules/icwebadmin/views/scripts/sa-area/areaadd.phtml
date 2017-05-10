@@ -1,0 +1,73 @@
+<div id="myHiddenDiv">
+  <div class="popup" style="width:800px;">
+    <div class="popup-header">
+    <h2>添加Staff Area</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('addBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+      <!-- 需要填写的区域-->
+      <table border="0" cellpadding="1">
+        <tr>
+         <td height="10" colspan="5" align="center">
+         <div id="message_sess_son" style="display:none" class="message_sess">
+         <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span>
+         <span id="alert_message_son"></span>
+         </div></td>
+         </tr>
+        <tr bgcolor="#334159" height="30px" style="color:#FFFFFF; font-weight:bold; float:Arial, Helvetica, sans-serif">
+          <td>Staff Area ID<br/><font color="#FF0000">*大写字母开头加小写字母2-4个字符</font></td>
+          <td>标题</td>
+          <td>Route</td>
+          <td>排序</td>
+          <td>状态</td>
+        </tr>
+        <tr bgcolor="#CCCCCC" align="center">
+          <td><input type="text" name="Staff_Area_ID" id="Staff_Area_ID" value="" onKeyUp="<?php echo ISLETTER;?>;changeValue();"/></td>
+          <td><input type="text" name="Staff_Area_Des" id="Staff_Area_Des"  value=""/></td>
+          <td><input type="text" name="URL" id="URL" value="" readonly="readonly"/></td>
+          <td><input type="text" name="Order_ID" id="Order_ID" value="0" onKeyUp="<?php echo ISNUMBER;?>"/></td>
+          <td><select name="Status" id="Status">
+          <option value="1">激活</option>
+          <option value="0">屏蔽</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" colspan="6"><input type="button"  value="添加" onclick="add()"/>
+          </td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+function add()
+{
+    var areaid    = document.getElementById('Staff_Area_ID').value;
+	var areadesc  = document.getElementById('Staff_Area_Des').value;
+	var orderid   = document.getElementById('Order_ID').value;
+	var status    = document.getElementById('Status').value;
+	$.ajax({
+           url: '<?php echo $this->areaaddurl;?>',
+           data: {'sectionid':'<?php echo $this->Section_Area_ID;?>','areaid':areaid,'areadesc':areadesc,'orderid':orderid,'status':status},
+           type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  location.reload();
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			}
+	});
+}
+function changeValue()
+{	
+   var str1="/icwebadmin/<?php echo $this->Section_Area_ID;?>";
+   str1 +=document.getElementById('Staff_Area_ID').value;
+   document.getElementById('URL').value=str1;
+}
+changeValue();
+</script>

@@ -1,0 +1,113 @@
+<link rel="stylesheet" type="text/css" href="/css/default/directory.css"/>
+<!--头部 搜索 菜单 end-->
+<div class="w">
+  <div class="breadcrumbs"> <span><?=$this->translate('Menu_CurrentPosition')?></span><a  href="/"><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><?=$this->translate('Menu_ProductCategory')?></span> </div>
+</div>
+<div class="w clearfix">
+  <div class="fl shoplist">
+    <div class="entry-common clearfix"> <span class="titbg1ts">快速导航</span>
+      <ul>
+        <?php
+		foreach($this->first as $k=>$farr){
+		   echo '<li><a href="#PODL'.$farr['id'].'" title="'.$farr['name'].'">'.$farr['name'].'</a></li>';
+		}?>
+      </ul>
+    </div>
+    <div>
+       <?php 
+		foreach($this->first as $farr){
+		$fid = $farr['id'];
+		?>
+        <div class="market-cat" id="PODL<?=$fid?>">
+           <div class="hd">
+            <h4><a class="titbg1ts logclick" href="/list-<?=$fid?>.html" title="<?=$farr['name']?>" rev="category" rel="<?=$fid?>"><?=$farr['name']?><em class="emtriangleright5px"></em></a></h4>
+        </div>
+        <div class="bd">
+            <ul class="grid">
+                <?php
+		          foreach($this->second[$fid] as $sarr){
+				  $sid = $sarr['id'];
+		        ?>
+                <li class="g-u section">
+                    <ul>
+                        <li class="sub" ><a href="/list-<?=$fid?>-<?=$sid?>.html" title="<?=$sarr['name']?>" class="logclick" rev="category" rel="<?=$sid?>"><?=$sarr['name']?></a></li>  
+                     <?php  foreach($this->third[$sid] as $tarr){ 
+					         $tid=$tarr['id'];?>
+                     <li><a href="/list-<?=$fid?>-<?=$sid?>-<?=$tid?>.html" title="<?=$tarr['name']?>" class="logclick" rev="category" rel="<?=$tid?>"><?=$tarr['name']?></a></li>
+					 <?php }?>
+                   </ul>
+                </li>
+               <?php }?>
+            </ul>
+        </div>
+      </div>             
+       <?php }?>
+     
+    </div>
+  </div>
+  <div class="fr rightbox">
+    <!--分类查找-->
+    <div class="fl w_100">
+      <!--<div class="classify_search">
+            <h3 class="titbg1ts">分类查找<em class="emtrianglebottomgray5px"></em></h3>
+            <div class="sub_search">
+             	<select class="sel180">
+                	<option>请选择品牌</option>
+                	<option>ACARD</option>
+                    <option>dialog</option>
+                </select>
+                <input type="button"  value="搜索" class="btn_sel"/>
+            </div>
+            <ul class="list_word">
+                <li><a href="#">A</a></li>
+                <li><a href="#">B</a></li>
+                <li><a href="#">C</a></li>
+                <li><a href="#">D</a></li>
+                <li><a href="#">E</a></li>
+                <li><a href="#">F</a></li>
+                <li><a href="#">G</a></li>
+                <li><a href="#">H</a></li>
+                <li><a href="#">I</a></li>
+                <li><a href="#">J</a></li>
+                <li><a href="#">K</a></li>
+                <li><a href="#">L</a></li>
+                <li><a href="#">M</a></li>
+                <li><a href="#">N</a></li>
+                <li><a href="#">O</a></li>
+                <li><a href="#">P</a></li>
+                <li><a href="#">Q</a></li>
+                <li><a href="#">R</a></li>
+                <li><a href="#">S</a></li>
+                <li><a href="#">T</a></li>
+                <li><a href="#">U</a></li>
+                <li><a href="#">V</a></li>
+                <li><a href="#">W</a></li>
+                <li><a href="#">X</a></li>
+                <li><a href="#">Y</a></li>
+                <li><a href="#">Z</a></li>
+                <li></li>
+                <li><a href="#">0</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">6</a></li>
+                <li><a href="#">7</a></li>
+                <li><a href="#">8</a></li>
+                <li><a href="#">9</a></li>
+            </ul>
+       </div>
+    </div>-->
+    <!--热销推荐-->
+    <div id='hotpord'></div>
+    <!--end 热销推荐-->
+    </div>
+  </div>
+</div>
+<div class="clr"></div>
+<script type="text/javascript">
+hotpord();
+ 
+</script>
+

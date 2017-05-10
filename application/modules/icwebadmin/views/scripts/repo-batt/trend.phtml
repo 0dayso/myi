@@ -1,0 +1,342 @@
+<style type="text/css">
+.tablenew2014{border:1px #ddd solid;}
+.tablenew2014 th{ background:#006ffa; border:1px solid #fff; line-height:18px; padding:5px 0}
+.tablenew2014 tr:hover{ background:#96bfe8}
+.tablenew2014 td{ text-indent:5px;border:1px solid #ddd}
+.trbg{ background:#e1eeff}
+</style>
+<?php $dep = array('BMP'=>'BMP','BNT'=>'B&T');
+ $weekarray=array("星期日","星期一","星期二","星期三","星期四","星期五","星期六");
+?><script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+	<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?> -> 订单走势</h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+      <form id="myform"  class="form-search" name="myform" action="" method="get">
+      <label><input type="radio"  name="type" value="daywork" checked="checked">单位（工作日）</label>
+      <label><input type="radio"  name="type" value="day"  <?=($this->type=='day'?'checked="checked"':'')?>>单位（日）</label>
+      <label><input type="radio"  name="type" value="week"  <?=($this->type=='week'?'checked="checked"':'')?> >单位（周）</label>
+      <label><input type="radio"  name="type" value="month" <?=($this->type=='month'?'checked="checked"':'')?>>单位（月）</label>
+      
+    <label>开始时间：</label>
+    <input type="text"  style="width:80px;" name="sdata" value="<?=$this->sdata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+    <label>结束时间：</label>
+    <input type="text"  style="width:80px;" name="edata" value="<?=$this->edata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+    &nbsp;
+    <select name="ordertype" id="ordertype">
+  <option value="online" <?=$this->ordertype=='online'?'selected':''?>>线上订单</option>
+  <option value="outline" <?=$this->ordertype=='outline'?'selected':''?>>线下订单</option>
+  <option value="all" <?=$this->ordertype=='all'?'selected':''?>>全部</option>
+</select>
+&nbsp;
+    <input type="submit" class="btn" value="确 定"/>
+  </form>
+
+<?php if(empty($this->orderstrend)){?>
+<div style="min-width: 310px; height: 100px; margin: 0 auto; text-align:center"><h2>请选择开始日期统计！</h2></div>
+<?php }else{?>
+
+<div id="order_num" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+<div id="order_rmb" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+<div id="order_usd" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+<div id="order_all" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+      
+      <table cellspacing="0" cellpadding="0" border="1" align="center"  class="tablenew2014">
+      <tr height="20" bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;">
+      <th width="250" rowspan="2">日期</th>
+      <th width="300" colspan="4">BMP</th><th width="300" colspan="4">B&amp;T</th><th width="100" rowspan="2">总计</th></tr>
+      <tr bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;">
+      <th>订单数</th><th>金额(RMB)</th><th>金额(USD)</th><th>总计(RMB)</th>
+      <th>订单数</th><th>金额(RMB)</th><th>金额(USD)</th><th>总计(RMB)</th></tr>
+      <?php
+	   $k = $t1 = $t2 = $t3 = $t4 = $t5 = $t6 =$t7 =$t8 = 0;
+	   foreach($this->orderstrend as $d=>$arr){
+	   $t1 +=$arr['num']['BMP'];
+	   $t2 +=$arr['rmb']['BMP'];
+	   $t3 +=$arr['usd']['BMP'];
+	   $t4 +=($arr['rmb']['BMP']+$arr['usd']['BMP']*$this->USDTOCNY);
+	   
+	   $t5 +=$arr['num']['B&T'];
+	   $t6 +=$arr['rmb']['B&T'];
+	   $t7 +=$arr['usd']['B&T'];
+	   $t8 +=($arr['rmb']['B&T']+$arr['usd']['B&T']*$this->USDTOCNY);
+	   $b = '';
+	   if($k%2==0) $b = 'class="trbg"';
+	   $k++;
+	   ?>
+      	<tr <?=$b?>><td><?php echo $d;
+		if($this->type =='day'){echo (' '.$weekarray[date("w",strtotime($d))]);}?></td><td><?=$arr['num']['BMP']?$arr['num']['BMP']:0?></td>
+        <td><?=number_format($arr['rmb']['BMP']?$arr['rmb']['BMP']:0,0)?></td>
+        <td><?=number_format($arr['usd']['BMP']?$arr['usd']['BMP']:0,0)?></td>
+        <td><?=number_format(($arr['rmb']['BMP']+$arr['usd']['BMP']*$this->USDTOCNY),0)?></td>
+        <td><?=$arr['num']['B&T']?$arr['num']['B&T']:0?></td>
+        <td><?=number_format($arr['rmb']['B&T']?$arr['rmb']['B&T']:0,0)?></td>
+        <td><?=number_format($arr['usd']['B&T']?$arr['usd']['B&T']:0,0)?></td>
+        <td><?=number_format(($arr['rmb']['B&T']+$arr['usd']['B&T']*$this->USDTOCNY),0)?></td>
+        <td><?=number_format((($arr['rmb']['BMP']+$arr['usd']['BMP']*$this->USDTOCNY)+($arr['rmb']['B&T']+$arr['usd']['B&T']*$this->USDTOCNY)),0)?></td>
+        </tr>
+      <?php }?>
+      <tr style="font-weight:bold"><td align="center">总计</td>
+      <td><?=$t1?></td><td><?=number_format($t2,0)?></td><td><?=number_format($t3,0)?></td><td><?=number_format($t4,0)?></td>
+      <td><?=$t5?></td><td><?=number_format($t6,0)?></td><td><?=number_format($t7,0)?></td><td><?=number_format($t8,0)?></td>
+      <td><?=number_format(($t4+$t8),0)?></td></tr>
+      </table>
+      <br/>
+      <div id="container" style="width:<?=(count($this->orderstrend)*100+170)?>px; height: 400px;"></div>
+      <table cellspacing="0" cellpadding="0" border="1" align="center"  class="tablenew2014">
+      <tr height="20" bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;">
+      <th width="150">&nbsp;</th>
+      <?php foreach($this->orderstrend as $d=>$arr){?>
+      <th  width="100"><?=$d?></th>
+      <?php }?>
+      </tr>
+      <tr><td>总销售额(￥)</td>
+      <?php $total = 0 ;foreach($this->orderstrend as $d=>$arr){
+	  $all = ($arr['rmb']['BMP']+$arr['usd']['BMP']*$this->USDTOCNY)+($arr['rmb']['B&T']+$arr['usd']['B&T']*$this->USDTOCNY);
+	  $total +=$all;
+	  ?>
+      <td><?=number_format($all,0)?></td>
+      <?php }?>
+      </tr>
+      <tr><td>非代理(通用)销售额(￥)</td>
+      <?php $tom_total = 0;foreach($this->orderstrend as $d=>$arr){
+	  $all = ($arr['tom_rmb']['BMP']+$arr['tom_usd']['BMP']*$this->USDTOCNY)+($arr['tom_rmb']['B&T']+$arr['tom_usd']['B&T']*$this->USDTOCNY);
+	  $tom_total +=$all;
+	  ?>
+      <td><?=number_format($all,0)?></td>
+      <?php }?>
+      </tr>
+      </table>
+      <br/>
+      <!-- 结束区域-->
+	</div>
+
+<script src="/js/jsplug/highcharts/highcharts.js"></script>
+<script src="/js/jsplug/highcharts/modules/exporting.js"></script>
+<script type="text/javascript">
+$(function () {
+        $('#container').highcharts({
+		    
+            chart: {
+            },
+			title: {
+                text: '总订单金额与非代理（通用）订单金额对比图'
+            },
+            xAxis: {
+                categories: [ <?php  $i=1;foreach($this->orderstrend as $d=>$arr){ if($i==1) echo "'".$d."'";else echo ",'".$d."'";$i++;}?>]
+            },
+			yAxis: {
+                title: {
+                    text: '销售额'
+                }
+            },
+			credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: true
+            },
+			drag:{
+			    enabled: false
+			},
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function() {
+                            return Highcharts.numberFormat(this.y, 0);
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'column',
+                name: '总销售额(￥)',
+				color: '#4E7FBB',
+                data: [<?php  $i=1;foreach($this->orderstrend as $d=>$arr){ 
+				$all = ($arr['rmb']['BMP']+$arr['usd']['BMP']*$this->USDTOCNY)+($arr['rmb']['B&T']+$arr['usd']['B&T']*$this->USDTOCNY);
+				if($i==1) echo $all;else echo ",".$all;$i++;}?>]
+            }, {
+                type: 'column',
+                name: '非代理(通用)销售额(￥)',
+				color: '#BE4F4C',
+                data: [<?php  $i=1;foreach($this->orderstrend as $d=>$arr){ 
+				$all = ($arr['tom_rmb']['BMP']+$arr['tom_usd']['BMP']*$this->USDTOCNY)+($arr['tom_rmb']['B&T']+$arr['tom_usd']['B&T']*$this->USDTOCNY);
+				if($i==1) echo $all;else echo ",".$all;$i++;}?>]
+            }]
+        });
+    });
+    
+
+		</script>
+<script type="text/javascript">
+$(function () {
+        $('#order_num').highcharts({
+            title: {
+                text: '订单数',
+                x: -20 //center
+            },
+            xAxis: {
+                categories: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo "'".$d;if($this->type =='day'){echo (' '.$weekarray[date("w",strtotime($d))]);} echo "'";if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            },
+            yAxis: {
+                title: {
+                    text: '订单数量'
+                }
+            },
+            tooltip: {
+                valueSuffix: '  张订单'
+            },
+			credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: true
+            },
+			drag:{
+			    enabled: false
+			},
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true,
+                        style: {
+                            textShadow: '0 0 3px white, 0 0 3px white'
+                        }
+                    },
+                    enableMouseTracking: true
+                }
+            },
+            series: [{
+                name: 'BMP',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo $arr['num']['BMP'];if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            }, {
+                name: 'B&T',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo $arr['num']['B&T'];if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            }, {
+                name: '总计',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo ($arr['num']['BMP']+$arr['num']['B&T']);if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            }]
+        });
+		
+		
+		$('#order_rmb').highcharts({
+            title: {
+                text: '订单金额(RMB)',
+                x: -20 //center
+            },
+            xAxis: {
+                categories: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo "'".$d;if($this->type =='day'){echo (' '.$weekarray[date("w",strtotime($d))]);}echo "'";if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            },
+            yAxis: {
+                title: {
+                    text: '订单金额（RMB）'
+                }
+            },
+            tooltip: {
+                valueSuffix: '  RMB'
+            },
+			credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: true
+            },
+			drag:{
+			    enabled: false
+			},
+            series: [{
+                name: 'BMP',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo $arr['rmb']['BMP'];if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            }, {
+                name: 'B&T',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo $arr['rmb']['B&T'];if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            }, {
+                name: '总计',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo ($arr['rmb']['BMP']+$arr['rmb']['B&T']);if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            }]
+        });
+		
+		
+		
+		$('#order_usd').highcharts({
+            title: {
+                text: '订单金额(USD)',
+                x: -20 //center
+            },
+            xAxis: {
+                categories: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo "'".$d;if($this->type =='day'){echo (' '.$weekarray[date("w",strtotime($d))]);}echo "'";if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            },
+            yAxis: {
+                title: {
+                    text: '订单金额（USD）'
+                }
+            },
+            tooltip: {
+                valueSuffix: '  USD'
+            },
+			credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: true
+            },
+			drag:{
+			    enabled: false
+			},
+            series: [{
+                name: 'BMP',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo $arr['usd']['BMP'];if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            }, {
+                name: 'B&T',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo $arr['usd']['B&T'];if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            }, {
+                name: '总计',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo ($arr['usd']['BMP']+$arr['usd']['B&T']);if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            }]
+        });
+		
+		
+		$('#order_all').highcharts({
+            title: {
+                text: '订单总金额(RMB)',
+                x: -20 //center
+            },
+            xAxis: {
+                categories: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo "'".$d;if($this->type =='day'){echo (' '.$weekarray[date("w",strtotime($d))]);}echo "'";if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            },
+            yAxis: {
+                title: {
+                    text: '订单总金额（RMB）'
+                }
+            },
+            tooltip: {
+                valueSuffix: '  RMB'
+            },
+			credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: true
+            },
+			drag:{
+			    enabled: false
+			},
+            series: [{
+                name: 'BMP',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo $arr['rmb']['BMP']+$arr['usd']['BMP']*$this->USDTOCNY;if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            }, {
+                name: 'B&T',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo $arr['rmb']['B&T']+$arr['usd']['B&T']*$this->USDTOCNY;if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            }, {
+                name: '总计',
+                data: [<?php $i=1;foreach($this->orderstrend as $d=>$arr){ echo ($arr['rmb']['BMP']+$arr['rmb']['B&T'])+($arr['usd']['BMP']*$this->USDTOCNY+$arr['usd']['B&T']*$this->USDTOCNY);if($i<count($this->orderstrend)) echo ',';$i++;}?>]
+            }]
+        });
+    });
+   
+		</script>
+ <?php }?>

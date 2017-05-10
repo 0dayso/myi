@@ -1,0 +1,46 @@
+
+	<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?> <a href="<?=$this->propertyurl;?>">属性管理&gt;&gt;</a></h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+      <table border="1" width="80%">
+
+      <?php foreach($this->first as $k=>$farr){
+	  $fid = $farr['id'];
+	  if($k%2==0)$bg="#D5C5FE";
+	  else $bg="#E4E4E4";
+	  ?>
+      <tr bgcolor="<?=$bg?>" class="cpcplx">
+      	<td valign="top" width="120">
+        <b <?=$farr['status']?'':'style="color:#FF0000"'?>><?=$farr['name']?></b>
+        </td>
+        <td>
+            <table >
+			<?php
+		      foreach($this->second[$fid] as $sarr){
+				 $sid = $sarr['id'];
+			?>
+             <tr><td valign="top" width="120"  style="border-bottom:1px #334159 dotted">
+            
+             <?php if(empty($this->third[$sid])){?>
+             <a href="<?=$this->selectionurl?>/cid/<?=$sarr['id']?>"><b <?=$sarr['status']?'':'style="color:#FF0000"'?>><?=$sarr['name']?></b></a>
+			 <?php }else{?><b <?=$sarr['status']?'':'style="color:#FF0000"'?>><?=$sarr['name']?></b><?php }?>
+             </td>
+             <td style="border-bottom:1px #334159 dotted">
+            <?php  foreach($this->third[$sid] as $tarr){?>
+                     <a href="<?=$this->selectionurl?>/cid/<?=$tarr['id']?>" <?=$tarr['status']?'':'style="color:#FF0000"'?>><?=$tarr['name']?></a>&nbsp;|&nbsp;
+             
+			 <?php }?>
+			 
+			 <?php } ?>
+             </td></tr></table>
+        </td>
+      </tr>
+	  <?php	}?>
+      </table>
+      <br/>
+      <!-- 结束区域-->
+	</div>

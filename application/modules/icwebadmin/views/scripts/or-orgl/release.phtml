@@ -1,0 +1,92 @@
+<div class="popup" style="width:770px;">
+    <div class="popup-header">
+    <h2>修改运费 订单编号#：<?=$this->salesnumber?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a>
+     </div>
+    <div class="popup-body">
+        <!--订单详情-->
+        <div id='soinfo' style="height:900px;"><img src="/images/admin/ajax-loader.gif" /></div>
+    	<!-- end 订单详情-->
+        
+        <div class="passorno ">
+            <dl class="PublicDl">
+                <dt>审核：</dt>
+                <dd>
+                    <label><input type="radio" name="status" id="status_yes" value="201" checked="checked" onclick="changediv(this.value)"/><b style="color:#339900">通过</b></label>
+                </dd>
+                <dd>
+                   <label><input type="radio" name="status" id="status_no" value="102"  onclick="changediv(this.value)"/><b style="color:#CC3333">不通过</b></label>
+                </dd>
+            </dl>
+            <dl class="PublicDl"  id="no_release"  style="display:none">
+                <dt>说明：</dt>
+                <dd>
+                    <textarea name="notpass" id="notpass" rows="3" style="width:400px;"></textarea>(客户可以看到的)
+                </dd>
+            </dl>
+        </div>
+        <div class="clear"></div>
+        <div class="bottombutton">
+            <input type="button"  class="btnabig"  value="确认" onclick="release('<?=$this->salesnumber?>')"/>
+            <?php if($this->soinfo['invoiceid']){?>发票信息有误？<a href="javascript:;" onclick="openbox2('<?=$this->indexurl?>/editinvoice/invoiceid/<?=$this->soinfo['invoiceid']?>')">点击修改</a><?php }?>
+        </div>
+<div class="clear"></div>
+    </div>
+    
+</div>
+<script type="text/javascript">
+function changediv(value)
+{
+	if(value==201){
+        document.getElementById("no_release").style.display    = 'none';
+	}else{
+        document.getElementById("no_release").style.display    = 'block';
+	}
+}
+//审核订单
+function release(salesnumber){
+var status='';
+var notpass='';
+var status_obj = document.getElementsByName("status");
+	   for(i=0;i<status_obj.length;i++){
+	      if(status_obj[i].checked){
+	         status = status_obj[i].value; break;
+	      }
+	   }
+
+var sqscode=''; 
+if(status==201) {
+   var sqscode_obj = document.getElementsByName("sqscode");
+	   for(i=0;i<sqscode_obj.length;i++){
+	      if(sqscode_obj[i].checked){
+	         sqscode = sqscode_obj[i].value; break;
+	      }
+	   }
+   if(sqscode==1) {
+      if(!confirm('你确定通过此订单并需要走SQS Code吗？'+salesnumber)){return;}
+   }else{
+      if(!confirm('你确定通过此订单吗？'+salesnumber)){return;}
+   }
+}else if(status==102) {
+  notpass =  document.getElementById('notpass').value;
+  if(notpass==''){alert('请填写说明！');document.getElementById('notpass').focus();return;}
+  else{
+  	if(!confirm('你确定不通过此订单吗？'+salesnumber)){return;}
+  }
+}else{
+	alert('状态参数错误！');return;
+}
+	$.ajax({
+            url: '<?=$this->release?>',
+            data: {'salesnumber':salesnumber,'status':status,'notpass':notpass,'sqscode':sqscode},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	alert(arr.message);
+				if(arr.code == 0) location.reload();
+            }
+	});
+   
+}
+getorder('<?=$this->salesnumber?>');
+</script>

@@ -1,0 +1,29 @@
+<div class="subhot">
+  <div class="subhot_t">
+    <h3 class="titbg1ts" >
+      <?=$this->hotArr[0]['name']?>
+      热门方案<em class="emtrianglerightgray5px"></em></h3>
+    <!-- <span class="hotbrandimg"><a target="_blank" href="#"><img src="images/default/brand/FSL_hot.jpg" /><em class="emwhite"></em></a></span>-->
+  </div>
+  <div class="subshop">
+    <?php foreach($this->hotArr as $k=>$hotarr){
+			  $solimg = '';
+			  if($hotarr['sol_img'])
+			  {
+				   $solimg = APPICON.$hotarr['sol_img'];
+			  }else{
+				   if($hotarr['solution_img'])
+				   {
+						$pricearr = explode(',',$hotarr['solution_img']);
+						$solimg   = SOLUTIONICON.$pricearr[0];
+				   }
+			  }
+	?>
+    <div class="w_100 " <?=$k==(count($this->hotArr)-1)?'style="border-bottom:0px;"':''?>> <a href="/solution-<?=$hotarr['id']?>.html"   title="<?=$hotarr['title']?>" onclick="logclickaction($(this))" rev="hotpord_solution" rel="<?=$hotarr['id']?>"><b><?=$k+1?></b>
+      <img src="<?=$solimg?>" alt="暂无方案框图"/></a>
+      <p><a href="/solution-<?=$hotarr['id']?>.html"  title="<?=$hotarr['title']?>" onclick="logclickaction($(this))" rev="hotpord_solution" rel="<?=$hotarr['id']?>"><?=$hotarr['title']?></a></p>
+      <p class="fontgray"><?=date('Y/m/d',$hotarr['created'])?></p>
+    </div>
+    <?php }?>
+  </div>
+</div>

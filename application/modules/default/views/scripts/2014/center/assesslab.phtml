@@ -1,0 +1,85 @@
+<div class="pop pop_bargaining"  style="width:750px;">
+  <div class="popbox">
+    <div class="poptit"> 
+    <span class="titbg1ts">测试报告</span>
+      <input type="button" title="关闭"  class="closebtn" onClick="$.closePopupLayer('assesslabBox')"/>
+    </div>
+    <div class="popcon clearfix msg24">
+     <div class="ok" id="message" style="display:none"></div>
+     
+      
+      <div id="again_div" class="pop_bargaining_table">
+
+      <table border="0" cellpadding="0" cellspacing="0" class="table midtable">
+        <tr>
+          <th>实验地点</th>
+          <th>项目名称</th>
+          <th>来访时间</th>
+        </tr>
+        <tr>
+          <td><?=$this->apply[0]['address']?></td>
+          <td><?=$this->apply[0]['project_name']?></td>
+          <td><?=$this->apply[0]['vist_time']?></td>
+        </tr>
+  
+        </table>
+      <table cellpadding="0" cellspacing="0" class="table bomtable">
+            <tbody>
+                <tr>
+                  <td align="right"><em>*</em>测试情况：</td>
+                  <td align="left"><textarea name="test_case" id="test_case" rows="3" cols="30"></textarea></td>
+                </tr>
+                <tr>
+                  <td align="right"><em>*</em>后续安排：</td>
+                  <td align="left"><textarea name="followup" id="followup" rows="3" cols="30"></textarea></td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td align="left"><em>*</em>量产后产品是否愿意在实验平台上展示,获取合作机会？</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td align="left"><textarea name="wish" id="wish" rows="3" cols="30"></textarea></td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td align="left"><input type="button" onClick="subassess()" value="提 交"  class="button"/></td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function subassess() 
+{
+   var test_case = $("#test_case").val();
+   if(test_case=='' || typeof(test_case)=="undefined") {
+	  alert('请填写测试情况');$("#test_case").focus();return;
+   }
+   var followup = $("#followup").val();
+   if(followup=='' || typeof(followup)=="undefined") {
+	  alert('请填写后续安排');$("#followup").focus();return;
+   }
+   var wish = $("#wish").val();
+   if(wish=='' || typeof(wish)=="undefined") {
+	  alert('请填写合作意愿');$("#wish").focus();return;
+   }
+   $.ajax({
+			url: '/center/assesslab',
+			data: {'id':'<?=$this->id?>','test_case':test_case,'followup':followup,'wish':wish},
+			type: 'post',
+			dataType: 'json',
+			success: function(arr) {
+				if(arr.code==0)
+				{
+					alert(arr.message);
+					location.reload();
+				}else{
+					alert(arr.message);
+			    }
+		}
+	});
+}
+</script>

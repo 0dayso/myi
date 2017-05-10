@@ -1,0 +1,139 @@
+<form class="form-horizontal form-validate" style="text-align:left" method="post" action="<?php echo $this->editurl;?>" enctype="multipart/form-data">
+<input type="hidden" name="id"  value="<?php echo $this->id;?>">
+<div class="popup" style="width:840px;">
+    <div class="popup-header">
+        <h2>询价者详细信息</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+    </div>
+    <div class="popup-body">
+   <div class="kehuifo overflowh">
+    <h3>客户情况</h3>    
+    <dl>
+        <dt>询价客户：</dt>
+        <dd><?php echo $this->data['user'];?></dd>
+    </dl>
+    <dl>
+        <dt>公司名称：</dt>
+        <dd><?php echo $this->data['companyname'];?></dd>
+    </dl>
+    <dl>
+        <dt>注册性质：</dt>
+        <dd><?php echo $this->data['backstage']?'<font color="#FF0000">后台添加</font>':'<font color="#009900">自己注册</font>';?></dd>
+    </dl>
+     <dl>
+        <dt>行业领域：</dt>
+        <dd><?=$this->data['appname']==''?$this->data['personaldesc']:$this->data['appname']?></dd>
+    </dl>
+    <dl>
+        <dt>公司性质：</dt>
+        <dd><?php
+                        $property_tmp = array('enduser'=>'终端用户','merchant'=>'贸易商');
+						echo $property_tmp[$this->data['property']];?></dd>
+    </dl>
+    <dl>
+        <dt>联系人：</dt>
+        <dd><?php echo $this->data['truename'];?></dd>
+    </dl>
+    <dl>
+        <dt>联系电话：</dt>
+        <dd><?php echo $this->data['tel'];?></dd>
+    </dl>
+    <dl>
+        <dt>手机：</dt>
+        <dd><?php echo $this->data['mobile'];?></dd>
+    </dl>
+    <dl>
+        <dt>传真：</dt>
+        <dd><?php echo $this->data['fax']?></dd>
+    </dl>
+
+    <dl>
+        <dt>Email：</dt>
+        <dd><?php echo $this->data['email'];?></dd>
+    </dl>
+</div>
+
+<h3>询价统计</h3> 
+<!-- ，0被删除，1等待回复，2已报价，3议价审核中，4审核不通过，5已经下单等处理，6成功下单-->  
+<table cellpadding="0" cellspacing="0" border="0" class="table">
+        <thead>
+        <tr><th>删除</th>
+          <th>等待回复</th>
+          <th>已报价</th>
+          <th>议价审核中</th>
+          <th>审核不通过</th>
+          <th>已经下单等处理</th>
+          <th>成功下单</th>
+          <th>总计</th>
+          </tr></thead>
+        <tbody>
+          <tr>
+           <?php 
+		  	$inqtotal = 0;
+		  for($i=0;$i<count($this->inqre);$i++){
+		  			$inqtotal +=$this->inqre[$i];
+		  			 echo '<td>'.$this->inqre[$i].'</td>';
+			}?>
+            <td><?=$inqtotal?></td>
+          </tr>
+        </tbody>
+      </table> 
+<!--/**
+	 * 用户询价订单统计
+	 * 括号的代表是cod状态 101待付预付款（cod:等待审核） 102 需要订货，订单处理中(转账:已支付预付款) 
+	 * 103已经订货并返回交货期（转账:等待付剩余货款）
+	 * 201待发货（转账:已付剩余货款） 202已发货,待确认收货 
+	 * 301已确认收货,待评价 302已确认收货 401客户取消订单
+	 */--> 
+<h3>询价订单统计</h3>  
+<table cellpadding="0" cellspacing="0" border="0"  class="table">
+        <thead>
+        <tr><th>审核不通过</th>
+          <th>待付预付款</th>
+          <th>订单处理中</th>
+          <th>等待付剩余货款</th>
+          <th>待发货</th>
+          <th>已发货</th>
+          <th>已确认收货</th>
+          <th>已评价</th>
+          <th>客户取消订单</th>
+          <th>总计</th>
+          </tr></thead>
+        <tbody>
+          <tr>
+             <?php $inqsototal = 0;for($i=0;$i<count($this->inqsore);$i++){
+		          $inqsototal +=$this->inqsore[$i];
+		  		  echo '<td>'.$this->inqsore[$i].'</td>';
+				 }?>
+            <td><?=$inqsototal?></td>
+          </tr>
+        </tbody>
+      </table>  
+<!--101待付款201已付款待发货202已配送,待确认收货301已确认收货,待评价302已确认收货,已评价401客户取消订单单-->        
+<h3>在线订单统计</h3>        
+<table cellpadding="0" cellspacing="0" border="0"  class="table">
+        <thead>
+        <tr><th>审核不通过</th>
+          <th>待付预付款</th>
+          <th>待发货</th>
+          <th>已发货</th>
+          <th>已确认收货</th>
+          <th>已评价</th>
+          <th>客户取消订单</th>
+          <th>总计</th>
+          </tr></thead>
+        <tbody>
+          <tr>
+           <?php $sototal = 0;for($i=0;$i<count($this->sore);$i++){
+		          $sototal +=$this->sore[$i];
+		  		  echo '<td>'.$this->sore[$i].'</td>';
+				 }?>
+            <td><?=$sototal?></td>
+          </tr>
+        </tbody>
+      </table>           
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+</form>

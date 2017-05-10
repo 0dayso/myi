@@ -1,0 +1,141 @@
+<?php $dotype = array('A'=>'添加','M'=>'邮件','E'=>'编辑','L'=>'登录','V'=>'浏览');?>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  <div class="fr u_right">
+    <div class="tab_content">
+      <div class="tab_tit1">
+        <ul class="fl">
+          <li <?=($this->type=='default'?'class="on"':'')?>><a style="width:140px;" href="?type=default">前台日志<b class="blank3"></b></a></li>
+          <li <?=($this->type=='admin'?'class="on"':'')?>><a style="width:140px;" href="?type=admin">后台日志<b class="blank3"></b></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tab_con mb10">
+      <?php if($this->type=='default'){?>
+      <table border="0" class="producttable table">
+        <thead>
+          <tr>
+            <th width="60">session_id</th>
+            <th width="60">用户</th>
+            <th width="80">IP</th>
+            <th width="80">Controller</th>
+            <th width="80">Action</th>
+            <th width="60">操作</th>
+            <th width="60">状态</th>
+            <th width="50">Key</th>
+            <th width="50">temp3</th>
+            <th width="50">temp5</th>
+            <th width="100">创建时间</th>
+            <th width="150">说明</th>
+            <th width="150">备注</th>
+          </tr>
+        </thead>
+        <tbody>
+         	<?php 
+				foreach($this->alllogs as $alllogs) : ?>
+				<tr>
+                <td><span title="<?=$alllogs['session_id']?>"><?=$this->fun->utf_substr($alllogs['session_id'],13)?></span>
+                <?php if($alllogs['session_id']){?><a href="<?=$this->indexurl?>/track?type=default&valuetype=session_id&value=<?=$alllogs['session_id']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                <td><a href="javascript:;" onclick="viewUser('<?=$alllogs['uid']?>')" title="查看详细资料" ><?=($alllogs['companyname']?$alllogs['companyname']:$alllogs['uname'])?></a> 
+				<?php if($alllogs['uid']){?><a href="<?=$this->indexurl?>/track?type=default&valuetype=uid&value=<?=$alllogs['uid']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+				<td><?=$alllogs['ip']?>
+                <?php if($alllogs['ip']){?><a href="<?=$this->indexurl?>/track?type=default&valuetype=ip&value=<?=$alllogs['ip']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+				<td><?=$alllogs['controller']?>
+                <?php if($alllogs['controller']){?><a href="<?=$this->indexurl?>/track?type=default&valuetype=controller&value=<?=$alllogs['controller']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+				<td><?=$alllogs['action']?>
+                <?php if($alllogs['action']){?><a href="<?=$this->indexurl?>/track?type=default&valuetype=action&value=<?=$alllogs['action']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                <td><?=$dotype[$alllogs['log_id']]?>
+                <?php if($alllogs['log_id']){?><a href="<?=$this->indexurl?>/track?type=default&valuetype=log_id&value=<?=$alllogs['log_id']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+				<td><?php if(!$alllogs['temp1']) echo '成功';if($alllogs['temp1']=='400') echo '失败';?>
+                <a href="<?=$this->indexurl?>/track?type=default&valuetype=temp1&value=<?=$alllogs['temp1']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a>
+                </td>
+				<td><?=$alllogs['temp2'];?>
+                <?php if($alllogs['temp2']){?><a href="<?=$this->indexurl?>/track?type=default&valuetype=temp2&value=<?=$alllogs['temp2']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                <td><?=$alllogs['temp3'];?>
+                <?php if($alllogs['temp3']){?><a href="<?=$this->indexurl?>/track?type=default&valuetype=temp3&value=<?=$alllogs['temp3']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                 <td><?=$alllogs['temp5'];?>
+                <?php if($alllogs['temp5']){?><a href="<?=$this->indexurl?>/track?type=default&valuetype=temp5&value=<?=$alllogs['temp5']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+				<td><?=date('Y-m-d H:i:s',$alllogs['created']);?>
+                <?php if($alllogs['created']){?><a href="<?=$this->indexurl?>/track?type=default&valuetype=created&value=<?=$alllogs['created']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪当天"/></a><?php }?>
+                </td>
+                <td><?=$alllogs['temp4'];?> <?php if($alllogs['temp4']){?><a href="<?=$this->indexurl?>/track?type=default&valuetype=temp4&value=<?=$alllogs['temp4']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+                <td><?=$alllogs['description'];?></td>
+				</tr>
+				<?php endforeach ; ?>
+        </tbody>
+      </table>
+      <?php }elseif($this->type=='admin'){?>
+      <table border="0" class="producttable table">
+        <thead>
+          <tr>
+            <th width="60">session_id</th>
+            <th width="60">用户</th>
+            <th width="60">姓名</th>
+            <th width="80">IP</th>
+            <th width="80">Controller</th>
+            <th width="80">Action</th>
+            <th width="60">操作</th>
+            <th width="60">状态</th>
+            <th width="50">Key</th>
+            <th width="100">创建时间</th>
+            <th width="150">说明</th>
+            <th width="150">备注</th>
+          </tr>
+        </thead>
+        <tbody>
+         	<?php 
+				foreach($this->alllogs as $alllogs) : ?>
+				<tr>
+                <td><span title="<?=$alllogs['session_id']?>"><?=$this->fun->utf_substr($alllogs['session_id'],13)?></span>
+                <?php if($alllogs['session_id']){?><a href="<?=$this->indexurl?>/track?type=admin&valuetype=session_id&value=<?=$alllogs['session_id']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                <td><?=$alllogs['staffid']?>
+				<?php if($alllogs['staffid']){?><a href="<?=$this->indexurl?>/track?type=admin&valuetype=staffid&value=<?=$alllogs['staffid']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+                <td><?=$alllogs['lastname'].$alllogs['firstname']?></td>
+				<td><?=$alllogs['ip']?>
+                <?php if($alllogs['ip']){?><a href="<?=$this->indexurl?>/track?type=admin&valuetype=ip&value=<?=$alllogs['ip']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+				<td><?=$alllogs['controller']?>
+                <?php if($alllogs['controller']){?><a href="<?=$this->indexurl?>/track?type=admin&valuetype=controller&value=<?=$alllogs['controller']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+				<td><?=$alllogs['action']?>
+                <?php if($alllogs['action']){?><a href="<?=$this->indexurl?>/track?type=admin&valuetype=action&value=<?=$alllogs['action']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+				<td><?=$dotype[$alllogs['log_id']]?>
+                <?php if($alllogs['log_id']){?><a href="<?=$this->indexurl?>/track?type=admin&valuetype=log_id&value=<?=$alllogs['log_id']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                <td><?php if(!$alllogs['temp1']) echo '成功';if($alllogs['temp1']=='400') echo '失败';?>
+                <a href="<?=$this->indexurl?>/track?type=admin&valuetype=temp1&value=<?=$alllogs['temp1']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a>
+                </td>
+				<td><?=$alllogs['temp2'];?>
+                <?php if($alllogs['temp2']){?><a href="<?=$this->indexurl?>/track?type=admin&valuetype=temp2&value=<?=$alllogs['temp2']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+				<td><?=date('Y-m-d H:i:s',$alllogs['created']);?>
+                <?php if($alllogs['created']){?><a href="<?=$this->indexurl?>/track?type=admin&valuetype=created&value=<?=$alllogs['created']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪当天"/></a><?php }?>
+                </td>
+                <td><?=$alllogs['temp4'];?> <?php if($alllogs['temp4']){?><a href="<?=$this->indexurl?>/track?type=admin&valuetype=temp4&value=<?=$alllogs['temp4']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+                <td><?=$alllogs['description'];?></td>
+				</tr>
+				<?php endforeach ; ?>
+        </tbody>
+      </table>
+      <?php }?>
+      <div class="pagination divpage">
+        <?=$this->page_bar?>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <!-- 结束区域-->
+</div>

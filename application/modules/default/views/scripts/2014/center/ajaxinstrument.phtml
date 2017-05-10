@@ -1,0 +1,16 @@
+<?php foreach($this->room as $room){
+  if(!empty($this->instrument[$room['id']])){
+?>
+<dl>
+  <dt><?=$room['name']?>：</dt>
+    <dd>
+       <ul class="labul">
+        <?php foreach($this->instrument[$room['id']] as $instrument){?>
+             <li><label><input type="checkbox"  value="<?=$instrument['id']?>" name="instrument[]" /><?=$instrument['ins_name']?><?=$instrument['model']?'('.$instrument['model'].')':''?></label></li>
+             <?php }?>
+        </ul>
+    </dd>
+</dl>
+<?php 
+	}
+}?>

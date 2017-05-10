@@ -1,0 +1,76 @@
+
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/se2013.css"/>
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a href="/code" class="focs">代码库</a> &nbsp;&nbsp;»&nbsp;&nbsp; 
+    <a href="/codelist-<?=$this->sem['app_level1']?>.html"><?=$this->sem['appname']?></a> &nbsp;&nbsp;»&nbsp;&nbsp; 
+    <span title=""><?=$this->sem['title']?></span>
+  </span></div>
+</div><span>
+
+<div class="w clearfix code2013">
+
+	<div class="layout rigybg" >
+        <div class="shoplist fl">
+    	<div class="themain themain1 " >
+        	<span class="ifotip2013"><em><?=$this->sem['appname']?></em><i></i></span>
+         	<h1><?=$this->sem['title']?></h1>
+         	<div class="postmeta">
+                <?=($this->sem['source']?'来源：<span>'.$this->sem['source'].'</span>':'')?>
+               <?=($this->sem['author']?'作者：<span>'.$this->sem['author'].'</span>':'')?>
+               创建时间：<span><?=date('Y-m-d',$this->sem['created'])?></span>
+               关键词：<span><?php 
+					$tip = explode(',',$this->sem['keyword']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+					}
+			    ?></span>     
+            </div>
+            <div class="themain_p boxshadow_h">
+            	<div class="fl">
+                    <p><b>开发环境：<?=$this->sem['dep_environment']?></b></p>
+                    <p><b>程序简介：</b><?=$this->sem['description']?></p>
+                    <p><b>大小：</b><span><?=$this->fun->format_bytes(filesize($this->sem['annexpath']))?></span>
+                    <b>下载次数：</b><span><?=$this->sem['downloadnumber']?></span>
+                    <?php if($this->sem['need_pass']==1){?>
+<b>需要密码</b>
+<?php }else{?>
+                    <b>需要积分：</b><?=$this->sem['spendpoints']?'<span><ins class="jficon" style="vertical-align:middle;"></ins>'.$this->sem['spendpoints'].'</span>':'<span class="fontorange">免费</span>'?>
+                    </p>
+                    <?php }?>
+                </div>
+                <div class="proinfo_btn fr">
+                <a class="btnok-new1" href="javascript:;" onClick="downloadcode('<?=$this->fun->encryptVerification($this->sem['id'])?>')"><i class="icon_down"></i>立即下载</a>
+                </div>     
+			</div>
+            
+		</div>  
+        <div class="themain_p"><p><?=$this->sem['content']?></p></div>   
+		</div>              
+         <div class="fr righttuij">
+            <div id="hotsearch"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
+            <div id="hotsolution"></div>
+            <div id="hotnews"></div>
+            <div id="hotwebinar"></div>
+            <div id="htocode"></div>
+            </div>
+        <div class="clr"></div>
+    </div>
+
+</div>
+<script language="javascript">
+	$(function(){
+	
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+		$("#hotsearch").load("/publicbox/hotsearch");
+		$("#hotsolution").load("/publicbox/hotsolution");
+		$("#hotnews").load("/publicbox/hotnews");
+		$("#hotwebinar").load("/publicbox/hotwebinar");
+		$("#htocode").load("/publicbox/htocode");
+	})
+</script>

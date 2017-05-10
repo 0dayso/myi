@@ -1,0 +1,203 @@
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 编辑礼品 <a href="<?=$this->indexurl?>">返回&gt;&gt;</a> </h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+                  <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+                  <div id="alert_message"></div>
+                </div>
+
+          <?php if (isset($_SESSION['messages'])) : ?>
+          <div class="alert fade in">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p>
+          </div>
+          <?php endif; ?>
+          <form class="form-horizontal form-validate" style="text-align:left" method="post" action="<?php echo $this->editurl;?>" enctype="multipart/form-data">
+          <input type="hidden" name="id" value="<?=$this->processData['id']?>" />
+            <div class="control-group">
+              <label class="control-label" for="contents">立即上线</label>
+              <div class="controls">
+                <input type="checkbox" name="status" value="1" <?=$this->processData['status']==1?'checked':''?> >
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="title">名称</label>
+              <div class="controls">
+                <input type="text" id="name" name="name" class="required" style="width:500px;" value="<?=$this->processData['name']?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="title">品牌</label>
+              <div class="controls">
+                <input type="text" id="brand_name" name="brand_name" class="required" value="<?=$this->processData['brand_name']?>" >
+              </div>
+            </div>
+             <div class="control-group">
+              <label class="control-label" for="solution_no">类型</label>
+              <div class="controls">
+                <select id="type" name="type">
+                <option value="1" <?php if($this->processData['type']==1) echo 'selected="selected"';?> >实物</option>
+                <option value="2" <?php if($this->processData['type']==2) echo 'selected="selected"';?> >虚拟物品</option>
+                </select>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="solution_no">类别</label>
+              <div class="controls">
+                <select id="category" name="category">
+                  <?php foreach($this->category as $v){?>
+                  <option value="<?=$v['id']?>" <?php if($this->processData['category']==$v['id']) echo 'selected="selected"';?> ><?=$v['name']?></option>
+                  <?php }?>
+                </select>
+              </div>
+            </div>
+             <div class="control-group">
+              <label class="control-label" for="solution_no">消费积分</label>
+              <div class="controls">
+                <input type="text" id="score"  name="score" value="<?=$this->processData['score']?>" onkeyup="<?=ISNUMBER?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="solution_no">市场价格</label>
+              <div class="controls">
+                <input type="text" id="market_price"  name="market_price" value="<?=$this->processData['market_price']?>" onkeyup="<?=ISFLOAT?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="tags">库存</label>
+              <div class="controls">
+                <input type="text" id="stock"  name="stock" value="<?=$this->processData['stock']?>" onkeyup="<?=ISNUMBER?>" >
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="sol_img">产品图片</label>
+              <div class="controls" id="sol_img_upload">
+                <input type="hidden" id="images" name="images" value="<?=$this->processData['images']?>" />
+                <input type="button" id="images_box"  value="选择图片" />
+                <img src="/upload/default/gift/<?=$this->processData['images']?>" id="show_images"  width="100" height="100" alt="sol log"/> </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="outline">描述</label>
+              <div class="controls">
+                <textarea  id="description"  name="description" rows="3"  style="width:500px;"><?=$this->processData['description']?></textarea>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="superiority" >详细内容</label>
+              <div class="controls">
+                <textarea class="kindeditor"  id="content"  name="content" rows="10" style="width:700px; height:600px;"><?=$this->processData['content']?></textarea>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <input type="submit" class="btn" value="编 辑">
+              </div>
+            </div>
+          </form>
+          <br>
+          <!-- 结束区域-->
+</div>
+    <script type="text/javascript">
+	
+KindEditor.ready(function(K) {
+			//详细内容
+		   var editor2 =  K.create('#content', {
+		     allowFileManager : true
+	       });
+		    //方案图片
+			var images_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplodimg?part=upload/default/gift/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/gift/'
+			});
+			K('#images_box').click(function() {
+				images_editor.loadPlugin('image', function() {
+					images_editor.plugin.imageDialog({
+						imageUrl : K('#images').val(),
+						clickFn : function(url, title, width, height, border, align) {
+							K('#images').val(url.replace("/upload/default/gift/",""));
+							K('#show_images').attr("src",url);
+							images_editor.hideDialog();
+						}
+					});
+				});
+			});
+});
+
+function onloadapp(app_level1,app_level2)
+{
+	$("#app_level1_Span").load("/icwebadmin/common/getapp1?app_level1="+app_level1);
+	if(app_level1)
+	   $("#app_level2_Span").load("/icwebadmin/common/getapp2?app_level1="+app_level1+"&app_level2="+app_level2);
+}
+function selectapp1(){
+	var app_level1=$("#app_level1").val();
+	$("#app_level2_Span").load("/icwebadmin/common/getapp2?app_level1="+app_level1);
+}
+onloadapp('<?=$this->processData['app_level1']?>','<?=$this->processData['app_level2']?>');
+function showvdo(obj){
+	if(obj.value=='vdo'){
+		$("#more_info").css("display","block");
+	}else{
+		$("#more_info").css("display","none");
+	}
+}
+</script>
+<script language="javascript">// Example: obj = findObj("image1");
+function findObj(theObj, theDoc)
+{ 
+   var p, i, foundObj; 
+   if(!theDoc) theDoc = document; 
+   if( (p = theObj.indexOf("?")) > 0 && parent.frames.length) 
+   {    
+       theDoc = parent.frames[theObj.substring(p+1)].document;
+	   theObj = theObj.substring(0,p); 
+   } 
+   if(!(foundObj = theDoc[theObj]) && theDoc.all) foundObj = theDoc.all[theObj]; 
+   for (i=0; !foundObj && i < theDoc.forms.length; i++)
+   foundObj = theDoc.forms[i][theObj]; 
+   for(i=0; !foundObj && theDoc.layers && i < theDoc.layers.length; i++) 
+	 foundObj = findObj(theObj,theDoc.layers[i].document); 
+   if(!foundObj && document.getElementById) 
+   foundObj = document.getElementById(theObj);    
+   return foundObj;
+}
+//添加一个参与人填写行
+function AddSignRow(){ //读取最后一行的行号，存放在txtTRLastIndex文本框中 
+   var txtTRLastIndex = findObj("txtTRLastIndex",document);
+   var rowID = parseInt(txtTRLastIndex.value);
+   var signFrame = findObj("SignFrame",document);
+   //添加行
+   var newTR = signFrame.insertRow(signFrame.rows.length);
+   newTR.id = "SignItem" + rowID;
+   //添加列:型号
+   var newNameTD=newTR.insertCell(0);
+   newNameTD.innerHTML = "<input type='text' name='bom_prod_id[]'  class='input-model' onkeyup=value=value.replace(/[^\\\d]/g,'') />";
+   //添加列:品牌(产品线)
+   var newNameTD=newTR.insertCell(1);
+   newNameTD.innerHTML = "<input type='text' name='bom_dosage[]'  class='input-small' onkeyup=value=value.replace(/[^\\\d]/g,'') />";
+   //客户物料号
+    var newEmailTD=newTR.insertCell(2);
+    newEmailTD.innerHTML = '<input type="text" name="bom_remark[]" style="width:200px"/>';
+   
+ 
+   //添加列:删除按钮
+   var newDeleteTD=newTR.insertCell(3);
+   //添加列内容
+   newDeleteTD.innerHTML = "<a href='javascript:;' class='gbqfb' onclick=\"DeleteSignRow('SignItem" + rowID + "')\">删除</a>";
+   //将行号推进下一行
+   txtTRLastIndex.value = (rowID + 1).toString() ;
+}
+//删除指定行
+function DeleteSignRow(rowid){
+  var signFrame = findObj("SignFrame",document);
+  var signItem = findObj(rowid,document);
+  //获取将要删除的行的Index
+  var rowIndex = signItem.rowIndex;
+  //删除指定Index的行
+  signFrame.deleteRow(rowIndex);
+}
+</script>

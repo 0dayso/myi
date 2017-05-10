@@ -1,0 +1,98 @@
+<div class="popup" style="width:800px;">
+<div class="popup-header">
+    <h2>修改结算方式</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+</div>
+<div class="popup-body">
+<?php 
+$c1 = $c2 = $c3 = $c4 = $c5 = '';
+if($this->soarray['paytype']=='mts'  || $this->soarray['down_payment']==0) $c1 = 'checked="checked"';
+elseif($this->soarray['paytype']=='other') $c5 = 'checked="checked"';
+elseif($this->soarray['down_payment']==$this->soarray['total']) $c2 = 'checked="checked"';
+else{
+    if($this->soarray['percentage']>0) $c3 = 'checked="checked"';
+	else $c4 = 'checked="checked"';
+}
+?>
+<div  class="div_dl">
+             <dl>
+              <dt>结算方式：</dt>
+              <dd class="labelinput">
+               <label><input type="radio" name="paytype" value="mts" <?=$c1?> />款到发货</label>
+              </dd>
+             </dl>
+             <dl>
+              <dt>&nbsp;</dt>
+                <dd class="labelinput">
+                <label><input type="radio" name="paytype" value="transfer_100" <?=$c2?> />预付全款</label>
+                </dd>
+            </dl>
+            <dl>
+              <dt>&nbsp;</dt>
+                <dd class="labelinput">
+                <label><input type="radio" name="paytype" value="transfer_pec" <?=$c3?> />预付</label>
+                <input type="text" style="border:0; border-bottom:1px solid #999"  class="input-small " name="percentage" id="percentage" onkeyup="<?=ISNUMBER?>" value="<?=($this->soarray['percentage']?$this->soarray['percentage']:'')?>"/>
+%定金<?=$this->soarray['currency']?>
+                </dd>
+            </dl>
+            <dl>
+              <dt>&nbsp;</dt>
+                <dd class="labelinput">
+                <label><input type="radio" name="paytype" value="down_payment" <?=$c4?> />预付</label><input type="text" style="border:0; border-bottom:1px solid #999"  class="input-small " name="down_payment" id="down_payment" onkeyup="<?=ISFLOAT?>"  value="<?=$c4?$this->soarray['down_payment']:''?>"/>
+定金<?=$this->soarray['currency']?>
+                </dd>
+            </dl>
+            <dl>
+              <dt>&nbsp;</dt>
+                <dd class="labelinput">
+                <label><input type="radio" name="paytype" value="other" <?=$c5?> />其他</label><input type="text" name="paytype_other" id="paytype_other" style="border:0; border-bottom:1px solid #999" class="input-xxlarge" value="<?=$this->soarray['paytype_other']?>"/>
+                </dd>
+            </dl>
+            </div>
+    
+    <div class="bottombutton" id="baojiabtn">
+    	<input type="button" onclick="paytype()" value="提 交" class="btnabig">
+    </div>
+    <div class="clear"></div>
+</div>
+</div>
+<script type="text/javascript">
+function paytype() 
+{
+	 var paytype = $('input[name="paytype"]:checked').val();
+	 var percentage = '';
+     if(paytype=='' || typeof(paytype)=="undefined") {
+	      alert('请选择结算方式');$('input[name="paytype"]:checked').focus();return;
+     }
+	 if(paytype == 'transfer_pec'){
+		percentage = $("#percentage").val();
+		if(percentage<=0 || percentage==''){
+		     alert('请填写定金百分比');$("#percentage").focus();return;
+		}else if(percentage >100){
+		     alert('请填写定金百分比必须小于100');$("#percentage").focus();return;
+		}
+	 }
+	 var down_payment  = 0;
+	 if(paytype == 'down_payment'){
+	 	down_payment = $("#down_payment").val();
+		if(down_payment<=0){
+		     alert('请填写定金');$("#down_payment").focus();return;
+		}
+	 }
+	 var paytype_other ='';
+	 if(paytype == 'other') paytype_other = $("#paytype_other").val();
+     $.ajax({
+            url: '/icwebadmin/OrUnso/paytype',
+            data: {'salesnumber':'<?php echo $this->soarray['salesnumber'];?>','paytype':paytype,'percentage':percentage,'down_payment':down_payment,'paytype_other':paytype_other},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   alert(arr.message);
+			   if(arr.code==0)
+			   {  
+			      location.reload();
+			   }
+            }
+    });
+}
+</script>

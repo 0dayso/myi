@@ -1,0 +1,68 @@
+<?php 
+$title = array('bankcom'=>'国内银行开户名称',
+'bankname'=>'国内开户银行',
+'bankaccount'=>'国内银行账号',
+'vatnumber'=>'增值税纳税识别号',
+'bankcom_hk'=>'香港银行开户名称',
+'bankname_hk'=>'香港开户银行',
+'bankaccount_hk'=>'香港银行账号',
+'swiftcode_hk'=>'Swift Code',
+'bankaddress_hk'=>'Bank Address',
+'rate'=>'税率',
+'window_day'=>'询价订单交期变更窗口时间，单位为天',
+'invoice_day'=>'可补发票申请时间，单位为天',
+'title'=>'网站标题',
+'description'=>'网站描述',
+'keywords'=>'网站关键词',
+'contract_com_sz'=>'在线合同国内公司',
+'contract_add_sz'=>'在线合同国内公司地址',
+'contract_tel_sz'=>'在线合同国内公司电话',
+'contract_fax_sz'=>'在线合同国内公司传真',
+'contract_com_hk'=>'在线合同香港公司',
+'contract_add_hk'=>'在线合同香港公司地址',
+'contract_tel_hk'=>'在线合同香港公司电话',
+'contract_fax_hk'=>'在线合同香港公司传真'
+);
+?>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+      <!-- 需要填写的区域-->
+      <form id='thisform' name="thisform" action='' method='post'>
+      <table cellpadding="1" border="1" width="740px" style=" margin-top:10px;">
+      <?php if($this->configArr){
+	  	foreach($this->configArr as $key=>$config){
+	  ?>
+<!--       <input type="hidden" name="<?=$key?>" value="<?=$key?>" />-->
+       <tr height="25px"><td width="70"><?=$key?></td><td>
+	   		<table>
+            	<?php for($i=1;$i<count($config);$i++){
+					 $value = $config[$i];
+					 if($value[1]){
+					 ?>
+                	 <tr height="25px"><td width="370" align="right"><?=$title[$value[0]].'('.$value[0].')：'?></td><td>
+                     <?php if(in_array($value[0],array('bankaddress_hk','title','description','keywords','contract_add_sz','contract_add_hk','foot_remark'))){?>
+                     <textarea  name="<?=trim($value[0])?>" rows="3"  style="width:300px;"><?=trim($value[1])?></textarea>
+                     <?php }else{?>
+                     <input type="text" style="width:300px" name="<?=trim($value[0])?>" value="<?=trim($value[1])?>" />
+                     <?php }?>
+                     </td></tr>
+                <?php }}?>
+            </table>
+       </td></tr> 
+      <?php }}?>
+      <tr height="35"><td colspan="2" align="center"><input type="submit"   class="btnabig"  value="更 新"/></td></tr>
+      </table>
+      </form>
+      <br/>
+      <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+<?php if(isset($_SESSION['remess'])){?>
+document.getElementById('message_sess').style.display = "block";
+document.getElementById('alert_message').innerHTML = "<?=$_SESSION['remess']?>";
+<?php unset($_SESSION['remess']);}?>
+</script>

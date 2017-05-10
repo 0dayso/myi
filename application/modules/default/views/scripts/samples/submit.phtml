@@ -1,0 +1,274 @@
+<link rel="stylesheet" type="text/css" href="/css/default/buyprocess.css" />
+
+
+<div class="w lh">
+    <div class="Shopping_cart 1h">
+    <h1><img src="/images/default/cart.jpg" />样片申请提交</h1>
+    <div class="tipfree"><b class="fontgreen">IC易站乐意为客户提供一定数据的样片。每次样片申请不超过5种，且每种不超过限制片数。</b></div>
+    <?php if(empty($this->samplescart)){?>
+     <table border="0" cellpadding="0" cellspacing="0" class="shopbox table ">
+      <tr>
+        <td colspan="9" height="50px" style="font-size:16px;">您暂时没有选择申请的样片，您可以去<a href="/samples">样片申请栏目</a>选择样片</td>
+      </tr>
+    </table>
+    <?php }else{
+	   ?>
+      <table border="0" cellpadding="0" cellspacing="0" class="shopbox table ">
+      <tbody>
+      <tr>
+        <th width="150">型号</th>
+        <th width="80">品牌</th>
+        <th width="150">描述</th>
+        <th width="80">限制片数</th>
+        <th width="100">申请数量</th>
+        <th width="150">说明</th>
+        <th width="60">操作</th>
+      </tr>
+      	<?php
+			foreach($this->items as $key=>$item){
+			$item = $this->fun->filterProduct($item);?>
+      <tr id="str<?=$item['id']?>">
+        <td><a href="<?=$item['f_produrl']?>" target="_blank"  class="model"><?=$item['part_no'];?></a>
+        <input type="hidden" name="part_no" value="<?=$item['part_no']?>" />
+        </td>
+        <td><?=$item['brandname']?>
+        <input type="hidden" name="brandname" value="<?=$item['brandname']?>" />
+        </td>
+        <td><p title="<?=$item['description']?>"><?=$this->fun->utf_substr($item['description'],68)?></p></td>
+        <td><?=$item['maxnum']>0?$item['maxnum']:'不限制'?></td>
+        <td align="center">  
+       			<input type="hidden" name="spid" value="<?=$item['id']?>" />
+                <div class="fl add_sub_btn">
+                    <input type="button" name="reducebut" value="-"  class="btn_sub" onClick="setSamples.reduce('<?=$item['id']?>','<?=$item['minnum']?>','<?=$item['maxnum']?>')" title="减少"/>
+                    <input type="text" id="num<?=$item['id']?>" name="applynum" value="<?=$item['minnum']?>" size="3" class="textshort" onkeyup="setSamples.modify('<?=$item['id']?>','<?=$item['minnum']?>','<?=$item['maxnum']?>')"/>
+                    <input type="button" name="addbut" value="+" class="btn_and" onClick="setSamples.add('<?=$item['id']?>','<?=$item['minnum']?>','<?=$item['maxnum']?>')" title="增加"/>
+                </div>
+          </td>
+        <td><input type="text" name="d_remark"></td>
+        <td><a href="javascript:" onClick="delectsamples('<?=$key?>',this)">删除</a></td>
+       </tr>
+       <?php }?>
+       </tbody></table>
+       <table cellpadding="0" cellspacing="0" border="1" class="table bomtable">
+        <tr>
+        	<td width="100" style="border:0" align="right"><em>*</em>项目名称：</td>
+            <td width="100" style="border:0" align="left"><input type="text" name="projectname" id="projectname" style="width:300px;"></td>
+        <tr>
+        	<td width="100" style="border:0" align="right"><em>*</em>项目状态：</td>
+            <td width="100" style="border:0" align="left"><input type="text" name="projectstatus" id="projectstatus" style="width:300px;"></td>
+        </tr>
+        <tr>
+            <td width="100" style="border:0" align="right"><em>*</em>姓名：</td>
+            <td width="100" style="border:0" align="left"><input type="text" name="engineer" id="engineer" style="width:300px;"></td>
+        </tr>
+        <tr>
+            <td width="100" style="border:0" align="right"><em>*</em>联系电话：</td>
+            <td width="100" style="border:0" align="left"><input type="text" name="contact" id="contact" style="width:300px;"></td>
+        </tr>
+        <tr>
+            <td width="100" style="border:0" align="right"><em>*</em>预计测试周期：</td>
+            <td width="100" style="border:0" align="left"><input type="text" name="testcycle" id="testcycle" style="width:300px;"></td>
+        </tr>  
+         <tr>
+            <td width="100" style="border:0" align="right"><em>*</em>预计后期年用量：</td>
+            <td width="100" style="border:0" align="left"><input type="text" name="amount" id="amount" style="width:300px;"></td>
+        </tr>   
+         <tr>
+            <td width="100" style="border:0" align="right"><em>*</em>预计批量生产日期：</td>
+            <td width="100" style="border:0" align="left"><input type="text" name="productiondate" id="productiondate" style="width:300px;"></td>
+        </tr> 
+      <tr>
+      	<td align="right"><em>*</em>申请说明：</td>
+        <td align="left">
+        <textarea name="instructions" id="instructions" rows="3" style="width:350px;"></textarea>
+        </td>
+      </tr>
+      <tr><td align="right"><em>*</em>配送信息：</td>
+      <td><?php if(!$this->addressArr){?>
+            <p style="color:#FF0000">你没有配送信息，请去配送信息管理添加。</p>
+        <?php }else{?>
+              <?php  foreach($this->addressArr as $address){?>
+              <p>
+                <label>
+                <input type="radio" name="addressradio" value="<?php echo $address['id'];?>" <?php if($this->addressFirst['id'] == $address['id']) echo "checked";?> />
+                <?php echo $address['name']." , ".$address['province']." ".$address['city']." ".$address['area']." ".$address['address']." , ".$address['zipcode']." , ".$address['mobile']." ".$address['tel'];?></label>
+              </p>
+              <?php }?>
+              
+        <?php }?>
+        </td></tr>
+       <tr><td>&nbsp;</td>
+       <td><p><label><a href="/center/address" target="_blank">管理配送信息&gt;&gt;</a></label></p></td></tr>
+    </table>
+        <div class="bg_cart">
+            <div class="fl">
+                <a href="/samples"><em></em>继续挑选样片</a>
+            </div>
+            <div class="fr" id="orderbtn">
+            	<a class="button" onClick="submitsamples()">提交样片申请</a>
+            </div>
+        </div>
+        <?php }//end if?>
+      </div> 
+</div>
+<script type="text/javascript">
+//购物车输入数据检查通用
+var setSamples={
+    reg:function(x){
+		if(x=='') return true;
+		return new RegExp("^[1-9]\\d*$").test(x);
+	},
+	reduce:function(spid,minnum,maxnum){
+		var num = parseInt($("#num"+spid).val()?$("#num"+spid).val():minnum)-1;
+		if(minnum && num<minnum){
+			alertbox("不要低于最少申请数数量:"+minnum+"！");
+			$("#num"+spid).val(minnum);
+		}else if(maxnum && num>maxnum){
+			alertbox("不要大于最大申请数数量:"+maxnum+"！");
+			$("#num"+spid).val(maxnum);
+		}else{
+			$("#num"+spid).val(num);
+		}
+	},
+	add:function(spid,minnum,maxnum){
+		var num = parseInt($("#num"+spid).val()?$("#num"+spid).val():minnum)+1;
+		if(minnum && num<minnum){
+			alertbox("不要低于最少申请数数量:"+minnum+"！");
+			$("#num"+spid).val(minnum);
+		}else if(maxnum && num>maxnum){
+			alertbox("不要大于最大申请数数量:"+maxnum+"！");
+			$("#num"+spid).val(maxnum);
+		}else{
+			$("#num"+spid).val(num);
+		}
+	},
+	modify:function(spid,minnum,maxnum){
+		var num = $("#num"+spid).val()?parseInt($("#num"+spid).val()):'';
+		if (num!='' && !this.reg(num)){
+			alertbox("请输入正确的数量！");
+			$("#num"+spid).val(minnum);
+			$("#num"+spid).focus();
+		}else if(num!=''){
+			if(minnum && num<minnum){
+			    alertbox("不要低于最少申请数数量:"+minnum+"！");
+			    $("#num"+spid).val(minnum);
+		    }else if(maxnum && num>maxnum){
+			    alertbox("不要大于最大申请数数量:"+maxnum+"！");
+			    $("#num"+spid).val(maxnum);
+		    }else{
+			    $("#num"+spid).val(num);
+		    }
+		}	
+	}
+}
+//删除
+function delectsamples(key,k){
+$.ajax({
+	url: '/samples/delectsamplescart',
+	data: {'key':key},
+	type: 'post',
+	dataType: 'json',
+	success: function(arr) {
+		$(k).parent().parent().remove();
+		if(arr.num==0)
+		{
+			location.reload();
+		}
+	}
+});	
+}
+//提交
+function submitsamples()
+{
+$.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   if(arr.code==0)
+			   {  
+			   	   //数据
+				   var spid     = new Array();
+				   var part_no  = new Array();
+				   var brandname  = new Array();
+				   var applynum = new Array();
+				   var d_remark = new Array();
+				   var spid_obj      = document.getElementsByName("spid");
+				   var part_no_obj   = document.getElementsByName("part_no");
+				   var brandname_obj = document.getElementsByName("brandname");
+				   var applynum_obj  = document.getElementsByName("applynum");
+				   var d_remark_obj  = document.getElementsByName("d_remark");
+				   for (var i=0;i < spid_obj.length;i++)
+				   {
+						if(spid_obj[i].value=='') {alert('id为空');return;}
+						else spid[i]= spid_obj[i].value;
+						
+						if(applynum_obj[i].value=='' || applynum_obj[i].value <= 0) {alert('请输入申请数量');applynum_obj[i].focus();return;}
+						else if(isNaN(applynum_obj[i].value)){alert('申请数量必须为数字');applynum_obj[i].focus();return;}
+						else applynum[i]= applynum_obj[i].value;
+						part_no[i]       = part_no_obj[i].value;
+						brandname[i]     = brandname_obj[i].value;
+						d_remark[i]      = d_remark_obj[i].value;
+
+				   }
+				   var projectname = $("#projectname").val();
+				   var projectstatus = $("#projectstatus").val();
+				   var engineer = $("#engineer").val();
+				   var contact = $("#contact").val();
+				   var testcycle = $("#testcycle").val();
+				   var amount = $("#amount").val();
+				   var productiondate = $("#productiondate").val();
+				   var instructions = $("#instructions").val();
+				  
+				   if(projectname=='' || typeof(projectname)=="undefined") {alert('请输入项目名称');$("#projectname").focus();return;}
+				   if(projectstatus=='' || typeof(projectstatus)=="undefined") {alert('请输入项目状态');$("#projectstatus").focus();return;}
+				   if(engineer=='' || typeof(engineer)=="undefined") {alert('请输入工程师姓名');$("#engineer").focus();return;}
+				   if(contact=='' || typeof(contact)=="undefined") {alert('请输入工程师联系电话');$("#contact").focus();return;}
+				   if(testcycle=='' || typeof(testcycle)=="undefined") {alert('请输入预计测试周期');$("#testcycle").focus();return;}
+				   if(amount=='' || typeof(amount)=="undefined") {alert('请输入预计后期年用量');$("#amount").focus();return;}
+				   if(productiondate=='' || typeof(productiondate)=="undefined") {alert('请输入预计批量生产日期');$("#productiondate").focus();return;}
+				   if(instructions=='' || typeof(instructions)=="undefined") {alert('请输入申请说明');$("#instructions").focus();return;}
+				   var addressradio = $('input[name="addressradio"]:checked').val();
+				   if(addressradio=='' || typeof(addressradio)=="undefined") {
+					  alert('请选择配送信息');$('input[name="addressradio"]:checked').focus();return;
+				   }
+			   	   var subtmp = document.getElementById("orderbtn");
+				   subtmp.innerHTML = '<a class="button"">申请提交中...</a>';
+			   		$.ajax({
+						url: '/samples/submit',
+						data: {'spid':spid,'part_no':part_no,'brandname':brandname,'applynum':applynum,'d_remark':d_remark,'projectname':projectname,'projectstatus':projectstatus,'engineer':engineer,'contact':contact,'testcycle':testcycle,'amount':amount,'productiondate':productiondate,'instructions':instructions,'addressradio':addressradio},
+						type: 'post',
+						dataType: 'json',
+						success: function(arr) {
+							if(arr.code==0)
+							{
+								alert(arr.message);
+								location.reload();
+							}else{
+							   if(arr.code==400)
+							   {
+									 $.openPopupLayer({
+		            				 name: "companyinfoBox",
+		            				 url: "/center/companyinfo"
+	                             	});
+								}else{
+									alert(arr.message);
+								}
+							}
+							subtmp.innerHTML = '<a class="button" onClick="submitsamples()">提交样片申请</a>';
+						}
+					});
+			       
+			   }else if(arr.code==100){
+			   	  $.openPopupLayer({
+		             name: "loginBox",
+		             target: "login_box"
+	              });
+			   }else if(arr.code==200){
+			   	   window.location.href ="/user/verification";
+			   }
+            }
+    });
+}
+</script>

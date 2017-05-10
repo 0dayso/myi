@@ -1,0 +1,52 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jQuery+CSS3动态图文幻灯片</title>
+
+
+
+<!--必要文件-->
+<link type="text/css" rel="stylesheet" href="flexslider.css" />
+
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery.flexslider-min.js"></script>
+<script type="text/javascript">
+$(function() {
+    $(".flexslider").flexslider({});
+});	
+</script>  
+  
+</head>
+<body> 
+
+<div class="flexslider" style="width:980px;margin:40px auto 0 auto;position:relative;overflow:hidden;">
+	<ul class="slides">
+		<li>
+			<img src="http://www.17sucai.com/preview/1/2014-01-03/slider/slider/lrgimg4.jpg" alt="" />
+			<div style="position: absolute; top:70px; left:45px;; width:70%; height:400px;">
+				<div class="slide_content_left"><h2>Cya, Mary!</h2></div>
+				<div class="slide_desc_left">Hamburg, Germany( Photo <a href="http://www.17sucai.com/">By Zanthia </a> )</div>
+			</div>
+		</li>
+		<li>
+			<img src="http://www.17sucai.com/preview/1/2014-01-03/slider/slider/lrgimg4.jpg" alt="" />
+			<div class="slide_content_right"><h2>Harbour buildings </h2></div>
+			<div class="slide_desc_right">Hamburg,Germany( Photo <a href="http://www.17sucai.com/">By Zanthia </a> )</div>
+		</li>
+		<li>
+			<img src="http://www.17sucai.com/preview/1/2014-01-03/slider/slider/lrgimg4.jpg" alt="" />
+			<div class="slide_content_left"><h2>Osaka  Airport</h2></div>
+			<div class="slide_desc_left">Osaka, Japan</div>
+		</li>
+		<li>
+			<img src="http://www.17sucai.com/preview/1/2014-01-03/slider/slider/lrgimg4.jpg" alt="" />
+			<div class="slide_content_right"><h2>Piha, New Zealand</h2></div>
+			<div class="slide_desc_right">Piha, New Zealand ( Photo <a href="http://www.17sucai.com/">By Zanthia </a> )</div>
+		</li>
+	</ul>
+</div>
+
+</body>
+</html>

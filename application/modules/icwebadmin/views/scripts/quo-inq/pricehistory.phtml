@@ -1,0 +1,75 @@
+<?php 
+$currency = array('RMB'=>'￥','USD'=>'$','HKD'=>'HK$');
+?>
+<div class="popup" style="width:400px;" >
+  <div class="popup-header">
+    <h2>有效期内的报价：</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('pricehistory');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+  <div class="popup-body">
+    <?php if(empty($this->rearray)){?>
+    <div style="font-size:14px; color:#FF0000;">
+        暂无有效报价记录。请报书本价或者向PMSC询价。
+    </div>
+    <?php }else{?>
+    <div class="overflowh">
+      <table  cellpadding="0" border="0" cellspacing="0" class="jiaoqi">
+        <tbody>
+          <tr>
+            <td align="right" width="50px" height="35" valign="top">&nbsp;</td>
+            <td>
+              <table>
+              <tr align="left"><th width="100">单价</th><th width="100">最少起订量</th><th width="100">有效日期</th></tr>
+            <?php foreach($this->rearray as $array){?>
+                <tr>
+                <td><label style="color:#FF0000">
+                <input type="radio" name="result_price_2" value="<?=$array['result_price']?>"><?=$currency[$this->currency].' '.$array['result_price']?></label></td>
+                <td><?=$array['pmpq']?></td>
+                <td><?=date('Y/m/d',$array['expiration_time'])?></td>
+                <input type="hidden" name="expiration_time_2" value="<?=date('Y-m-d',$array['expiration_time'])?>" />
+                </tr>
+            <?php }?>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pbtn" id="baojiabtn">
+      <input type="button" onclick="choose()" value="确定" class="btnabig">
+    </div>
+    <?php }?>
+    <div class="clear"></div>
+  </div>
+</div>
+<script type="text/javascript">
+function choose() {
+   var result_price = '';
+   var result_price_obj = document.getElementsByName("result_price_2"); 
+   var expiration_time = '';
+   var expiration_time_obj = document.getElementsByName("expiration_time_2");
+   for(i=0;i<result_price_obj.length;i++){
+	  if(result_price_obj[i].checked){
+	      result_price = result_price_obj[i].value;
+		  for(j=0;j<expiration_time_obj.length;j++){
+	        if(j==i){
+	           expiration_time = expiration_time_obj[j].value;break;
+	        }
+          }
+		  break;
+	  }
+   }
+   if(result_price==''){alert('请选择价格');return;}
+  
+   
+   var price_obj = document.getElementsByName("price");
+   var et_obj = document.getElementsByName("expiration_time");
+   for (var i=0;i < price_obj.length;i++)
+   {
+		if(i=='<?=$this->key?>'){
+		  price_obj[i].value=result_price;
+		  et_obj[i].value=expiration_time;
+		}
+   }
+   $.closePopupLayer('pricehistory');
+}
+</script>

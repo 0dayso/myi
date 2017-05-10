@@ -1,0 +1,74 @@
+<div class="popup">
+    <div class="popup-header">
+        <h2>编辑在线客服：</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('box')" title="关闭" class="dialogBoxClose">关闭</a>
+    </div>
+    <div class="popup-body">
+    <table  cellpadding="0" border="0" cellspacing="0" width="90%">
+    <tbody>
+    
+    <tr>
+    <td align="right">组别：</td>
+    <td><?=$this->service['groupname']?></td>
+    </tr>
+    <tr>
+              <td align="right">状态 :</td>
+              <td>
+                 <label style="color:#339900"><input type="radio" name="status" value="1" <?=($this->service['status']==1?'checked':'')?>/><b>ON</b></label>
+                <label style="color:#CC3333"><input type="radio" name="status" value="0" <?=($this->service['status']!=1?'checked':'')?>/><b>OFF</b></label></td>
+            </tr>
+	<tr>
+    <td align="right">名称：</td>
+    <td><input type="text" name="username" id="username" value="<?=$this->service['username']?>" /></td>
+    </tr>
+    
+    <tr>
+    <td align="right">类型：</td>
+    <td><select name="stype" id="stype">
+                  <option value="100" <?=($this->service['stype']==100?'selected':'')?>>负责销售</option>
+                  <option value="200" <?=($this->service['stype']==200?'selected':'')?>>指定人员</option>
+                </select></td>
+    </tr>
+    <tr>
+    <td align="right">指定人员：</td>
+    <td><input type="text" name="staffs" id="staffs" value="<?=$this->service['staffs']?>" /><em>填Staff ID</em></td>
+    </tr>
+    </tbody></table>
+        <div class="pbtn" id="baojiabtn2"><input type="button" onClick="editAction()" value="提 交" class="btnabig"></div>
+        <div class="clear"></div>
+    </div>
+</div>
+<script type="text/javascript">
+function editAction() {
+      var status = $('input[name="status"]:checked').val();
+	  if(status=='' || typeof(status)=="undefined") {
+	      alert('请选择状态');return;
+       }
+	   var username = $("#username").val();
+	   if(username==''){alert('请填写名称');$("#username").focus();return;}
+	   
+	   var staffs = '';
+	   var stype = $("#stype").val();
+	   if(stype=='200'){
+	   		staffs = $("#staffs").val();
+	        if(staffs==''){alert('请填写指定人员');$("#staffs").focus();return;}
+	   }
+	   
+	   var subtmp = document.getElementById("baojiabtn2");
+	   subtmp.innerHTML = '<input type="button" class="btnabig" value="提交中..."/>';
+	   $.ajax({
+		url: '/icwebadmin/ServCust/edit',
+		data: {'id':'<?=$this->service['id']?>','status':status,'username':username,'stype':stype,'staffs':staffs},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0){
+				  location.reload();
+             }
+			subtmp.innerHTML = '<input type="button" onClick="editAction()" value="提 交" class="btnabig">';
+		}
+		});
+		
+}
+</script>

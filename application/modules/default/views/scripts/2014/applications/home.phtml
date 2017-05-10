@@ -1,0 +1,149 @@
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/se2013.css"/>
+<script type="text/javascript" language="javascript"> widescreen_css();</script>
+
+<!--必要文件-->
+<link type="text/css" rel="stylesheet" href="/js/jsplug/preview/flexslider.css" />
+<script type="text/javascript" src="/js/jsplug/preview/jquery.flexslider-min.js"></script>
+<script type="text/javascript">
+$(function() {
+    $(".flexslider").flexslider({});
+});	
+</script>  
+<div class="sebox2013">  
+	<div class="w" > 
+        <div class="layout rigybg201407" >
+            <div class="fl infolist201407 MT10">
+                <div class="selectboxl201407">
+                    <dl>
+                        <dt>应用分类</dt>
+                        <dd>
+                            <ul class="catList clearfix">
+                            <?php foreach($this->appLevel1 as $app){?>
+                            <li><a href="/solutionlist-<?=$app['id']?>.html" title="<?=$app['name']?>" target="_blank"><?=$app['name']?></a></li><?php }?>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>品牌</dt>
+                        <dd>
+                        <?php $bgarr = array("bgcolor_pink201407","bgcolor_lightgreen201407","bgcolor_orange201407","bgcolor_lightblue201407","bgcolor_lavender201407");?>
+                            <ul class="catList2 clearfix">
+							<?php foreach($this->brandarr as $k=>$brand){?>
+                                <li class="<?=$bgarr[$k%count($bgarr)]?$bgarr[$k%count($bgarr)]:"bgcolor_lightgreen201407"?>">
+                                <a href="/solutionlist?b=<?=$brand['id']?>" target="_blank"><?=$brand['name']?></a></li>
+                            <?php }?>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="fr caseindex_center">
+    <?php if(!empty($this->topimageArr)){?> 
+    <div class="caseindex_centerimg fl">
+     
+    <div class="flexslider" style="width:690px;margin:0px auto 0 auto; height:360px;position:relative;overflow-y:hidden;">
+	<ul class="slides">
+		<?php 
+		  foreach($this->topimageArr as $v){
+		        $url_target = '_self';
+				if($v['url_target']==2) $url_target = '_blank';
+		  ?>
+        <li>
+			<a href="<?=$v['url']?>" target="<?=$url_target?>" title="<?=$v['title']?>">
+            <img alt="<?=$v['title']?>" src="<?=$v['image']?>" width="690px" height="275px"/></a>
+			<div style="position: absolute;left:0px; width:680px; ">
+                <div class="">
+                <h2 style="font-size:18px;"><a href="<?=$v['url']?>" target="<?=$url_target?>" title="<?=$v['title']?>"> <?=$v['title']?> </a></h2></div>
+                <div class="" ><?=$v['description']?></div>
+			</div>
+		</li>
+		<?php }?>
+	</ul>
+</div>    
+
+</div>
+    <?php }?>         
+                    
+                          
+                    <div class="fl redline_h2"></div>
+                    <div class="fl caseindex_list_tit msfont201407">
+                       <div class="fl w_200">最新应用方案</div>
+                    </div>
+                     
+                 <?php 
+				 
+				 foreach($this->solution as $sol){?>
+                 
+                 <div class="fl top5tab_201407">
+                        <div class="fl w_100">
+                <?=$sol['solution_no']?'<span class="gay12line201407">方案编号：</span>'.$sol['solution_no'].'<span class="fontgray"> |</span>':'';?>
+                <?=$sol['source']?'<span class="color_gray201407">来源：</span>'.$sol['source'].'<span class="fontgray"> |</span>':''?>
+				<?=$sol['author']?'<span class="color_gray201407">作者：</span>'.$sol['author'].'<span class="fontgray"> |</span>':''?>
+                <span  class="gay12line201407">标签：</span><?php 
+					$tip = explode(',',$sol['tags']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+					}?>   
+                    
+                        </div>
+                        <div class="fl w_100">
+                            <div class="fl top5tabl_201407">
+                            <a href="/solution-<?=$sol['id']?>.html" title="<?=$sol['title']?>" class="logclick" rev="solution" rel="<?=$sol['id']?>" target="_blank">
+                            <img src="<?=($sol['sol_img'])?(APPICON.$sol['sol_img']):(SOLUTIONICON.$pricearr[0])?>"  alt="<?=$sol['title']?>" width="200" height="125">
+                            </a>
+                            </div>
+                            <div class="fr top5tabr_201407">
+                            
+                                <h2><span class="ifotip2014"><em><?=$sol['appname']?></em><i></i></span><a href="/solution-<?=$sol['id']?>.html" title="<?=$sol['title']?>" class="logclick" rev="solution" rel="<?=$sol['id']?>" target="_blank"><?=$sol['title']?></a></h2>
+                                
+                                <p><?=$sol['description']?></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                <?php }?>
+					<div id="moresol_1"></div>
+                    <div id="moresol_2"></div>
+                    <div id="moresol_3"></div>
+                    <div class="fl w_100 more20140805" id="morebut"><a href="javascript:;" onclick="moresol(1)">更多方案>></a></div>
+                    
+                </div>
+            </div>
+            <div class="fr righttuij">
+            
+            <div id="hotnews"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
+            <div id="hotsearch"></div>
+            <div id="hotsolution"></div>
+            <div id="hotwebinar"></div>
+            <div id="htocode"></div>
+            </div>
+            <div class="clr"></div>
+        </div>
+    </div>
+</div>
+<script language="javascript">
+
+//更多方案
+function moresol(num){
+	$("#moresol_"+num).load("/publicbox/moresol?num="+num);
+	if(num<3){
+	   $("#morebut").html('<a href="javascript:;" onclick="moresol('+(num+1)+')">更多方案>></a>');
+	}else  $("#morebut").html('<a href="/solutionlist?page=4" target="_blank">更多方案>></a>');
+}
+	$(function(){
+	
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+		if (screen.width >= 1280) { 
+		    $("#hotnews").load("/publicbox/hotnews");
+			$("#hotsearch").load("/publicbox/hotsearch");
+			$("#hotsolution").load("/publicbox/hotsolution");
+			$("#hotwebinar").load("/publicbox/hotwebinar");
+			$("#htocode").load("/publicbox/htocode");
+		}else{
+			$("#hotnews").html("");
+		}
+	})
+</script>

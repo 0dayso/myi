@@ -1,0 +1,157 @@
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<style type="text/css">
+span.tag{
+border: 1px solid #DDD;
+background: #F6F6F6 ;
+font-weight: bold;
+padding:3px 3px 0 3px;
+margin-right:5px;
+}
+.tag a{ padding-left:5px;}
+#ic-box{ margin-bottom:10px;}
+</style>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 添加品牌 <a href="/icwebadmin/CpPpgl">返回&gt;&gt;</a></h1>
+  <div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+ </div>
+<?php if (isset($_SESSION['messages'])) : ?><div class="alert fade in">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+    <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p></div><?php endif; ?>
+
+	  <!-- 需要填写的区域-->
+            <table border="0" cellpadding="1">
+        <tr>
+          <td height="10" colspan="3" align="center"><div id="message_sess_son" style="display:none" class="message_sess"> <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span> <span id="alert_message_son"></span> </div></td>
+        </tr>
+        <tr>
+          <td colspan="2"><table bgcolor="#CCCCCC" width="100%">
+              <tr>
+                <td width="50" align="right" height="30"><font color="#666600"><b>状态 : </b></font></td>
+                <td colspan="3" align="left"><input type="radio" name="status" id="status1" value="1" checked="checked"/>
+                  <label for="status1"><font color="#339900"><b>ON</b></font></label>
+                  <input type="radio" id="status2" name="status" value="0"/>
+                  <label for="status2"><font color="#CC3333"><b>OFF</b></font></label>
+                </td>
+              </tr>
+              <tr>
+                <td width="50" align="right" height="30"><font color="#666600"><b>展示专题版 : </b></font></td>
+                <td colspan="3" align="left">
+                  <label><input type="radio" name="show"  value="1"/><font color="#339900"><b>是</b></font></label>
+                  <label><input type="radio"  name="show" value="0" checked="checked"/><font color="#CC3333"><b>否</b></font></label>
+                </td>
+              </tr>
+               <tr>
+                <td width="50" align="right"><font color="#666600"><b>类型 : </b></font></td>
+                <td colspan="3" align="left"><select name="type" id="type">
+                <option value="2">非代理</option>
+                <option value="1">代理</option></select>
+                </td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><b><font color="#666600">名称 : </font><font color="#FF0000">*</font></b></td>
+                <td align="left" colspan="3"><input type="text" name="name" id="name" value=""/></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><b><font color="#666600">英文简称 : </font><font color="#FF0000">*</font></b></td>
+                <td align="left" colspan="3"><input type="text" name="name_en" id="name_en" value=""/></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><b><font color="#666600">排序 : </font></b></td>
+                <td align="left" colspan="3"><input type="text" name="displayorder" id="displayorder" value="0"/></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><b><font color="#666600">公司简介 : </font></b></td>
+                <td align="left" colspan="3"><textarea name="introduction" id="introduction" cols="50" rows="3"></textarea></td>
+              </tr>
+              <tr height="50">
+                <td width="126" align="right"><b><font color="#666600">宣传图片 : </font></b></td>
+                <td align="left" colspan="3">
+
+       <button class="btn btn-small" type="button" id="insertfile"  style="margin-bottom:5px">添加图片</button>
+       <br/>
+       <div id="image-box" style="width:650px; word-wrap:break-word;word-break:normal;"></div>
+       <br/>
+                </td>
+              </tr>
+              
+              <tr>
+                <td></td><td><br/><input type="button"  class="btn" value="添加" onclick="addaction()"/>
+                </td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+
+function addaction()
+{
+    var statusobj = document.getElementsByName('status');
+	for(i=0;i<statusobj.length;i++){
+	  if(statusobj[i].checked){
+	     var status = statusobj[i].value;
+	     break;
+	  }
+	}
+	 var showobj = document.getElementsByName('show');
+	for(i=0;i<showobj.length;i++){
+	  if(showobj[i].checked){
+	     var show = showobj[i].value;
+	     break;
+	  }
+	}
+	var type = document.getElementById('type').value;
+	var name     = document.getElementById('name').value;
+	var name_en     = document.getElementById('name_en').value;
+	var introduction  = document.getElementById('introduction').value;
+	var displayorder  = document.getElementById('displayorder').value;
+	var logo = '';
+	var logoobj     = document.getElementsByName('image[]');
+	for(i=0;i<logoobj.length;i++){
+       logo +=logoobj[i].value+'|';
+    };
+	$.ajax({
+            url: '<?php echo $this->addurl;?>',
+            data: {'type':type,'name':name,'show':show,'status':status,'name_en':name_en,'introduction':introduction,'logo':logo,'displayorder':displayorder},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   
+			}
+	});
+}
+KindEditor.ready(function(K) {
+		    //图片
+			var editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/editoruplod?part=upload/default/brandimg/image1/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/brandimg/image1/'
+			});
+			K('#insertfile').click(function() {
+				editor.loadPlugin('image', function() {
+					editor.plugin.imageDialog({
+						clickFn : function(url, title) {
+
+							var button = '<span class="tag"><span class="tag-label"><img src="'+url+'" id="show_image"  width="150" alt="sol log"/></span><a class="tag-close" href="#" title="删除">x'+'</a>'
+									+'<input type="hidden" name="image[]" value="'+url+'" ></span>';
+				            $('#image-box').append(button);
+	
+							editor.hideDialog();
+						}
+					});
+				});
+			});
+		$('.tag-close').live('click',function(){
+		$(this).parent().remove();
+		return false;
+	});
+});
+</script>

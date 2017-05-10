@@ -1,0 +1,219 @@
+<?php
+if(!empty($this->StaffInfo["staff_area_rule"]) && !empty($this->StaffInfo["right_rule"]))
+{
+	$Staff_Area_Rule_Arr=explode (",", $this->StaffInfo['staff_area_rule']);
+	$Right_Rule_Arr     =explode (",", $this->StaffInfo['right_rule']);
+	for($i=0;$i<count($Staff_Area_Rule_Arr);$i++){
+  		 $Right_Rule_temp[$Staff_Area_Rule_Arr[$i]] = $Right_Rule_Arr[$i];
+	}
+}
+?>
+
+<table width="740" bgcolor="#FFFFCC" border="0">
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="right" rowspan="10" width="200px"><img src="/upload/admin/head/<?php echo $this->StaffInfo['head']==''?'nohead.jpg':$this->StaffInfo['head'].'?_'.time();?>" width="145px" height="180px" title="<?php echo $this->StaffInfo['lastname']?><?php echo $this->StaffInfo['firstname']?>"/></td>
+    <td align="right" height="25px"><font color="#666600"><b>用户名 : </b></font></td>
+    <td align="left" colspan="2" width="260"><?php echo $this->StaffInfo['staff_id']?></td>
+  </tr>
+  <tr>
+    <td align="right" height="25px"><font color="#666600"><b> 姓名 : </b></font></td>
+    <td align="left" colspan="2"><?php echo $this->StaffInfo['lastname']?><?php echo $this->StaffInfo['firstname']?></td>
+  </tr>
+  <tr>
+    <td   align="right" height="25px"><font color="#666600"><b>邮箱 : </b></font></td>
+    <td colspan="2"  align="left"><?php echo $this->StaffInfo['email']?></td>
+  </tr>
+  <tr>
+    <td align="right"><font color="#666600"><b> 固定电话 : </b></font></td>
+    <td align="left" colspan="3"><?php echo $this->StaffInfo['tel']?></td>
+  </tr>
+  <tr>
+    <td align="right"><font color="#666600"><b> 分机 : </b></font></td>
+    <td align="left" colspan="3"><?php echo $this->StaffInfo['ext']?></td>
+  </tr>
+  <tr>
+    <td align="right"><font color="#666600"><b> 手机 : </b></font></td>
+    <td align="left" colspan="3"><?php echo $this->StaffInfo['phone']?></td>
+  </tr>
+  <tr>
+    <td align="right" height="25px"><font color="#666600"><b>部门 : </b></font></td>
+    <td colspan="2"  align="left"><?php echo $this->StaffInfo['department_id']." - ".$this->StaffInfo['department']?></td>
+  </tr>
+  <tr>
+    <td align="right" height="25px"><font color="#666600"><b>级别 : </b></font></td>
+    <td colspan="2" align="left"><?php echo $this->StaffInfo['level_id']." - ".$this->StaffInfo['level']?></td>
+  </tr>
+  <tr>
+      <td align="right"><font color="#666600"><b>上级 : </b></font></td>
+      <td colspan="2" align="left"><?php echo $this->StaffInfo['superior']?$this->StaffInfo['stln'].$this->StaffInfo['stfn']:'----';?></td>
+  </tr>
+  <tr>
+    <td   align="right" height="25px"><font color="#666600"><b>状态 : </b></font></td>
+    <td colspan="2" align="left"><?php if($this->StaffInfo['status']){echo '<font color="#339900"><b>&nbsp;ON</b></font>';}
+      
+  if(!$this->StaffInfo['status']){echo '<font color="#CC3333"><b>OFF</b></font>';}?>
+    </td>
+  </tr>
+  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)) {?>
+  <tr height="50px">
+    <td colspan="4" align="center"><a href="#edit" onclick="openeditinfo('<?php echo $this->StaffInfo['staff_id']?>')">[编辑个人资料]</a></td>
+  </tr>
+  <?php }?>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr bgcolor="#FFF4DF">
+    <td align="right" valign="top"><font color="#666600"><b>负责应用领域：</b></font></td>
+    <td colspan="3">
+    	<table width="100%"><tr height="30">
+    <?php
+	 foreach($this->provincearr as $i=>$apparr){
+	        $app_rule = explode(",",$this->StaffInfo['app_rule']);
+			if(in_array($apparr['id'],$app_rule)) $checked = 'checked';
+			else $checked = '';
+			echo '<td align="left"><input type="checkbox" disabled="disabled" '.$checked.'>'.$apparr['name'].'</td>';
+			if($i!=0 && ($i+1)%4==0) echo '<tr>';
+		}
+	?>
+    	</table>
+    </td>
+  </tr>
+  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)) {?>
+  <tr height="50px">
+    <td colspan="4" align="center"><a href="#edit" onclick="openeditapp('<?php echo $this->StaffInfo['staff_id']?>')">[编辑负责应用领域]</a></td>
+  </tr>
+  <?php }?>
+  
+  <?php $statistics = explode(",",$this->StaffInfo['statistics']);?>
+  <tr bgcolor="#FFF4DF">
+    <td align="right" valign="top"><font color="#666600"><b>首页统计：</b></font></td>
+    <td colspan="3">
+    	<table width="100%">
+   			<tr><td><input type="checkbox" disabled="disabled" <?=(in_array('quarterly',$statistics)?'checked="checked"':'')?>>季度统计</td>
+            <td><input type="checkbox" disabled="disabled" <?=(in_array('income',$statistics)?'checked="checked"':'')?>>交易总金额统计</td>
+            <td><input type="checkbox" disabled="disabled"  <?=(in_array('basic',$statistics)?'checked="checked"':'')?>>基本数据统计</td>
+            <td><input type="checkbox" disabled="disabled"  <?=(in_array('product',$statistics)?'checked="checked"':'')?>>产品统计</td>
+            <td><input type="checkbox" disabled="disabled"  <?=(in_array('online',$statistics)?'checked="checked"':'')?>>在线人数统计</td></tr>
+    	</table>
+    </td>
+  </tr>
+  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)) {?>
+  <tr height="50px">
+    <td colspan="4" align="center"><a href="#edit" onclick="openbox('<?=($this->indexurl.'/statistics/staffid/'.$this->StaffInfo['staff_id'])?>')">[编辑首页统计]</a></td>
+  </tr>
+  <?php }?>
+  
+  
+  
+   <?php $lab = explode(",",$this->StaffInfo['lab_rule']);?>
+  <tr bgcolor="#FFF4DF">
+    <td align="right" valign="top"><font color="#666600"><b>开发实验室负责区域：</b></font></td>
+    <td colspan="3">
+    	<table width="100%">
+           <tr><?php foreach($this->place as $place){?>
+   			<td><input type="checkbox" disabled="disabled" <?=(in_array($place['id'],$lab)?'checked="checked"':'')?>><?=$place['city']?></td>
+            <?php }?>
+            </tr>
+
+    	</table>
+    </td>
+  </tr>
+  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)) {?>
+  <tr height="50px">
+    <td colspan="4" align="center"><a href="#edit" onclick="openbox('<?=($this->indexurl.'/lab/staffid/'.$this->StaffInfo['staff_id'])?>')">[编辑开发实验室负责区域]</a></td>
+  </tr>
+  <?php }?>
+  
+  <tr bgcolor="#FFF4DF">
+    <td align="right" valign="top"><font color="#666600"><b>拥有用户权限：</b></font></td>
+    <td colspan="3">
+    	<table width="100%"><tr>
+   			<tr><td><?=$this->StaffInfo['control_staff']?></td></tr>
+    	</table>
+    </td>
+  </tr>
+     <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)) {?>
+     <tr height="50px">
+    <td colspan="4" align="center"><a href="#edit" onclick="openbox('<?=($this->indexurl.'/controlstaff/staffid/'.$this->StaffInfo['staff_id'])?>')">[编辑拥有用户权限]</a></td>
+    </tr>
+     <?php }?>
+
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="right" valign="top" bgcolor="#FFF4DF"><font color="#666600"><b>区域权限 : </b></font></td>
+    <td valign="top" bgcolor="#FFF4DF" colspan="3"><table width="100%" height="1" border="0" cellpadding="0" cellspacing="1">
+        <?php 
+			for($a=0;$a<count($this->Section);$a++){
+				   $section_temp    = $this->Section[$a];
+				   $section_id 		= $section_temp["section_area_id"];
+				   $section_title   = $section_id." - ".$section_temp["section_area_des"];
+				   $area_temp  = $this->Area[$section_id]; 
+				    
+			if(is_array($area_temp)){
+		?>
+        
+        <tr>
+          <td colspan="4">&nbsp;</td>
+        </tr>
+        <tr>
+          <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="430" height="20" align="left" bgcolor="#D3CDFA"><b> <?php echo $section_title;?></b></td>
+              </tr>
+              <tr>
+                <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0" height="1">
+                    <tr>
+                      <td valign="top" width="100%"><b> </b>
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <?php
+						for($i=0;$i<count($area_temp);$i++){
+						 $data	= $area_temp[$i];
+											   
+						 if($i%2==0) $bg="#E8E8E8";
+						 else $bg="#F3F3F3";
+						 
+						 $checkA=$checkW=$checkR=$checkB="disabled";
+						 if(isset($Right_Rule_temp[$data["staff_area_id"]]))
+						 {
+						 	if($Right_Rule_temp[$data["staff_area_id"]]=='A') $checkA="checked";
+						 	if($Right_Rule_temp[$data["staff_area_id"]]=='W') $checkW="checked";
+							if($Right_Rule_temp[$data["staff_area_id"]]=='R') $checkR="checked";
+						 }else $checkB="checked";
+							?>
+                          <tr height="20px"  align="left">
+                            <td  width="31%" bgcolor=<?php echo $bg?>><a href="<?=$this->updateallruleurl?>/areaid/<?=$data["staff_area_id"]?>" title="更新用户权限"><?php echo $data["staff_area_id"]." - ".$data["staff_area_des"]?></a></td>
+                            <td width="52%" valign="top">Admin
+                              <input name="Right_Rule[<?=$data["staff_area_id"]?>]" type="radio" value="A" <?=$checkA?> />
+                              | Write
+                              <input name="Right_Rule[<?=$data["staff_area_id"]?>]" type="radio" value="W" <?=$checkW?> />
+                              | Read
+                              <input name="Right_Rule[<?=$data["staff_area_id"]?>]" type="radio" value="R" <?=$checkR?> ?>
+                              | Blocked
+                              <input name="Right_Rule[<?=$data["staff_area_id"]?>]" type="radio" value=""  <?=$checkB?>>
+                            </td>
+                          </tr>
+                          <?php }//End for?>
+                        </table></td>
+                    </tr>
+                  </table></td>
+              </tr>
+            </table></td>
+        </tr>
+        <?php }//End if
+          } ?>
+      </table></td>
+  </tr>
+  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)) {?>
+  <tr height="50px">
+    <td colspan="4" align="center"><a href="#edit" onclick="openeditrule('<?php echo $this->StaffInfo['staff_id']?>')">[编辑区域权限]</a></td>
+  </tr>
+  <?php }?>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+</table>

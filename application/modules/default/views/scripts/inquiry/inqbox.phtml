@@ -1,0 +1,252 @@
+<!--我要询价弹出框-->
+<?php 
+if(!$this->available){ 
+
+$deliveryArr = array('SZ'=>'国内','HK'=>'香港');
+$currencyArr = array('RMB'=>'人民币 RMB','USD'=>'美元 USD','HKD'=>'港币 HKD');
+
+$szArr = array('RMB');
+$hkArr = array('USD','HKD');
+
+if(in_array($this->user['currency'],$szArr)) $delivery_tmp = 'SZ';
+elseif(in_array($this->user['currency'],$hkArr)) $delivery_tmp = 'HK';
+else $delivery_tmp = '';
+
+if(!$this->del_cur['delivery'] || !$this->del_cur['currency']) $selectDC = 1;
+else $selectDC = 0;
+
+?>
+<div class="pop pop_inquiry" style="top:450px">
+  <div class="popbox">
+    <div class="poptit"> <span class="titbg1ts">我要询价</span>
+      <input type="button" title="关闭" class="closebtn" onclick="$.closePopupLayer('inquiryBox');">
+    </div>
+    <div class="popcon clearfix msg"><div class="ok" id="message" style="display:none"></div>
+     	<div class="poptable " >
+         <table cellpadding="0" cellspacing="0" class="table01">
+              <tbody>
+              <tr >
+                  <td class="tableti">型号：</td>
+                  <td colspan="3"><span class="model"><a href="/item-b<?=$this->product['manufacturer']?>-<?=($this->product['part_level3']?$this->product['part_level3']:$this->product['part_level2'])?>-<?=$this->product['id']?>-<?=$this->fun->filterUrl($this->product['part_no'])?>.html"><?=$this->product['part_no']?></a></span></td>                 
+              </tr>              
+              <tr>
+                  <td class="tableti">标准包装：</td>
+                  <td ><?=$this->product['mpq']==0?'':$this->product['mpq']?></td>
+                  <td class="tableti">参考交期：</td>
+                  <td><?=$this->product['lead_time']?></td>
+              </tr>
+              <?php if($selectDC){?>
+              <tr>
+                 
+                  <td class="tableti"><em>*</em>结算货币：</td>
+                  <td>
+       <select name="currency" id="currency" onchange="changeMbprice(this.value)">
+       <option value="RMB">人民币(RMB)</option>
+       <option value="HKD">港币(HKD)</option>
+       <option value="USD">美元(USD)</option>
+       </select>
+                  </td>
+                  <td class="tableti"><em>*</em>交货地：</td>
+                  <td>
+          <select name="delivery" id="delivery" disabled="disabled">
+          <option value="SZ">国内</option>
+          <option value="HK">香港</option>
+          </select>
+                  </td>
+              </tr>
+              <?php }else{?>
+      <input type="hidden"  name="delivery" id="delivery" value="<?=$this->del_cur['delivery']?>" />
+      <input type="hidden"  name="currency" id="currency" value="<?=$this->del_cur['currency']?>" />
+      <tr height="40px">
+      <td  class="tableti">结算货币：</td><td valign="middle"><?php echo $currencyArr[$this->del_cur['currency']]?></td>
+      <td  class="tableti">交货地：</td><td valign="middle"><?php echo $deliveryArr[$this->del_cur['delivery']]?></td>
+      </tr>
+      <?php }?>
+              <tr>
+                  <td class="tableti"><em>*</em>采购数量：</td>
+                  <td><input type="text" name="number" id="number" class="input120"  onkeyup="<?=ISNUMBER?>" value="<?=($this->number?$this->number:'')?>"/></td>
+                  <td class="tableti">
+                  目标单价(<span id="mbprice"><?php if(!$selectDC){echo $this->del_cur['currency'];}else echo 'RMB';?></span>)：
+                  
+                  </td>
+                  <td><input type="text" class="input120 fontred fontwei fontb"  name="price" id="price"  onkeyup="<?=ISFLOAT?>"/></td>
+              </tr>
+              <tr>
+                  <td class="tableti">年用量：</td>
+                  <td colspan="3">
+                   <input type="text" name="expected_amount" id="expected_amount" class="input120"  onkeyup="<?=ISNUMBER?>"/>
+                  </td>
+              </tr>
+              <tr>
+              <td colspan="4">
+              <p class="fontorange">提示：目标单价RMB含税；参考交期是原厂提供的交期仅供查考，实际交期根据购买数量不同而不同
+              </p>
+              <p class="spbbtndiv" id="orderbtn"><input type="button" onClick="checkBpp()" value="加入询价篮"  class="button"/></p>
+              </td>
+              </tr>
+            </tbody>
+        </table>
+    	</div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+//加入询价
+document.getElementById("message").style.display = 'none';
+function tishi(title,model)
+{
+	var messobj = document.getElementById("message");
+	if(model){
+		messobj.className = 'ok';
+		messobj.style.display = 'block';
+		messobj.innerHTML = title;
+	}else{
+	    messobj.className = 'error';
+		messobj.style.display = 'block';
+		messobj.innerHTML = title;
+	}
+	setTimeout('hidMessage()',2000);
+}
+function hidMessage(){
+	document.getElementById("message").style.display = 'none';
+}
+//如果符合合作伙伴库存提示直接购买
+function checkBpp(){
+	var delivery = document.getElementById('delivery').value;
+	var currency = document.getElementById('currency').value;
+    if(delivery==''){$('#delivery').focus();tishi('请选择交货地。',false);return;}
+	if(currency==''){$('#currency').focus();tishi('请选择结算货币。',false);return;}
+	var nobj = document.getElementById('number');
+	var number= nobj.value;
+	if(number==''){$('#number').focus();tishi('请输入采购数量。',false);return;}
+	else if(isNaN(number)) {$('#number').focus();tishi('采购数量必须为数字。',false);return;}
+	else if(number < 1){$('#number').focus();tishi('采购数量必须大于0',false);return;}
+
+	 $.ajax({
+            url: '/inquiry/checkbpp',
+            data: {'part_id':'<?=$this->product['id']?>','mpq':'<?=$this->product['mpq']?>','bpp_stock_id':'<?=$this->product['f_bpp_stock_id']?>','delivery':delivery,'currency':currency,'number':number},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   if(arr.code==0)
+			   {  
+			      //没有bpp符合直接提交
+				  tijiao();
+			   }else{
+			   	   //弹出购买bpp对话框
+				   $.openPopupLayer({
+		              name: "buybppBox",
+		              url: "/inquiry/buybpp?part_id=<?=$this->product['id']?>&bpp_stock_id="+arr.bpp_stock_id+"&delivery="+delivery+"&currency="+currency+"&number="+number
+	              });
+			   }
+            }
+    });
+}
+function tijiao() 
+{
+	var nobj = document.getElementById('number');
+	var pobj = document.getElementById('price');
+
+	var number= nobj.value;
+	var price = pobj.value;
+    var expected_amount = document.getElementById('expected_amount').value;
+	var delivery = document.getElementById('delivery').value;
+	var currency = document.getElementById('currency').value;
+    if(delivery==''){$('#delivery').focus();tishi('请选择交货地。',false);return;}
+	if(currency==''){$('#currency').focus();tishi('请选择结算货币。',false);return;}
+	
+	if(number==''){$('#number').focus();tishi('请输入采购数量。',false);return;}
+	else if(isNaN(number)) {$('#number').focus();tishi('采购数量必须为数字。',false);return;}
+	else if(number < 1){$('#number').focus();tishi('采购数量必须大于0',false);return;}
+	
+	if(price!=''){
+	    if(!BASEisFloat(price)) {$('#price').focus();tishi('目标单价必须为数字。',false);return;}
+		else if(!CheckFloat(price,4)){$('#price').focus();tishi('目标单价最多4位小数',false);return;}
+	}
+	if(expected_amount!='') {
+	    if(isNaN(expected_amount)){$('#expected_amount').focus();tishi('年用量必须为数字');return;}
+	}
+	var subtmp=document.getElementById("orderbtn");
+	subtmp.innerHTML = '<a href="javascript:;" class="button">订单提交中...</a>';
+    $.ajax({
+            url: '/inquiry/addinqlist',
+            data: {'part_id':'<?=$this->product['id']?>','delivery':delivery,'currency':currency,'number':number,'price':price,'expected_amount':expected_amount},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   if(arr.code==0)
+			   {  
+			      document.getElementById("message").style.display = 'none';
+				  $.closePopupLayer('inquiryBox');
+				  $.openPopupLayer({
+		              name: "inqshowBox",
+		              url: "/inquiry/show"
+	              });
+				  $(".inquirynumber").html(arr.inquirynumber);
+			   }else if(arr.code==2){
+			   	  window.location.href = '/user/login';
+			   }else alert(arr.message);
+			   subtmp.innerHTML = '<input type="button" onClick="checkBpp()" value="加入询价篮"  class="button"/>';
+            }
+    });
+}
+
+function changeMbprice(v)
+{
+	if(v=='RMB')
+	{
+	   $("#delivery").val('SZ');
+	}
+	else if(v=='HKD')
+	{
+	    $("#delivery").val('HK');
+	 }
+	else{ 
+		 $("#delivery").val('HK');
+	}
+	$("#mbprice").html(v);
+}
+
+</script>
+<?php }else{
+?>
+<div class="pop pop_inquiry ">
+	<div class="popbox">
+    	<div class="poptit1">
+            <input type="button" title="关闭" class="closebtn" onclick="$.closePopupLayer('inquiryBox')">
+        </div>
+        <div class="popcon clearfix msg">
+        	<div class="tips">该产品已经加入询价列表！</div>
+            <div class="poptable">
+   			   <table border="0" cellpadding="0" cellspacing="0" class="table">
+      <tbody>
+      <tr>
+        <th width="140">型号</th>
+        <th width="35">品牌</th>
+        <th width="90">查考交期</th>
+        <th width="100">采购数量</th>
+        <th width="70">目标单价</th>
+      </tr>
+           <?php
+			foreach($this->items as $item){
+				if(is_array($item)){
+			?>
+      <tr>
+        <td align="center"><a href="/item-0-0-<?=$item['id'];?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank"><?=$item['part_no'];?></a></td>
+        <td align="center"><?=$item['options']['brand'];?></td>
+        <td align="center"><?=$item['options']['lead_time'];?></td>
+        <td align="center"><?=$item['hope_number'];?></td>
+        <td align="center"><?=$item['hope_price'];?></td>
+      </tr>
+      <?php }//end if(is_array($item))
+		 }//end foreach
+	  ?>
+          </tbody></table>
+            </div>
+            <p class="spbbtndiv"><a href="javascript:" onClick="$.closePopupLayer('inqshowBox')" class="fl">再选择产品</a>
+            <a class="abutton fr" href="/inquiry">去提交询价</a></p>
+    </div>
+
+    </div>
+</div>
+<?php }//if(!$this->available){?>

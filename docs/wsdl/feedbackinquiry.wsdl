@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="feedbackInquiry">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RFQId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RFQDetailID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PMPQ" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultPrice" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ExpirationTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultRemark" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RFQType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RFQNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PMSCName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="feedbackInquiryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="feedbackInquirySoapIn">
+    <wsdl:part name="parameters" element="tns:feedbackInquiry" />
+  </wsdl:message>
+  <wsdl:message name="feedbackInquirySoapOut">
+    <wsdl:part name="parameters" element="tns:feedbackInquiryResponse" />
+  </wsdl:message>
+  <wsdl:portType name="feedbackInquiryServiceSoap">
+    <wsdl:operation name="feedbackInquiry">
+      <wsdl:input message="tns:feedbackInquirySoapIn" />
+      <wsdl:output message="tns:feedbackInquirySoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="feedbackInquiryServiceSoap" type="tns:feedbackInquiryServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="feedbackInquiry">
+      <soap:operation soapAction="http://tempuri.org/GetArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="feedbackInquiryService">
+    <wsdl:port name="feedbackInquiryServiceSoap" binding="tns:feedbackInquiryServiceSoap">
+      <soap:address location="http://192.168.60.207/icwebadmin/iceasyservice/feedbackinquiry" />
+    </wsdl:port>
+
+  </wsdl:service>
+</wsdl:definitions>

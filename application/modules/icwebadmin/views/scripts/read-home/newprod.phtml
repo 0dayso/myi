@@ -1,0 +1,43 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+  <div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+ </div>
+	  <!-- 需要填写的区域-->
+	<div class="fr u_right">
+    <div class="tab_content">
+      <div class="tab_tit1">
+        <ul class="fl">
+          <li><a href="/icwebadmin/ReadHome">滚动图片<b class="blank3"></b></a></li>
+          <li class="on"><a href="/icwebadmin/ReadHome/newprod">精品 • 新品<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/actingbrand">代理品牌<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/app">应用分类<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/recbrand">产品分类推荐品牌<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/hotprod">热销产品推荐<b class="blank3"></b></a></li>
+        </ul>
+        <div class="tab_con mb10">
+        <table class="tab_tb" border="0" style=" margin-top:-1px;">
+        	<tr><td style="padding:10px;">
+                  <?php 
+			         foreach($this->bandhotArr as $bandid=>$partarr){?>
+					<table width="500px">
+                    <tr><td><img src="/images/default/brand/<?=$bandid?>_h.png" class="hotgoods_select"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="<?php echo $this->url(array('controller'=>'ReadHome', 'action'=>'npedit', 'bandid'=>$bandid));?>">修改</a>
+                    </td></tr>
+                       <?php foreach($partarr as $data){?>
+                       <tr><td>
+                       <a href="/proddetails?partid=<?=$data['comid']?>" target="_blank">
+                       <img src="<?=PRODUCTICON.($data['part_img']==''?'no.gif':$data['part_img'])?>" height="50" width="50"/>
+					   <?=$data['part_no']?></a></td></tr>
+                       <?php }?>
+                    </table>
+		   	     <?php }?>
+           </td></tr></table>
+        </div>
+      </div>
+     </div>
+     </div>
+      <!-- 结束区域-->
+ </div>

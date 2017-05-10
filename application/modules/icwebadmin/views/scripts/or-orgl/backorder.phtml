@@ -1,0 +1,44 @@
+<style>
+.info{ margin-left:10px;}
+</style>
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+    <h2><?php if($this->type=='reimburse') echo '退款';elseif($this->type=='returns') echo '退款退货';?>：<?=$this->salesnumber?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('notreleaseBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body" style="width:550px;">
+     <!-- 需要填写的区域-->
+      <table width="740px" border="0" cellpadding="1">
+        <tr>
+          <td>说明：</td>
+          <td><textarea name="admin_notes" id="admin_notes" rows="3" cols="50"></textarea></td>
+        </tr>
+        <tr>
+          <td align="center" colspan="2">
+          <input type="button"  value="确认"  class="btnabig" onclick="backaction()"/>
+          </td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function backaction(){
+    var admin_notes = document.getElementById("admin_notes").value;
+	if(admin_notes==''){alert('请填写说明！');document.getElementById('admin_notes').focus();return;}
+	$.ajax({
+            url: '/icwebadmin/OrOrgl/backorder',
+            data: {'salesnumber':'<?=$this->salesnumber?>','type':'<?=$this->type?>','admin_notes':admin_notes},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+				alert(arr.message);
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	});
+}
+</script>

@@ -1,0 +1,93 @@
+<?php $dotype = array('A'=>'添加','M'=>'邮件','E'=>'编辑','L'=>'登录','V'=>'浏览');?>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 追踪</h1>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  <div class="fr u_right">
+    <div class="tab_con mb10">
+      <table border="0" class="producttable table">
+        <thead>
+          <tr>
+            <th width="60" <?=$this->valuetype=='session_id'?' style="color:#FF6600"':''?>>session_id</th>
+            <th width="60" <?=$this->valuetype=='uid'?' style="color:#FF6600"':''?>>用户</th>
+            <th width="80" <?=$this->valuetype=='ip'?' style="color:#FF6600"':''?>>IP</th>
+            <th width="80" <?=$this->valuetype=='controller'?' style="color:#FF6600"':''?>>Controller</th>
+            <th width="80" <?=$this->valuetype=='action'?' style="color:#FF6600"':''?>>Action</th>
+            <th width="60" <?=$this->valuetype=='log_id'?' style="color:#FF6600"':''?>>操作</th>
+            <th width="60" <?=$this->valuetype=='temp1'?' style="color:#FF6600"':''?>>状态</th>
+            <th width="50" <?=$this->valuetype=='temp2'?' style="color:#FF6600"':''?>>Key</th>
+            <th width="50" <?=$this->valuetype=='temp3'?' style="color:#FF6600"':''?>>temp3</th>
+            <th width="50" <?=$this->valuetype=='temp5'?' style="color:#FF6600"':''?>>temp5</th>
+            <th width="100" <?=$this->valuetype=='created'?' style="color:#FF6600"':''?>>创建时间</th>
+            <th width="150" <?=$this->valuetype=='temp4'?' style="color:#FF6600"':''?>>说明</th>
+            <th width="150">备注</th>                                  
+          </tr>
+        </thead>
+        <tbody>
+         	<?php 
+				foreach($this->alllogs as $alllogs) : ?>
+				<tr>
+                <td><span title="<?=$alllogs['session_id']?>"><?=$this->fun->utf_substr($alllogs['session_id'],13)?></span>
+                <?php if(!in_array('session_id',$this->valuetype_array)){?>
+                <a target="_blank" href="<?=$this->indexurl?>/track?type=default&valuetype=session_id||<?=$this->valuetype?>&value=<?=$alllogs['session_id'].'||'.$this->value?>" ><img src="/images/admin/arrow.gif" title="追踪"/></a>
+				<?php }?>
+                </td>
+                <td><a href="javascript:;" onclick="viewUser('<?=$alllogs['uid']?>')" title="查看详细资料" ><?=($alllogs['companyname']?$alllogs['companyname']:$alllogs['uname'])?></a> 
+                 <?php if(!in_array('uid',$this->valuetype_array)){?>
+                 <a target="_blank" href="<?=$this->indexurl?>/track?type=default&valuetype=uid||<?=$this->valuetype?>&value=<?=$alllogs['uid'].'||'.$this->value?>" ><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+				<td><?=$alllogs['ip']?>
+                <?php if(!in_array('ip',$this->valuetype_array)){?>
+                <a target="_blank" href="<?=$this->indexurl?>/track?type=default&valuetype=ip||<?=$this->valuetype?>&value=<?=$alllogs['ip'].'||'.$this->value?>" ><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+				<td><?=$alllogs['controller']?>
+                <?php if(!in_array('controller',$this->valuetype_array)){?>
+                <a target="_blank" href="<?=$this->indexurl?>/track?type=default&valuetype=controller||<?=$this->valuetype?>&value=<?=$alllogs['controller'].'||'.$this->value?>" ><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+				<td><?=$alllogs['action']?>
+                 <?php if(!in_array('action',$this->valuetype_array)){?>
+                 <a target="_blank" href="<?=$this->indexurl?>/track?type=default&valuetype=action||<?=$this->valuetype?>&value=<?=$alllogs['action'].'||'.$this->value?>" ><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                <td><?=$dotype[$alllogs['log_id']]?>
+                 <?php if(!in_array('log_id',$this->valuetype_array)){?>
+                 <a target="_blank" href="<?=$this->indexurl?>/track?type=default&valuetype=log_id||<?=$this->valuetype?>&value=<?=$alllogs['log_id'].'||'.$this->value?>" ><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+				<td><?php echo $alllogs['temp1'];?>
+                <?php if(!in_array('temp1',$this->valuetype_array)){?>
+                <a target="_blank" href="<?=$this->indexurl?>/track?type=default&valuetype=temp1||<?=$this->valuetype?>&value=<?=$alllogs['temp1'].'||'.$this->value?>" ><img src="/images/admin/arrow.gif" title="追踪"/><?php }?></a>
+                </td>
+				<td><?=$alllogs['temp2'];?>
+                <?php if(!in_array('temp2',$this->valuetype_array)){?>
+                <a target="_blank" href="<?=$this->indexurl?>/track?type=default&valuetype=temp2||<?=$this->valuetype?>&value=<?=$alllogs['temp2'].'||'.$this->value?>" ><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                <td><?=$alllogs['temp3'];?>
+                <?php if(!in_array('temp3',$this->valuetype_array)){?>
+                <a target="_blank" href="<?=$this->indexurl?>/track?type=default&valuetype=temp3||<?=$this->valuetype?>&value=<?=$alllogs['temp3'].'||'.$this->value?>" ><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                </td>
+                 <td><?=$alllogs['temp5'];?>
+                <?php if(!in_array('temp5',$this->valuetype_array)){?>
+                <a target="_blank" href="<?=$this->indexurl?>/track?type=default&valuetype=temp5||<?=$this->valuetype?>&value=<?=$alllogs['temp5'].'||'.$this->value?>" ><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?>
+                <br/>
+                <?=$alllogs['order_no']?'<font color="#FF0000">'.$alllogs['order_no'].'</font>':''?>
+                </td>
+				<td><?=date('Y-m-d H:i:s',$alllogs['created']);?>
+                <?php if(!in_array('created',$this->valuetype_array)){?>
+                <a target="_blank" href="<?=$this->indexurl?>/track?type=default&valuetype=created||<?=$this->valuetype?>&value=<?=$alllogs['created'].'||'.$this->value?>" ><img src="/images/admin/arrow.gif" title="追踪当天"/></a><?php }?>
+                </td>
+                <td><?=$alllogs['temp4'];?>
+                <?php if(!in_array('temp4',$this->valuetype_array)){?>
+                <a target="_blank" href="<?=$this->indexurl?>/track?type=default&valuetype=temp4||<?=$this->valuetype?>&value=<?=$alllogs['temp4'].'||'.$this->value?>" ><img src="/images/admin/arrow.gif" title="追踪"/></a><?php }?></td>
+                <td><?=$alllogs['description'];?></td>
+				</tr>
+				<?php endforeach ; ?>
+        </tbody>
+      </table>
+      <div class="pagination divpage">
+        <?=$this->page_bar?>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <!-- 结束区域-->
+</div>

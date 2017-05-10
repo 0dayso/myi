@@ -1,0 +1,83 @@
+<?php 
+$property_tmp = array('enduser'=>'终端用户','merchant'=>'贸易商');
+$typename = array('fags'=>'方案概述','hxyx'=>'核心优势','fakt'=>'方案框图',
+		  		'hxqj'=>'核心器件','zbqj'=>'周边器件','bomd'=>'BOM单',
+		  		'cgal'=>'成功案例','sjwd'=>'设计文档','jszq'=>'技术支持');
+?>
+	<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?></h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+    <div class="fr u_right">
+    <div class="tab_content">
+    	<div class="tab_tit1">
+        <ul class="fl">
+          <li <?=$this->type=='wait'?'class="on"':''?>><a href="?type=wait<?=$selecturl?>" style="width:120px;">待审批<em>(<?=$this->waitnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='passs'?'class="on"':''?>><a href="?type=passs<?=$selecturl?>" style="width:120px;">通过<em>(<?=$this->passsnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='nopass'?'class="on"':''?>><a href="?type=nopass<?=$selecturl?>" style="width:120px;">不通过<em>(<?=$this->nopasssnum?>)</em><b class="blank3"></b></a></li>
+        </ul>
+        </div>
+    </div>
+    <div class="tab_con ">
+        <table class="tableanew" border="0" cellspacing="0" cellpadding="0"  width="100%"  >
+            <tr>
+                <th width="150">客户名称</th>
+                <th width="150">方案</th>
+                <th  width="80" align="center">申请时间</th>
+                <th  width="100" align="center">用户备注</th>
+                <th  width="80" align="center">审批时间</th>
+                <?php if($this->type=='passs'){?>
+                <th  width="100" align="center">权限</th>
+                <?php }?>
+                <th width="100" align="center">审批说明</th>
+                <th width="80" align="center">操作人</th>
+                <th width="100" align="center">操作</th>
+            </tr>
+             <?php 
+				if(empty($this->rulearr)){?>
+                <tr>
+                  <td colspan="6"><center> 暂无记录。</center></td>
+                </tr>
+                <?php }else{
+			   foreach($this->rulearr as $k=>$v){
+				?>
+              <tr valign="top">
+                <td align="left"><a href="javascript:;" onclick="viewUser('<?=$v['uid']?>')" title="用户详情" class="company"><?=$v['companyname']?></a></td>
+                <td align="left"><a href="/solution-<?=$v['did']?>.html" target="_blank" title="查看方案" class="company"><?=$v['title']?></a></td>
+                <td align="center"><?=($v['created']?date('Y/m/d H:i:s',$v['created']):'--')?></td>
+                <td align="center"><?=($v['explanation']?$v['explanation']:'--')?></p></td>
+                <td align="center"><?=($v['modified']?date('Y/m/d H:i:s',$v['modified']):'--')?></td>
+                <?php if($this->type=='passs'){$area = ($v['areas']?explode(',', $v['areas']):array());?>
+                <td><?php foreach($area as $a){ echo $typename[$a].'；';}?></td>
+                <?php }?>
+               
+                <td align="center"><?=($v['remark']?$v['remark']:'--')?></p></td>
+                <td><?=$v['lastname'].$v['firstname']?></td>
+                <td valign="middle">
+                <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                
+                <?php if(in_array($v['apply'],array('1','3'))){?>
+              	<p><a class="gbqfb" href="javascript:;" onclick="openbox('/icwebadmin/UsSolu/apply?uid=<?=$v['uid']?>&key=<?=$this->fun->encryptVerification($v['id'])?>')">审批</a></p>
+                <?php }?>
+                
+                <?php if($v['apply']==2){?>
+              	<p><a class="gbqfb" href="javascript:;" onclick="openbox('/icwebadmin/UsSolu/apply?uid=<?=$v['uid']?>&key=<?=$this->fun->encryptVerification($v['id'])?>')">修改权限</a></p>
+                <?php }?>
+                
+                <?php }?>
+                </td>
+            </tr>
+		<?php }
+		}?> 
+        </table>
+    <div class="pagination divpage">
+       <?=$this->page_bar;?>
+  </div>
+</div>
+
+</div>
+      <!-- 结束区域-->
+	</div>

@@ -1,0 +1,51 @@
+<link href="/css/jifen/css/jifen.css" type="text/css" rel="stylesheet">
+<div class="lotteryResult" id="lotteryResult" style="">
+    <div class="resultArea">
+        <div class="result">
+            <h3><?=$this->mess?></h3>
+            <h5><?=$this->mess2?></h5>
+            <div class="resultBtnWrap clearfix">
+                <div class="resultBtnInner">
+                   <?php if(in_array($this->type,array(1,2,3))){?>
+                    <a class="resultBtn" href="javascript:;" title="请填写收货信息" onclick="openbox('/jifen/info?id=<?=$this->id?>')">填写收货信息</a>
+                <?php }else{?>
+                    <a class="resultBtn" href="javascript:;" title="确定" onclick="$.closePopupLayer('lotteryResult');<?=($this->rf?'location.reload();':'')?>">确定</a>
+                <?php }?>
+                </div>
+            </div>
+        </div>
+       <?php if($this->show==4 && $this->showarr){?>
+       <div class="poptuijian " >
+        <h4><?=($this->t?'':'抽奖抽累了，')?>现在有免费样片可以申请，去看看吧！</h4>
+        	
+              <?php foreach($this->showarr as $data){$data = $this->fun->filterProduct($data);?>
+                 <div class="modelbox"> 
+                 <div class="fl"><a href="<?=$data['f_produrl']?>" target="_blank" class="imgbox"> <img src="<?=PRODUCTICON.($data['part_img']==''?'no.gif':$data['part_img'])?>" width="50px" height="50px"></a></div>
+                  <div class="fl ">
+                    <p><a href="<?=$data['f_produrl']?>"target="_blank" class="model logclick"><?=$data['part_no']?></a></p>
+                    <p><a href="javascript:;" class="liexing" target="_blank"><?=$data['cname2']?></a></p>
+                    <p><a href="javascript:;" target="_blank"><?=$data['brandname']?></a></p>
+                  </div>
+                </div>
+              <?php }?>
+        </div>
+       <?php }elseif($this->showarr){?>
+        <div class="poptuijian poptuijian1 " >
+        	<h4><?=($this->t?'您可以':'抽奖抽累了，')?>去看看<?php if($this->show==1){ $url = "http://www.iceasy.com/solution-";
+			echo '热门方案';}elseif($this->show==2) {
+			$url = "http://www.iceasy.com/webinar-";
+			echo '热门研讨会';}else {
+			$url = "http://www.iceasy.com/news-";
+			echo '热门产品资讯';}?>，分享还可以挣积分哦！</h4>
+            <?php foreach($this->showarr as $v){?>
+        	<div class="modelbox">
+                  <div class="fl ">
+                    <p><a href="<?=$url.$v['id'].'.html'?>" target="_blank" class="logclick" title="<?=$v['title']?>">• <?=$this->fun->utf_substr($v['title'],30)?></a></p>
+                  </div>
+                </div>
+            <?php }?>
+         </div>
+       <?php }?>
+    </div>
+    <a class="ResultClose" href="javascript:;" onclick="$.closePopupLayer('lotteryResult');<?=($this->rf?'location.reload();':'')?>"></a>
+</div>

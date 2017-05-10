@@ -1,0 +1,236 @@
+<?php
+$delivery_type = array('1'=>'国内快递','2'=>'公司配送','3'=>'客户自提','4'=>'客户提供账号');
+$typeArr = array ('1' => '明细','2' => '电子元件','3' => '耗材' );
+?>
+
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 修改订单<?=$this->soarray['salesnumber']?> -><a href="/icwebadmin/OrUnso/list" title="返回订单列表">返回订单列表</a></h1>
+  <div class="fr tab_content">
+      <table class="table011">
+        <tr><td colspan="3" style="color:#FF0000">请注意：点击修改各个单项成功后，请点击<span class="baojiabtn"><input type="button" value="保 存 修 改" class="btnabig" onclick="editorder()"></span>，这样订单修改才生效。</td></tr>
+      </table>
+      <!--结束货币-->
+      <div class="div1 labelinput"><label style="font-weight:bold;">结算货币：<?=$this->soarray['currency']?>
+      &nbsp;&nbsp;<a class="gbqfbb" href="javascript:;" onclick="openbox('/icwebadmin/OrUnso/currency?k=<?=$this->fun->encryptVerification($this->soarray['salesnumber']);?>')" title="修改结算货币">修改</a>
+      </label></div>
+      <!--end-->
+       <!--配送方式-->
+       <div class="div1 labelinput"><label style="font-weight:bold;">需方信息</label></div>
+       <div  class="mergerorder">
+          <div  class="div_dl">
+            <dl>
+              <dt>需方： </dt>
+                <dd class="labelinput"><?=$this->user['companyname']?></dd>
+            </dl>
+            <dl>
+              <dt>地址： </dt>
+                <dd class="labelinput"><?=$this->fun->createAddress($this->user['province'],$this->user['city'],$this->user['area'],$this->user['address'])?></dd>
+            </dl>
+            <dl>
+              <dt>联系人： </dt>
+              <dd class="labelinput"><?=$this->user['truename']?></dd>
+             </dl>
+             
+            <dl>
+              <dt>联系电话： </dt>
+                <dd class="labelinput"><?=$this->user['tel'].'；'.$this->user['mobile']?></dd>
+            </dl>
+            <dl>
+              <dt>传真： </dt>
+              <dd class="labelinput"><?=$this->user['fax']?></dd>
+             </dl>
+             <dl>
+              <dt>&nbsp;</dt>
+              <dd class="labelinput"> <a class="gbqfbb" href="javascript:;" onclick="openbox2('/icwebadmin/UsUsgl/updateuser/uid/<?=$this->user['uid']?>')" title="修改需方信息">修改</a></dd>
+             </dl>
+            </div>
+        </div>
+        <!--end 配送方式-->
+        
+       <!--配送方式-->
+       <div class="div1 labelinput"><label style="font-weight:bold;">配送方式</label></div>
+       <div  class="mergerorder">
+          <div  class="div_dl">
+            <dl>
+              <dt>配送方式： </dt>
+              <dd class="labelinput"><?php echo $delivery_type[$this->soarray['delivery_type']];?></dd>
+             </dl>
+             <dl>
+              <dt>运费： </dt>
+              <dd class="labelinput"><?=$this->soarray['currency'].$this->soarray['freight']?></dd>
+             </dl>
+            <dl>
+              <dt>运费支付方： </dt>
+                <dd class="labelinput"><?php if($this->soarray['exp_paytype']==1) echo '供方付费';
+				elseif($this->soarray['exp_paytype']==2) echo '需方付费'?></dd>
+            </dl>
+            <dl>
+              <dt>&nbsp;</dt>
+              <dd class="labelinput"> <a class="gbqfbb" href="javascript:;" onclick="openbox('/icwebadmin/OrUnso/deliverytype?k=<?=$this->fun->encryptVerification($this->soarray['salesnumber']);?>')" title="修改配送方式">修改</a></dd>
+             </dl>
+            </div>
+        </div>
+        <!--end 配送方式-->
+        <?php if($this->soarray['addressid'] && $this->soarray['province'] && $this->soarray['name']){?>
+        <!--收货人信息-->
+        <div class="receiving_info">
+        <div class="div1 labelinput"><label style="font-weight:bold;">收货信息</label></div>  
+        <div class="address_all">
+        <!--演示-->
+        <div class="mergerorder address_show">
+          <div class="div_dl">
+             <dl>
+              <dt>收 货 人：</dt>
+              <dd class="labelinput show_shrname"><?php echo $this->soarray['name'];?></dd>
+             </dl>
+             <dl>
+              <dt>详细地址：</dt>
+              <dd class="labelinput show_address"><?php echo $this->fun->createAddress($this->soarray['province'], $this->soarray['city'], $this->soarray['area'], $this->soarray['address']);?></dd>
+             </dl>
+             <dl>
+              <dt>公司名称：</dt>
+              <dd class="labelinput show_companyname"><?php echo $this->soarray['companyname'];?></dd>
+             </dl>
+             <dl>
+              <dt>入仓号：</dt>
+              <dd class="labelinput show_warehousing"><?php echo $this->soarray['warehousing'];?></dd>
+             </dl>    
+             <dl>
+              <dt>邮政编码：</dt>
+              <dd class="labelinput show_zipcode"><?php echo $this->soarray['zipcode'];?></dd>
+             </dl>
+             
+             <dl>
+              <dt>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：</dt>
+              <dd class="labelinput show_mobile"><?php echo $this->soarray['mobile'];?></dd>
+             </dl>
+             <dl>
+              <dt>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</dt>
+              <dd class="labelinput show_tel"><?php echo $this->soarray['tel'];?></dd>
+             </dl>
+             <dl>
+              <dt>&nbsp;</dt>
+              <dd class="labelinput"><a class="gbqfbb" href="javascript:;" onclick="openbox('/icwebadmin/OrUnso/orderaddress?k=<?=$this->fun->encryptVerification($this->soarray['salesnumber']);?>')" title="修改收货信息">修改</a></dd>
+             </dl>
+            </div>
+        </div>
+        <!--end演示-->
+        </div>
+       </div> 
+	   <?php }?>
+       <!--end收货人信息-->
+       <!--结算方式-->
+       <div class="div1 labelinput"><label style="font-weight:bold;">结算方式</label></div>
+       <div  class="mergerorder">
+          <div  class="div_dl">
+             <dl>
+              <dt>结算方式：</dt>
+              <dd class="labelinput"><?php 
+			     if($this->soarray['paytype']=='mts'  || $this->soarray['down_payment']==0) echo '款到发货';
+				 elseif($this->soarray['paytype']=='other') echo $title6='其他。'.$this->soarray['paytype_other'];
+				 elseif($this->soarray['down_payment']==$this->soarray['total']) echo '预付全款';
+				 else{
+				 	echo '预付'.($this->soarray['percentage']>0?$this->soarray['percentage'].'%':'').' 定金'.$this->soarray['currency'].$this->soarray['down_payment'];
+				 }
+			   ?>
+              </dd>
+             </dl>
+             <dl>
+              <dt>&nbsp;</dt>
+              <dd class="labelinput"><a class="gbqfbb" href="javascript:;" onclick="openbox('/icwebadmin/OrUnso/paytype?k=<?=$this->fun->encryptVerification($this->soarray['salesnumber']);?>')" title="修改结算方式">修改</a></dd>
+             </dl>
+            </div>
+        </div>
+       <!--end结算方式-->
+       
+       <!--发票信息-->
+		<?php if($this->soarray['delivery_place']=='SZ'){?>
+       <div class="div1 labelinput"><label style="font-weight:bold;">发票</label></div>
+       <div class="invoice_all">
+          <!--默认发票-->
+          <div  class="mergerorder invoice_show">
+              <div class="div_dl invoice_1">
+                <dl>
+                  <dt>发票类型： </dt>
+                  <dd class="labelinput"><?php if($this->soarray['itype']==2){ echo '17%增值税票';}
+				    elseif($this->soarray['itype']==1){echo '普通发票';}
+					else{echo '不需要发票';}?></dd>
+                 </dl>
+                 <dl>
+                  <dt>&nbsp; </dt>
+                    <dd><a class="gbqfbb" href="javascript:;" onclick="openbox('/icwebadmin/OrUnso/invoice?k=<?=$this->fun->encryptVerification($this->soarray['salesnumber']);?>')" title="修改发票">修改</a></dd>
+                 </dl>
+            </div>
+          </div>
+        </div>
+        <?php }?>
+        <!--end发票信息-->
+         <!--产品清单-->
+         <div class="div1 labelinput"><label style="font-weight:bold;">产品清单</label>
+         </div>
+         <div  class="mergerorder">
+          <div  class="div_dl">
+          		<table cellpadding="0" cellspacing="0" border="0" class="table">
+                <thead>
+                  <tr id="trHeader">
+                    <th width="120">型号</th>
+                    <th width="120">品牌(产品线)</th>
+                    <th width="120">客户物料号</th>
+                    <th width="120">单价</th>
+                    <th width="100">购买数量</th>
+                    <th width="100">需求日期</th>
+                    <th width="100">标准货期</th>
+                    <th width="120">备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 <?php foreach($this->soarray['pordarr'] as $pordarr){?>
+                  <tr>
+                    <td><?=$pordarr['part_no']?></td>
+                    <td><?=$pordarr['brand']?></td>
+                    <td><?=$pordarr['customer_material']?></td>
+                    <td><?=$this->soarray['currency'].' '.$pordarr['buyprice']?></td>
+                    <td><?=$pordarr['buynum']?></td>
+                    <td><?=($pordarr['needs_time']?date('Y-m-d',$pordarr['needs_time']):'')?></td>
+                    <td><?=$pordarr['lead_time']?></td>
+                    <td><?=$pordarr['remark']?></td>
+                  </tr>
+                  <?php }?>
+                  <tr><td>&nbsp;</td><td colspan="7"><a class="gbqfbb" href="javascript:;" onclick="openbox('/icwebadmin/OrUnso/product?k=<?=$this->fun->encryptVerification($this->soarray['salesnumber']);?>')" title="修改产品清单">修改</a></td></tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+         <!--end产品清单-->
+         <div  class="mergerorder mergerorderbtn">
+         	<div style=" margin-left:300px; margin-bottom:10px;" class="baojiabtn">
+            <input type="button" value="保 存 修 改" class="btnabig" onclick="editorder()"></div>
+         </div>
+      <div class="clear"></div>
+  </div>
+</div>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script type="text/javascript">
+function editorder() 
+{
+	//提交订单
+	$(".baojiabtn").html('<input type="button" value="提 交 中..." class="btnabig">');
+    $.ajax({
+            url: '/icwebadmin/OrUnso/editorder',
+            data: {'salesnumber':'<?php echo $this->soarray['salesnumber'];?>'},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    if(arr.code == 0){
+			  	   $.openPopupLayer({
+					name:'comBox',
+					url:'/icwebadmin/OrUnso/editsuccess?salesnumber='+arr.salesnumber
+				   });
+                }else{
+			      alert(arr.message);
+			    }
+				$(".baojiabtn").html('<input type="button" value="保 存 修 改" class="btnabig" onclick="editorder()">');
+            }
+    });
+}
+</script>

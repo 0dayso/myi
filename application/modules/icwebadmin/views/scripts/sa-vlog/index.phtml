@@ -1,0 +1,69 @@
+<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?></h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+       <table border="0" class="producttable table">
+        <thead>
+          <tr>
+            <th width="60">session_id</th>
+            <th width="100">用户</th>
+            <th width="80">IP</th>
+            <th width="80">referrer</th>
+            <th width="80">page</th>
+            <th width="80">href</th>
+            <th width="60">agent</th>
+            <th width="60">text</th>
+            <th width="50">title</th>
+            <th width="100">rev</th>
+            <th width="100">rel</th>
+            <th width="100">创建时间</th>
+          </tr>
+        </thead>
+        <tbody>
+         	<?php 
+				foreach($this->alllogs as $alllogs) : ?>
+				<tr>
+                <td><span title="<?=$alllogs['session_id']?>"><?=$this->fun->utf_substr($alllogs['session_id'],13)?></span>
+                <a href="<?=$this->indexurl?>/track?valuetype=session_id&value=<?=$alllogs['session_id']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a>
+                </td>
+                <td><a href="javascript:;" onclick="viewUser('<?=$alllogs['uid']?>')" title="查看详细资料" ><?=($alllogs['companyname']?$alllogs['companyname']:$alllogs['uname'])?></a> 
+				<a href="<?=$this->indexurl?>/track?valuetype=uid&value=<?=$alllogs['uid']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a></td>
+				<td><?=$alllogs['ip']?>
+                <a href="<?=$this->indexurl?>/track?valuetype=ip&value=<?=$alllogs['ip']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a>
+                </td>
+				<td><span title="<?=$alllogs['r']?>"><?=$this->fun->utf_substr($alllogs['r'],20)?></span>
+                <a href="<?=$this->indexurl?>/track?valuetype=r&value=<?=$alllogs['r']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a></td>
+				<td><span title="<?=$alllogs['page']?>"><?=$this->fun->utf_substr($alllogs['page'],20)?></span>
+                <a href="<?=$this->indexurl?>/track?valuetype=page&value=<?=$alllogs['page']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a>
+                </td>
+                <td><span title="<?=$alllogs['href']?>"><?=$this->fun->utf_substr($alllogs['href'],20)?></span>
+                <a href="<?=$this->indexurl?>/track?valuetype=href&value=<?=$alllogs['href']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a>
+                </td>
+                <td><span title="<?=$alllogs['agent']?>"><?=$this->fun->utf_substr($alllogs['agent'],10)?></span>
+                <a href="<?=$this->indexurl?>/track?valuetype=agent&value=<?=$alllogs['agent']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a>
+                </td>
+				<td><?=$alllogs['text']?>
+                <a href="<?=$this->indexurl?>/track?valuetype=text&value=<?=$alllogs['text']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a>
+                </td>
+				<td><?=$alllogs['title'];?>
+                <a href="<?=$this->indexurl?>/track?valuetype=title&value=<?=$alllogs['title']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a>
+                </td>
+                <td><?=$alllogs['rev'];?> 
+				<a href="<?=$this->indexurl?>/track?valuetype=rev&value=<?=$alllogs['rev']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a></td>
+                <td><?=$alllogs['rel'];?> 
+				<a href="<?=$this->indexurl?>/track?valuetype=rel&value=<?=$alllogs['rel']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪"/></a></td>
+                <td><?=date('Y/m/d H:i:s',$alllogs['created']);?>
+                <a href="<?=$this->indexurl?>/track?valuetype=created&value=<?=$alllogs['created']?>" target="_blank"><img src="/images/admin/arrow.gif" title="追踪当天"/></a>
+                </td>
+				</tr>
+				<?php endforeach ; ?>
+        </tbody>
+      </table>
+      <div class="pagination divpage">
+        <?=$this->page_bar?>
+      </div>
+      <!-- 结束区域-->
+</div>

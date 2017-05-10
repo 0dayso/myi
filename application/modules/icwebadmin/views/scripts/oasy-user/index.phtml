@@ -1,0 +1,55 @@
+<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?></h1>
+    <form id="myform"  name="myform" class="form-search"  action="" >
+<label>客户公司名称：</label>
+<div class="input-append">
+  <input type="text" class="search-query ac_input" id="clientcname" style="width:350px"  value="<?=$this->clientcname?>" name="clientcname" autocomplete="off"/>
+</div>
+<input type="submit" class="btn" value="查 找"/>   
+
+</form>
+		  <div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	  <!-- 需要填写的区域-->
+      <table class="producttable table" border="0">
+          <thead>
+                <th>公司名称</th>
+                <th>负责销售</th>
+                <th>邮箱</th>
+                <th>联系电话</th>
+                <th>传真</th>
+                <th>公司地址</th>
+                <th>创建时间</th>
+                <th width="100">操作</th>
+           </thead>
+            <tbody>
+            <?php if(!$this->oaClient){?>
+                <tr>
+                  <td colspan="6"><?php if($this->clientcname){?>没有查询到此客户：<?=$this->clientcname?>。<?php }else echo '请输入客户名查询';?></td>
+                </tr>
+             <?php }else{foreach($this->oaClient as $client){
+			        if($_SESSION['staff_sess']['staff_id']=='andyxian') $loginname = 'andy.xian';
+					else $loginname = $_SESSION['staff_sess']['staff_id'];
+			 		$oaurl = 'http://210.75.23.193/oa/crm/viewclient.aspx?id='.$client['ClientListID'].'&na='.$loginname.'&key='.md5('C@EAIC'.$loginname);
+//$oaurl = 'http://192.168.36.190/oatest/crm/viewclient.aspx?id='.$client['ClientListID'].'&na='.$loginname.'&key='.md5('C@EAIC'.$loginname);
+			 ?>
+                <tr>
+                   <td><!--<a href="/icwebadmin/OasyUser/oaviewuser?oaurl=<?=$oaurl?>" target="_blank" title="去OA查看详情"><?=$client['ClientCName']?></a>-->
+				   <?=$client['ClientCName']?>
+                   </td>
+                   <td><?=$this->oa_employee[$client['SalesID']]?></td>
+                   <td><a href="mailto:<?=$client['Email']?>"><?=$client['Email']?></a></td>
+                   <td><?=$client['Tel']?></td>
+                   <td><?=$client['Fax']?></td>
+                   <td><?=$client['CAddress']?></td>
+                   <td><?=date("Y-m-d H:i:s",strtotime($client['CDate']))?></td>
+                   <td><a class="gbqfb" href="<?=$oaurl?>" target="_blank" title="去OA查看详情">去OA查看详情</a></td>
+                </tr>
+             <?php }}?>
+            </tbody>
+      </table>
+      <br/>
+      <!-- 结束区域-->
+</div>

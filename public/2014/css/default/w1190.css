@@ -1,0 +1,133 @@
+@charset "utf-8";
+/* CSS Document */
+
+.w{ width:1190px}
+
+/*首页*/
+.searchTxt,.searchTxtHover{width:450px;}
+.searchtext{width:350px;}
+.indexShowBox,.slider_img,.slider_img img,.indexShow{ width: 700px !important; height:342px}
+.brand_wall{ width:672px; }
+.brand_wall li a,.brand_wall li .empty,.flowTip span,.brand_wall li a.flowTip span{ width:92px}
+.mainrightbox_buynow{width: 258px;}
+.mainrightbox_buynow .input150{ width:200px}
+.mainrightbox .item{ width:278px;}
+.mod_tab{ width:278px;}
+.ptip201312{ margin-bottom:10px}
+.por_box2013 .tabelbtn{ top:90px}
+.hotgoods{width:888px;}
+.hot_sch {width: 290px;}
+.hot_sch .indexShowBox,.hot_sch .slider_img,.hot_sch .slider_img img,.hot_sch .indexShow{ width: 290px !important; height:225px}
+.hot_sch .slider_trigger{top:200px}
+.hotRecommend .hotRecommend_A{height:180px;}
+.hotRecommend .hotRecommend_A li{ /*margin-right:10px*/}
+.hotRecommend .por_box2013{ width:290px;height:180px; }
+.hotRecommend .por_box2013 .pbrand201312{top:130px}
+.hotRecommend .item .s-img img {height:110px;}
+.hotRecommend .fore4 .item{  width:290px; }
+.app_soumain{ width:700px; }
+.sou201312{ width:659px;padding: 5px 10px 15px 31px;}
+.sou201312 ul {width: 639px;}
+.sou201312 .por_box2013{ width:200px;}
+.U-hotRecommend{ width:200px}
+.U-hotRecommend .por_box2013{ width:200px}
+.floor_logo,.floor_logo a{ width:94px;}
+.floor_logo img{ width:84px}
+.hotnew .floor_logo a{ height:56px; line-height:56px;width:110px;}
+.application .floor_logo img{ width:75px}
+.hotnew .floor_logo {width: 102px;}
+.hotnew .hotnew_por_box2013 {width: 776px;height: 205px;}
+.hotnew .por_box2013 {width: 184px;height: 205px;}
+.hotnew .por_box2013 .s-img img {height: 100px;}
+
+
+/*列表页*/
+.cat-index li{width:65px; height:65px; margin:10px 0 0px 13px; }
+.cat-index li a{width:65px; height:65px;}
+.cat-index li .shadow{width:65px; height:65px;background:url(../img/p-65-65.png) no-repeat;_background:0;_filter:progid:dximagetransform.microsoft.alphaimageloader(enabled=true,sizingMethod=noscale,src="../img/p-65-65.png");}
+.cat-index li .icon{height:45px;width:55px; padding:10px 5px;font-size:14px;line-height:20px;}
+.market-cat .section .sublist {width: 455px;}
+.list1 .market-cat .section {width: 382px;}
+
+/*产品详细页*/
+.prodetail2013 {background: url(../img/rightshadbg.jpg) repeat-y 1000px 0;}
+.proinfo {width: 708px;}
+.proinfo_m {width: 710px;}
+.proinfo_data, .proinfo_s, .proinfo_btn {width: 690px;}
+.prodetail2013_c {width: 995px;}
+
+/*应用方案*/
+.rigybg {background: url(../img/rightshadbg.jpg) repeat-y 915px 0;}
+.selectbox201312,.layout .infolist {width: 905px;}
+.selectbox201312 .catList {width: 800px;}
+.selectbox201312 dl dd{width: 805px;}
+
+
+.infolist .posts {width:885px;}
+.post-cont {width: 670px;}
+.sembox2013 .post-cont {width: 880px; height: 50px;}
+.code2013 .post-cont {width:740px; height:80px}
+.sch_detal .posts { width:840px}
+.sch_detal .post-cont,.sch_detal .read_more {width: 840px;}
+.sch_detal .shoplist,.code2013 .shoplist{width: 905PX;}
+.schemecontent {width: 990px;}
+.themain {width: 900px;}
+.sembox2013 .themain1 .themain_p, .code2013 .themain1 .themain_p {width: 870px;}
+.sembox2013 .themain1 .themain_p p, .code2013 .themain1 .themain_p p {width: 700px;}
+.sembox2013 .dl2013 dd {width:810px;}
+
+
+.codetj{ background:url(../img/codetjbg_b.jpg) no-repeat !important; width:855px; }
+.BOMinfo {width: 1110px;}
+.BOMinfo .btnok-new1 {margin: 30px 0 10px 450px;}
+
+
+.cat-index li{width:65px; height:65px; margin:10px 0 0px 8px; }
+.cat-index li a{width:65px; height:65px;}
+.cat-index li .shadow{width:65px; height:65px;background:url(../img/p-65-65.png) no-repeat;_background:0;_filter:progid:dximagetransform.microsoft.alphaimageloader(enabled=true,sizingMethod=noscale,src="../img/p-65-65.png");}
+.cat-index li .icon{height:45px;width:55px; padding:10px 5px;font-size:14px;line-height:20px;}
+
+
+
+
+
+
+
+.mymainbox {width:1055px;}
+.mymainboxleft {width:790px;}
+.ourmain_1, .ourmian2, .ourmain_3, .ourmian6, .ourmian7 {width:760px;}
+.ourmian6, .ourmian7 {width:1055px !important;}
+
+.ourmian6jifen{height:225px;}
+.s1_mod{float:left;width:252px;height:220px;}
+.s1_pic{width:252px;height:220px;}
+.s1_pic img{width:256px;height:170px;}
+.s1_info{width:252px;}
+.s1_info_name{ width:236px;  }
+
+
+
+
+/*热卖推荐*/
+.ourmian7 .hotRecommend_A{height:170px;}
+.ourmian7 .por_box2013{ width:254px;height:156px; border:0}
+.ourmian7 .por_box2013 .pbrand201312{top:110px; }
+
+
+
+/*页脚*/
+.footerinfo { width: 930px;}
+.footerinfo .helpCol_01, .footerinfo .helpCol_02, .footerinfo .helpCol_03, .footerinfo .helpCol_04, .footerinfo .helpCol_05{ width:186px}
+.footer_pic li a{ width:250px; }
+.friendlinkbottom { width: 1158px}
+.friendlinkli {width:1050px;}
+
+
+
+
+
+
+
+
+
+

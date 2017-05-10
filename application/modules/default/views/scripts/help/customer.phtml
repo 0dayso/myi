@@ -1,0 +1,42 @@
+<link rel="stylesheet" type="text/css" href="/css/default/help.css" />
+<div class="w">
+    <div class="breadcrumbs">		
+    	<span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/" ><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><?=$this->translate('Foot_HelpCenter')?></span>        
+    </div>
+</div>
+
+<div class="w help">
+    
+    <!--菜单-->
+    <div class="Clmenu fl">        	                       
+        <h1><?=$this->translate('Foot_CustomerCenter')?></h1>
+        <div class="linkbox">
+            <dl class="on">
+                <dt><h3><?=$this->translate('Foot_CustomerCenter')?></h3><small>&gt;&gt;</small></dt>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'customer', 'type'=>'problem'))?>"  <?php if($this->type=='problem') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_CustomerQuestion')?></a>
+                </dd>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'customer', 'type'=>'aftermarket'))?>"  <?php if($this->type=='aftermarket') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Aftermarket')?></a>
+                </dd>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'customer', 'type'=>'onlineservice'))?>"  <?php if($this->type=='onlineservice') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Onlineservice')?></a>
+                </dd>
+                <dd> 
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'customer', 'type'=>'complaint'))?>"  <?php if($this->type=='complaint') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Complaint')?></a>
+                </dd>	
+                 <dd>
+                 <a href="<?=$this->url(array('controller'=>'help', 'action'=>'customer', 'type'=>'servicemail'))?>"  <?php if($this->type=='servicemail') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Servicemail')?></a>
+                </dd>				
+            </dl>
+        
+        </div>
+    </div>
+     
+    <div class="HP_main fr">
+        <div class="HP_main_wrap">
+            <?=$this->typecom['content']?>
+        </div>
+    </div>
+    <div class="clr"></div>
+</div>

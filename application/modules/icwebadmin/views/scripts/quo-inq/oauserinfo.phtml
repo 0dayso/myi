@@ -1,0 +1,416 @@
+<div class="popup" style="width:930px;margin:10px 100px">
+  <div class="popup-header">
+    <h2>注册OA客户：</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+  </div>
+  <div class="popup-body"> 
+  	<h2 style="text-align:left">客户基本资料</h2>
+    <table cellpadding="0" cellspacing="0" border="0" class="regoa">
+    	<tr>
+        	<td><em>*</em>中文名称：</td>
+            <td colspan="7"><input type="text" style="width:420px; margin-right:10px" name="client_cname" id="client_cname" value="<?=$this->processData['client_cname']?$this->processData['client_cname']:$this->userinfo['companyname'];?>">
+            <span id="check_oa"><a  class="gbqfbb" href="javascript:;" onclick="checkOA()">查看客户是否存在OA中</a></span>
+            </td>
+        </tr>
+       <tr>
+        	<td>英文名称：</td>
+            <td colspan="7"><input type="text" style="width:420px;" name="client_ename" id="client_ename" value="<?=$this->processData['client_ename']?>"></td>
+        </tr>
+        <tr>
+        	<td>&nbsp;&nbsp;&nbsp;&nbsp;简称：</td>
+            <td colspan="4">
+            <input type="text" style="width:280px;" name="abbreviation" id="abbreviation" value="<?=$this->processData['abbreviation']?>">
+            </td>
+            <td>
+            <input type="radio" name="territory" value="1000" checked="checked" style=" width:20px"><label>境内</label>
+            <input type="radio" name="territory" value="3000" style=" width:20px"><label>境外</label>
+            </td>
+            <td><em>*</em>负责销售：</td>
+            <td><select name="oa_sales" id="oa_sales">
+              <option value="">请选择</option>
+              <?php $oa_sales_select = '';foreach($this->oa_employee as $dv){?>
+              <option value="<?=$dv['oa_id']?>" 
+		   <?php if($this->processData['oa_sales']==$dv['oa_id']){echo 'selected="selected"';$oa_sales_select=1;}
+		         elseif($_SESSION['staff_sess']['lastname'].$_SESSION['staff_sess']['firstname']==$dv['oa_name'] && !$oa_sales_select){echo 'selected="selected"';}
+				 ?>>
+              <?=$dv['oa_name']?>
+              </option>
+              <?php }?>
+            </select></td>
+        </tr>
+        <tr>
+        	<td width="90"><em>*</em>客户类别：</td>
+            <td><select name="category" id="category">
+              <option value="">请选择</option>
+              <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='CutClass_Category'){?>
+              <option value="<?=$dv['oa_id']?>" <?=($this->processData['category']==$dv['oa_id']?' selected':'')?>>
+              <?=$dv['name']?>
+              </option>
+              <?php }}?>
+            </select></td>
+            <td width="90" ><em>*</em>客户行业：</td>
+            <td><select name="industry" id="industry">
+              <option value="">请选择</option>
+              <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='Segment_Category'){?>
+              <option value="<?=$dv['oa_id']?>" <?=($this->processData['industry']==$dv['oa_id']?' selected':'')?>>
+              <?=$dv['name']?>
+              </option>
+              <?php }}?>
+            </select></td>
+            <td width="90" ><em>*</em>客户领域：</td>
+            <td><select name="field" id="field">
+              <option value="">请选择</option>
+              <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='SubSegment_Category'){?>
+              <option value="<?=$dv['oa_id']?>" <?=($this->processData['field']==$dv['oa_id']?' selected':'')?>>
+              <?=$dv['name']?>
+              </option>
+              <?php }}?>
+            </select></td>
+            <td width="90" ><em>*</em>客户性质：</td>
+            <td><select name="nature" id="nature">
+              <option value="">请选择</option>
+              <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='CutType_Category'){?>
+              <option value="<?=$dv['oa_id']?>" <?=($this->processData['nature']==$dv['oa_id']?' selected':'')?>>
+              <?=$dv['name']?>
+              </option>
+              <?php }}?>
+            </select></td>
+        </tr>
+        <tr>
+        	<td>法人代表：</td>
+            <td><input type="text" style="width:120px;" name="legal" id="legal" value="<?=$this->processData['legal']?>"></td>
+            <td><em>*</em>注册资金：</td>
+            <td><input type="text" name="registered_capital" id="registered_capital" style="width:50px;" value="<?=$this->processData['registered_capital']?>"><span>万元</span></td>
+            <td><em>*</em>净资产：</td>
+            <td><input type="text" name="net_assets" id="net_assets" style="width:50px;" value="<?=$this->processData['net_assets']?>"><span>万元</span></td>
+            <td><em>*</em>总资产：</td>
+            <td><input type="text" name="total_assets" id="total_assets" style="width:50px;" value="<?=$this->processData['total_assets']?>"><span>万元</span></td>
+        </tr>
+        <tr>
+        	<td><em>*</em>国家：</td>
+            <td><span id="oa_countrySpan">
+            <select id="country" name="country" onchange="selectOaProvince(this.value)" >
+            </select>
+            </span></td>
+            <td><em>*</em>地区：</td>
+            <td><span id="oa_provinceSpan">
+            <select id="region" name="region">
+            </select>
+            </span></td>
+            <td><em>*</em>城市：</td>
+            <td><span id="oa_citySpan">
+            <select id="city" name="city">
+            </select>
+            </span></td>
+            <td><em>*</em>邮编：</td>
+            <td><input type="text" name="zipcode" id="zipcode" style="width:100px;" value="<?=$this->processData['zipcode']?>"></td>
+        </tr>
+        <tr>
+        	<td><em>*</em>员工数：</td>
+            <td><select name="employees" id="employees">
+              <option value="">请选择</option>
+              <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='CutSize_Category'){?>
+              <option value="<?=$dv['oa_id']?>" <?=($this->processData['employees']==$dv['oa_id']?' selected':'')?>>
+              <?=$dv['name']?>
+              </option>
+              <?php }}?>
+            </select></td>
+            <td><em>*</em>经营面积：</td>
+            <td colspan="2"><input type="text" name="area_operations" id="area_operations" style="width:100px;" value="<?=$this->processData['area_operations']?>"><span>平方米</span></td>
+            <td><em>*</em>年销售额：</td>
+            <td colspan="2"><input type="text" name="annual_sales" id="annual_sales" style="width:100px;" value="<?=$this->processData['annual_sales']?>"><span>万元</span></td>
+        </tr>
+        <tr>
+        	<td><em>*</em>中文地址：</td>
+            <td colspan="3"><input type="text" name="caddress" id="caddress" style="width:270px;" value="<?=$this->processData['caddress']?$this->processData['caddress']:($this->userinfo['province'].$this->userinfo['city'].$this->userinfo['area'].$this->userinfo['address'])?>"></td>
+            <td>英文地址：</td>
+            <td colspan="3"><input type="text" name="eaddress" id="eaddress" style="width:270px;" value="<?=$this->processData['eaddress']?>"></td>
+        </tr>
+       <tr>
+        	<td><em>*</em>电话：</td>
+            <td><input type="text" style="width:100px;" name="telephone" id="telephone" value="<?=$this->processData['telephone']?$this->processData['telephone']:$this->userinfo['tel'];?>"></td>
+            <td><em>*</em>传真：</td>
+            <td><input type="text" style="width:100px;" name="fax" id="fax" value="<?=$this->processData['fax']?$this->processData['fax']:$this->userinfo['fax'];?>"></td>
+            <td><em>*</em>Email：</td>
+            <td><input type="text" style="width:100px;" name="email" id="email" value="<?=$this->processData['email']?$this->processData['email']:$this->userinfo['email'];?>"></td>
+            <td>网站：</td>
+            <td><input type="text" style="width:100px;" name="website" id="website" value="<?=$this->processData['website']?>"></td>
+        </tr>
+        <tr>
+        	<td>客户简介：</td>
+            <td colspan="7"><textarea name="customer_profile" id="customer_profile" style="width:630px;" cols="5"><?=$this->processData['customer_profile']?></textarea></td>
+        </tr>
+        <tr>
+         	<td>供应商1：</td>
+            <td colspan="2"><input type="text"  name="suppliers_1" id="suppliers_1" style="width:150px;" value="<?=$this->processData['suppliers_1']?>"></td>
+            <td>供应商2：</td>
+            <td colspan="2"><input name="suppliers_2" id="suppliers_2" type="text" style="width:150px;"value="<?=$this->processData['suppliers_2']?>"></td>
+            <td>供应商3：</td>
+            <td><input type="text" name="suppliers_3" id="suppliers_3"  width="20" style="width:100px;" value="<?=$this->processData['suppliers_3']?>"></td>
+        </tr>
+        <tr>
+        	<td>股东1：</td>
+            <td colspan="3"><input type="text" name="shareholder_1" id="shareholder_1" value="<?=$this->processData['shareholder_1']?>"><span>投资比例(%)</span>
+            <input type="text" style="width:50px;" name="investment_ratio_1" id="investment_ratio_1" value="<?=$this->processData['investment_ratio_1']?>"></td>
+            <td>股东2：</td>
+            <td colspan="3"><input type="text" name="shareholder_2" id="shareholder_2" value="<?=$this->processData['shareholder_2']?>">
+            <span>投资比例(%)</span>
+            <input type="text" style="width:50px;" name="investment_ratio_2" id="investment_ratio_2" value="<?=$this->processData['investment_ratio_2']?>"></td>
+        </tr>
+        <tr>
+        	<td>关系企业：</td>
+            <td colspan="3"><input type="text" name="affiliates" id="affiliates" style="width:270px;" value="<?=$this->processData['affiliates']?>"></td>
+            <td>最终客户：</td>
+            <td colspan="3"><input type="text" name="end_customers" id="end_customers" style="width:270px;" value="<?=$this->processData['end_customers']?>"></td>
+        </tr>
+    </table>
+    <h2 style="text-align:left">客户联系人资料</h2>
+    <table cellpadding="0" cellspacing="0" border="0" class="regoa">
+        <tr>
+        	<td width="90"><em>*</em>姓名：</td>
+            <td><input type="text" style="width:80px;" name="contact_name" id="contact_name" value="<?=$this->processData['contact_name']?$this->processData['contact_name']:$this->userinfo['truename'];?>"></td>
+            <td width="90" >性别：</td>
+            <td><select name="sex" id="sex">
+              <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='Sex_Category'){?>
+              <option value="<?=$dv['oa_id']?>" <?=($this->processData['sex']==$dv['oa_id']?' selected':'')?>>
+              <?=$dv['name']?>
+              </option>
+              <?php }}?>
+            </select></td>
+            <td width="90" >关系类型：</td>
+            <td><select name="relationship" id="relationship">
+              <option value="">请选择</option>
+              <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='CpClass_Category'){?>
+              <option value="<?=$dv['oa_id']?>" <?=($this->processData['relationship']==$dv['oa_id']?' selected':'')?>>
+              <?=$dv['name']?>
+              </option>
+              <?php }}?>
+            </select></td>
+            <td width="90" >关系程度：</td>
+            <td><select name="relationship_degree" id="relationship_degree">
+              <option value="">请选择</option>
+              <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='CpReLevel_Category'){?>
+              <option value="<?=$dv['oa_id']?>" <?=($this->processData['relationship_degree']==$dv['oa_id']?' selected':'')?>>
+              <?=$dv['name']?>
+              </option>
+              <?php }}?>
+            </select></td>
+        </tr>
+		<tr>
+        	<td width="90">部门：</td>
+            <td colspan="3"><input type="text" name="department" id="department" style="width:270px;" value="<?=$this->processData['department']?>"></td>
+            <td width="90" >职务：</td>
+            <td colspan="3"><input type="text" name="position" id="position" style="width:270px;" value="<?=$this->processData['position']?>"></td>
+        </tr>
+        <tr>
+        	<td><em>*</em>电话：</td>
+            <td><input type="text" style="width:100px;" name="lxr_telephone" id="lxr_telephone"  value="<?=$this->processData['lxr_telephone']?$this->processData['lxr_telephone']:$this->userinfo['tel'];?>"/></td>
+            <td><em>*</em>手机：</td>
+            <td><input type="text" style="width:100px;" name="lxr_phone" id="lxr_phone"  value="<?=$this->processData['lxr_phone']?$this->processData['lxr_phone']:$this->userinfo['mobile'];?>"/></td>
+            <td><em>*</em>Email：</td>
+            <td><input type="text" style="width:100px;" name="lxr_email" id="lxr_email"  value="<?=$this->processData['lxr_email']?$this->processData['lxr_email']:$this->userinfo['email'];?>"/></td>
+            <td>传真：</td>
+            <td><input type="text" style="width:100px;" name="lxr_fax" id="lxr_fax" value="<?=$this->processData['lxr_fax']?$this->processData['lxr_fax']:$this->userinfo['fax'];?>"/></td>
+        </tr>
+        <tr>
+        	<td width="90">办公地点：</td>
+            <td colspan="3"><input type="text" name="office_location" id="office_location" style="width:270px;" value="<?=$this->processData['office_location']?>"></td>
+            <td width="90" >家庭住址：</td>
+            <td colspan="3"><input type="text" name="home_address" id="home_address" style="width:270px;" value="<?=$this->processData['home_address']?>"></td>
+        </tr>
+        <tr>
+         	<td>爱好：</td>
+            <td><input type="text" name="hobby" id="hobby" value="<?=$this->processData['hobby']?>"></td>
+            <td>称谓：</td>
+            <td><input type="text" style="width:100px;" name="appellation" id="appellation" value="<?=$this->processData['appellation']?>"></td>
+            <td>婚姻：</td>
+            <td><select name="marriage" id="marriage">
+              <option value="">请选择</option>
+              <option value="Y" <?=($this->processData['marriage']=='Y'?' selected':'')?>>已</option>
+              <option value="N" <?=($this->processData['marriage']=='N'?' selected':'')?>>未</option>
+            </select></td>
+            <td>配偶：</td>
+            <td><input type="text" name="spouse" id="spouse" value="<?=$this->processData['spouse']?>"></td>
+        </tr>
+    </table>
+    <div class="clear"></div>
+    <div class="bottombutton" id="orderbtn">
+         <input type="button" onclick="actionpost()" class="btnabig"  value="提 交"/>
+    </div>
+    <div class="clear"></div>
+      
+  </div>
+</div>
+<script type="text/javascript">
+//提交
+function actionpost(){
+	var client_cname = document.getElementById("client_cname").value;
+	if(client_cname=='') {alert('请填写中文名称');return;}
+	var client_ename = document.getElementById("client_ename").value;
+	//if(client_ename=='') {alert('请填写英文名称');return;}
+	var abbreviation = document.getElementById("abbreviation").value;
+	
+	var territoryobj = document.getElementsByName("territory");
+	var territory = '';
+	for (var i=territoryobj.length-1;i>=0;i--)
+	{
+		if(territoryobj[i].checked) territory = territoryobj[i].value;
+    }
+	var oa_sales = document.getElementById("oa_sales").value;
+	if(oa_sales=='') {alert('请选择负责销售');return;}
+	var category = document.getElementById("category").value;
+	if(category=='') {alert('请选择客户类别');return;}
+	var industry = document.getElementById("industry").value;
+	if(industry=='') {alert('请选择客户行业');return;}
+	var field = document.getElementById("field").value;
+	if(field=='') {alert('请选择客户领域');return;}
+	var nature = document.getElementById("nature").value;
+	if(nature=='') {alert('请选择客户性质');return;}
+	var legal = document.getElementById("legal").value;
+	//var creation_date = document.getElementById("creation_date").value;
+	var registered_capital = document.getElementById("registered_capital").value;
+	if(registered_capital=='') {alert('请填写注册资金');return;}
+	var net_assets = document.getElementById("net_assets").value;
+	if(net_assets=='') {alert('请填写净资产');return;}
+	var total_assets = document.getElementById("total_assets").value;
+	if(total_assets=='') {alert('请填写总资产');return;}
+	var suppliers_1 = document.getElementById("suppliers_1").value;
+	var suppliers_2 = document.getElementById("suppliers_2").value;
+	var suppliers_3 = document.getElementById("suppliers_3").value;
+	var employees = document.getElementById("employees").value;
+	if(employees=='') {alert('请选择员工数');return;}
+	var area_operations = document.getElementById("area_operations").value;
+	if(area_operations=='') {alert('请填写经营面积');return;}
+	var annual_sales = document.getElementById("annual_sales").value;
+	if(annual_sales=='') {alert('请填写年销售额');return;}
+	var shareholder_1 = document.getElementById("shareholder_1").value;
+	var investment_ratio_1 = document.getElementById("investment_ratio_1").value;
+	var shareholder_2 = document.getElementById("shareholder_2").value;
+	var investment_ratio_2 = document.getElementById("investment_ratio_2").value;
+    var affiliates = document.getElementById("affiliates").value;
+	var end_customers = document.getElementById("end_customers").value;
+	var country = document.getElementById("country").value;
+	if(country=='') {alert('请选择国家');return;}
+	var region = document.getElementById("region").value;
+	if(region=='') {alert('请选择地区');return;}
+	var city = document.getElementById("city").value;
+	if(city=='') {alert('请选择城市');return;}
+	var zipcode = document.getElementById("zipcode").value;
+	if(zipcode=='') {alert('请填写邮编');return;}
+	var caddress = document.getElementById("caddress").value;
+	if(caddress=='') {alert('请填写中文地址');return;}
+	var eaddress = document.getElementById("eaddress").value;
+	//if(eaddress=='') {alert('请填写英文地址');return;}
+	var telephone = document.getElementById("telephone").value;
+	if(telephone=='') {alert('请填写电话');return;}
+	var fax = document.getElementById("fax").value;
+	if(fax=='') {alert('请填写传真');return;}
+	var email = document.getElementById("email").value;
+	if(email=='') {alert('请填写Email');return;}
+	var website = document.getElementById("website").value;
+	//if(website=='') {alert('请填写网站');return;}
+	var customer_profile = document.getElementById("customer_profile").value;
+
+    var contact_name = document.getElementById("contact_name").value;
+	if(contact_name=='') {alert('请填写联系人姓名');return;}
+	var sex = document.getElementById("sex").value;
+	var relationship = document.getElementById("relationship").value;
+    var relationship_degree = document.getElementById("relationship_degree").value;
+	var department = document.getElementById("department").value;
+	var position = document.getElementById("position").value;
+	var lxr_telephone = document.getElementById("lxr_telephone").value;
+	if(lxr_telephone=='') {alert('请填写联系人电话');return;}
+	var lxr_phone = document.getElementById("lxr_phone").value;
+	if(lxr_phone=='') {alert('请填写联系人手机');return;}
+	var lxr_email = document.getElementById("lxr_email").value;
+	if(lxr_email=='') {alert('请填写联系人Email');return;}
+	var lxr_fax = document.getElementById("lxr_fax").value;
+	var office_location = document.getElementById("office_location").value;
+	var home_address = document.getElementById("home_address").value;
+	var hobby = document.getElementById("hobby").value;
+	var appellation = document.getElementById("appellation").value;
+	var marriage = document.getElementById("marriage").value;
+	var spouse = document.getElementById("spouse").value;
+	//var birthday = document.getElementById("birthday").value;
+   
+	var subtmp=document.getElementById("orderbtn");
+	subtmp.innerHTML = '<a href="javascript:;" class="btnabig">提交中...</a>';
+	$.ajax({
+            url: '/icwebadmin/QuoInq/oauserinfo/uid/<?=$this->userinfo['uid']?>',
+            data: {'uid':'<?=$this->userinfo['uid']?>','id':'<?=$this->processData['oa_apply_id']?>','client_cname':client_cname,'client_ename':client_ename,'abbreviation':abbreviation,'territory':territory,'oa_sales':oa_sales,'category':category,'industry':industry,'field':field,'nature':nature,'legal':legal,'registered_capital':registered_capital,'net_assets':net_assets,'total_assets':total_assets,'suppliers_1':suppliers_1,'suppliers_2':suppliers_2,'suppliers_3':suppliers_3,'employees':employees,'area_operations':area_operations,'annual_sales':annual_sales,'shareholder_1':shareholder_1,'investment_ratio_1':investment_ratio_1,'shareholder_2':shareholder_2,'investment_ratio_2':investment_ratio_2,'affiliates':affiliates,'end_customers':end_customers,'country':country,'region':region,'city':city,'zipcode':zipcode,'caddress':caddress,'eaddress':eaddress,'telephone':telephone,'fax':fax,'email':email,'website':website,'customer_profile':customer_profile,'contact_name':contact_name,'sex':sex,'relationship':relationship,'relationship_degree':relationship_degree,'department':department,'position':position,'lxr_telephone':lxr_telephone,'lxr_phone':lxr_phone,'lxr_email':lxr_email,'lxr_fax':lxr_fax,'office_location':office_location,'home_address':home_address,'hobby':hobby,'appellation':appellation,'marriage':marriage,'spouse':spouse},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+				    alert(arr.message);
+                    location.reload();
+                }else{
+				   subtmp.innerHTML ='<a href="javascript:;" class="btnabig"  onclick="actionpost()">提 交</a>';
+				   alert(arr.message);
+				}
+            }
+	});
+}
+//加载国家、省、市
+onloadadd_oa('<?=$this->processData['country']?>','<?=$this->processData['region']?>','<?=$this->processData['city']?>');
+function selectOaProvince(countryid){
+		$("#oa_provinceSpan").load("/icwebadmin/common/getoaprovince?countryid="+countryid);
+		$("#oa_citySpan").html("<select id=\"city\" name=\"city\"><option value=\"\">请选城市</option></select>");
+}
+function selectOaCity(provinceid){
+	$("#oa_citySpan").load("/icwebadmin/common/getoacity?provinceid="+provinceid);
+}
+function selectOaZipcode(cityid){
+	 $.ajax({
+            url: '/icwebadmin/common/getoazipcode',
+            data: {'cityid':cityid},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    document.getElementById('zipcode').value = arr.zipcode;
+            }
+	  });
+}
+function onloadadd_oa(countryid,provinceid,cityid)
+{
+	$("#oa_countrySpan").load("/icwebadmin/common/getoacountry?countryid="+countryid);
+	if(provinceid){
+		$("#oa_provinceSpan").load("/icwebadmin/common/getoaprovince?countryid="+countryid+"&provinceid="+provinceid);
+	}
+	if(cityid)
+		$("#oa_citySpan").load("/icwebadmin/common/getoacity?provinceid="+provinceid+"&cityid="+cityid);
+}	
+function checkOA()
+{
+    var client_cname = document.getElementById("client_cname").value;
+	if(client_cname=='') {alert('请填写中文名称');return;}
+	var check_oa_obj = document.getElementById("check_oa");
+	check_oa_obj.innerHTML = '<img src="/images/default/ajax-loader-s.gif" />检查中...';
+	$.ajax({
+            url: '/icwebadmin/QuoInq/checkoauser',
+            data: {'uid':'<?=$this->userinfo['uid']?>','client_cname':client_cname},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    if(arr.code == 0)
+                {
+				    alert(arr.message);
+                    location.reload();
+                }else if(arr.code == 100){
+				    check_oa_obj.innerHTML = '<a  class="gbqfbb" href="javascript:;" onclick="checkOA()">查看客户是否存在OA中</a><img src="/images/default/onFocus.gif" /> 客户不存在OA中，请注册';
+				}else{
+					alert(arr.message);
+				}
+            }
+	  });
+}
+</script>

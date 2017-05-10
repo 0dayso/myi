@@ -1,0 +1,105 @@
+<?php 
+$currency = array('RMB'=>'￥','USD'=>'$','HKD'=>'HK$');
+?>
+<div class="popup" style="width:900px;">
+  <div class="popup-header">
+    <h2>修改订单合同：<?=$this->orderarr['salesnumber']?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+  </div>
+  <div class="popup-body PIbody">
+  	
+  	<div class="invoicebox">
+        <table width="100%" cellpadding="0" border="0" cellspacing="0" class="tableanew"><tbody>
+              <tr>
+                <th width="40">项次</th>
+                <th>产品型号</th>
+                <th>品牌</th>
+                <th width="30">单位</th>
+                <th>数量</th>
+                <th>单价(<?=$this->orderarr['currency']?>)</th>
+                <th>金额(<?=$this->orderarr['currency']?>)</th>
+                <th>需求日期</th>
+                <th>标准货期</th>
+                <th>备注</th>
+              </tr>
+              <?php foreach($this->pordarr as $k=>$pordarr):?>
+              <input type="hidden" name="sales_product_id" value="<?=$pordarr['id']?>" />
+              <tr align="center">
+                <td><?=($k+1)?></td>    
+                <td><?=$pordarr['part_no']?></td>
+                <td><?=$pordarr['brand']?></td>	
+                <td>PCS</td>	
+                <td><?=$pordarr['buynum']?></td>
+                <td><strong class="fontred"><?=$currency[$this->orderarr['currency']].($pordarr['buyprice'])?></strong></td>
+                <td><strong class="fontred"><?=$currency[$this->orderarr['currency']].($pordarr['buyprice']*$pordarr['buynum'])?></strong></td>
+                <td><?=($pordarr['needs_time']?date('Y/m/d',$pordarr['needs_time']):'--')?></td>
+                <td><input type="text" style="width:100px;" name="lead_time" value="<?=$pordarr['lead_time']?$pordarr['lead_time']:''?>"/></td>
+                <td><textarea name="remark" id="remark"  rows="3" class="input-small"><?=$pordarr['remark']?></textarea></td>																																							
+              </tr>
+              <?php endforeach;?>
+          </tbody></table>
+        </div>
+    	
+        <div class="bottombutton" id="baojiabtn">
+         <input type="button" onclick="modifycontractAction()" value="提 交" class="btnabig">
+        </div><div class="clear"></div>
+    </div>
+</div>
+<script type="text/javascript">
+function modifycontractAction(){
+    var sales_product_id       = new Array();
+	var sales_product_id_obj=document.getElementsByName("sales_product_id");
+	for(var i=0;i<sales_product_id_obj.length;i++)
+	{
+		sales_product_id[i] = sales_product_id_obj[i].value;
+    }
+	var lead_time       = new Array();
+	var lead_time_obj=document.getElementsByName("lead_time");
+	for(var i=0;i<lead_time_obj.length;i++)
+	{
+		lead_time[i] = lead_time_obj[i].value;
+    }
+	var remark       = new Array();
+	var remark_obj=document.getElementsByName("remark");
+	for(var i=0;i<remark_obj.length;i++)
+	{
+		remark[i] = remark_obj[i].value;
+    }
+	var subtmp = document.getElementById("baojiabtn");
+	subtmp.innerHTML = '<input type="button" class="btnabig" value="提交中..."/>';
+	$.ajax({
+            url: '/icwebadmin/OrInqo/modifycontract',
+            data: {'salesnumber':'<?=$this->orderarr['salesnumber']?>','type':'<?=$this->type?>','sales_product_id':sales_product_id,'lead_time':lead_time,'remark':remark},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    
+            	if(arr.code == 0)
+                {
+				    //更新合同
+					updatecontract('<?=$this->orderarr['salesnumber']?>','<?=$this->type?>');
+					alert(arr.message);
+                    location.reload();
+                }else alert(arr.message);
+				subtmp.innerHTML = '<input type="button" onclick="modifycontractAction()" value="提 交" class="btnabig">';
+            }
+	});
+}
+//更新合同
+function updatecontract(salesnumber,type){
+    var url = '';
+	if('<?=$this->type?>'=='iccontract'){
+	    url = "/icwebadmin/OrInqo/iccontract/type/up/key/<?=md5(session_id())?>/salesnumber/"+salesnumber;
+	}else if('<?=$this->type?>'=='digitalcontract'){
+		url = "/icwebadmin/OrInqo/digitalcontract/type/up/key/<?=md5(session_id())?>/salesnumber/"+salesnumber;		
+	}else return;
+	$.ajax({
+            url: url,
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            }
+	 });
+}
+</script>

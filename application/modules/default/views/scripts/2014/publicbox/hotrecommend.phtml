@@ -1,0 +1,95 @@
+<ul class="ulw100" >
+	<?php for($i=0;$i<count($this->hot_prod);$i++){
+				$data = $this->fun->filterProduct($this->hot_prod[$i]);
+				//print_r($data);
+				if($i==3){
+				  $border_right ='style="border-right:0px; width:182px"';
+				}else{
+				  $border_right ='';
+				}
+				$spot_order = '<strong>订货</strong>';
+				$buyshow = '';
+				$priceshow = '<div class="pprice201312">&nbsp;</div>';
+				if(($data['f_stock_sz']+$data['f_stock_hk'])>0) $spot_order = '<strong class="fontorange">现货</strong>';//现货或订货
+			    if($data['f_show_price_sz']){
+				 //低至价格
+				  $showprice = $data['f_rmb'].number_format($data['f_lowest_price_sz'],DECIMAL); 
+				  //阶梯价格
+				  $btable = $data['f_break_price_notitle_sz'];
+				  
+				  
+				  
+				}elseif($data['f_show_price_hk']){
+				 //低至价格
+				  $showprice = $data['f_usd'].number_format($data['f_lowest_price_hk'],DECIMAL); 
+				  //阶梯价格
+				  $btable = $data['f_break_price_notitle_hk'];
+				  
+				}
+				if($data['f_show_price_sz'] || $data['f_show_price_hk']){
+				  $priceshow = '<div class="pprice201312"><div class="icon_t"> 低至：<span class="priceti">'.$showprice.'<i><em></em><span></span></i></span><div class="pprice201312_detail">'.$btable.'</div></div></div>';
+				  $buyshow = '<a href="javascript:" onclick="buy('.$data['id'].')" rev="bandhot_part_id" rel="'.$data['id'].'" class="gbqfb logclick" title="购买"><i class="i_buy_s"></i>购买</a>';	
+				}elseif($data['f_break_price_notitle_sz']){
+				    //低至价格
+				   $showprice = $data['f_rmb'].number_format($data['f_lowest_price_sz'],DECIMAL); 
+				   //阶梯价格
+				   $btable = $data['f_break_price_notitle_sz'];
+				   $priceshow = '<div class="pprice201312"><div class="icon_t"> 低至：<span class="priceti">'.$showprice.'<i><em></em><span></span></i></span><div class="pprice201312_detail">'.$btable.'</div></div></div>';
+				}elseif($data['f_break_price_notitle_hk']){
+				    //低至价格
+				   $showprice = $data['f_usd'].number_format($data['f_lowest_price_hk'],DECIMAL); 
+				   //阶梯价格
+				   $btable = $data['f_break_price_notitle_hk'];
+				   $priceshow = '<div class="pprice201312"><div class="icon_t"> 低至：<span class="priceti">'.$showprice.'<i><em></em><span></span></i></span><div class="pprice201312_detail">'.$btable.'</div></div></div>';
+				}
+			?>
+        <li class="fore<?=$i+1?>" <?=$i==3?'style="margin:0"':''?>>
+          <div class="por_box2013 item"> <a href="<?=$data['f_produrl']?>" title="<?=$data['part_no']?>"  class="logclick s-img" rev="bandhot_part_id" rel="<?=$data['id']?>" target="_blank"><img src="<?=PRODUCTICON.($data['part_img']==''?'no.gif':$data['part_img'])?>"/></a>
+            <div class="pbox201312">
+              <div class="spot201312"></div>
+              <div class="pmodel201312"><a href="<?=$data['f_produrl']?>" class="logclick" title="<?=$data['part_no']?>" rev="bandhot_part_id" rel="<?=$data['id']?>" target="_blank"><?=$data['part_no']?></a></div>
+              
+              <div class="ptip201312"><?=$spot_order?>-<a href="/list-<?=$data['part_level1']?>-<?=$data['part_level2']?>-<?=$data['part_level3']?>.html" target="_blank"><?=($data['bname3']==''?$data['bname2']:$data['bname3'])?></a></div>
+              
+              <?=$priceshow?>
+              
+              <div class="pbrand201312"><a href="/pl/<?=$data['bname']?><?php if(in_array($actingbrand['comid'],array(17,13))){echo '?t=1';}?>" target="_blank"><img src="/images/default/brand/<?=$data['manufacturer']?>_h.png" title="<?=$data['brandname']?>"/></a></div>
+              
+              <div class="tabelbtn"><?php if(!$data['noinquiry']){?>
+             <a href="javascript:" onclick="openInquiry('<?=$data['id']?>')" class="gbqfb logclick" title="询价" rev="bandhot_part_id" rel="<?=$data['id']?>"><i class="i_xun_s"></i>询价</a>
+             <?php }?>
+              <?=$buyshow?></div>
+            </div>
+          </div>
+        </li>
+        <?php }?>
+      </ul>
+ <script type="text/javascript">
+$(function(){
+	$('.pprice201312').hover(function(){
+		$(this).addClass("item-hover");
+	},function(){
+		$(this).removeClass("item-hover");
+	});
+	$('.boxshadow_h').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+	$('.boxshadow_h1').hover(function(){
+		$(this).addClass("boxshadow1");
+	},function(){
+		$(this).removeClass("boxshadow1");
+	});
+	$('.item').hover(function(){
+		$(this).addClass("boxshadow");
+	},function(){
+		$(this).removeClass("boxshadow");
+	});
+	$('.por_box2013').hover(function(){
+		$(this).addClass("tabelbtn_h");
+	},function(){
+		$(this).removeClass("tabelbtn_h");
+	});
+});
+</script>

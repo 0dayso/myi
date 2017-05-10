@@ -1,0 +1,111 @@
+<div class="w">
+  <div class="breadcrumbs"> <span>
+    <?=$this->translate('Menu_CurrentPosition')?>
+    </span><a href="/">
+    <?=$this->translate('Menu_Home');?>
+    </a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><b><?=$this->keyword?></b> 搜索结果</span></div>
+</div>
+<div class="searchresult">
+  <div class="w">
+    <div class=" clearfix MT10 ">
+      <ul class="tabbar1 clearfix  ">
+      	<?php $sm = $ss = $sn = $sw = $sc = '';
+		    if($this->producttotal>0){
+			   $sm = 'selected';
+			}elseif($this->solutiontotal>0){
+			   $ss = 'selected';
+			}elseif($this->newstotal>0){
+			   $sn = 'selected';
+			}elseif($this->seminartotal>0){
+			   $sw = 'selected';
+			}elseif($this->codetotal>0){
+			   $sc = 'selected';
+			}else{
+			   $sm = 'selected';
+			}
+		?>
+        <?php if(!$this->st || $this->st=='searchall'){?>
+        <li class="searchmodel ulli <?=$sm?>"><a href="javascript:"  onclick="changesearch('searchmodel','<?=$this->keyword?>')">型号<br /><i><?=$this->producttotal?></i><b class="blank3"></b></a></li>
+        <li class="searchsolution ulli <?=$ss?>"><a href="javascript:" onclick="changesearch('searchsolution','<?=$this->keyword?>')">方案<br /><i><?=$this->solutiontotal?></i><b class="blank3"></b></a></li>
+        <li class="searchnews ulli <?=$sn?>"><a href="javascript:" onclick="changesearch('searchnews','<?=$this->keyword?>')">资讯<br /><i><?=$this->newstotal?></i><b class="blank3"></b></a></li>
+        <li class="searchwebinar ulli <?=$sw?>"><a href="javascript:" onclick="changesearch('searchwebinar','<?=$this->keyword?>')">研讨会<br /><i><?=$this->seminartotal?></i><b class="blank3"></b></a></li>
+        <li class="searchcode ulli <?=$sc?>"><a href="javascript:" onclick="changesearch('searchcode','<?=$this->keyword?>')">代码库<br /><i><?=$this->codetotal?></i><b class="blank3"></b></a></li>
+        <?php }elseif($this->st=='searchmodel'){?>
+        <li class="selected"><a href="javascript:">型号<br /><i><?=$this->producttotal?></i><b class="blank3"></b></a></li>
+        <?php }elseif($this->st=='searchsolution'){?>
+        <li class="selected"><a href="javascript:">方案<br /><i><?=$this->solutiontotal?></i><b class="blank3"></b></a></li>
+        <?php }elseif($this->st=='searchnews'){?>
+         <li class="selected"><a href="javascript:">资讯<br /><i><?=$this->newstotal?></i><b class="blank3"></b></a></li>
+        <?php }elseif($this->st=='searchwebinar'){?>
+        <li class="selected"><a href="javascript:">研讨会<br /><i><?=$this->seminartotal?></i><b class="blank3"></b></a></li>
+        <?php }elseif($this->st=='searchcode'){?>
+        <li class="selected"><a href="javascript:">代码库<br /><i><?=$this->codetotal?></i><b class="blank3"></b></a></li>
+        <?php }?>
+      </ul>
+    </div>
+
+      <div class="longConCam rigybg  fl">
+        <div class="">
+          <div class="layout">
+            <!-- 搜索结果-->
+            <div class="fl infolist" id="search_info">
+              <div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div>
+            </div>
+            <!-- end 搜索结果-->
+            
+            <div class="fr righttuij" style="margin-left:15px;">
+				<div id="hotsearch"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
+                <div id="hotsolution"></div>
+                <div id="hotnews"></div>
+                <div id="hotwebinar"></div>
+                <div id="htocode"></div>              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="clr"></div>
+		 
+  </div>
+</div>
+<script language="javascript">
+	$(function(){
+		//开始加载
+		dosearch("<?=$this->st?>","<?=$this->keyword?>");
+		
+		$("#hotsearch").load("/publicbox/hotsearch");
+		$("#hotsolution").load("/publicbox/hotsolution");
+		$("#hotnews").load("/publicbox/hotnews");
+		$("#hotwebinar").load("/publicbox/hotwebinar");
+		$("#htocode").load("/publicbox/htocode");
+	})
+//改变搜索
+function changesearch(type,keyword){
+	$(".ulli").removeClass("selected");
+	$("."+type).addClass("selected");  
+	dosearch(type,keyword);
+}
+//搜索
+function dosearch(type,keyword){
+	$("#search_info").html('<div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div>');
+	keyword = encodeURIComponent(keyword);
+	if(type=='searchall'){
+		if('<?=$this->producttotal?>' > '0'){
+		    $("#search_info").load("/search/product?keyword="+keyword+"&st=searchmodel");
+		}else if('<?=$this->solutiontotal?>' > '0'){
+			$("#search_info").load("/search/news?keyword="+keyword+"&st=searchsolution");
+		}else if('<?=$this->newstotal?>' > '0'){
+			$("#search_info").load("/search/news?keyword="+keyword+"&st=searchnews");
+		}else if('<?=$this->seminartotal?>' > '0'){
+			$("#search_info").load("/search/news?keyword="+keyword+"&st=searchwebinar");
+		}else if('<?=$this->codetotal?>' > '0'){
+			$("#search_info").load("/search/news?keyword="+keyword+"&st=searchcode");
+		}else{
+			$("#search_info").load("/search/product?keyword="+keyword+"&st=searchmodel");
+		}
+	}else if(type=='searchmodel'){
+	    $("#search_info").load("/search/product?keyword="+keyword+"&st=searchmodel");
+	}else{
+		$("#search_info").load("/search/news?keyword="+keyword+"&st="+type);
+	}
+}
+</script>

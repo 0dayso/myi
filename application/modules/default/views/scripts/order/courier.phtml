@@ -1,0 +1,11 @@
+<div class="poptit"> <span class="titbg1ts">物流信息</span><input type="button" value="" title="关闭" class="closebtn" onclick="$('#personPopupContainer'+<?=$this->id?>).css('display', 'none');">
+  <h1>订单号:<span class="number"><?=$this->salesnumber?></span></h1>
+</div>
+<div class="popcon clearfix" >
+<?php if($this->cou_number){?>
+  <p><?=$this->cou_name?>运单【<?=$this->cou_number?>】的跟踪信息</p>
+  <div class="dataline"><?=$this->content?$this->content:'暂无物流跟踪信息'?></div>
+ <?php }else{?>
+   <div class="dataline"><?=$this->content?$this->content:'暂无物流跟踪信息'?></div>
+<?php }?>
+</div>

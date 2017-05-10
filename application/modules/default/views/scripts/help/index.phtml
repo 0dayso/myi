@@ -1,0 +1,99 @@
+<link rel="stylesheet" type="text/css" href="/css/default/help.css" />
+
+<div class="w">
+    <div class="breadcrumbs">		
+    	<span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/" ><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><?=$this->translate('Foot_HelpCenter')?></span>        
+    </div>
+</div>
+
+<div class="w help">
+    
+    <!--菜单-->
+    <div class="Clmenu fl">        	                       
+        <h1><?=$this->translate('Foot_HelpCenter')?></h1>
+        <div class="linkbox">
+            <dl class="on">
+                <dt><h3><?=$this->translate('Foot_GettingStarted')?></h3><small>&gt;&gt;</small></dt>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'login'))?>" <?php if($this->type=='login') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Login')?></a>
+                </dd>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'my'))?>" <?php if($this->type=='my') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_My')?></a>
+                </dd>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'terms'))?>" <?php if($this->type=='terms') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Terms')?></a>
+                </dd>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'clause'))?>" <?php if($this->type=='clause') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Clause')?></a>
+                </dd>				
+            </dl>
+            <dl class="on">
+                <dt><h3>网上采购</h3><small>&gt;&gt;</small></dt>
+                <dd> 
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'find'))?>" <?php if($this->type=='find') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Find')?></a>
+                </dd>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'online'))?>" <?php if($this->type=='online') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Online')?></a>
+                </dd>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'inq'))?>" <?php if($this->type=='inq') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Inq')?></a>
+                </dd>
+                <dd>
+               <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'stock'))?>" <?php if($this->type=='stock') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Stock')?></a>
+                </dd>	
+            </dl>
+            <dl class="on">
+                <dt><h3><?=$this->translate('Foot_Delivery')?></h3><small>&gt;&gt;</small></dt>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'pay'))?>" <?php if($this->type=='pay') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Pay')?></a>
+                </dd>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'shipping'))?>" <?php if($this->type=='shipping') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Shipping')?></a>
+                </dd>
+                <dd>
+                 <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'inspection'))?>" <?php if($this->type=='inspection') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Inspection')?></a>
+                </dd>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'delivery'))?>" <?php if($this->type=='delivery') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Delivery')?></a>
+                </dd>				
+            </dl>
+            <dl class="on">
+                <dt><h3><?=$this->translate('Foot_Services')?></h3><small>&gt;&gt;</small></dt>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'technical'))?>" <?php if($this->type=='technical') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Technical')?></a>
+                </dd>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'bom'))?>" <?php if($this->type=='bom') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Bom')?></a>
+                </dd>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'invoice'))?>" <?php if($this->type=='invoice') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Invoice')?></a>
+                </dd> 
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'exchange'))?>" <?php if($this->type=='exchange') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Exchange')?></a>
+                </dd>				
+            </dl>
+            <dl class="on">
+                <dt><h3><?=$this->translate('Foot_Help')?></h3><small>&gt;&gt;</small></dt>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'aboutus'))?>" <?php if($this->type=='aboutus') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Aboutus')?></a>
+                </dd>
+                <dd>
+                 <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'question'))?>" <?php if($this->type=='question') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Question')?></a>
+                </dd>
+                <dd>
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'customer'))?>" <?php if($this->type=='customer') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Customer')?></a>
+                </dd>
+                <dd>	
+                <a href="<?=$this->url(array('controller'=>'help', 'action'=>'index', 'type'=>'privacy'))?>" <?php if($this->type=='privacy') echo 'class="choose"';?>><small>&gt;</small>&nbsp;<?=$this->translate('Foot_Privacy')?></a>
+                </dd>				
+            </dl>
+        </div>
+    </div>
+     
+    <div class="HP_main fr">
+        <div class="HP_main_wrap">
+            <?=$this->typecom['content']?>
+        </div>
+    </div>
+    <div class="clr"></div>
+</div>

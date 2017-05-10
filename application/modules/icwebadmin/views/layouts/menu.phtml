@@ -1,0 +1,50 @@
+<div class="menu_table">
+<div id="menu">
+<ul id="nav"  class="menubox">
+<?php 
+$section_array = $area_array = array();
+$Section       = new Icwebadmin_Model_DbTable_Section();
+$Sectionarea   = new Icwebadmin_Model_DbTable_Sectionarea();
+$where         ="(status='1') ";
+$order         ="CAST(`order_id` AS SIGNED) ASC ";
+$section_array = $Section->getAllByWhere($where,$order);
+$sectionNum         = count($section_array);
+for($a=0;$a<$sectionNum;$a++)
+{
+	$section = $section_array[$a]["section_area_id"];
+	$where   ="(status='1') AND section_area_id='".$section."'";
+	$order   ="CAST(`order_id` AS SIGNED) ASC ";
+	$Area[$section]=$Sectionarea->getAllByWhere($where,$order);
+}
+for($a=0;$a<$sectionNum;$a++)
+{
+  	$section_id =$section_array[$a]["section_area_id"];
+	$section_des=$section_array[$a]["section_area_des"];
+	//$Area=$this->Areamodel->getArea(array("Section_Area_ID"=>$section_id,"Status"=>1));
+	 $area_string_temp =array();
+	 if(!empty($Area[$section_id])){
+	    foreach($Area[$section_id] as $v){ 
+            $area_string_temp[] = $v["staff_area_id"];
+        }
+	 }
+     if(count(array_intersect($area_string_temp,$_SESSION['staff_area']['value']))){
+	 	$css="noselected";
+	 	if($this->Section_Area_ID==$section_id) $css="selected";
+        echo "<li class=\"top\">";
+        echo "<a  href='#' id=\"$section_id\" class=\"top_link $css\"><span>$section_des</span></a>\n";
+               echo "<ul class=\"sub\">\n";
+							 foreach($Area[$section_id] as $area_array){ 
+								 $area_id=$area_array["staff_area_id"]; 
+                                   if(in_array($area_id,$_SESSION['staff_area']['value']))
+								   {
+								   	   $url     =$area_array["url"];
+									   $area_des=$area_array["staff_area_des"];
+                                      echo "<li><a href=\"$url\">$area_des</a></li>\n";
+								    }
+                              }//End foreach
+               echo "</ul>\n";
+        echo "</li>\n";
+     }//If Level 1 has 
+}//End first level for    
+?>
+</ul></div></div>

@@ -1,0 +1,95 @@
+<!--content-->
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/myself2013.css"/>
+<link rel="stylesheet" type="text/css" href="/css/default/myself<?=$_SESSION['new_version']?>.css"/>
+<script type="text/javascript" language="javascript"> center_css();</script>
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a  class="focs">我的IC易站</a>&nbsp;&nbsp;»&nbsp;&nbsp;<a>我的实验室</a>
+  </div>
+</div>
+
+
+<div class="blank10"></div>
+<div class="w clearfix ourbox">
+        <!--左边导航-->
+        <?php echo $this->render('center/leftmenu.phtml');?>
+	<div class="fr u_right mymainbox mylab">
+
+     <div class="mymaincommon" id="onlineorder">
+           
+           <h2>我的实验室 </h2>
+            <div class="labms boxshadow1">
+             <img src="/2014/css/img/mylabic.png" class="mylabic" />
+            <p class="labms_pp">“萤火”开放实验室 ，向广大客户提供一个多领域的、专业的、免费的测试环境。</p>
+            <p>开放时间：周一~周五，9：00~17：00（节假日及特殊情况除外）<br />
+            开放地点：深圳、武汉、上海、北京</p>
+            <p class="ar"><a href="/center/applylaboratory" class="gbqfbbig_h" title="我要申请实验室">立即申请实验室</a></p>
+</div>
+
+            <div class=" clearfix MT10">
+                <ul class="tabbar clearfix">
+          <li <?=$this->type=='wait'?'class="selected"':''?>><a href="/center/mylaboratory" style="width:120px;">待审批<em>(<?=$this->waittotal?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='pass'?'class="selected"':''?>><a href="/center/mylaboratory?type=pass" style="width:120px;">已通过<em>(<?=$this->passtotal?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='com'?'class="selected"':''?>><a href="/center/mylaboratory?type=com" style="width:120px;">已完成<em>(<?=$this->comtotal?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='notpass'?'class="selected"':''?>><a href="/center/mylaboratory?type=notpass" style="width:120px;">不通过<em>(<?=$this->notpasstotal?>)</em><b class="blank3"></b></a></li>
+          
+          </ul>
+            </div> 
+            <div class="table_box ivcoice " >
+                <table class="vac_table table"  cellpadding="0" cellspacing="0">   
+                <thead>    
+                    <tr>
+                        <th>实验地点</th>
+                        <th>实验器材</th>
+                        <th>来访人数</th>
+                        <th>来访时间</th>
+                        <th>项目名称</th>
+                        <th>申请时间</th>
+                        <th>审批时间</th>
+                        <th>审批备注</th>
+                        <th width="80">操作</th>
+                    </tr>   
+                </thead>            
+                <tbody>  
+            <?php if(empty($this->applyall)){echo '<tr><td colspan="9">暂无记录</td></tr>';}
+		  	else{
+				foreach($this->applyall as $key=>$data){
+				$bg='';
+				if($key%2==1) $bg = 'class="tabletrf9"';
+		    ?>
+			  <tr <?=$bg?>>
+                <td align="left"><?=$data['address'];?></td>
+                <td align="left"><?php foreach($this->instrument as $v){ 
+				     if(in_array($v['id'],explode(',',$data['instruments']))) echo $v['ins_name'].($v['model']?'('.$v['model'].')':'').'<br/>';
+				}?></td>
+                <td><?=$data['vist_number'];?></td>
+				<td><?=$data['vist_time'];?></td>
+                <td><?=$data['project_name'];?></td>
+				<td><?=date('Y-m-d H:i:s',$data['created'])?></td>
+                <td><?=$data['status']>100?($data['modify']?date('Y-m-d H:i:s',$data['modify']):'--'):'--';?></td>
+                <td><?=$data['remark']?$data['remark']:'--';?></td>
+				<td><?php if($this->type=='pass'){?>
+                <!--<a href="javascript:;" class="button" onclick="assesslab('<?=$data['id']?>')">填写报告</a>-->
+                <?php }?>
+                </td> 
+              </tr>
+		    <?php		
+				}
+			}
+		    ?>
+                </tbody>         
+                </table>
+            </div>
+            <div class="pagination fr"> <?=$this->page_bar;?></div>
+        </div>
+   </div>
+</div>
+<div class="clr"></div>
+<script type="text/javascript">
+	function assesslab(id){
+	$.openPopupLayer({
+		name: "assesslabBox",
+		url: "/center/assesslab?id="+id
+	});
+}
+</script>

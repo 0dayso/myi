@@ -1,0 +1,108 @@
+<?php 
+$property_tmp = array('enduser'=>'终端用户','merchant'=>'贸易商');
+?>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?>
+  <?php if($this->inqprod){?>
+   -> <a href="/icwebadmin/RepoInqr/export?sdata=<?=$this->sdata?>&edata=<?=$this->edata?>&property=<?=$this->property?>&brand=<?=$this->selectbrand?>&xsname=<?=$this->xsname?>" target="_blank" title="将搜索结果导出成Excel">导出Excel</a>
+  <?php }?>
+  </h1>
+  <form id="myform"  class="form-search" name="myform" action="" method="get">
+    <label>开始时间：</label>
+    <input type="text"  style="width:80px;" name="sdata" value="<?=$this->sdata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+    <label>结束时间：</label>
+    <input type="text"  style="width:80px;" name="edata" value="<?=$this->edata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+
+<select name="property">
+<option value="">客户性质-全部</option>
+<option value='merchant' <?=($this->property=='merchant'?'selected':'')?>>贸易商</option>
+<option value='enduser' <?=($this->property=='enduser'?'selected':'')?>>终端用户</option>
+</select>
+   
+<select name="brand">
+<option value="">产品线-全部</option>
+<?php foreach($this->brand as $bd){?>
+<option value='<?=$bd['id']?>' <?=$bd['id']==$this->selectbrand?'selected':''?>><?=$bd['name']?></option>
+<?php }?>
+</select>
+
+<?php if($_SESSION['staff_sess']['level_id']!='XS'){?>
+<div class="input-append">
+<select name="xsname" id="xsname">
+      <option value="" <?=$this->xsname==''?'selected':''?>>跟进销售-全部</option>
+      <option value="alina.shang" <?=$this->xsname=='alina.shang'?'selected':''?>>尚玉(alina.shang)</option>
+      <?php for($i=0;$i<count($this->xs_staff);$i++){?>
+      <option value="<?=$this->xs_staff[$i]['staff_id']?>" <?=$this->xsname==$this->xs_staff[$i]['staff_id']?'selected':''?>><?=$this->xs_staff[$i]['lastname'].$this->xs_staff[$i]['firstname']."(".$this->xs_staff[$i]['staff_id'].")"?></option>
+      <?php }?>
+</select>
+</div>
+<?php }?>
+    &nbsp;
+    <input type="submit" class="btn" value="确 定"/>
+  </form>
+  <div id="message_sess" style="display:none" class="message_sess">
+    <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+    <div id="alert_message"></div>
+  </div>
+  <!-- 需要填写的区域-->
+  <br/>
+  <table width="100%" cellspacing="0" cellpadding="0" border="1" align="center" style="border-collapse:collapse;font-size: 12px;border:1px #999 solid;padding-top:0px;">
+    <tbody>
+      <tr bgcolor="#00B0F0" style="color:#FFFFFF; font-weight:bold;">
+        <th>Item</th>
+        <th>客户类型</th>
+        <th>客户名称</th>
+        <th>客户领域</th>
+        <th>产品线</th>
+        <th>产品分类</th>
+        <th>产品型号</th>
+        <th>MPQ</th>
+        <th>MOQ</th>
+        <th>需求数量</th>
+        <th>成交数量</th>
+        <th>成交单价</th>
+        <th>成交总价</th>
+        <th>询价日期</th>
+        <th>报价日期</th>
+        <th>跟进销售</th>
+        <th><font color="#FF0000">报价跟进</font></th>
+      </tr>
+    </tbody>
+    <tbody>
+      <?php if($this->inqprod){
+	    foreach($this->inqprod as $k=>$v){
+		if(is_int($k)){
+	  ?>
+      <tr height="30px">
+      <td><?=($k+1)?></td>
+      <td><?=$property_tmp[$v['property']]?></td>
+      <td><?=$v['companyname']?></td>
+      <td><?=$v['appname']?$v['appname']:$v['personaldesc']?></td>
+      <td><?=$v['brandname']?></td>
+      <td><?=$v['pcname']?></td>
+      <td><?=$v['part_no']?></td>
+      <td><?=$v['mpq']?></td>
+      <td><?=($v['moq']?$v['moq']:$v['mpq'])?></td>
+      <td><?=$v['number']?></td>
+      <td><?=$v['buynum']?$v['buynum']:'<font color="#FF0000">--</font>'?></td>
+      <td><?=$v['buyprice']?$v['currency'].' '.$v['buyprice']:'<font color="#FF0000">--</font>'?></td>
+      <td><?=$v['buyprice']?$v['currency'].' '.($v['buyprice']*$v['buynum']):'<font color="#FF0000">--</font>'?></td>
+      <td><?=date('Y/m/d H:i',$v['created'])?></td>
+      <td><?=$v['modified']?date('Y/m/d H:i',$v['modified']):'--'?></td>
+      <td><?=$v['lastname'].$v['firstname']?></td>
+      <td><?php 
+	     if($this->inqprod['log'][$v['id']]){
+		 foreach($this->inqprod['log'][$v['id']] as $log){
+	  	   if($log){
+		     echo date('Y-m-d H:i',$log['created']).'：'.nl2br($log['description']).'<br/>';
+		   }
+	     }}else echo '--';
+	  ?></td>
+    </tr>
+      <?php }}}else echo '<tr height="30px"><td colspan="12" align="center" style="color:#FF0000">请选择时间段查询</td></tr>';?>
+        </tbody>
+  </table>
+  <br/>
+  <!-- 结束区域-->
+</div>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>

@@ -1,0 +1,371 @@
+<?php 
+//状态
+$statusArr = array (
+		'1' => '<font color="#FF0000">待报价</font>',
+		'2' => '<font color="#009944">已报价</font>',
+		'3' => '<font color="#FF912F">议价审核中</font>',
+		'4' => '<font color="#FF912F">审核不通过</font>',
+		'5' => '<font color="#FF912F">已下单</font>',
+		'6' => '<font color="#FF912F">成功下单</font>'
+);
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$currencyArr = array('RMB'=>'RMB','USD'=>'USD','HKD'=>'HKD');
+
+$selecturl = "&sdata=$this->sdata&edata=$this->edata&edata=$this->edata&brand=$this->selectbrand&xsname=$this->xsname&delivery=$this->delivery&keyword=$this->keyword&oa_status=$this->oa_status";
+$orderurl = "/icwebadmin/QuoInq?type=$this->type".$selecturl;
+
+$oa_status = array('100'=>'<p class="fontred">未提交</p>','101'=>'<p class="fontgreen">已提交</p>','102'=>'<p class="fontgreen">已报价</p>');
+?>
+<script type="text/javascript">
+function showinquiry(id)
+{
+  var trobj = document.getElementById("show_inquiry_"+id);
+  if(trobj.style.display=='none'){
+     trobj.style.display = 'block';
+  }
+  else trobj.style.display = 'none';
+  
+
+  var show_v =  document.getElementById("show_v_"+id);
+  var show_but     =  document.getElementById("show_but_"+id);
+  var type         =  show_v.value;
+  if(type=='1') {show_but.innerHTML = '+';show_v.value=0;}
+  else {show_but.innerHTML = '-';show_v.value=1;}
+  
+}
+</script>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?>列表 <?php if($_GET['keyword']) echo "-> 搜索结果(".$this->selectnum.") <a href='/icwebadmin/QuoInq'>返回&gt;&gt;</a>";?></h1>
+<form id="myform"  name="myform" class="form-search"  action="" method="get">
+<input type="hidden" name="type" value="<?=$this->type?>" />
+<input type="hidden" name="ordertype" value="<?=$this->ordertype?>" />
+<input type="hidden" name="orderby" value="<?=$this->orderby?>" />
+
+<label>开始时间：</label><input type="text"  style="width:80px;" name="sdata" value="<?=$this->sdata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+<label>结束时间：</label><input type="text"  style="width:80px;" name="edata" value="<?=$this->edata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+
+<label>编号：</label>
+<div class="input-append">
+  <input type="text" class="search-query ac_input" id="keyword" style="width:135px"  value="<?=$this->keyword?>" name="keyword" autocomplete="off"/>
+</div>
+
+<select name="brand">
+<option value="">产品线-全部</option>
+<?php foreach($this->brand as $bd){?>
+<option value='<?=$bd['id']?>' <?=$bd['id']==$this->selectbrand?'selected':''?>><?=$bd['name']?></option>
+<?php }?>
+</select>
+
+<?php if($_SESSION['staff_sess']['level_id']!='XS'){?>
+<div class="input-append">
+<select name="xsname" id="xsname">
+      <option value="" <?=$this->xsname==''?'selected':''?>>跟进销售-全部</option>
+      <option value="alina.shang" <?=$this->xsname=='alina.shang'?'selected':''?>>尚玉(alina.shang)</option>
+      <?php for($i=0;$i<count($this->xs_staff);$i++){?>
+      <option value="<?=$this->xs_staff[$i]['staff_id']?>" <?=$this->xsname==$this->xs_staff[$i]['staff_id']?'selected':''?>><?=$this->xs_staff[$i]['lastname'].$this->xs_staff[$i]['firstname']."(".$this->xs_staff[$i]['staff_id'].")"?></option>
+      <?php }?>
+</select>
+</div>
+<?php }?>
+<div class="input-append">
+<select name="delivery" id="delivery">
+      <option value="" <?=$this->delivery==''?'selected':''?>>交货地-全部</option>
+      <option value="HK" <?=$this->delivery=='HK'?'selected':''?>>香港</option>
+      <option value="SZ" <?=$this->delivery=='SZ'?'selected':''?>>国内</option>
+</select>
+</div>
+<!--<div class="input-append">
+<select name="oa_status">
+      <option value="" <?=$this->oa_status==''?'selected':''?>>OA报价-全部</option>
+      <option value="100" <?=$this->oa_status=='100'?'selected':''?>>待向OA询价</option>
+      <option value="101" <?=$this->oa_status=='101'?'selected':''?>>待OA报价</option>
+      <option value="102" <?=$this->oa_status=='102'?'selected':''?>>OA已报价</option>
+      
+</select>
+</div>-->
+<input type="submit" class="btn" value="查 找"/>         
+
+</form>
+
+  <div class="fr u_right">
+    <div class="tab_content">
+    	<div class="tab_tit1">
+        <ul class="fl">
+          <li <?=$this->type=='oainq'?'class="on"':''?>><a href="?type=oainq<?=$selecturl?>" style="width:120px;">待处理<em>(<?=$this->oainqnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='wait'?'class="on"':''?>><a href="?type=wait<?=$selecturl?>" style="width:120px;">待报价<em>(<?=$this->waitnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='already'?'class="on"':''?>><a href="?type=already<?=$selecturl?>" style="width:120px;">已报价<em>(<?=$this->allnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='order'?'class="on"':''?>><a href="?type=order<?=$selecturl?>" style="width:120px;">已下单<em>(<?=$this->ordernum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='no'?'class="on"':''?>><a href="?type=no<?=$selecturl?>" style="width:120px;">审核未通过<em>(<?=$this->nonum?>)</em><b class="blank3"></b></a></li>
+        </ul>
+        </div>
+    </div>
+    <div class="tab_con ">
+        <table class="tableanew" border="0" cellspacing="0" cellpadding="0"  width="100%"  >
+            <tr>
+                <th width="140"  align="center">询价编号</th>
+                <th <?=!in_array($this->type,array('oainq','wait','select'))?'width="150"':''?>>型号</th>
+                <th width="200">客户名称</th>
+                <th width="60">客户类别</th>
+                <th width="60" align="center">销售</th>
+                <th  width="150" align="center">询价说明</th>
+                <th width="50">交货地</th>
+                <th width="50">货币</th>
+                <th width="100">
+                	<div class="xunjiatime">
+                    <a href="<?=$orderurl?>&ordertype=created&orderby=<?php if($this->orderby=='ASC' && $this->ordertype=='created') echo 'DESC';else echo 'ASC';?>" title="排序"  style="color:#333">询价日期</a>
+                    <div class="aorder"  >
+                    <a href="<?=$orderurl?>&ordertype=created&orderby=ASC" class="aorder_up <?php if($this->orderby=='ASC' && $this->ordertype=='created') echo 'onaorder';else echo '';?>"  title="升排序"></a>
+                <a href="<?=$orderurl?>&ordertype=created&orderby=DESC" class="aorder_down <?php if($this->orderby=='DESC' && $this->ordertype=='created') echo 'onaorder';else echo '';?>" title="降排序">倒序</a>
+                    </div>
+                    </div>
+                </th>
+                <?php if(in_array($this->type,array('already','order'))){?>
+                <th width="70">支付金额</th>
+                <th width="80">支付方式</th>
+                <th width="90">报价日期</th>
+                <?php }?>
+                <?php if(in_array($this->type,array('no'))){?>
+                <th width="150">审核备注</th>
+                <th width="90">审核日期</th>
+                <?php }?>
+                <?php if(!in_array($this->type,array('no'))){?>
+                <th width="90">PMSC<br />报价状态</th>
+                <?php }?>
+                <th width="100" align="center">操作</th>
+            </tr>
+             <?php 
+				if(empty($this->inquiry)){?>
+                <tr>
+                  <td colspan="14"><center>
+                      暂无记录。
+                    </center></td>
+                </tr>
+                <?php }else{
+			   foreach($this->inquiry as $k=>$v){
+						$bgclass='class="hover_tr"';
+						if($k%2==1) $bgclass = 'class="bgf9 hover_tr" bgcolor="#F0EDED"';
+						$detaile = $v['detaile'];
+						$companyname = $v['companyname'];
+						$propertyArr = array('merchant'=>'贸易商','enduser'=>'终端用户');
+						$property    = $propertyArr[$v['property']];
+						$staff = $v['lastname'].$v['firstname'];
+							$remark   = $v['remark']?$v['remark']:'--';
+							$delivery = $deliveryArr[$v['delivery']];
+							$currency = $currencyArr[$v['currency']];
+							$appstr   = $v['appname1']."<br/>".$v['appname2'];
+							$created  = "<p>".date('Y/m/d',$v['created'])."</p><p>".date('H:i',$v['created'])."</p>";
+							$status   = $statusArr[$v['status']];
+							$percentage='';
+							if(in_array($v['status'],array(2,3,5,6))){
+								
+								if($v['percentage']==100) $percentage = '全额支付';
+								elseif($v['percentage']>0) $percentage = '预付金额'.$v['percentage'].'%';
+								else $percentage = '预付金额'.$v['down_payment'];
+							}
+							$paytype = $v['paytype']?explode('|',$v['paytype']):array();
+							$result_remark   = $v['result_remark']=='--'?'':$v['result_remark'];
+							$modified = $v['modified']==0?'':date('Y/m/d H:i',$v['modified']);
+							$detaile = $v['detaile'];
+						    $detnum = count($detaile);
+							$pmsctitle = $v['oa_rfq']?'再询价':'PMSC询价';
+				?>
+                 <tr valign="top">
+                <td align="left"><p><a href="javascript:;" onclick="openbox2('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'viewinq', 'id'=>$v['id']));?>')" class="xunjiano"  title="查看详情"><strong class="fontorange"><?=$v['inq_number']?></strong><b class="tipicon"></b></a></p>
+                <p><a class="gbqfbb" href="javascript:;" onclick="openbox2('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'viewinq', 'id'=>$v['id']));?>')" title="查看详情">查看详情</a></p>
+                </td>
+                <td align="left">
+				<?php 
+				  for($j=0;$j<$detnum;$j++){
+				  	echo '('.$detaile[$j]['brand'].')<br/><div class="productNO"><p><strong ><a href="/proddetails?partid='.$detaile[$j]['part_id'].'" target="_blank">'.$detaile[$j]['part_no'].'</a></strong>';
+					if($detaile[$j]['staged']) echo '<sup><span  title="Date Code：'.$detaile[$j]['datecode'].'" class="sup_SALE HOT">特卖</span></sup>';
+					if($detaile[$j]['pdnpcn']['pdn']) echo '<sup><span class="sup_PDN HOT">PDN</span></sup>';
+                    if($detaile[$j]['pdnpcn']['pcn']) echo '<sup><span class="sup_PCN HOT">PCN</span></sup>';
+					if(in_array($detaile[$j]['part_id'],$this->tongyong)) echo '<sup><span class="sup_TY">通用</span></sup>';
+					
+					if(in_array($this->type,array('oainq','wait','select'))){ echo '<a class="gbqfbb" href="/icwebadmin/OasyProd?partno='.$detaile[$j]['part_no'].'" target="_blank" title="查看'.$detaile[$j]['part_no'].'查询ATS情况">ATS查询</a></p>';
+					}else echo '</p></div>';
+				  }
+				  ?>
+                </td>
+                <td align="left">
+                    <p><a href="javascript:;" onclick="viewUser('<?=$v['uid']?>')" title="用户详情" class="company"><?=$companyname?><b class="tipicon"></b></a></p>
+                    <?php if(in_array($this->type,array('oainq','wait','select'))){?>
+                    <p><a class="gbqfbb" href="/icwebadmin/OasyUser?clientcname=<?=urlencode($companyname)?>" target="_blank" title="搜索OA客户信息">OA注册查询</a>
+					<?php if(!$v['oa_code']){?>
+                    <a class="gbqfbb" href="javascript:;" onclick="openbox2('/icwebadmin/UsUsgl/updateuser/uid/<?=$v['uid']?>')" title="修改客户信息">修改公司名</a></p>
+                    
+                    <p style="font-size:12px; color:#FF0000; width:200px;">提示：提交报价前，请确认客户公司名为营业执照上全称，否则提交报价后或注册OA客户后将无法修改。</p>
+                    <?php } else echo '</p>';
+					 }?>
+                </td>
+                <td align="center"><p><?=$property?></p></td>
+                <td align="center"><p><?=$staff?></p></td>
+                <td align="center"><p><?=$remark?></p></td>
+                <td><p><?=$delivery?></p></td>
+                <td><p><?=$currency?></p></td>
+                <td align="center"><p><?=$created?></p></td>
+                <?php if(in_array($this->type,array('already','order'))){?>
+                  <td><p><?=$percentage?></p></td>
+                  <td><p><?php foreach($paytype as $type){echo '<p>'.$this->paytypearr[$type].'</p>';}?></p></td>
+                  <td style="color:#333"  align="center"><p><?=$modified?></p></td>
+				  <?php }?>
+                <?php if(in_array($this->type,array('no'))){ 
+				    echo '<td align="center"><p>'.$result_remark.'</p></td>';
+				    echo '<td style="color:#333"  align="center"><p>'.$modified.'</p></td>';
+				}
+				?>
+                <?php if(!in_array($this->type,array('no'))):?>
+                <td >
+                  <?=$oa_status[$v['oa_status']]?>
+                  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                  <?php if(in_array($v['oa_status'],array('101','102'))){?>
+                       <p><a href="javascript:;" onclick="showbox('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'oainqview', 'id'=>$v['id']));?>')" class="gbqfbb" title="查看PMSC询价记录">查看</a></p>
+                      <?php //if($v['oa_rfq'] && in_array($v['oa_status'],array('102'))){?>
+                             <p><a  class="gbqfbb" href="javascript:;" onclick="showbox('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'oainq', 'id'=>$v['id']));?>')"><?=$pmsctitle?></a></p>
+                      <?php //}
+				  }elseif(in_array($this->type,array('oainq','already','select')) && empty($v['oa_rfq'])){?>
+				      <p><a  class="gbqfbb" href="javascript:;" onclick="showbox('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'oainq', 'id'=>$v['id']));?>')"><?=$pmsctitle?></a></p>
+                  <?php }?>
+                  <?php }?>
+                </td>
+                <?php endif;?>
+                
+                <td valign="middle">
+                <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                
+                <?php if(in_array($v['status'],array('1','3')) && in_array($v['oa_status'],array('100','101'))){?>
+                	<?php if(!$v['oa_code']){?>
+                        <p><a class="gbqfb" href="javascript:;" onclick="showbox('/icwebadmin/QuoInq/oauserinfo/uid/<?=$v['uid']?>/uoaid/<?=$v['uoaid']?>')">注册OA客户</a></p>
+                    <?php }?>
+                    <p><a class="gbqfb" href="javascript:;" onclick="showbox('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'edit', 'id'=>$v['id']));?>')">直接报价</a></p>
+                    <p><a class="gbqfb" href="javascript:;" onclick="showbox('/icwebadmin/QuoInq/edit/type/no/id/<?=$v['id']?>')">审核不通过</a></p>
+                <?php }?>
+                
+                <?php if(in_array($v['status'],array('1','3')) && in_array($v['oa_status'],array('102'))){?>
+                     <p><a class="gbqfb" href="javascript:;" onclick="showbox('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'edit', 'id'=>$v['id']));?>')">报价</a></p>
+                     
+                <?php }?>
+                
+                <?php if(in_array($v['status'],array('2','5'))){?>
+                     <p><a  class="gbqfb" href="javascript:;" onclick="showbox('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'edit', 'id'=>$v['id']));?>')">重新报价</a></p>
+                    
+                <?php }?>
+                
+                <?php if(in_array($v['status'],array('2','5','6'))){?>
+                     <p><a  class="gbqfb" href="javascript:;" onclick="showbox('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'reason', 'id'=>$v['id']));?>')" title="<?=($v['reason']?$v['reason']:'可以填写报价跟进')?>">报价跟进</a></p>
+                    
+                <?php }?>
+                
+                <?php if($this->type=='no'){?>
+                 <!-- <p><a  class="gbqfb" href="javascript:;" onclick="showbox('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'edit', 'id'=>$v['id']));?>')">重新报价</a></p>-->
+                <?php }?>
+                
+                 <?php if(!$v['mail_alert'] && in_array($v['status'],array('1','3'))){?>
+                 <p><a class="gbqfb" href="javascript:;" onclick="showbox('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'sendmail', 'id'=>$v['id']));?>')">发邮件</a></p>
+                 <?php }?>
+                 
+                 <?php }//end checkA?>
+                 
+                  <?php if($_SESSION['staff_sess']['level_id']!='XS' && $this->mycommon->checkA($this->Staff_Area_ID)){?>
+                  <!--<p><a  class="gbqfb" href="javascript:;" title="更新特殊报价" onclick="showbox('<?php echo $this->url(array('controller'=>'QuoInq', 'action'=>'updatepmscprice', 'id'=>$v['id']));?>')">特殊报价</a></p>-->
+                  <?php }?>
+                </td>
+            </tr>
+		<?php }
+		}?> 
+        </table>
+    <div class="pagination divpage">
+       <?=$this->page_bar;?>
+  </div>
+</div>
+
+</div>
+
+
+<link href="/js/jsplug/ajaxselect/jquery.autocomplete.css" rel="stylesheet">
+<script src="/js/jsplug/ajaxselect/jquery.autocomplete.js" type="text/javascript"></script>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+$(function(){
+        var tab = $(".tab_tb .hover_tr");
+        tab.hover(function(){
+		    var id = $(this).attr('rel');
+			$("#ftr_"+id).addClass("hover_tr_color");
+			$("#tr_show_inquiry_"+id).addClass("hover_tr_color");
+        },function(){
+		    var id = $(this).attr('rel');
+		    $("#ftr_"+id).removeClass("hover_tr_color");
+			$("#tr_show_inquiry_"+id).removeClass("hover_tr_color");
+        });
+})
+function check(){
+		var salesnumber = document.getElementById('keyword').value;
+		if(salesnumber=="") {alert("请输入询价编号！");document.getElementById('keyword').focus();return;}
+		else $('#myform').submit();
+	}
+
+	$(document).ready(function() {
+			$("#keyword").autocomplete("/icwebadmin/QuoInq/getajaxtag",
+			{
+				delay:5,
+            	minChars:3,
+            	matchSubset:1,
+            	matchContains:1,
+            	cacheLength:10,
+            	onItemSelect:selectItem,
+            	onFindValue:findValue,
+            	formatItem:formatItem,
+            	autoFill:false
+        	}
+    		);
+			});
+			function findValue(li) {
+    			if( li == null ) return alert("No match!");
+				if( !!li.extra ) var sValue = li.extra[0];
+				else var sValue = li.selectValue;
+				}
+			function selectItem(li) { findValue(li);}
+			function formatItem(row) { return row[0];//return row[0] + " (id: " + row[1] + ")"//如果有其他参数调用row[1]，对应输出格式Sparta|896
+			}
+			function lookupAjax(){
+			var oSuggest = $("#keyword")[0].autocompleter;
+			oSuggest.findValue();
+			return false;
+			}
+function showbox(url)
+{
+	 $.openPopupLayer({
+        name:'box',
+        url:url
+    });
+}
+function showbox2(url)
+{
+	 $.openPopupLayer({
+        name:'box2',
+        url:url
+    });
+}
+//查看订单
+	function viewInqSo(salesnumber){
+		$.openPopupLayer({
+			name: "box",
+			url: "/icwebadmin/OrInqo/viewso?salesnumber="+salesnumber
+		});
+	}
+    
+
+function getinqorder(salesnumber){
+ $.ajax({
+            url: '/icwebadmin/OrInqo/ajaxorderinfo?salesnumber='+salesnumber,
+            data: {},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+            	document.getElementById('soinfo').innerHTML = html;
+				$("#soinfo").height($("#ajaxorderinfo").height()+10);
+            }
+	});
+}
+</script>

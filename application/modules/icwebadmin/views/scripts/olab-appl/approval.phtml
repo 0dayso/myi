@@ -1,0 +1,134 @@
+
+<div class="popup" style="width:700px;">
+    <div class="popup-header">
+        <h2>审批</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+    </div>
+    <div class="popup-body">
+    	<div class=" overflowh">
+        	<div class="publicOne">
+                <div class="Publictit">
+                    <span class="Publictit_tit">申请信息</span>
+                </div>
+                <table border="0" cellspacing="0" cellpadding="0" class="Publictable">
+                        <tbody><tr>
+                          <td width="100">公司名称：</td>
+                          <td><strong><?=$this->record[0]['company'];?></strong></td>
+                          <td width="100">是否老客户：</td>
+                          <td><strong><?=$this->record[0]['customer']==1?'不是':'是('.$this->record[0]['follow'].')';?></strong></td>
+                        </tr>
+                        <tr>
+                          <td>城市：</td>
+                          <td><strong><?=$this->record[0]['city'];?></strong></td>
+                          <td>来访时间：</td>
+                          <td><strong><?=$this->record[0]['vist_time'];?></strong></td>
+                        </tr>
+                        <tr>
+                          <td>来访人数：</td>
+                          <td><strong><?=$this->record[0]['vist_number'];?></strong></td>
+                          <td>项目名称：</td>
+                          <td><strong><?=$this->record[0]['project_name'];?></strong></td>
+                        </tr>
+                  </tbody></table>
+            </div>
+            <div class="passorno ">
+                <dl class="PublicDl">
+                    <dt>审核：</dt>
+
+                    <dd>
+                        <label><input type="radio" name="status" value="201"/><b>通过</b></label>
+                    </dd>
+                    <dd>
+                        <label style="color:#CC3333"><input type="radio" name="status" value="401" /><b>不通过</b></label>
+                    </dd>
+                </dl>
+            </div>
+		    <div class="applyexplain ">
+            	<dl class="PublicDl">
+                    <dt>协助测试人：</dt>
+                    <dd>
+                        <input type="text" name="help_name" id="help_name" style="width:300px;"><em>*</em>
+                    </dd>
+                </dl>
+                <dl class="PublicDl">
+                    <dt>协助者邮箱：</dt>
+                    <dd>
+                        <input type="text" name="help_email" id="help_email" style="width:300px;"><em>*</em>
+                    </dd>
+                </dl>
+                <dl class="PublicDl">
+                    <dt>协助者部门：</dt>
+                    <dd>
+                        <input type="text" name="help_dep" id="help_dep" style="width:300px;">
+                    </dd>
+                </dl>
+                <dl class="PublicDl">
+                    <dt>协助者电话：</dt>
+                    <dd>
+                        <input type="text" name="help_tel" id="help_tel" style="width:300px;">
+                    </dd>
+                </dl>
+                
+                <dl class="PublicDl">
+                    <dt>审批说明：<br/>(针对客户)</dt>
+                    <dd>
+                        <textarea name="remark" id="remark" rows="3" style="width:500px;"></textarea><em>* 不通过必填</em>
+                    </dd>
+                </dl>
+            </div>
+            <div class="clear"></div>
+            <div class="bottombutton" id="baojiabtn">
+            	 <input type="button" onclick="editAction()" value="提 交" class="btnabig">
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+function editAction() {
+       var status = $('input[name="status"]:checked').val();
+	   if(status=='' || typeof(status)=="undefined") {
+	      alert('请选择审批情况');$("#status").focus();return;
+       }
+	   var help_name = '';
+	   var help_email = '';
+	   if(status==201){
+	      help_name = $('#help_name').val();
+	      if(help_name=='' || typeof(help_name)=="undefined") {
+	        alert('请填写协助测试人');$("#help_name").focus();return;
+         }
+		 help_email = $('#help_email').val();
+	      if(help_email=='' || typeof(help_email)=="undefined") {
+	        alert('请填写协助测试人邮箱');$("#help_email").focus();return;
+         }else if(checkEmail(help_email)){
+		 	alert('协助测试人邮箱格式错误');$("#help_email").focus();return;
+		 }
+	   }
+	   var help_dep = $('#help_dep').val();
+	   var help_tel = $('#help_tel').val();
+	   
+	   var remark = $('#remark').val();
+	   if(status==401){
+	   	  if(remark=='' || typeof(remark)=="undefined") {
+	         alert('请填写审批说明');$("#remark").focus();return;
+          }
+	   }
+	   //提交订单
+	$("#baojiabtn").html('<input type="button" value="提 交 中..." class="btnabig">');
+	   $.ajax({
+		url: '/icwebadmin/OlabAppl/approval',
+		data: {'id':'<?=$this->id;?>','status':status,'help_name':help_name,'help_dep':help_dep,'help_tel':help_tel,'help_email':help_email,'remark':remark},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0){
+				  location.reload();
+             }
+			 $("#baojiabtn").html('<input type="button" onclick="editAction()" value="提 交" class="btnabig">');
+		}
+		});
+		
+}
+</script>

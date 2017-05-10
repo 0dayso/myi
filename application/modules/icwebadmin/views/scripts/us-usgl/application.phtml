@@ -1,0 +1,275 @@
+<div class="conmian">
+  <h1><a href="<?=$this->indexurl?>"><?php echo $this->AreaTitle;?></a> -> <?php echo $this->userinfo['companyname'];?> : <a href="<?=$this->indexurl.'/comapprove'?>">申请注册OA客户</a> </h1>
+    <?php if (isset($_SESSION['messages'])) : ?><div class="alert fade in">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p></div><?php endif; ?>  
+ 
+  <form action='<?=$this->indexurl.'/application/uid/'.$this->userinfo['uid']?>' method='post' enctype="multipart/form-data">
+  <input type="hidden" name="uid" value="<?=$this->userinfo['uid']?>" />
+  <input type="hidden" name="approval_staffid" value="<?=$this->superior['staff_id']?>" />
+  <input type="hidden" name="id" value="<?=$this->processData['oa_apply_id']?>" />
+  <input type="hidden" name="oa_apply_id" value="<?=$this->processData['oa_apply_id']?>" />
+      <?php if($this->processData['oa_apply_id']){?>
+      <table>
+      <tr>
+         <td colspan="2"><h2>审核信息</h2></td>
+      </tr>
+      <tr>
+              <td align="right" valign="top">审核人：</td>
+              <td><b><?php echo $this->processData['applastname'].$this->processData['appfirstname'];?></b></td>
+            </tr>
+      <tr>
+      <tr>
+              <td align="right" valign="top">审核时间：</td>
+              <td><b><?=($this->processData['modified']?date('Y-m-d H:i:s',$this->processData['modified']):'--')?></b></td>
+            </tr>
+      <tr>
+        <td align="right">审核：</td>
+        <td align="left"><b>
+          <?php
+          if($this->processData['status']==100) echo '审核中';
+		  elseif($this->processData['status']==101)echo '<font color="#006600">通过</font>';
+		  elseif($this->processData['status']==102)echo '<font color="#FF0000">不通过</font>';
+		  ?>
+          </b>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top">审核说明：</td>
+        <td><b><?=$this->processData['result_remark']?></b></td>
+      </tr>
+    </table>
+    <?php }?>
+        <table>
+        <tr><td colspan="2"><h2>客户基本资料</h2></td></tr>
+        <tr><td width="70" align="right">中文名称<em>*</em>：</td>
+        <td><input type="text" style="width:330px;"  name="client_cname" value="<?=$this->processData['client_cname']?$this->processData['client_cname']:$this->userinfo['companyname'];?>"/>
+        英文名称<em>*</em>：<input type="text" style="width:330px;"  name="client_ename" value="<?=$this->processData['client_ename']?>"/></td></tr>
+
+        <tr><td width="70" align="right">简称：</td>
+        <td><input type="text"  name="abbreviation" value="<?=$this->processData['abbreviation']?>"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <label><input type="radio" name="territory" value="1" checked="checked">境内</label>
+        <label><input type="radio" name="territory" value="2" <?=$this->processData['territory']==2?'checked="checked"':''?>>境外</label>
+         &nbsp;&nbsp;&nbsp;&nbsp;
+        负责销售<em>*</em>：<?=$this->processData['oa_sales']?><select name="oa_sales">
+            <?php $oa_sales_select = '';foreach($this->oa_employee as $dv){?>
+           <option value="<?=$dv['id']?>" 
+		   <?php if($this->processData['oa_sales']==$dv['id']){echo 'selected="selected"';$oa_sales_select=1;}
+		         elseif($_SESSION['staff_sess']['lastname'].$_SESSION['staff_sess']['firstname']==$dv['name'] && !$oa_sales_select){echo 'selected="selected"';}
+				 ?>><?=$dv['name']?></option>
+                      <?php }?>
+                      </select><font color="#FF0000">注：如果负责销售在选择框找不到，请及时与SQS沟通</font>
+        </td>
+        </tr>
+        <tr>
+        <td align="right">类别：</td>
+        <td><select name="category">
+                      <option value="">请选择</option>
+                      <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='CutClass_Category'){?>
+                      <option value="<?=$dv['oa_id']?>" <?=($this->processData['category']==$dv['oa_id']?' selected':'')?>><?=$dv['name']?></option>
+                      <?php }}?>
+                      </select>
+            客户行业：<select name="industry">
+                      <option value="">请选择</option>
+                      <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='Segment_Category'){?>
+                      <option value="<?=$dv['oa_id']?>" <?=($this->processData['industry']==$dv['oa_id']?' selected':'')?>><?=$dv['name']?></option>
+                      <?php }}?>
+                      </select>
+             客户领域：<select name="field">
+                     <option value="">请选择</option>
+                      <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='SubSegment_Category'){?>
+                      <option value="<?=$dv['oa_id']?>" <?=($this->processData['field']==$dv['oa_id']?' selected':'')?>><?=$dv['name']?></option>
+                      <?php }}?>
+                      </select>
+         性质：<select name="nature">
+                      <option value="">请选择</option>
+                      <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='CutType_Category'){?>
+                      <option value="<?=$dv['oa_id']?>" <?=($this->processData['nature']==$dv['oa_id']?' selected':'')?>><?=$dv['name']?></option>
+                      <?php }}?>
+                      </select>
+<!--         <label>Top标志：<input type="checkbox" name="top_flag" value="1" <?=$this->processData['top_flag']?'checked':''?> /></label>
+         <label>冻结标志：<input type="checkbox" name="freeze_flag" value="1" <?=$this->processData['freeze_flag']?'checked':''?> /></label>--></td>
+        </tr>
+        <tr>
+         <td align="right">法人代表：</td>
+        <td><input type="text" style="width:120px;" name="legal" value="<?=$this->processData['legal']?>"/>
+         成立日期：<input type="text" name="creation_date"  style="width:100px;" value="<?=$this->processData['creation_date']?>" onclick="WdatePicker({startDate:'<?=$this->processData['creation_date']?>',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" title="点击选择日期">
+         注册资金<em>*</em>：<input type="text" name="registered_capital" style="width:50px;"  value="<?=$this->processData['registered_capital']?>" />万元
+         净资产<em>*</em>：<input type="text" name="net_assets" style="width:50px;"  value="<?=$this->processData['net_assets']?>" />万元
+         总资产<em>*</em>：<input type="text" name="total_assets" style="width:50px;"  value="<?=$this->processData['total_assets']?>" />万元
+        </td>
+        </tr>
+         <tr>
+         <td align="right">供应商1：</td>
+        <td><input type="text" name="suppliers_1" value="<?=$this->processData['suppliers_1']?>"/>
+         供应商2：<input type="text" name="suppliers_2" value="<?=$this->processData['suppliers_2']?>" />
+         供应商3：<input type="text" name="suppliers_3" value="<?=$this->processData['suppliers_3']?>"/>
+        </td>
+        </tr>
+         <tr>
+        <td align="right">员工数：</td>
+        <td><select name="employees">
+                     <option value="">请选择</option>
+                      <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='CutSize_Category'){?>
+                      <option value="<?=$dv['oa_id']?>" <?=($this->processData['employees']==$dv['oa_id']?' selected':'')?>><?=$dv['name']?></option>
+                      <?php }}?>
+                      </select>
+            经营面积<em>*</em>：<input type="text" name="area_operations" style="width:120px;" value="<?=$this->processData['area_operations']?>"/>平方米
+            年销售额<em>*</em>：<input type="text" name="annual_sales" style="width:120px;" value="<?=$this->processData['annual_sales']?>"/>万元</td>
+        </tr>
+        <tr>
+         <td align="right">股东1：</td>
+        <td><input type="text" name="shareholder_1" value="<?=$this->processData['shareholder_1']?>"/>
+         投资比例(%)<input type="text" style="width:50px;" name="investment_ratio_1" value="<?=$this->processData['investment_ratio_1']?>"/>
+         股东2：<input type="text" name="shareholder_2" value="<?=$this->processData['shareholder_2']?>"/>
+         投资比例(%)<input type="text" style="width:50px;" name="investment_ratio_2" value="<?=$this->processData['investment_ratio_2']?>"/>
+        </td>
+        </tr>
+        <tr>
+        <td align="right">关系企业：</td>
+        <td><input type="text" name="affiliates" style="width:350px;" value="<?=$this->processData['affiliates']?>"/>
+            最终客户：<input type="text" name="end_customers" style="width:350px;" value="<?=$this->processData['end_customers']?>"/></td>
+        </tr>
+        <tr>
+        <td align="right">国家<em>*</em>：</td>
+        <td>
+        <span id="oa_countrySpan">
+                  <select id="country" name="country" onchange="selectOaProvince(this.value)" >
+                    <option value="">请选择国家</option>
+                  </select>
+                  </span>
+                  地区<em>*</em>：<span id="oa_provinceSpan">
+                  <select id="region" name="region">
+                    <option value="">请选择地区</option>
+                  </select>
+                  </span>
+                  城市<em>*</em>：<span id="oa_citySpan">
+                  <select id="city" name="city">
+                    <option value="">请选择市</option>
+                  </select>
+        </span>
+            邮编<em>*</em>：<input type="text" name="zipcode" id="zipcode" style="width:100px;" value="<?=$this->processData['zipcode']?>"/>
+            </td>
+        </tr>
+        <tr>
+        <td align="right">中文地址<em>*</em>：</td>
+        <td><input type="text" name="caddress" style="width:350px;" value="<?=$this->processData['caddress']?$this->processData['caddress']:($this->userinfo['province'].$this->userinfo['city'].$this->userinfo['area'].$this->userinfo['address'])?>"/>
+            英文地址<em>*</em>：<input type="text" name="eaddress" style="width:350px;" value="<?=$this->processData['eaddress']?>"/></td>
+        </tr>
+        <tr><td align="right">电话<em>*</em>：</td>
+        <td><input type="text" style="width:150px;" name="telephone" value="<?=$this->processData['telephone']?>"/>
+        传真<em>*</em>：<input type="text" style="width:150px;" name="fax" value="<?=$this->processData['fax']?>"/>
+        Email<em>*</em>：<input type="text" style="width:150px;" name="email" value="<?=$this->processData['email']?>"/>
+        网站<em>*</em>：<input type="text" style="width:160px;" name="website" value="<?=$this->processData['website']?>"/></td>
+        </tr>
+        <tr><td align="right" valign="top">客户简介：</td>
+        <td><textarea name="customer_profile" style="width:780px;" cols="5"><?=$this->processData['customer_profile']?></textarea></td>
+        </tr>
+        <tr><td colspan="2"><h2>客户联系人资料</h2></td></tr>
+        <tr><td align="right">姓名<em>*</em>：</td>
+        <td><input type="text" style="width:150px;" name="contact_name"  value="<?=$this->processData['contact_name']?$this->processData['contact_name']:$this->userinfo['truename'];?>"/>
+        性别：<select name="sex">
+        <option value="">请选择</option>
+                      <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='Sex_Category'){?>
+                      <option value="<?=$dv['oa_id']?>" <?=($this->processData['sex']==$dv['oa_id']?' selected':'')?>><?=$dv['name']?></option>
+                      <?php }}?>
+                      </select>
+        关系类型：<select name="relationship">
+                      <option value="">请选择</option>
+                      <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='CpClass_Category'){?>
+                      <option value="<?=$dv['oa_id']?>" <?=($this->processData['relationship']==$dv['oa_id']?' selected':'')?>><?=$dv['name']?></option>
+                      <?php }}?>
+                      </select>
+          关系程度：<select name="relationship_degree">
+                     <option value="">请选择</option>
+                      <?php foreach($this->dictionary as $dv){
+					      if($dv['type']=='CpReLevel_Category'){?>
+                      <option value="<?=$dv['oa_id']?>" <?=($this->processData['relationship_degree']==$dv['oa_id']?' selected':'')?>><?=$dv['name']?></option>
+                      <?php }}?>
+                      </select>
+           部门：<input type="text" name="department" style="width:150px;" value="<?=$this->processData['department']?>" />
+           职务：<input type="text" name="position" style="width:150px;" value="<?=$this->processData['position']?>" />
+          </td>
+        </tr>
+         <tr><td align="right">电话<em>*</em>：</td>
+        <td><input type="text" style="width:150px;" name="lxr_telephone"  value="<?=$this->processData['lxr_telephone']?$this->processData['lxr_telephone']:$this->userinfo['tel'];?>"/>
+        手机<em>*</em>：<input type="text" style="width:150px;" name="lxr_phone"  value="<?=$this->processData['lxr_phone']?$this->processData['lxr_phone']:$this->userinfo['mobile'];?>"/>
+        Email<em>*</em>：<input type="text" style="width:150px;" name="lxr_email"  value="<?=$this->processData['lxr_email']?$this->processData['lxr_email']:$this->userinfo['email'];?>"/>
+        传真：<input type="text" style="width:150px;" name="lxr_fax" value="<?=$this->processData['lxr_fax']?$this->processData['lxr_fax']:$this->userinfo['fax'];?>"/>
+          </td>
+        </tr>
+         <tr>
+        <td align="right">办公地点：</td>
+        <td><input type="text" name="office_location" style="width:250px;"  value="<?=$this->processData['office_location']?>"/>
+            家庭住址：<input type="text" name="home_address"  value="<?=$this->processData['home_address']?>"/>
+            爱好：<input type="text" name="hobby" value="<?=$this->processData['hobby']?>"/>
+            </td>
+        </tr>
+        <td align="right">称谓：</td> 
+        <td><input type="text" style="width:150px;" name="appellation" value="<?=$this->processData['appellation']?>"/>
+        婚姻：<select name="marriage">
+                  <option value="">请选择</option>
+                  <option value="Y" <?=($this->processData['marriage']=='Y'?' selected':'')?>>已</option>
+                  <option value="N" <?=($this->processData['marriage']=='N'?' selected':'')?>>未</option>
+               </select>
+            配偶：<input type="text" name="spouse" value="<?=$this->processData['spouse']?>"/> 
+            生日：<input type="text" name="birthday"  style="width:100px;" onclick="WdatePicker({startDate:'<?=$this->processData['birthday']?>',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" value="<?=$this->processData['birthday']?>" title="点击选择日期">
+            </td>
+        </tr>
+        <tr>
+        <td align="right"><b>审批人：</b></td>
+        <td><?php echo $this->superior['staff_id']?$this->superior['lastname'].$this->superior['firstname']:'<font color="#FF0000">-- 缺 --</font>';?></td></tr>
+        <tr><td align="right" valign="top"><b>申请备注：</b></td>
+        <td><textarea name="remark" style="width:780px;" cols="5"><?=$this->processData['remark']?></textarea></td>
+        </tr>
+        <tr><td colspan="2" align="center">
+		<?php if($this->superior['staff_id']){?>
+        <input type="submit"  class="btnabig"  value="提 交"/>
+		<?php }?></td>
+        </tr>
+        </table>
+    </form>
+    <br/>
+</div>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script type="text/javascript">
+//加载国家、省、市
+onloadadd_oa('<?=$this->processData['country']?>','<?=$this->processData['region']?>','<?=$this->processData['city']?>');
+function selectOaProvince(countryid){
+		$("#oa_provinceSpan").load("/icwebadmin/common/getoaprovince?countryid="+countryid);
+		$("#oa_citySpan").html("<select id=\"city\" name=\"city\"><option value=\"\">请选城市</option></select>");
+}
+function selectOaCity(provinceid){
+	$("#oa_citySpan").load("/icwebadmin/common/getoacity?provinceid="+provinceid);
+}
+function selectOaZipcode(cityid){
+	 $.ajax({
+            url: '/icwebadmin/common/getoazipcode',
+            data: {'cityid':cityid},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    document.getElementById('zipcode').value = arr.zipcode;
+            }
+	  });
+}
+function onloadadd_oa(countryid,provinceid,cityid)
+{
+	$("#oa_countrySpan").load("/icwebadmin/common/getoacountry?countryid="+countryid);
+	selectOaProvince(countryid)
+	if(provinceid){
+		$("#oa_provinceSpan").load("/icwebadmin/common/getoaprovince?countryid="+countryid+"&provinceid="+provinceid);
+		selectOaCity(provinceid);
+	}
+	if(cityid)
+		$("#oa_citySpan").load("/icwebadmin/common/getoacity?provinceid="+provinceid+"&cityid="+cityid);
+}	
+</script>

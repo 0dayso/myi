@@ -1,0 +1,59 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+
+
+
+
+
+
+
+.Clmenu { width:160px; border-right:1px solid #ddd; padding-right:20px; overflow:hidden}
+.Clmenu h1{ background:url(../img/helpimg.gif) no-repeat; display:inline-block}
+.Clmenu h1{ background-position:0 0; font-size:0; text-indent:-9999px; height:40px; width:100%}
+.Clmenu small {  font-family:\5B8B\4F53; }
+.Clmenu .linkbox{ }
+.Clmenu dl { margin-bottom:10px;}
+.Clmenu dt { margin-bottom:5px; width:100%; height:28px; line-height:28px; background:#999; }
+.Clmenu dt h3 { color:#FFF; float:left; font-size:12px; font-weight:bold; text-indent:10px; line-height:28px; padding-left:10px; }
+.Clmenu dt small{color:#FFF; float:right; margin-right:10px; line-height:28px;} 
+.Clmenu dd { padding:2px 14px;}
+.Clmenu dd a { color:#666; display:block; text-indent:10px; height:20px; line-height:20px; /*font-family:\5B8B\4F53;*/ overflow:hidden;}
+.Clmenu dd a.choose{ color:#f00}
+
+
+
+
+.HP_main { width:780px; line-height:20px;}
+.HP_main_wrap{ width:100%;}
+
+
+
+
+.HP_main .dtitle { height:35px;   border-top:2px solid #f00;background-color:#f9f9f9; margin-top:10px; overflow:hidden }
+.HP_main .dtitle h1{ float:left;font-size:15px; padding:8px 0 0px 5px}
+.HP_main .dtitle h2{ float:left; font-size:12px; padding:8px 0 0 0px }
+.HP_main h3{ padding:20px 0 10px 0}
+.HP_main h4{ padding:0 0 5px 0}
+.HP_main .maincontent { color:#666; margin:0px 10px 0; padding-bottom:20px; width:760px; overflow:hidden;}
+.HP_main .maincontent img{ padding:2px;}
+.HP_main .page_guide { border-top:1px dashed #ccc; overflow:hidden; zoom:1;width:760px; padding-top:10px; margin:0px auto;}
+.HP_main .page_guide a { color:#666; text-decoration:none;}
+.HP_main .page_guide a:hover { color:#c00; text-decoration:underline;}
+
+
+.helpul{ margin-bottom:5px;}
+.maincontent p,.helpul li{ margin-bottom:10px; line-height:18px;}
+.helpsubul{ padding-left:30px; margin-top:10px ; }
+
+.helpquestion{ padding-left:20px;  margin-bottom:10px;  }
+.helpquestion .helpqtit{ background:#f5f5f5; padding:5px 0 5px 5px; font-weight:bold; font-size:14px;  float:left; width:100%; margin-top:10px}
+.helpquestion p,.helpquestion ul{ padding-left:5px;}
+
+.onehelpifo{ margin-top:10px}
+
+
+
+
+

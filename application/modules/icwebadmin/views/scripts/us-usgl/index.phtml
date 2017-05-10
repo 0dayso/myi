@@ -1,0 +1,292 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+  <form id="myform"  class="form-search" name="myform" action="" method="get">
+  
+<input type="hidden" name="ordertype" value="<?=$this->ordertype?>" />
+<input type="hidden" name="orderby" value="<?=$this->orderby?>" />
+
+<label>开始时间：</label><input type="text"  style="width:80px;" name="sdata" value="<?=$this->sdata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/> 
+<label>结束时间：</label><input type="text"  style="width:80px;" name="edata" value="<?=$this->edata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+
+    <div class="input-append">
+<select name="backstage" id="backstage">
+   <option value="">注册性质-全部</option>
+   <option value="back" <?=$this->backstage=='back'?'selected':''?>>后台添加</option>
+   <option value="before" <?=$this->backstage=='before'?'selected':''?>>自己注册</option>
+</select>
+    </div>
+
+ <div class="input-append">
+<select name="emailapprove" id="emailapprove">
+   <option value="">邮箱认证-全部</option>
+   <option value="pass" <?=$this->emailapprove=='pass'?'selected':''?>>已验证</option>
+   <option value="nopass" <?=$this->emailapprove=='nopass'?'selected':''?>>未认证</option>
+</select>
+    </div>
+
+<?php if($_SESSION['staff_sess']['level_id']!='XS'){?>
+<div class="input-append">
+<select name="xsname" id="xsname">
+      <option value="" <?=$this->xsname==''?'selected':''?>>跟进销售-全部</option>
+      <option value="alina.shang" <?=$this->xsname=='alina.shang'?'selected':''?>>尚玉(alina.shang)</option>
+      <?php for($i=0;$i<count($this->xs_staff);$i++){?>
+      <option value="<?=$this->xs_staff[$i]['staff_id']?>" <?=$this->xsname==$this->xs_staff[$i]['staff_id']?'selected':''?>><?=$this->xs_staff[$i]['lastname'].$this->xs_staff[$i]['firstname']."(".$this->xs_staff[$i]['staff_id'].")"?></option>
+      <?php }?>
+</select>
+</div>
+<?php }?>
+    <label>用户名/公司名：</label>
+    <div class="input-append">
+      <input type="text" class=" search-query ac_input" id="keyword" value="<?=$this->keyword?>" name="keyword"  autocomplete="off"/>
+      
+    </div>
+    <input type="submit" class="btn" value="查 找"/>
+  </form>
+  <div class="contentmia">
+
+            <!--注册OA客户申请：(<font color="#FF0000"><?=$this->apptotal?>待审核</font>)
+            <?php echo '<a href="'.$this->comapprove.'">查看&gt;&gt;</a>';?>&nbsp;&nbsp;&nbsp;&nbsp;-->
+		
+            <?php if($this->mycommon->checkA($this->Staff_Area_ID)){?>
+            被屏蔽的用户：(<font color="#FF0000"><?=$this->shieldtotal?></font>)
+            <?php if($this->shieldtotal > 0) echo '<a href="'.$this->shieldurl.'">查看&gt;&gt;</a>';?>
+            <?php }?>
+
+   <div id="message_sess" style="display:none" class="message_sess">
+              <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+              <div id="alert_message"></div>
+            </div>
+     <?php $orderurl = "/icwebadmin/UsUsgl?sdata=$this->sdata&edata=$this->edata&backstage=$this->backstage&emailapprove=$this->emailapprove&xsname=$this->xsname";?>
+    <table width="100%" cellpadding="1" border="1" class="producttable table">
+      <thead>
+        <tr>
+          <th>用户名</th>
+          <th>公司名称</th>
+          <th>联系人</th>
+          <th width="80"><a href="<?=$orderurl?>&ordertype=created&orderby=<?php if($this->orderby=='ASC' && $this->ordertype=='created') echo 'DESC';else echo 'ASC';?>" title="排序">注册时间</a>
+            <div class="aorder">
+                <a href="<?=$orderurl?>&ordertype=created&orderby=ASC" class="aorder_up <?php if($this->orderby=='ASC' && $this->ordertype=='created') echo 'onaorder';else echo '';?>"  title="升排序"></a>
+                <a href="<?=$orderurl?>&ordertype=created&orderby=DESC" class="aorder_down <?php if($this->orderby=='DESC' && $this->ordertype=='created') echo 'onaorder';else echo '';?>" title="降排序">倒序</a>
+            </div>
+            </th>
+          <th>自己注册</th> 
+          <th>邮箱地址</th>
+          <th>邮箱验证</th>
+          <th>跟进销售</th>
+          <!--<th>具有COD资格</th>
+          <th>资料完备</th>-->
+          <th>情况说明</th>
+          
+          <th width="60"><a href="<?=$orderurl?>&ordertype=score&orderby=<?php if($this->orderby=='ASC' && $this->ordertype=='score') echo 'DESC';else echo 'ASC';?>" title="排序">积分</a>
+            <div class="aorder">
+                <a href="<?=$orderurl?>&ordertype=score&orderby=ASC" class="aorder_up <?php if($this->orderby=='ASC' && $this->ordertype=='score') echo 'onaorder';else echo '';?>"  title="升排序"></a>
+                <a href="<?=$orderurl?>&ordertype=score&orderby=DESC" class="aorder_down <?php if($this->orderby=='DESC' && $this->ordertype=='score') echo 'onaorder';else echo '';?>" title="降排序">倒序</a>
+            </div></th> 
+          
+          <th width="100px">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      	<?php
+			  	  if(!empty($this->user)){
+                	 foreach ($this->user as $k=>$data){
+					    $property_tmp = array('enduser'=>'终端用户','merchant'=>'贸易商');
+					   
+					    $app = '<p class="no">否</p></font>';
+						if($data['emailapprove']==1) $app ='<p class="ok">通过</p>';
+						if($k%2==0)$bg="#D5C5FE";
+						else $bg="#E4E4E4";?>
+        <tr>
+          <td><a href="javascript:;" onclick="view('<?=$data['uid']?>')" title="查看详细资料" ><?=$data['uname']?></a></td>
+          <td><?=$data['companyname']?$data['companyname']:'--'?></td>
+          <td><?=$data['truename']?$data['truename']:'--'?></td>
+          <td><?=date("Y-m-d H:i:s",$data['created'])?></td>
+          <td><?=$data['backstage']?'<font color="#FF0000">否</font>':'<font color="#009900">是</font>';?></td>
+          <td><a href="mailto:<?=$data['email']?>"><?=$data['email']?></a></td>
+          <td><div class="email_status"><?=$app?></div>
+          <td><p class="salesifo"> 
+          <span><?=$data['department'].' - '.$data['lastname'].$data['firstname']."(".$data['staff_id'].")"?></span> 
+		  <?=($this->mycommon->checkA($this->Staff_Area_ID)?'<p><a href="javascript:;" onclick="resetxs('.$data['uid'].')">重新分配</a></p>':'')?>
+		  </p></td>
+          <!--<td><?=($data['cod']==1?'是':'否')?></td>
+          <td><?=($data['detailed']==1?'是':'否')?></td>
+          <td><?php if($data['uoastatus']==100)
+						echo '待审核';
+					elseif($data['uoastatus']==101)
+						echo '<font color="#006600">通过</font>';
+					elseif($data['uoastatus']==102){
+						echo '<font color="#FF0000">不通过</font>';
+					}elseif(!$data['uoastatus']) 
+					    echo '<a href="/icwebadmin/UsUsgl/application/uid/'.$data['uid'].'" class="colorbox">提交申请</a>';
+				    
+					if($data['uoastatus'])echo ' | <a href="/icwebadmin/UsUsgl/appview/uid/'.$data['uid'].'" class="colorbox">查看</a>';
+				?>
+          </td>-->
+          <td><?=($data['follow_up']?nl2br($data['follow_up']):'--')?></td>
+          
+          <td><?=$data['score']?></td>
+         
+          <td>
+           <?php if(($this->mycommon->checkA($this->Staff_Area_ID)  || $this->mycommon->checkW($this->Staff_Area_ID))&& $data['companyname']){?>
+           <p style="margin-bottom:2px;">
+           <a class="gbqfbb" href="/icwebadmin/UsUsgl/copyuser/key/<?=$this->fun->encryptVerification($data['uid']);?>" target="_blank">添加新账号</a></p>
+            <?php }?>
+           <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+           <p style="margin-bottom:2px;"><a class="gbqfbb" href="javascript:;" onclick="openbox2('/icwebadmin/UsUsgl/updateuser/uid/<?=$data['uid']?>')" title="修改客户信息">修改客户资料</a></p>
+            <p><a class="gbqfb" href="javascript:;" onclick="openbox('/icwebadmin/UsUsgl/uploadannex/uid/<?=$data['uid']?>')">上传资料</a></p>
+          <?php }?>
+          <?php if($this->mycommon->checkA($this->Staff_Area_ID) && $_SESSION['staff_sess']['level_id']!='XS'){?>
+           <p style="margin-bottom:2px;"><a class="gbqfbb" href="javascript:;" onClick="shield('<?=$data['uid']?>','<?=$data['uname']?>')">屏蔽</a></p>
+              <?php /*if($data['cod']==1){
+			       echo '<li><a href="javascript:;" onclick="passcod('.$data['uid'].',\''.$data['uname'].'\',\'nopass\')">取消COD资格</a> | </li>';}
+				   else{
+				   echo '<li><a href="javascript:;" onclick="passcod('.$data['uid'].',\''.$data['uname'].'\',\'pass\')">通过COD资格</a> | </li>';}
+				 if($data['companyapprove']==1)
+				echo '<li><a href="javascript:;" onClick="cancelCom(\''.$data['uid'].'\',\''.$data['uname'].'\')">取消企业认证</a> | </li>';*/
+				?>
+            <?php }?>
+            </td>
+        </tr>
+        <?php }};?>
+        
+      </tbody>
+    </table>
+    <div class="pagination divpage">
+        <?=$this->page_bar;?>
+      </div>
+  </div>
+</div>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<link href="/js/jsplug/ajaxselect/jquery.autocomplete.css" rel="stylesheet">
+<script src="/js/jsplug/ajaxselect/jquery.autocomplete.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript">
+<?php if(isset($_SESSION['message'])) echo "alert('".$_SESSION['message']."');";unset($_SESSION['message']);?>
+function shield(uid,uname)
+{
+   if(confirm('你确定屏蔽用户："'+uname+'" 吗？'))
+   {
+	 $.ajax({
+            url: '<?php echo $this->shieldurl;?>',
+            data: {'uid':uid,'type':'close'},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    document.getElementById('message_sess').style.display = "block";
+	            document.getElementById('alert_message').innerHTML = arr.message;
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+   }
+}
+function resetxs(uid)
+{
+	$.openPopupLayer({
+        name:'resetxsBox',
+        url:'/icwebadmin/UsUsgl/resetxs?uid='+uid
+    });
+}
+function application(uid)
+{
+	$.openPopupLayer({
+        name:'appBox',
+        url:'/icwebadmin/UsUsgl/application/uid/'+uid
+    });
+}
+function view(uid)
+{
+	$.openPopupLayer({
+        name:'viewBox',
+        url:'/icwebadmin/UsUsgl/view/uid/'+uid
+    });
+}
+function cancelCom(uid,uname)
+{
+   if(confirm('你确定取消用户："'+uname+'"的企业认证吗？'))
+   {
+	 $.ajax({
+            url: '<?php echo $this->shieldurl;?>',
+            data: {'uid':uid,'type':'cancel_com'},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    document.getElementById('message_sess').style.display = "block";
+	            document.getElementById('alert_message').innerHTML = arr.message;
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+   }
+}
+function passcod(uid,uname,type)
+{	
+	var title;
+	if(type=='pass')
+	{
+		title = '你确定通过用户："'+uname+'"的COD资格认证吗？';
+	}else if(type=='nopass'){
+		title = '你确定取消用户："'+uname+'"的COD资格吗？';
+	}else if(type=='detailed'){
+		title = '你确定取消用户："'+uname+'"的企业资料详细认证吗？';
+	}
+	if(confirm(title))
+   {
+	 $.ajax({
+            url: '<?php echo $this->shieldurl;?>',
+            data: {'uid':uid,'type':type},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			    document.getElementById('message_sess').style.display = "block";
+	            document.getElementById('alert_message').innerHTML = arr.message;
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }
+            }
+	  });
+   }
+}
+function showinfo(id)
+{
+  $("#show_info_"+id).slideToggle();
+}
+	function check(){
+		var keyword = document.getElementById('keyword').value;
+		if(keyword=="") {alert("请输入用户名/公司名！");document.getElementById('keyword').focus();return;}
+		else $('#myform').submit();
+	}
+	$(document).ready(function() {
+			$("#keyword").autocomplete("/icwebadmin/UsUsgl/getajaxtag",
+			{
+				delay:5,
+            	minChars:3,
+            	matchSubset:1,
+            	matchContains:1,
+            	cacheLength:10,
+            	onItemSelect:selectItem,
+            	onFindValue:findValue,
+            	formatItem:formatItem,
+            	autoFill:false
+        	}
+    		);
+			});
+			function findValue(li) {
+    			if( li == null ) return alert("No match!");
+				if( !!li.extra ) var sValue = li.extra[0];
+				else var sValue = li.selectValue;
+				}
+			function selectItem(li) { findValue(li);}
+			function formatItem(row) { return row[0];//return row[0] + " (id: " + row[1] + ")"//如果有其他参数调用row[1]，对应输出格式Sparta|896
+			}
+			function lookupAjax(){
+			var oSuggest = $("#keyword")[0].autocompleter;
+			oSuggest.findValue();
+			return false;
+			};
+
+</script>

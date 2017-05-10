@@ -1,0 +1,100 @@
+<!--content-->
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/myself2013.css"/>
+<link rel="stylesheet" type="text/css" href="/css/default/myself<?=$_SESSION['new_version']?>.css"/>
+<script type="text/javascript" language="javascript"> center_css();</script>
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a  class="focs">我的IC易站</a>&nbsp;&nbsp;»&nbsp;&nbsp;<a  >礼品兑换</a>
+  </div>
+</div>
+
+
+<div class="blank10"></div>
+<div class="w clearfix ourbox">
+        <!--左边导航-->
+        <?php echo $this->render('center/leftmenu.phtml');?>
+	<div class="fr u_right msg24">
+
+     <div class="col_main" id="onlineorder">
+            <h1>礼品兑换</h1>
+            <div class="tiporder fontorange">注意：积分兑换的实物礼品，邮费需要自付。</div>
+            <div class="order_tab_head">
+           <ul>
+          <li <?=$this->type=='wait'?'class="on"':''?>><a href="?type=wait" style="width:120px;">待处理<em>(<?=$this->waitnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='already'?'class="on"':''?>><a href="?type=already" style="width:120px;">已处理<em>(<?=$this->alreadynum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='cancel'?'class="on"':''?>><a href="?type=cancel" style="width:120px;">已取消<em>(<?=$this->cancelnum?>)</em><b class="blank3"></b></a></li>
+          </ul>
+            </div> 
+            <div class="table_box ivcoice " >
+                <table class="vac_table table" cellpadding="0" cellspacing="0">   
+                <thead>    
+                    <tr>
+                      <th width="100">礼品</th>
+                      <th width="40">消费积分</th>
+                      <th width="40">兑换数量</th>
+                      <th width="150">收货人信息</th> 
+                      <th width="90">兑换日期</th>
+                      <th width="90">备注</th>
+                      
+					  <?php if($this->type=='already'){?>
+                      <th width="150">处理结果</th>
+                      <?php }?>
+                      <?php if($this->type=='cancel'){?>
+                      <th width="150">说明</th>
+                      <?php }?>
+                      <?php if($this->type=='wait'){?>
+                      <th width="40" align="center">操作</th>
+                      <?php }?>
+                    </tr>   
+                </thead>            
+                <tbody>  
+            <?php if(empty($this->giftall)){echo '<tr><td colspan="9">暂无记录</td></tr>';}
+		  	else{
+				foreach($this->giftall as $key=>$v){
+				$bg='';
+				if($key%2==1) $bg = 'class="tabletrf9"';
+		    ?>
+			  <tr <?=$bg?>>
+          <td align="left"><?=$v['giftname']?></td>
+          <td align="center"><?=$v['score']?></td>
+          <td align="center"><?=$v['number']?></td>
+          <td align="center"><?php if($v['gifttype']==1) echo $v['name']." , ".$v['province']." ".$v['city']." ".$v['area']." ".$v['address']." , ".$v['mobile']." ".$v['tel'];else echo '虚拟物品，直接发放';?>
+          </td>
+          <td align="center"><?=($v['created']?date('Y/m/d H:i',$v['created']):'--')?></td>
+          <td><?=$v['remark']?$v['remark']:'--'?></td>
+          		
+		  <?php if($this->type=='already'){?>
+          <td><p><?=$v['notice']?></p>
+           <?php if($v['courierid']){?>
+           <p style="color:#006600"><?=$v['couname'].' '.($v['cou_number']?'<br/>运单号：'.$v['cou_number']:'')?></p>
+          <?php }?>
+          </td>
+          <?php }?>
+          <?php if($this->type=='cancel'){?>
+          <td><?=$v['notice']?></td>
+          <?php }?>
+           <?php if($this->type=='wait'){?>
+           <td align="center"> <p><a class="button" href="javascript:;" onclick="cancel('<?=$v['id']?>')">取消</a></p></td>
+            <?php }?>
+           </tr>
+		<?php		
+			}
+	      }
+		?>
+                </tbody>         
+                </table>
+            </div>
+            <div class="pagination fr"> <?=$this->page_bar;?></div>
+        </div>
+   </div>
+</div>
+<div class="clr"></div>
+<script type="text/javascript">
+function cancel(id)
+{
+	 $.openPopupLayer({
+        name:'cancelBox',
+        url:'/jifen/cancel?id='+id
+    });
+}
+</script>

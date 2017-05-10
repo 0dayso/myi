@@ -1,0 +1,37 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.w{ width:990px}
+
+
+
+
+
+
+.hot_sch {width: 240px;}
+.hot_sch .indexShowBox,.hot_sch .slider_img,.hot_sch .slider_img img,.hot_sch .indexShow{ width: 240px; height:201px}
+.hot_sch .slider_trigger{top:200px}
+.hotnew .floor_logo{ width:88px; }
+/*.hotnew .floor_logo a {height:49px;line-height:49px; *font-size:49px;width: 88px;}*/
+.hotnew .productimg{ width:180px;height:140px; line-height:140px;*font-size:100px;  }
+.hotnew .productimg a{ width:180px ; margin-bottom:10px}
+.hotnew .hotnew_por_box2013{  width:640px; height:180px; }
+
+.hotnew .por_box2013{ margin:0px; width:150px; height:180px; border:0}
+.hotnew .por_box2013 .pbox201312{height:190px; }
+.hotnew  .item .s-img img {height:80px;}
+/*.hotRecommend_A .por_box2013{ width:240px;}
+.hotRecommend_A .fore3 .por_box2013,.hotRecommend_A .fore4 .por_box2013{ width:247px}*/
+.U-hotRecommend{ width:168px; }
+.U-hotRecommend .por_box2013{ width:168px;}
+.U-hotRecommend .s-img img {top:110px}
+.sou201312 ul{ width:490px}
+.sou201312 .por_box2013{ width:230px; }
+.floor_logo,.floor_logo a{ width:90px;}
+.application .floor_logo,.application .floor_logo a{ width:76px;}
+.application .floor_logo img{ width:65px}
+
+/*.floor_logo img{ width:65px}
+.floor_logo a:hover img{ width:70px}
+*/

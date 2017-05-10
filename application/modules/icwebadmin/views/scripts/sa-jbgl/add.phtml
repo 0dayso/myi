@@ -1,0 +1,56 @@
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+    <h2>添加级别</h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('addBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+      <!-- 需要填写的区域-->
+      <table width="740px" border="0" cellpadding="1">
+        <tr>
+         <td height="10" colspan="3" align="center">
+         <div id="message_sess_son" style="display:none" class="message_sess">
+         <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span>
+         <span id="alert_message_son"></span>
+         </div></td>
+         </tr>
+        <tr bgcolor="#334159" height="30px">
+          <td><div align="center"><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">级别编号</font></strong><font color="#FF0000">*必须2-4个大写字母</font></div></td>
+          <td><div align="center"><strong><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">级别名称</font></strong></div></td>
+        </tr>
+        <tr bgcolor="#CCCCCC" align="center">
+          <td><input type="text" name="Level_ID" id="Level_ID" value="" onKeyUp="<?php echo ISCAPITAL;?>"/>
+          </td>
+          <td><input type="text" name="Level" id="Level" size="40" value=""/>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" colspan="2"><input type="button"  value="添加" onclick="addDep()"/>
+          </td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+function addDep()
+{
+    var Level_ID = document.getElementById('Level_ID').value;
+	var Level    = document.getElementById('Level').value;
+	$.ajax({
+            url: '<?php echo $this->addurl;?>',
+            data: {'levelid':Level_ID,'level':Level},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  location.reload();
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			}
+	});
+}
+</script>

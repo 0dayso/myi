@@ -1,0 +1,82 @@
+<!--购买 弹出框-->
+<?php
+   //过滤产品
+	$prodarr = $this->partInfo;
+	//获得零售价
+	$partid = $prodarr['id'];
+	$moq    = $prodarr['moq'];
+	$mpq    = $prodarr['mpq'];
+	if($this->number>$moq){
+		$moq = ((int)($this->number/$moq))*$moq;
+	}
+	//开始显示的交货地
+	$show_price = 0;
+	$checked_sz  = $checked_hk = '';
+	if($prodarr['f_show_price_sz'] && $this->delivery=="SZ"){
+		$stock      = $prodarr['f_stock_sz'];
+	    $show_price = $prodarr['f_show_price_sz'];
+	    $sell_price = $prodarr['f_sell_price_sz'];
+	    $sell_total = $sell_price*$this->number;
+		$lead_time  = $prodarr['f_lead_time_cn']?$prodarr['f_lead_time_cn']:'--';
+		$checked_sz = 'checked';
+		$unit = $prodarr['f_rmb'];
+		$break_price = $prodarr['f_break_price_sz'];
+		$break_price_title = '含税';
+	}elseif($prodarr['f_show_price_hk'] && $this->delivery=="HK"){
+		$stock      = $prodarr['f_stock_hk'];
+	    $show_price = $prodarr['f_show_price_hk'];
+	    $sell_price = $prodarr['f_sell_price_hk'];
+	    $sell_total = $sell_price*$this->number;
+		$lead_time  = $prodarr['f_lead_time_hk']?$prodarr['f_lead_time_hk']:'--';
+		$checked_hk  = 'checked';
+		$unit = $prodarr['f_usd'];
+		$break_price = $prodarr['f_break_price_hk'];
+		$break_price_title = '美元';
+	}else{
+		echo '<script>alert("很抱歉，此产品暂时不能购买！");$.closePopupLayer("cartBox");</script>';
+	}
+	if($stock < $moq){
+	  $lead_time = $prodarr['lead_time']?$prodarr['lead_time']:'--';
+	}
+	
+?>
+<div style="top:20px" class="pop pop_shopbox">
+	<div class="popbox">
+    	<div class="poptit1">
+            <input type="button" onclick="$.closePopupLayer('buybppBox')" class="closebtn" value="" title="关闭">
+        </div>
+        <div class="popcon clearfix">
+        	<?php if($this->error==1){?>
+             <h1>请直接点击" <a target="_parent" onclick="tijiao();$.closePopupLayer('buybppBox');" href="javascript:" class="abutton" title="我要询价" >我要询价</a>"</h1>
+            <?php }else{?>
+        	<!--梯形价格-->
+            <div class="spboxleft">
+                <div class="price-box">
+                    <h1 class="titbg1ts">现货提示：<em class="emtriangleright5px"></em></h1>
+                    <table cellspacing="0" cellpadding="0" border="0" class="tiptable" style="color:#000000"><tbody>
+                    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;1、为您在IC易站合作伙伴<b>Canada</b>中寻找到现货，您可以直接购买。
+                    &nbsp;&nbsp;&nbsp;&nbsp;2、实际现货数量与交期以<b>Canada</b>反馈为准。
+                    &nbsp;&nbsp;&nbsp;&nbsp;3、您不想直接购买，也可以点击“加入询价篮”对型号进行询价。</td></tr></tbody></table>                
+                </div>
+            </div>
+             <input type="hidden" value="<?=$prodarr['part_no']?>" id="part_no" name="part_no">
+             <input type="hidden" value="<?=$prodarr['id']?>" id="partid" name="partid">
+            <div class="spboxright">
+            <h2 class="model"><a href="<?=$prodarr['f_produrl']?>"><?=$prodarr['part_no'];?></a></h2>
+            <p></p>
+                <p>零售价：<strong class="price"><span class="price_unit"><?=$unit?></span><span id="sell_price"><?php echo number_format($sell_price,5);?></span></strong></p>
+            	<p class="goodsNum">数&nbsp;&nbsp;&nbsp;量：<strong class="price"><?=$this->number?></strong></p>
+                <p class="summary"><span class="goodsCar">小&nbsp;&nbsp;&nbsp;计：<strong class="price"><?=$unit?> <?=number_format($sell_total,DECIMAL);?></strong></span></p>
+                <p>交货地：<label><?php if($this->delivery=="SZ"){?>国内(含增税) <?php }elseif($this->delivery=="HK"){?>香港(美元)<?php }?></label></p>
+                <p>参考货期：<span class="lead_time_show"><?=$lead_time?></span></p>    
+            	<p class="spbbtndiv" style="text-align:left">
+                <a target="_parent" onclick="buyBpp('<?=$this->partId?>','<?=$this->bpp_stock_id?>','<?=$this->delivery?>','<?=$this->number?>');$.closePopupLayer('buybppBox');$.closePopupLayer('inquiryBox');" href="javascript:" class="abutton" title="我要购买">加入购物车购买</a>
+                </p>
+                <p class="spbbtndiv">
+                <a target="_parent" onclick="tijiao();$.closePopupLayer('buybppBox');" href="javascript:" title="我要询价" >加入询价篮</a>
+                </p>
+            </div>
+            <?php }?>
+        </div>
+	</div>
+</div>

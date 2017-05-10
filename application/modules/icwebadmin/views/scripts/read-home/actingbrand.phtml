@@ -1,0 +1,73 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?></h1>
+  <div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+ </div>
+	  <!-- 需要填写的区域-->
+	<div class="fr u_right">
+    <div class="tab_content">
+      <div class="tab_tit1">
+        <ul class="fl">
+          <li><a href="/icwebadmin/ReadHome">滚动图片<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/newprod">精品 • 新品<b class="blank3"></b></a></li>
+          <li class="on"><a href="/icwebadmin/ReadHome/actingbrand">代理品牌<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/app">应用分类<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/recbrand">产品分类推荐品牌<b class="blank3"></b></a></li>
+          <li><a href="/icwebadmin/ReadHome/hotprod">热销产品推荐<b class="blank3"></b></a></li>
+        </ul>
+        <div class="tab_con mb10">
+        <table class="tab_tb"  border="0" style=" margin-top:-1px;">
+        	<tr><td style="padding:10px;">
+                   <!--代理品牌-->
+                   <div id="brand_view">
+                   <div class="brand">
+                    <div class="brandabox" style="height:200px;">
+                        <?php foreach($this->actingBrand as $actingbrand){?>
+                        <a><img src="/images/default/brand/<?=$actingbrand['comid']?>.jpg" /></a>
+                        <?php }?>
+                    </div>
+                  </div>
+                   <div class="w"><input type="button" value="编 辑"  class="btnabig"  onclick="editchange(1)" /></div>
+                  </div>
+                  <!--编辑代理品牌-->
+         <div id="brand_edit" style="display:none;">
+        <form  method="post" action="">
+         <?php foreach($this->actingBrand as $actingbrand){?>
+        <input type="hidden" name="id[]" value="<?=$actingbrand['id']?>" />
+        <select name="brand_<?=$actingbrand['id']?>" class="input-medium" onchange="selectbrand(this,'<?=$actingbrand['id']?>')">
+        <?php foreach($this->brand as $bd){?>
+        <option value="<?=$bd['id']?>" <?=$bd['id']==$actingbrand['comid']?'selected':''?>><?=$bd['name']?></option>
+        <?php }?>
+        </select>
+         <img id="brand_<?=$actingbrand['id']?>" src="/images/default/brand/<?=$actingbrand['comid']?>.jpg" />
+         <?php }?>
+                    
+            <div class="w"><input type="submit"  class="btnabig"  value="更 新" />
+            <input type="button" value="取 消"  class="btnabig"  onclick="editchange(2)" /></div>
+          </form>
+           </div>
+           </td></tr></table>
+        </div>
+      </div>
+     </div>
+     </div>
+      <!-- 结束区域-->
+</div>
+<script type="text/javascript">
+function editchange(type)
+{
+	if(type==1){
+		document.getElementById('brand_view').style.display = "none";
+		document.getElementById('brand_edit').style.display = "block";
+	}else if(type==2){
+		document.getElementById('brand_view').style.display = "block";
+		document.getElementById('brand_edit').style.display = "none";
+	}
+}
+function selectbrand(obj,id)
+{
+	var url = "/images/default/brand/"+obj.value+".jpg";
+	$('#brand_'+id).attr("src",url);
+}
+</script>

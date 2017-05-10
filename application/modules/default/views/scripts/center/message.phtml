@@ -1,0 +1,61 @@
+<link rel="stylesheet" type="text/css" href="/css/default/myself.css"/>
+<!--content-->
+<div class="w">
+<div class="curLct w_100 fl"><?=$this->translate('Menu_CurrentPosition')?><a href="/"><?=$this->translate('Menu_Home');?></a>&nbsp;&gt;&nbsp;<a href="/center"><?=$this->translate('Menu_Center')?></a> &gt;&nbsp;站内消息</div>
+<!--左边导航-->   
+<div id='leftmenu'></div>
+<div class="fr u_right mt5">
+    <div class="tab_content" >
+        <div class="tab_tit clearfix"><span class="fl"><strong>站内消息</strong><em>(5)</em></span>
+            <select  name="posttime" class="fr">
+                <option selected="selected" value="2012-07-08,2012-08-08">30天内的消息</option>
+                <option value="2012-01-01,2012-07-07">2012年的消息</option>
+                <option value="2011-01-01,2012-01-01">2011年的消息</option>
+                <option value="2007-01-01,2010-12-31">更早的消息</option>
+            </select>           
+        </div>
+        <div class="tab_con">
+        	<ul class="umesg_li">
+            	<li class="on"><s></s><a href="#">所有消息(2)</a>|</li>
+                <li><s></s><a href="#">优惠劵提醒(2)</a>|</li>
+                <li><s></s><a href="#">促销活动提醒(2)</a>|</li>
+                <li><s></s><a href="#">系统提醒(2)</a>|</li>
+            </ul>
+            <table class="tab_tb" >
+                <tr><td colspan="4" class="hide"><center>暂无询价记录。</center></td></tr>
+                <tr>
+                    <td width="50"><input type="checkbox" name="" id="" value=""/></td>
+                    <td width="50"><img src="/images/default/email.gif" /></td>
+                    <td width="680"><p>系统提醒 ：亲爱的<a href="#" class="fontwei fontred ml5">314442481@qq.com</a></p> 
+                    <p>亲爱的用户：你购买的商品由于在<b class="fontorange">48</b>小内还没付款，订单将取消。<a href="#" class="fontblue">再次购买</a></p>
+                    </td>
+                    <td width="150"><span class="fontGray">2012-08-09 10:20</span></td>
+                </tr>
+                <tr>
+                    <td class="bgf9"><input type="checkbox" name="" id="" value=""/></td>
+                    <td class="bgf9"><img src="/images/default/email.gif" /></td>
+                    <td class="bgf9"><p>系统提醒 ：亲爱的<a href="#" class="fontwei fontred  ml5">314442481@qq.com</a></p> 
+                    <p>亲爱的用户：你购买的商品如果在<b class="fontorange">1</b>内还没付款，订单将取消。<a href="#" class="fontblue">立即付款</a></p>
+                    </td>
+                    <td class="bgf9"><span class="fontGray">2012-08-09 10:20</span></td>
+                </tr>
+                <tr>
+                    <td ><input type="checkbox" name="" id="" value=""/></td>
+                    <td colspan="2" class="Batch_operation"><a href="#">全选</a><span>|</span><a href="#">删除</a></td>
+                    <td colspan="2" class="tabpage">
+                    <span>1</span>/<span>3</span><a href="#" class="ml10"name="向前"><strong>&lt;</strong></a><a href="#" name="向后">下一页<strong>&gt;</strong></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    
+</div>
+<div class="clr"></div>	
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+ onloadleftmenu('message');
+});
+</script>

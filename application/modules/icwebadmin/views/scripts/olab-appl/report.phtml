@@ -1,0 +1,133 @@
+<style type="text/css">
+.PublicDl dt {
+    width: 120px;
+}
+</style>
+<div class="popup" style="width:700px;">
+    <div class="popup-header">
+        <h2>审批</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+    </div>
+    <div class="popup-body">
+    	<div class=" overflowh">
+        	<div class="publicOne">
+                <div class="Publictit">
+                    <span class="Publictit_tit">申请信息</span>
+                </div>
+                <table border="0" cellspacing="0" cellpadding="0" class="Publictable">
+                        <tbody><tr>
+                          <td width="100">公司名称：</td>
+                          <td><strong><?=$this->record[0]['company'];?></strong></td>
+                          <td width="100">是否老客户：</td>
+                          <td><strong><?=$this->record[0]['customer']==1?'不是':'是('.$this->record[0]['follow'].')';?></strong></td>
+                        </tr>
+                        <tr>
+                          <td>城市：</td>
+                          <td><strong><?=$this->record[0]['city'];?></strong></td>
+                          <td>来访时间：</td>
+                          <td><strong><?=$this->record[0]['vist_time'];?></strong></td>
+                        </tr>
+                        <tr>
+                          <td>来访人数：</td>
+                          <td><strong><?=$this->record[0]['vist_number'];?></strong></td>
+                          <td>项目名称：</td>
+                          <td><strong><?=$this->record[0]['project_name'];?></strong></td>
+                        </tr>
+                  </tbody></table>
+            </div>
+            
+		    <div class="applyexplain ">
+            	<dl class="PublicDl">
+                    <dt >是否在OA注册：</dt>
+                    <dd>
+                        <label><input type="radio" name="oa_project" value="0"  <?=$this->record[0]['oa_project']==0?'checked="checked"':''?>/>否</label>
+                        <label><input type="radio" name="oa_project"  value="1" <?=$this->record[0]['oa_project']==1?'checked="checked"':''?> />是</label>
+                    </dd>
+                </dl>
+                <dl class="PublicDl">
+                    <dt>OA注册项目名称：</dt>
+                    <dd>
+                        <input type="text" style="width:300px;" name="oa_project_name" id="oa_project_name" value="<?=$this->record[0]['oa_project_name']?>"/>
+                    </dd>
+                </dl>
+                <dl class="PublicDl">
+                    <dt>预计生产时间：</dt>
+                    <dd>
+                        <input type="text" style="width:300px;" name="expected_time" id="expected_time" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" readonly="readonly" value="<?=$this->record[0]['expected_time']?>"/>
+                    </dd>
+                </dl>
+                <dl class="PublicDl">
+                    <dt>项目简介：</dt>
+                    <dd>
+                        <textarea name="project_des" id="project_des" rows="3" style="width:500px;"><?=$this->record[0]['project_des']?></textarea>
+                    </dd>
+                </dl>
+                
+                <dl class="PublicDl">
+                    <dt>测试情况：</dt>
+                    <dd>
+                        <textarea name="test_case" id="test_case" rows="3" style="width:500px;"><?=$this->record[0]['test_case']?></textarea><em>* </em>
+                    </dd>
+                </dl>
+                <dl class="PublicDl">
+                    <dt>后续安排：</dt>
+                    <dd>
+                        <textarea name="followup" id="followup" rows="3" style="width:500px;"><?=$this->record[0]['followup']?></textarea><em>* </em>
+                    </dd>
+                </dl>
+                <dl class="PublicDl">
+                    <dt>量产后产品是否愿意在实验平台上展示,获取合作机会？</dt>
+                    <dd>
+                        <textarea name="wish" id="wish" rows="6" style="width:500px;"><?=$this->record[0]['wish']?></textarea><em>* </em>
+                    </dd>
+                </dl>
+            </div>
+            <div class="clear"></div>
+            <div class="bottombutton" id="baojiabtn">
+            	 <input type="button" onclick="editAction()" value="提 交" class="btnabig">
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+function editAction() {
+	   var test_case = $('#test_case').val();
+       var followup = $('#followup').val();
+	   var wish = $('#wish').val();
+	   var oa_project = $('input[name="oa_project"]:checked').val();
+	   var oa_project_name = $('#oa_project_name').val();
+	   var expected_time = $('#expected_time').val();
+	   var project_des = $('#project_des').val();
+	   if(oa_project==1 &&　oa_project_name=='') {
+	       alert('请填写OA项目名称');$("#oa_project_name").focus();return;
+        }
+	   	if(test_case=='' || typeof(test_case)=="undefined") {
+	        alert('请填写测试情况');$("#test_case").focus();return;
+        }
+		if(followup=='' || typeof(followup)=="undefined") {
+	       alert('请填写后续安排');$("#followup").focus();return;
+        }
+		if(wish=='' || typeof(wish)=="undefined") {
+	       alert('请填写意愿');$("#wish").focus();return;
+        }
+	   
+	   //提交订单
+	$("#baojiabtn").html('<input type="button" value="提 交 中..." class="btnabig">');
+	   $.ajax({
+		url: '/icwebadmin/OlabAppl/report',
+		data: {'id':'<?=$this->id;?>','oa_project':oa_project,'oa_project_name':oa_project_name,'test_case':test_case,'followup':followup,'wish':wish,'project_des':project_des,'expected_time':expected_time},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0){
+				  location.reload();
+             }
+			 $("#baojiabtn").html('<input type="button" onclick="editAction()" value="提 交" class="btnabig">');
+		}
+		});
+		
+}
+</script>

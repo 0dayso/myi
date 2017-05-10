@@ -1,0 +1,394 @@
+<!--content-->
+<?php
+// 状态
+$statusArr = array (
+		'1' => '<p class="orange_1">待报价</p>',
+		'2' => '<p class="green_1">已报价</p>',
+		'3' => '<p class="orange_2">议价审核中</p>',
+		'4' => '<p class="red_1">审核不通过</p>',
+		'5' => '<p class="green_2">已下单</p>',
+		'6' => '<p class="green_3">成功下单</p>'
+);
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$currencyArr = array('RMB'=>'RMB','USD'=>'USD','HKD'=>'HKD');
+$unitArr = array('RMB'=>'￥','USD'=>'$','HKD'=>'HK$');	
+?>
+<link rel="stylesheet" type="text/css" href="/css/default/myself.css" />
+<div class="w">
+    <div class="breadcrumbs">		
+    	<span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/"><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/center" ><?=$this->translate('Menu_Center')?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><?=$this->translate('Menu_MyInquiry')?></span>        
+    </div>
+</div>
+<div class="blank10"></div>
+<div class="w clearfix ">
+        <!--左边导航-->
+        <?php echo $this->render('center/leftmenu.phtml');?>
+    <div class="fr u_right msg24">
+     <div class="col_main" id="onlineorder">
+            <h1><?=$this->translate('Menu_MyInquiry')?></h1>
+            <div class="order_tab_head">
+                <ul>
+                    <li <?php if(!$this->type) echo 'class="on"';?>><a style="width:110px" href="/center/inquiry">全部询价单<em>(<?=$this->allnum?>)</em><b class="blank3"></b></a></li>
+        <li <?php if($this->type == 'wait') echo 'class="on"';?>><a href="/center/inquiry?type=wait">待报价<em>(<?=$this->waitnum?>)</em><b class="blank3"></b></a></li>
+        <li <?php if($this->type == 'already') echo 'class="on"';?>><a href="/center/inquiry?type=already">已报价<em>(<?=$this->alreadynum?>)</em><b class="blank3"></b></a></li>
+        <li <?php if($this->type == 'verify') echo 'class="on"';?>><a style="width:110px"  href="/center/inquiry?type=verify">议价审核中<em>(<?=$this->verifynum?>)</em><b class="blank3"></b></a></li>
+        <li <?php if($this->type == 'notpass') echo 'class="on"';?>><a style="width:110px"  href="/center/inquiry?type=notpass">审核未通过<em>(<?=$this->notpassnum?>)</em><b class="blank3"></b></a></li>
+        <li <?php if($this->type == 'order') echo 'class="on"';?>><a href="/center/inquiry?type=order">已经下单<em>(<?=$this->ordernum?>)</em><b class="blank3"></b></a></li>
+                </ul>
+            </div>
+            <div class="table_box inquiry " >
+                 <?php if (empty ( $this->inquiry )) { ?><div class="nodata">暂无记录</div> 
+            <?php }else{
+				        foreach ( $this->inquiry as $k => $v ) {
+							$bgclass = '';
+							if ($k % 2 == 1) $bgclass  = 'tabletrf9';
+							$inq_number    = $v['inq_number'];
+							
+							if(isset($v['lastson']) && $v['lastson'] && in_array($v['lastson']['status'],array(2,5,6)))
+							{
+								$v = $v['lastson'];
+							}
+							
+							$inqkey        = $this->fun->encryptVerification($v['id']);
+							$remark        = $v['remark'];
+							$delivery      = $deliveryArr[$v['delivery']];
+							$currency      = $currencyArr[$v['currency']];
+							$created       = date('Y-m-d H:i',$v['created']);
+							$status        = $statusArr[$v['status']];
+							$result_remark = $v['result_remark']==''?'':$v['result_remark'];
+							
+							$modified      = $v['modified']==0?'':date('Y-m-d H:i',$v['modified']);
+							$detaile       = $v['detaile'];
+							
+							//判断是否可以下单，有还没过期的part no
+							$detnum = count ( $detaile );
+							$can_order = 0;
+							for($j = 0; $j < $detnum; $j ++) {
+								if ($detaile [$j] ['result_price'] > 0 && $detaile [$j] ['expiration_time'] > time ()) {
+									$can_order ++;
+							}
+						}
+						
+						$pdfpart = '';
+						for($j=0;$j<$detnum;$j++){
+							if ($detaile [$j] ['result_price'] > 0 && $detaile [$j] ['expiration_time'] > time ()) {
+								 $pdfpart .= '_'.$detaile[$j]['id'];
+							}
+						}
+					?>
+                <div class="A_order" style="z-index:<?=(200-$k)?>">
+                    <div class="numberbox">
+                    	<em class="emtrianglebottom5px"></em>
+                        <p>询价编号：<span class="number"><?=$inq_number?></span>
+                        
+                        	<span class="time">交货地：<?php echo $delivery;?></span>
+                            <span class="time">结算货币：<strong class="en"><?php echo $currency;?></strong></span>
+                            <div class="inquiry_status1" ><?php echo $status;?></div>					
+                        </p>  					                                
+                        <div class="orderbtn">
+                <?php
+				if($v['status']==1 && $v['oa_status']==100){
+					echo '<a href="'.$this->url(array('controller'=>'inquiry', 'action'=>'edit', 'inqkey'=>$inqkey)).'" class="button">修改</a>';
+				}
+                if($can_order > 0 && in_array($v['status'],array(2,3,5,6))){
+                    echo '<a href="'.$this->url(array('controller'=>'inquiryorder', 'action'=>'index', 'inqkey'=>$inqkey)).'" class="button">下订单</a>';  
+              echo '<a href="/inquiryorder/createpdf?pdfkey='.md5(session_id()).'&items='.$inqkey.$pdfpart.'" target="_blank" class="button">报价单</a>';
+                }
+				if($v['re_inquiry']==0 && $v['status']==2 && count(array_filter(explode(',',$v['son_inquiry']))) < 1){
+					 echo '<a href="javascript:" onclick=againInquiry("'.$v['id'].'")>再议价</a>';
+				}?>
+                           <?php if($v['son_inquiry'] || $v['father_inquiry']){ ?>
+							<a href="javascript:" onclick="viewInquiry('<?=$v['id']?>')"  class="button">查看历史</a>
+							<?php }?>
+                        </div>	
+                     </div>
+                     
+                     <!-- 第一次询价-->
+                     <?php if(empty($v['lastson'])){
+					 	   if(!empty($v['father'])){
+						   		$title1= '再议价';
+								$title2= '再报价';
+						   }else{
+						        $title1= '询价';
+								$title2= '报价';
+							}
+					 ?>
+                        <div class="inquirystep three">
+                         <div class="gray green forestart">
+                        	<s></s>
+                        	<h4><?=$title1?></h4>
+                            <div class="inquiryinfo">
+                            	<p class="time"><?php echo $created;?></p>
+                                <?php if($remark){?>
+          						<a href="javascript:" class="tipa">询价说明<b class="tipicon"></b>
+                                    <div class="bubblebox heiauto ">
+                                        <div class="uparrow"></div>
+                                        <div class="popbox">
+                                           <div class="popcon clearfix" >
+                                               <p><?php echo nl2br($remark);?></p>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                </a>
+                                <?php }?>
+                            </div>
+                        </div>
+                        
+                        <div class="gray <?php if(in_array($v['status'],array(1,3))) echo 'orange'; elseif(!in_array($v['status'],array(4))) echo 'green';?> fore">
+                        	<s></s>
+                        	<h4><?=$title2?></h4>
+                            <div class="inquiryinfo">
+                            	<p class="time"><?php echo $modified;?></p>
+                                <?php if($result_remark){?>
+          						<a href="javascript:" class="tipa">报价说明<b class="tipicon"></b>
+                                    <div class="bubblebox heiauto ">
+                                        <div class="uparrow"></div>
+                                        <div class="popbox">
+                                           <div class="popcon clearfix" >
+                                               <p><?php echo nl2br($result_remark);?></p>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                </a>
+                                <?php }?>
+                            </div>
+                        </div>
+                         <div class="gray <?php if($v['status']==2) echo 'orange';elseif($v['status']>=5) echo 'green';?>  foreend">
+                        	<s></s>
+                        	<h4>下单</h4>
+                            <div class="inquiryinfo">
+                            	<p class="time"><?=$v['order_time']==0?'':date('Y-m-d H:i',$v['order_time'])?></p>
+                            </div>
+                        </div>
+                        </div>
+                        <?php }else{?>
+                        <!-- 再议价-->
+                         <div class="inquirystep five">
+                        <div class="gray green forestart">
+                        	<s></s>
+                        	<h4>询价</h4>
+                            <div class="inquiryinfo">
+                            	<p class="time"><?php echo $created;?></p>
+								<?php if($remark){?>
+								<a href="javascript:" class="tipa">询价说明<b class="tipicon"></b>
+                                    <div class="bubblebox heiauto ">
+                                        <div class="uparrow"></div>
+                                        <div class="popbox">
+                                           <div class="popcon clearfix" >
+                                               <p><?php echo nl2br($remark);?></p>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                </a>
+                                <?php }?>
+                            </div>
+                        </div>
+                        <div class="gray <?=$v['status']==1?'orange':'green'?> fore">
+                        	<s></s>
+                        	<h4>报价</h4>
+                            <div class="inquiryinfo">
+                            	<p class="time"><?php echo $modified;?></p>
+                                <?php if($result_remark){?>
+          						<a href="javascript:" class="tipa">报价说明<b class="tipicon"></b>
+                                    <div class="bubblebox heiauto ">
+                                        <div class="uparrow"></div>
+                                        <div class="popbox">
+                                           <div class="popcon clearfix" >
+                                               <p><?php echo nl2br($result_remark);?></p>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                </a>
+                                <?php }?>
+                            </div>
+                        </div>
+                     	<div class="gray green fore">
+                        	<s></s>
+                        	<h4>再议价</h4>
+                            <div class="inquiryinfo">
+                            	<p class="time"><?=date('Y-m-d H:i',$v['lastson']['created'])?></p>
+                                <?php if($v['lastson']['remark']){?>
+          						<a href="javascript:" class="tipa">询价说明<b class="tipicon"></b>
+                                    <div class="bubblebox heiauto ">
+                                        <div class="uparrow"></div>
+                                        <div class="popbox">
+                                           <div class="popcon clearfix" >
+                                               <p><?php echo nl2br($v['lastson']['remark']);?></p>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                </a>
+                                <?php }?>
+                            </div>
+                        </div>
+                        
+                        <div class="gray <?php if($v['lastson']['status']==3) echo 'orange';else echo 'green';?> fore">
+                        	<s></s>
+                        	<h4>再报价</h4>
+                            <div class="inquiryinfo">
+                            	<p class="time"><?=$v['lastson']['modified']==0?'':date('Y-m-d H:i',$v['lastson']['modified'])?></p>
+                                <?php if($v['lastson']['result_remark']){?>
+          						<a href="javascript:" class="tipa">报价说明<b class="tipicon"></b>
+                                    <div class="bubblebox heiauto ">
+                                        <div class="uparrow"></div>
+                                        <div class="popbox">
+                                           <div class="popcon clearfix" >
+                                               <p><?php echo nl2br($v['lastson']['result_remark']);?></p>
+                                            </div>
+                                        </div>
+                                    </div>	
+                                </a>
+                                <?php }?> 
+                            </div>
+                        </div>
+                        
+                        <div class="gray <?php if($v['lastson']['status']==2) echo 'orange';elseif($v['status']>=5) echo 'green';?>  foreend">
+                        	<s></s>
+                        	<h4>下单</h4>
+                            <div class="inquiryinfo">
+                            	<p class="time "><?=$v['order_time']==0?'':date('Y-m-d H:i',$v['order_time'])?></p>
+                            </div>
+                        </div></div>
+                        <?php }?>
+                     
+					 <table width="100%" cellpadding="0" cellspacing="0" class="subtablei table">
+                                  <tbody>
+                                      <tr>
+                                      	 <th width="150">型号</th>
+                                          <th width="60">品牌</th>
+                                          <th width="60">标准包装</th>
+                                          <th width="60">采购数量</th>
+                                          <th width="60">年用量</th>
+                                          <th width="60">目标单价</th>
+                                          <th width="65" class="ourreply">标准交期</th>
+                                          <th width="90" class="ourreply">最少起订量</th>
+                                         <th width="90" class="ourreply"><?=($v['currency']=='RMB'?'含税':'').'单价('.$v['currency'].')'?></th>
+                                          <th width="80" class="ourreply">有效期</th>
+                                          <th width="60" class="ourreply">备注</th>
+                                          </tr>
+                                      <?php
+					  for($j=0;$j<$detnum;$j++){
+							$detspan = "detspan_".$v['id'];
+							$hideclass = $moretr = '';
+							if($j>2){
+								$hideclass = 'class="more'.$v['id'].' hide"';
+						$moretr    = '<tr class="moretr">
+                        <td colspan="11"><span id="morespan'.$v['id'].'"><a href="javascript:;" onclick="slideMore('.$v['id'].',1)"><img src="/css/img/more2.png"  class="png_ie6">更 多</a></span></td>
+                         </tr>';
+							}
+					  ?>
+                      <tr <?=$hideclass?>>
+                        <td><p><a href="/item-b<?=$detaile[$j]['manufacturer']?>-<?=($detaile[$j]['part_level3']?$detaile[$j]['part_level3']:$detaile[$j]['part_level2'])?>-<?=$detaile[$j]['part_id']?>-<?=$this->fun->filterUrl($detaile[$j]['part_no'])?>.html" target="_blank" class="model"><?=$detaile[$j]['part_no']?></a></p></td>
+                        <td><?=$detaile[$j]['brand']?></td>
+                        <td><?=$detaile[$j]['mpq']?></td>
+                        <td><?=$detaile[$j]['number']?></td>
+                        <td><?=$detaile[$j]['expected_amount']?$detaile[$j]['expected_amount']:'--'?></td>
+                        <td class="fontred"><?=$detaile[$j]['price']?$unitArr[$v['currency']].$detaile[$j]['price']:'--'?></td>
+                        <td class="ourreply"><?=$detaile[$j]['result_price']?($detaile[$j]['inq_lead_time']?$detaile[$j]['inq_lead_time']:$detaile[$j]['lead_time']):'--'?></td>
+                        <td class="ourreply"><?=$detaile[$j]['result_price']?($detaile[$j]['pmpq']==0?'--':$detaile[$j]['pmpq']):'--';?></td>
+                        <td class="fontred ourreply"><?=$detaile[$j]['result_price']==0?'--':$unitArr[$v['currency']].$detaile[$j]['result_price']?></td>
+                        <td class="time ourreply"><?php if($detaile[$j]['result_price']>0){if($detaile[$j]['expiration_time']<time() && $detaile[$j]['expiration_time']>0){?>
+                            <font color="#FF0000">
+                            <?=date('Y-m-d',$detaile[$j]['expiration_time']);?>
+                            </font>
+                            <?php }else{ echo $detaile[$j]['expiration_time']==0?'--':'<font color="009944">'.date('Y-m-d',$detaile[$j]['expiration_time']).'</font>';}
+							}else echo '--';?></td>
+                        <td class="ourreply">
+                        <?php if($detaile[$j]['result_remark']){?>
+						<a href="javascript:" class="tipa desshow"><b class="tipicon"></b>
+                            <div class="bubblebox autobox hide">
+                                  <div class="uparrow"></div>
+                                  <div class="popbox">
+                                           <div class="popcon clearfix" >
+                                               <p><?=$detaile[$j]['result_remark']?></p>
+                                            </div>
+                                        </div>
+                           </div>	
+                         </a>
+                        <?php }else echo '--';?></td>
+                      </tr>                 
+					  <?php }
+					  	echo $moretr;
+					  ?> 
+                      </tbody>
+                     </table>
+                </div>
+                
+                <?php }}?>
+            </div> 
+            <div class="pagination fr"><?=$this->page_bar;?></div>
+        </div>
+       </div>
+		
+</div>
+<div class="clr"></div>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+$(function(){
+    //查看备注
+	var tab = $(".desshow");
+	tab.hover(function(){
+		$(this).find(".autobox").removeClass("hide");
+	},function(){
+		$(this).find(".autobox").addClass("hide");
+	});
+})
+function slideMore(id,type){
+   if(type == 1)
+   {
+    $(".more"+id).removeClass("hide");
+    $("#morespan"+id).html('<a href="javascript:;" onclick="slideMore('+id+',2)"><img src="/css/img/more.png"  class="png_ie6">隐  藏</a>');
+   }else{
+   	$(".more"+id).addClass("hide");
+    $("#morespan"+id).html('<a href="javascript:;" onclick="slideMore('+id+',1)"><img src="/css/img/more2.png"  class="png_ie6">更  多</a>');
+   }
+}
+
+function showinquiry(id)
+{
+  var trobj = document.getElementById("tr_show_inquiry_"+id);
+  var trtmp = false;
+  if(trobj.style.display=='none'){trtmp=true;}
+  
+  //重置所有
+  $(".tr_show_inquiry").css('display','none');
+  $(".hover_tr").removeClass("hover_tr_color");
+  $(".show_but").html('<a href="javascript:" >查看报价</a>');
+  
+  //处理选择行
+  if(trobj.style.display=='none' && trtmp){
+     //兼容IE6
+     if(!!window.ActiveXObject&&!window.XMLHttpRequest) trobj.style.display = 'block';
+	 else trobj.style.display = 'table-row';
+	 $("#ftr_"+id).addClass("hover_tr_color");
+     $("#tr_show_inquiry_"+id).addClass("hover_tr_color");
+	 document.getElementById("show_but_"+id).innerHTML ='<a href="javascript:" >隐藏</a>';
+  }else trobj.style.display = 'none';
+}
+//查看询价历史
+function viewInquiry(id) {
+	$.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   if(arr.code==0)
+			   {
+					$.openPopupLayer({
+						name: "inquiryBox",
+						url: "/inquiry/view?id="+id
+					});
+			   }else if(arr.code==100){
+			   	  $.openPopupLayer({
+		             name: "loginBox",
+		             target: "login_box"
+	              });
+			   }else if(arr.code==200){
+			   	   window.location.href ="/user/verification";
+			   }
+            }
+    });
+}
+</script>

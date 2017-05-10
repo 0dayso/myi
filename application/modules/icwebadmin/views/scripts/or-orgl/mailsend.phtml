@@ -1,0 +1,70 @@
+<div class="popup" style="width:770px;margin:10px 100px ">
+    <div class="popup-header">
+    <h2>审核订单 订单编号#：<?=$this->salesnumber?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('viewsoBox');" title="关闭" class="dialogBoxClose">关闭</a>
+     </div>
+    <div class="popup-body">
+        <!--订单详情-->
+        <div id='soinfo'  style="height:900px;"><img src="/images/admin/ajax-loader.gif" /></div>
+    	<!-- end 订单详情-->
+        
+        <div class="passorno ">
+            <dl class="PublicDl">
+                <dt style="width:100px;">邮件类型：</dt>
+                <dd>
+                    <label><input type="radio" value="1" name="mailtype" checked="checked"/>正常邮件</label>
+                </dd>
+                <dd>
+                   <label><input type="radio" value="2" name="mailtype" />内部订单邮件</label>
+                </dd>
+                <dd>
+                   <font color="#FF0000">说明：内部订单邮件一般用于样片申请订单</font>
+                </dd>
+            </dl>
+        </div>
+        <div class="clear"></div>
+        <div class="bottombutton">
+            <input type="button"  class="btnabig"  value="确认" onclick="mailsendAction('<?=$this->id?>','<?=$this->salesnumber?>','no')"/>
+            <?php if($this->soinfo['invoiceid']){?>发票信息有误？<a href="javascript:;" onclick="openbox('<?=$this->indexurl?>/editinvoice/invoiceid/<?=$this->soinfo['invoiceid']?>')">点击修改</a><?php }?>
+        </div>
+<div class="clear"></div>
+    </div>
+</div>
+<script language="javascript">
+function mailsendAction(id,salesnumber){
+	var mailtype_obj = document.getElementsByName("mailtype");
+	var mailtype  ='';
+	for (var i=mailtype_obj.length-1;i>=0;i--)
+	{
+		if(mailtype_obj[i].checked)  mailtype = mailtype_obj[i].value;
+    }
+    $.closePopupLayer('viewsoBox');
+ 	openeamil();
+	if("<?=$this->soinfo['so_type']?>"=="102"){
+		$.ajax({
+				url: '/icwebadmin/OrOrgl/mailsendnxp',
+				data: {'id':id,'salesnumber':salesnumber,'mailtype':mailtype},
+				type: 'post',
+				dataType: 'json',
+				success: function(arr) {
+					$.closePopupLayer('myopeneamil');
+					if(arr.code == 0) {alert(arr.message);location.reload();}
+					else alert(arr.message);
+				}
+		});
+	}else{
+		$.ajax({
+				url: '/icwebadmin/OrOrgl/mailsend',
+				data: {'id':id,'salesnumber':salesnumber,'mailtype':mailtype},
+				type: 'post',
+				dataType: 'json',
+				success: function(arr) {
+					$.closePopupLayer('myopeneamil');
+					if(arr.code == 0) {alert(arr.message);location.reload();}
+					else alert(arr.message);
+				}
+		});
+	}
+}
+getorder('<?=$this->salesnumber?>');
+</script>

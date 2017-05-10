@@ -1,0 +1,116 @@
+
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+      <h2>编辑产品分类 编号：<?=$this->category['id']?></h2>
+      <a href="javascript:;" onclick="$.closePopupLayer('addBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body">
+      <!-- 需要填写的区域-->
+      <table width="700px" border="0" cellpadding="1">
+        <tr>
+          <td height="10" colspan="3" align="center"><div id="message_sess_son" style="display:none" class="message_sess"> <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span> <span id="alert_message_son"></span> </div></td>
+        </tr>
+        <tr>
+          <td colspan="2"><table bgcolor="#CCCCCC" width="100%">
+              <tr>
+                <td width="50" align="right"><font color="#666600"><b>状态 : </b></font></td>
+                <td colspan="3" align="left"><input type="radio" name="status" id="status1" value="1" <?=$this->category['status']?'checked':''?> />
+                  <label for="status1"><font color="#339900"><b>ON</b></font></label>
+                  
+                  <input type="radio" id="status2" name="status" value="0" <?=$this->category['status']?'':'checked'?>/>
+                  <label for="status2"><font color="#CC3333"><b>OFF</b></font></label>
+                </td>
+              </tr>
+              <tr>
+                <td width="50" align="right"><font color="#666600"><b>菜单显示 : </b></font></td>
+                <td colspan="3" align="left"><label><input type="radio" name="show_home" value="1" <?=$this->category['show_home']?'checked':''?> /><font color="#339900"><b>是</b></font></label>
+                  
+                  <label><input type="radio" name="show_home" value="0" <?=$this->category['show_home']?'':'checked'?>/><font color="#CC3333"><b>否</b></font></label>
+                </td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><font color="#666600"><b>分类级别: </b></font></td>
+                <td colspan="3"  align="left">
+                 <select name="level" id="level">
+    	         <option value="1" <?=$this->category['level']==1?'selected':''?>>一级</option>
+                 <option value="2" <?=$this->category['level']==2?'selected':''?>>二级</option>
+                 <option value="3" <?=$this->category['level']==3?'selected':''?>>三级</option>
+                 </select>
+                </td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><font color="#666600"><b>父级分类id : </b></font></td>
+                <td colspan="3"  align="left">
+                <input type="text" name="parentid" id="parentid" onkeyup="<?=ISNUMBER?>" value="<?=$this->category['parent_id']?>"/></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><b><font color="#666600">名称 : </font><font color="#FF0000">*</font></b></td>
+                <td align="left" colspan="3"><input type="text" name="ptname" id="ptname" value="<?=$this->category['name']?>"/></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><b><font color="#666600">英文名称 : </font></b></td>
+                <td align="left" colspan="3"><input type="text" name="name_en" id="name_en" value="<?=$this->category['name_en']?>"/></td>
+              </tr>
+              <tr>
+                <td width="126" align="right"><font color="#666600"><b> 排序 : </b></font></td>
+                <td align="left" colspan="3"><input type="text" name="ptorder" id="ptorder" value="<?=$this->category['displayorder']?>" onKeyUp="<?php echo ISNUMBER;?>"/></td>
+              </tr>
+              <tr>
+                <td align="center" colspan="2"><input type="button"  value="更 新" onclick="editaction()"/>
+                </td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+function editaction()
+{
+	var statusobj = document.getElementsByName('status');
+	for(i=0;i<statusobj.length;i++){
+	  if(statusobj[i].checked){
+	     var status = statusobj[i].value;
+	     break;
+	  }
+	}
+	var show_homeobj = document.getElementsByName('show_home');
+	for(i=0;i<show_homeobj.length;i++){
+	  if(show_homeobj[i].checked){
+	     var show_home = show_homeobj[i].value;
+	     break;
+	  }
+	}
+	
+	var level = document.getElementById('level').value;
+	var parentid  = document.getElementById('parentid').value;
+	if(level != 1) {if(parentid==''){alert("请填写父级分类id");return;}}
+	var ptname    = document.getElementById('ptname').value;
+	if(ptname==''){alert("请填写名称");return;}
+	var name_en    = document.getElementById('name_en').value;
+	var ptorder   = document.getElementById('ptorder').value;
+	$.ajax({
+            url: '<?php echo $this->editurl;?>',
+            data: {'id':<?=$this->category['id']?>,'status':status,'level':level,'parentid':parentid,'ptname':ptname,'name_en':name_en,'ptorder':ptorder,'show_home':show_home},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+              if(arr.code == 0){
+            	  alert(arr.message);
+				  location.reload();
+               }else{
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			   }
+			}
+	});
+}
+function selectparent(){
+	$.openPopupLayer({
+        name:'selectBox',
+        url:'<?php echo $this->selectparenturl;?>'
+    });
+}
+</script>

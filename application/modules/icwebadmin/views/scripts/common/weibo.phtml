@@ -1,0 +1,36 @@
+<div class="control-group">
+    <label class="control-label" for="contents">同步到微博：<label><input type="checkbox" name="sinaweibo" checked="checked" /><img src="/images/default/sinaweibo.png" />新浪</label><br/>
+    <label><input type="checkbox" name="qqweibo" checked="checked" /><img src="/images/default/qqweibo.png" />腾讯</label>
+    </label>
+    <div class="controls">
+      <label><input type="checkbox" name="weibopic" checked="checked" />将图片作为微博图片发布</label>
+      <br/>
+      内容：<textarea name="weibocontent" id="weibocontent" rows="3" style="width:500px;" onKeyUp="strLength('my_strlength','weibocontent',this.value,110)"></textarea>提示：内容为空不会发送微博
+      <br/>
+      <span id="my_strlength">还能输入<em>110</em>个字</span>
+      
+    </div>
+  </div>
+<script language="javascript" type="text/javascript">
+function strLength(strlength,id,v,num)
+{	
+	var strl=num-_length(v);
+	if(strl>=0 )
+	{
+		document.getElementById(strlength).innerHTML="还能输入<em>"+strl+"</em>字";
+		document.getElementById(id).style.background="#FFFFFF";
+	}
+	else
+	{
+		document.getElementById(strlength).innerHTML="已经超过<em style=\"color:#FF0000\">"+Math.abs(strl)+"</em>字";
+		document.getElementById(id).style.background="#FFD9D9";
+	}
+}
+function _length(str){ 
+	var len=0; 
+	for(var i=0;i<str.length;i++){
+		if(str.charAt(i)>'~'){len+=2;}else{len++;}
+	}
+	return Math.ceil(len/2); 
+}
+</script>

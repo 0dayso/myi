@@ -1,0 +1,23 @@
+<!--确认转账-->
+<?php $currency = array('RMB'=>'￥','USD'=>'$');?>
+<div class="poptit"><span class="titbg1ts">转账信息</span>
+<input type="button" title="关闭" class="closebtn" onclick="$('#personPopupContainer'+<?=$this->so['id']?>).css('display', 'none');">
+  <h1>订单号:<span class="number"><?=$this->so['salesnumber'];?></span></h1>
+</div>
+<div class="popcon clearfix" id="transferinfo<?=$this->so['salesnumber'];?>" >
+	<table cellpadding="0" cellspacing="0" class="table01">
+        <tbody>
+        <tr><td class="tableti">转账金额：</td><td class="price"><?=$currency[$this->so['currency']].$this->so['total'];?></td></tr>
+        <?php if($this->so['currency']=='RMB'){?>
+        <tr><td class="tableti">户名：</td><td><?=BANK_COM?></td></tr>
+        <tr><td  class="tableti">帐号：</td><td><?=BANK_ACCOUNT?></td></tr>
+        <tr><td  class="tableti">开户行：</td><td><?=BANK_NAME?></td></tr>
+        <?php }elseif($this->so['currency']=='USD'){?>
+        <tr><td class="tableti">户名：</td><td><?=BANK_HK_COM?></td></tr>
+        <tr><td  class="tableti">帐号：</td><td><?=BANK_HK_ACCOUNT?></td></tr>
+        <tr><td  class="tableti">开户行：</td><td><?=BANK_HK_NAME?></td></tr>
+        <?php }?>
+        <!--<tr><td  class="tableti">汇款识别码：</td><td><?=$this->so['salesnumber'];?></td>-->
+        <tr height="25"><td colspan="2" align="center"><a href="#" class="button" onclick="javascrīpt:printDiv('transferinfo<?=$this->so['salesnumber'];?>')" target="_self">打 印</a></td></tr>
+        </tbody></table>
+</div>

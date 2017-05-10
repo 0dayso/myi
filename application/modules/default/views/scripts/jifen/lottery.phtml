@@ -1,0 +1,311 @@
+<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+<?php echo $this->render('jifen/menu.phtml');?>
+<!-------------------------------------------------活动主体------------------------------------------------->
+<style>
+	.ly-plate{
+		position:relative;
+		width:430px;
+		height:433px;
+		margin:0 auto;
+	}
+	.rotate-bg{
+		width:430px;
+		height:430px;
+		background:url(/js/lottery/rotate/ly-plate.png) no-repeat;
+		position:absolute;
+		top:1px;
+		left:0
+	}
+	.ly-plate_up{ background:url(/js/lottery/rotate/ly-plate_up.png) no-repeat;
+		width:106px;
+		height:106px;
+		position:absolute;
+		top:50%; margin-top:-53px;
+		left:50%;margin-left:-53px;cursor: pointer;}
+	.ly-plate div.lottery-star{
+		width:250px;
+		height:250px;
+		position:absolute;
+		top:50%; margin-top:-125px;
+		left:50%;margin-left:-125px;
+		outline:none; 
+	}
+	.ly-plate div.lottery-star #lotteryBtn{
+		cursor: pointer;
+		position: absolute;
+		top:0;
+		left:0;
+	}
+</style>
+
+
+<!-------------------------------------------------活动主体------------------------------------------------->
+<div class="con-full pos-re huodong">
+	<br/>
+    
+    <div class="huodongbox">
+    	<div class="w clearfix pos-re"> 
+    		<h1>积分抽大奖，赶紧试试自己的手气吧!</h1>
+            
+            <div class="dqjf">
+            	<p class="dqjfn">您的当前积分：</p>
+                <?php if(isset($_SESSION['userInfo']['unameSession'])){?>
+                <p class="dqjffz userscore"><?=$this->myscore?></p>
+				<?php }else{?>
+				<p class="dqjffz"><a href="javascript:;" onClick="openlogin()">请登录</a></p>
+				<?php }?>
+            </div>
+            
+            <div class="hdzp">
+            	<div class="ly-plate">
+                    <div class="rotate-bg"></div>
+                    <div class="lottery-star"><img src="/js/lottery/rotate/rotate-static.png" id="lotteryBtn" alt="img"></div> <!--加上id后ie10 图片不显示-->
+                    <div class="ly-plate_up" id="lotteryAction"></div>
+                </div>
+            </div>
+
+<script src="/js/lottery/rotate/jQueryRotate.2.2.js" type="text/javascript"></script>
+<script src="/js/lottery/rotate/jquery.easing.min.js" type="text/javascript"></script>
+<script>
+var closerotate = false;
+var peplenum =  <?=(int)($this->joinnum)?>;
+
+function lotteryresult(mess,mess2,type,id,t){
+	$.openPopupLayer({
+		name: "lotteryResult",
+		url: "/jifen/lotteryresult?mess="+encodeURI(mess)+"&mess2="+encodeURI(mess2)+"&type="+type+"&id="+id
+	});
+	closerotate = false;
+	    //更新积分
+	   upscore();
+}
+$(function(){
+	var timeOut = function(text){  //超时函数
+		$("#lotteryBtn").rotate({
+			angle:0, 
+			duration: 10000, 
+			animateTo: 2160, //这里是设置请求超时后返回的角度，所以应该还是回到最原始的位置，2160是因为我要让它转6圈，就是360*6得来的
+			callback:function(){
+				alert(text);
+				//解锁抽奖
+				closerotate = false;
+			}
+		}); 
+	}; 
+	var rotateFunc = function(angle,text,text2,type,id){  //awards:奖项，angle:奖项对应的角度
+		$('#lotteryBtn').stopRotate();
+		$("#lotteryBtn").rotate({
+			angle:0, 
+			duration: 5000, 
+			animateTo: angle+2160, //angle是图片上各奖项对应的角度，1440是我要让指针旋转4圈。所以最后的结束的角度就是这样子^^
+			callback:function(){
+				lotteryresult(text,text2,type,id);
+				//解锁抽奖
+			}
+		}); 
+	};
+	$("#lotteryAction").click(function(){
+            $.ajax({
+            url: '/index/checklogin',
+            data: {},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			   if(arr.code==0)
+			   {
+			        if(closerotate) {return;};
+			      	$.ajax({
+					url: '/jifen/lotteryaction',
+					data: {},
+					type: 'post',
+					dataType: 'json',
+					timeout: 5000, 
+					error: function(){timeOut('网络超时');}, 
+					success: function(arr) {
+						if(arr.code==500){ alert(arr.message);return;}
+						if(arr.code==100){
+							openbox('/jifen/alertbox?t=noscore');return;
+						}else if(arr.code==101){
+						   $.openPopupLayer({
+		                         name: "lotteryResult",
+		                         url: "/jifen/lotteryresult?mess="+encodeURI(arr.mess2)+"&t=1"
+	                        });
+							return;
+						}else if(arr.code==1){
+							rotateFunc(290,arr.prizemessage,arr.mess2,arr.code,arr.logid)
+						}else if(arr.code==2){
+							rotateFunc(60,arr.prizemessage,arr.mess2,arr.code,arr.logid)
+						}else if(arr.code==3){
+							rotateFunc(205,arr.prizemessage,arr.mess2,arr.code,arr.logid)
+						}else if(arr.code==4){
+							rotateFunc(25,arr.prizemessage,arr.mess2,arr.code,arr.logid)
+						}else if(arr.code==5){
+							rotateFunc(160,arr.prizemessage,arr.mess2,arr.code,arr.logid)
+						}else if(arr.code==6){
+							rotateFunc(250,arr.prizemessage,arr.mess2,arr.code,arr.logid)
+						}else if(arr.code==0){
+						    var angle = [110,340];
+							angle = angle[Math.floor(Math.random()*angle.length)];
+							rotateFunc(angle,arr.prizemessage,arr.mess2);
+						}else{
+							alert(arr.mess2);return;
+							//location.reload();
+						}
+						//增加参加人数
+						peplenum++;
+						$('.nopeple').html(pad(peplenum, 5));
+						closerotate = true; 
+					}
+	                });
+				    
+			      }else if(arr.code==100){
+			   	    $.openPopupLayer({
+		               name: "loginBox",
+		               target: "login_box"
+	                 });
+			       }else if(arr.code==200){
+			   	      window.location.href ="/user/verification";
+			      }
+                }
+             });
+        });
+})
+
+</script>
+<script type="text/javascript">
+
+/** 
+ *  
+ * jQuery scrollQ plugin li上下滚动插件
+ * @name jquery-scrollQ.js 
+ * @author Q 
+ * @date 2012-03-23 
+ * line 显示li行数 
+ * scrollNum 每次滚动li行数
+ * scrollTime 滚动速度 单位毫秒
+ * 
+ */  
+(function($){  
+    var status = false;  
+    $.fn.scrollQ = function(options){  
+        var defaults = {  
+            line:8,  
+            scrollNum:1,  
+            scrollTime:5000
+        }
+		var options=jQuery.extend(defaults,options);
+		var _self = this;
+		return this.each(function(){  
+			$("li",this).each(function(){
+				$(this).css("display","none");
+			})
+			$("li:lt("+options.line+")",this).each(function(){
+				$(this).css("display","block");
+			})
+			function scroll() {
+				for(i=0;i<options.scrollNum;i++) {
+					var start=$("li:first",_self);
+					start.fadeOut(100);
+					start.css("display","none");
+					start.appendTo(_self);
+					$("li:eq("+(options.line-1)+")",_self).each(function(){
+						$(this).fadeIn(500);
+						$(this).css("display","block");
+					})
+				}
+			}
+			var timer;
+			timer = setInterval(scroll,options.scrollTime);
+			_self.bind("mouseover",function(){
+				clearInterval(timer);
+			});
+			_self.bind("mouseout",function(){
+				timer = setInterval(scroll,options.scrollTime);
+			});
+			
+		});
+    }
+})(jQuery); 
+$(document).ready(function(){
+<?php if(count($this->winners)>8){?>
+ $("#sItem").scrollQ({  
+            line:8,  
+            scrollNum:1,  
+            scrollTime:6000
+        });
+<?php }?>
+ $("#sItem2").scrollQ({  
+            line:<?=(count($this->winners)>8?8:(16-count($this->winners)))?>,  
+            scrollNum:1,  
+            scrollTime:5000
+        });
+});
+</script>
+            <div class="hdno">
+            <?php if($this->winners){?>
+            	<ul class="bja" id="sItem" <?php if(count($this->winners)>8) echo 'style="overflow:hidden; height:260px;"';?>>
+                    <?php foreach($this->winners as $winners){ //$winners['uname']='中国电子科技有限公司';
+					  $showtitle = $winners['uname'].' 抽中：'.$winners['temp4'];
+					?>
+                	<li style="display: block;" title="<?=$showtitle?>"><span class="fl">
+					<?php if($winners['temp5']<3 && $winners['temp5']>0) echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';?><?=$this->fun->utf_substr($winners['uname'],14)?></span>
+                    <span class="fr"><?=$this->fun->utf_substr($winners['temp4'],20)?>
+                    </span><?php if($winners['temp5']<3 && $winners['temp5']>0) echo '<i class="hdnoicon"></i>';?>
+                     <?php }?>
+                </ul>
+             <?php }?>
+                <ul class="sja" id="sItem2">
+                <?php if($this->winners2){foreach($this->winners2 as $winners2){//$winners2['uname']='华为科技有限公司';
+				$winners2['temp4'] = str_replace("积分奖励", "", $winners2['temp4']);
+				?>
+	                <li style="display: block;height: 15px;" title="<?=time_tran($winners2['created']).' '.$winners2['uname'].' 抽中：'.$winners2['temp4']?>"><span class="fl"><?=$this->fun->utf_substr($winners2['uname'],14)?></span>
+                    <span class="fr"><?=$this->fun->utf_substr($winners2['temp4'],20)?> &nbsp; &nbsp;<?=time_tran($winners2['created'])?></span>
+                  <?php }}?>
+                  </ul>
+            </div>
+            <div class="hdrule">
+            	<h2>抽奖活动规则</h2>
+                <ol>
+                	<li><span>1.</span>凡是已经注册的老用户及活动期间注册的新用户，均可参与本次活动。</li>
+     				<li><span>2.</span>成功邀请5位好友注册的用户，每天有<b>1</b>次免积分抽奖机会，当天超出1次后，每参加一次需扣积分10分。<a href="/jifen/rule" style="color: #2970fe;">积分规则</a></li>
+     				<li><span>3.</span>尚未成功推荐5位好友注册的用户，不享有免积分抽奖机会，每参加1次需扣除积分10分。</li>
+                    <li><span>4.</span>中奖后，请于弹出框中输入详细的收货信息，活动结束后，我们将通过您提供的信息发放奖品。</li>
+                </ol>
+            </div>
+            <div class="nopeple"><?=$this->joinnum?></div>
+        </div>
+    </div>
+
+
+<div class="w" style="height:950px;">
+    <wb:topic uid="2975717344" topmid="AiF2H56ZL" column="y" border="n" width="990" height="1000" tags="IC%E6%98%93%E7%AB%99" language="zh_cn" version="base" appkey="3ud7XT" footbar="y" filter="n" ></wb:topic>
+    </div>
+
+	<div class="lipinbox">
+    	<div></div>
+        
+        
+    </div>
+    
+    
+    
+    
+</div>
+<?php function time_tran($the_time){
+   $now_time = time();
+   $show_time = $the_time;
+   $dur = $now_time - $show_time;
+   if($dur < 60){
+    return $dur.'秒前';
+   }else{
+    if($dur < 3600){
+     return floor($dur/60).'分钟前';
+    }else{
+     if($dur < 86400){
+      return floor($dur/3600).'小时前';
+     }else{
+       return floor($dur/86400).'天前';
+     }
+    }
+   }
+}?>

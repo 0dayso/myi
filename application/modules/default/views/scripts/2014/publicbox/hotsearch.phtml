@@ -1,0 +1,14 @@
+<div class="dBox p15">
+    <div class="dBoxTitleS">热门型号</div>
+    <div class="dBoxConS">
+      <ul class="unstyled">
+      <?php foreach($this->searchRight['sq'] as $k=>$sq){
+				       $url = '/item-b'.$sq['manufacturer'].'-'.$sq['part_level2'].'-'.$sq['id'].'-'.$this->fun->filterUrl($sq['part_no']).'.html';
+					  
+				  ?>
+                  <li class="fore<?=$k+1?>"> <a href="<?=$url?>" title="<?=$sq['part_no']?>"><?=$sq['part_no']?></a></li>
+                  <?php }?>
+      </ul>
+      <div class="clr"></div>
+    </div>
+  </div>

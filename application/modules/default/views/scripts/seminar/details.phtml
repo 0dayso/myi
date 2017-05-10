@@ -1,0 +1,113 @@
+<link rel="stylesheet" type="text/css" href="/css/default/scheme.css"/>
+<div class="w">
+    <div class="breadcrumbs">		
+    	<span><?=$this->translate('Menu_CurrentPosition')?></span><a href="/" ><?=$this->translate('Menu_Home');?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/webinarlist"><?=$this->translate('Menu_Seminar')?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<a href="/webinarlist-<?=$this->sem['semcid']?>.html"><?=$this->sem['name']?></a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><?=$this->sem['title']?></span>        
+    </div>
+</div>
+
+<div class="w clearfix" >
+	<div class="fl shoplist">
+    	<div class="themain">
+         	<h1><?=$this->sem['title']?></h1>
+         	<div class="tag">
+               来源：<span><?=$this->sem['source']?></span>
+               作者：<span><?=$this->sem['author']?></span>创建时间：<span><?=date('Y-m-d',$this->sem['created'])?></span>
+               关键词：<span><?php 
+					$tip = explode(',',$this->sem['keyword']);
+					for($i=0;$i<count($tip);$i++){
+						echo $tip[$i].' ';
+					}
+			    ?></span>
+				
+             </div>
+            <div class="themain_p" id="share_content">
+            	<!--内容-->
+                <?php if($this->sem['type']=='vdo'){?>
+                	
+                <div class="w_100 seminar_introduction">
+                	<div class="fl themianleft">
+                    	<img src="<?=$this->sem['com_log']?>">
+                    </div>
+                    <div class="fr themianright">
+                    	<p><?=$this->sem['content']?></p>
+                        <div><a class="button seebutton" href="/webinarvideo-<?=$this->sem['id']?>.html" target="_blank">在线观看</a></div>
+                    </div>
+                </div>
+                <div class="w_100 company_introduction">
+                    <p><b>公司名称：</b><?=$this->sem['company']?></p>
+                	<p><b>公司简介：</b><?=$this->sem['com_profile']?></p>
+					<?php if($this->sem['com_url']){?>
+                    <p><b>公司网址：</b><a href="http://<?=$this->sem['com_url']?>" target="_blank"><?=$this->sem['com_url']?></a></p>
+                    <?php }?>
+                    
+                </div>
+                <!--<div class="w_100 Experts_material">
+                	<div class="fl themianleft">
+                    	<img src="<?=$this->sem['spe_head']==''?'/upload/default/seminar/speaker/head/nohead.jpg':$this->sem['spe_head']?>">
+                    </div>
+                    <div class="fr themianright">
+                    	<?=$this->sem['speaker']==''?'':'<p><b>演讲嘉宾：</b>'.$this->sem['speaker'].'</p>'?>
+                        <?=$this->sem['spe_post']==''?'':'<p><b>嘉宾职位：</b>'.$this->sem['spe_post'].'</p>'?>
+                        <?=$this->sem['spe_com']==''?'':'<p><b>嘉宾公司：</b>'.$this->sem['spe_com'].'</p>'?>
+                        <?=$this->sem['spe_profile']==''?'':'<p><b>嘉宾简介：</b>'.$this->sem['spe_profile'].'</p>'?>
+                    </div>
+                </div>-->
+                <?php }else{?>
+                    <p><?=$this->sem['content']?></p>
+                <?php }?></strong>
+            </div>
+		</div>
+	</div>
+    <div class="fr rightbox">
+    	<div class="blank10"></div>
+        <div class="subhot">
+                <div class="subhot_t">
+                    <h3 class="titbg1ts" >最新技术研讨会<em class="emtrianglerightgray5px"></em></h3>
+                </div>
+                <div class="subshop seminar">
+                <?php for($i=0;$i<count($this->newsemder);$i++){?>
+                    <div class="w_100 ">
+                        <p><a href="/webinar-<?=$this->newsemder[$i]['id']?>.html"  title="<?=$this->newsemder[$i]['title']?>" rev="webinar" rel="<?=$this->newsemder[$i]['id']?>"><?=$this->newsemder[$i]['title']?><?=$this->newsemder[$i]['type']=='vdo'?'<img src="/images/default/video.jpg">':''?></a></p>
+                        <p class="fontgray"><?=date('Y/m/d',$this->newsemder[$i]['created'])?></p>
+                    </div>
+                <?php }?>
+                </div>
+            </div>
+        <!--<div class="blank10"></div>
+        <div class="Contactnow">
+             <span class="titbg1ts">联系方式</span>
+			 <ul>
+             	<li><b>销售电话：</b>(86) 400-626-1616</li>
+                <li><b>技术支持电话：</b>(86) 400-626-1616</li>
+                <li><b>技术支持邮箱：</b><a href="#">Icec@icec.com</a></li>
+                <li><b>技术支持论坛：</b><a href="#" target="_blank">http://bbs.icec.com</a></li>
+             </ul>
+        </div>-->
+        
+    </div>
+
+
+</div>
+
+<div class="clr"></div>
+<!-- 划词分享 -->
+<script type="text/javascript">
+(function(){
+  window.rmwbShareConf = {
+    pageWidth : 960, //网页宽度，用于定位左侧固定漂浮按钮的位置
+    contentId : 'share_content' //正文内容id，用于划词分享
+  };
+  var s = document.createElement('script');
+  s.src = '/js/jsplug/sharetowb/share.js';
+  document.getElementsByTagName('head')[0].appendChild(s);
+})();
+</script>
+<!-- /划词分享 --> 
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=5&amp;pos=right&amp;uid=784927" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"bdTop":205,'bdText':'#IC易站#向大家分享IC易站里的关于<?=$this->sem['name']?>方向的技术研讨会：<?=$this->sem['title']?>'};
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+</script>
+<!-- Baidu Button END -->

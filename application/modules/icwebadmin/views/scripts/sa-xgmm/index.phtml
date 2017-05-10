@@ -1,0 +1,39 @@
+
+<h1><?php echo $this->AreaTitle;?></h1>
+<div id="message_sess_son" style="display:none" class="message_sess"> <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span> <span id="alert_message_son"></span> </div>
+<!-- 需要填写的区域-->
+<table width="740px" border="0" cellpadding="1">
+  <tr bgcolor="#CCCCCC">
+    <td width="300" align="right">新密码：</td>
+    <td><input type="password" name="password" id="password"/>
+    </td>
+  </tr>
+  <tr bgcolor="#CCCCCC">
+    <td align="right">再次输入新密码：</td>
+    <td><input type="password" name="password2" id="password2"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><input type="button" class="btnabig"  value="确定" onclick="edit()"/>
+    </td>
+  </tr>
+</table>
+<br/>
+<!-- 结束区域-->
+<script type="text/javascript" language="javascript">
+function edit()
+{
+    var password  = document.getElementById('password').value;
+	var password2 = document.getElementById('password2').value;
+	$.ajax({
+            url: '<?php echo $this->editurl;?>',
+            data: {'password':password,'password2':password2},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+			      document.getElementById('message_sess_son').style.display = "block";
+	              document.getElementById('alert_message_son').innerHTML = arr.message;
+			}
+	});
+}
+</script>

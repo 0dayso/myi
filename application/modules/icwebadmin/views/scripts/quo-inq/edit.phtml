@@ -1,0 +1,501 @@
+<?php
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$paytypearr = ($this->inqhistory[0]['paytype']?explode('|',$this->inqhistory[0]['paytype']):array());
+?>
+<div class="popup" style="width:950px;">
+    <div class="popup-header">
+        <h2><?php if(count($this->inqhistory) >= 2) echo '再';?>报价 询价编号#：<?php echo $this->inqhistory[0]['inq_number'];?></h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+    </div>
+    <div class="popup-body">
+    	<div class=" overflowh">
+        	<div class="publicOne">
+                <div class="Publictit">
+                    <span class="Publictit_tit">客户信息</span><strong class="fontgreen">用户名：<?php echo $this->user['user'];?></strong>
+                </div>
+                <table border="0" cellspacing="0" cellpadding="0" class="Publictable">
+                        <tbody><tr>
+                          <td width="100">公司名称：</td>
+                          <td><strong><?php echo $this->user['companyname'];?></strong></td>
+                          <td width="100">企业性质：</td>
+                          <td><strong><?php $property_tmp = array('enduser'=>'终端用户','merchant'=>'贸易商');
+						echo $property_tmp[$this->user['property']];?></strong></td>
+                        </tr>
+                        <tr>
+                          <td>联系人：</td>
+                          <td><strong><?php echo $this->user['truename'];?></strong></td>
+                          <td>联系方式：</td>
+                          <td><strong><?php echo $this->user['mobile'].'  '.$this->user['tel'];?></strong></td>
+                        </tr>
+                        <tr>
+                          <td>交货地：</td>
+                          <td><strong><?php echo $deliveryArr[$this->inqhistory[0]['delivery']];?></strong></td>
+                          <td>交易货币：</td>
+                          <td><strong><?php echo $this->inqhistory[0]['currency'];?></strong></td>
+                        </tr>
+                        <tr>
+                          <td>Email：</td>
+                          <td><strong><?=$this->user['email'];?></strong></td>
+                          <td>询价日期：</td>
+                          <td><strong><?php echo date('Y-m-d H:i',$this->inqhistory[0]['created']);?></strong></td>
+                        </tr>
+                        <?php if(count($this->inqhistory) >= 2) {?>
+                           <tr>
+                            <td>项目名称：</td>
+                            <td><strong><?php echo $this->inqhistory[0]['project_name'];?></strong></td>
+                             <td>项目状态：</td>
+                            <td><strong><?php echo $this->inqhistory[0]['project_status'];?></strong></td>
+                            </tr>
+                            <tr>
+                            <td>量产时间：</td>
+                            <td colspan="3"><strong><?php echo date('Y-m-d',$this->inqhistory[0]['production_time']);?></strong></td>
+                          </tr>
+                          <?php }?>
+                        <?php if($this->inqhistory[0]['remark']){?>
+                        <tr>
+                          <td>询价说明：</td>
+                          <td colspan="3"><strong><?php echo $this->inqhistory[0]['remark'];?></strong></td>
+                        </tr>
+                        <?php }?>
+                  </tbody></table>
+            </div>
+            <div class="passorno ">
+                <dl class="PublicDl">
+                    <dt>审核：</dt>
+                    <?php if($this->type!='no'){ ?>
+                    <dd>
+                        <input type="radio" name="status" id="status_yes" value="2" checked="checked"/>
+      <label for="status_yes" style="color:#339900"><b>通过</b></label>
+                    </dd>
+					<?php }?>
+                    <dd>
+                        <label style="color:#339900"><input type="radio" name="status"  value="201" <?php if($this->inqhistory[0]['status']==2 && $this->inqhistory[0]['reasons']) echo 'checked';?> onclick="notsupport()"/>
+      <b>不能支持</b></label>
+                    </dd>
+                    
+                    <dd>
+                        <input type="radio" name="status" id="status_no" value="4" <?=$this->inqhistory[0]['status']==4?'checked':''?> <?=$this->type=='no'?'checked':''?>/><label for="status_no" style="color:#CC3333"><b>不通过</b></label>
+                    </dd>
+                    <dd>
+                        <em>提示：不通过审核时只需要填写回复说明。</em>
+                    </dd>
+                </dl>
+            </div>
+            <?php if($this->type=='no'){ echo '<div style="display:none" >';}?>
+            <div class="passopen ">
+                <dl class="PublicDl">
+                    <dt><em>*</em>支付条款：</dt>
+                    
+                    <dd><label><input type="radio" value="100.00" name="percentage" <?=$this->inqhistory[0]['percentage']==100?'checked="checked"':''?> >预付全额</label></dd>
+                    
+                    <dd><label><input type="radio" value="other" name="percentage" <?php if($this->inqhistory[0]['percentage']<100 && $this->inqhistory[0]['percentage'] > 0) echo 'checked="checked"';?>>预付定金</label>
+                    <input type="text" name="other_percentage" id="other_percentage" style="width:50px; padding:1px; margin:0 2px" value="<?php if($this->inqhistory[0]['percentage']<100 && $this->inqhistory[0]['percentage'] > 0) echo $this->inqhistory[0]['percentage'];else echo '30';?>" onkeyup="<?=ISFLOAT?>">%</dd>
+                    
+                    <dd><label><input type="radio" value="0" name="percentage" <?=$this->inqhistory[0]['down_payment']>0?'checked':''?> >预付定金：</label>
+      <input type="text" name="down_payment" id="down_payment" style="width:100px; padding:1px; margin:0" value="<?=$this->inqhistory[0]['down_payment']>0?$this->inqhistory[0]['down_payment']:''?>" onkeyup="selectdownpayment();<?=ISFLOAT?>"/><?php echo $this->inqhistory[0]['currency'];?></dd>
+      
+                      
+                </dl>
+                <dl class="PublicDl">
+                    <dt>&nbsp;&nbsp;&nbsp;&nbsp;</dt>
+                    <dd><label><input type="radio" value="100_cod" name="percentage" <?=($this->user['cod']?'':'disabled="disabled"')?> <?php if($this->inqhistory[0]['percentage']==100 && in_array("cod",$paytypearr)) echo 'checked="checked"';?>>COD</label>
+                    <dd><label><input type="radio" value="100" name="percentage" disabled="disabled">款到发货</label>
+                </dl>
+          <dl class="PublicDl">
+          <dt><em>*</em>支付方式：</dt>
+          <dd><label><input type="checkbox" value="transfer" name="paytype" <?php if(in_array("transfer",$paytypearr)) echo 'checked';?>>银行转账</label></dd>
+	  	  <dd><label><input type="checkbox" value="online" name="paytype" <?=$this->inqhistory[0]['currency']!='RMB'?'disabled="disabled"':''?> <?php if(in_array("online",$paytypearr)) echo 'checked';?>>在线支付</label></dd>
+          
+          <dd><label><input type="checkbox" value="cod" name="paytype"  <?=($this->user['cod']?'':'disabled="disabled"')?> <?php if(in_array("cod",$paytypearr)) echo 'checked';?>>货到付款(支票、现金、银行转账等)</label></dd>
+          <dd><em class="fontorg">提示：1、银行转账和在线支付用于预付金额；2、货到付款用于COD</em></dd>
+          </dl>
+
+          
+                
+                <dl class="PublicDl">
+                    <dt>合同：</dt>
+                    <dd>
+                       <label><input type="checkbox" name="paper_contract"  value="1" <?php if($this->inqhistory[0]['paper_contract']) echo 'checked';?>/>客户需要盖章合同</label>
+                    </dd>
+                </dl>
+
+                <div class="clear"></div>
+                <?php 
+	foreach($this->inqhistory as $key=>$v){
+		$detaile = $v['detaile'];
+		if($key==0){
+	?>
+	<div style="margin:10px 0 0 0"><strong class="fontorg">&nbsp;&nbsp;注意：报价单位根据结算货币而定，不报价的型号单价可以不填写或填写0。</strong></div>
+    <table cellpadding="0" border="0" cellspacing="0" class="tablelistPrice">
+      <tr>
+        <th width="110">型号</th>
+        <th>品牌</th>
+        <th>标准<br>包装</th>
+        <th>采购<br>数量</th>
+        <th>目标单价<br></th>
+        <?php if(count($this->inqhistory) >= 2) echo '<th>其它厂家报价</th>';?>
+        <th class="bggreen">标准<br>交期</th>
+        <th class="bggreen"><em>*</em>最小<br>起订量</th>
+        <th class="bggreen"><em>*</em>单价<br>(<?php echo $this->inqhistory[0]['currency'];?>)</th>
+        <th class="bggreen">有效期</th>
+        <th class="bggreen">备注<br/>(针对单条型号)</th>
+      </tr>
+      <input type="hidden" name="son_id" id="son_id" value="<?=$v['id'];?>" >
+      <?php foreach($detaile as $key=>$vd){?>
+        <input type="hidden" name="det_id" value="<?=$vd['id'];?>" >
+        <input type="hidden" name="part_no" value="<?=$vd['part_no'];?>" >
+        <input type="hidden" name="part_id" value="<?=$vd['part_id'];?>" >
+        <input type="hidden" name="number" value="<?=$vd['number']?>"/>
+        <input type="hidden" name="result_price_oa" value="<?=$vd['oa_result_price']?$vd['oa_result_price']:$vd['special_result_price']?>"/>
+        <tr align="center">
+        <td width="150"><?php if($vd['part_id']){ ?>
+        <div class="productNO">
+        <a href="/proddetails?partid=<?=$vd['part_id'];?>" target="_blank"><?=$vd['part_no']?></a>
+		</div>
+		<?php }else echo $vd['part_no'];?>
+        <?php if($vd['staged']) echo '<sup><span class="sup_SALE HOT">特卖</span></sup>';?>
+        <?php 
+		if($vd['book_price_usd'] && $vd['pdbstatus']) echo '<br/>书本价：<br/>'.$this->fun->getbreakprice($vd['book_price_usd'],'$');
+		if($vd['book_price_rmb'] && $vd['pdbstatus']) echo '<br/>书本价：<br/>'.$this->fun->getbreakprice($vd['book_price_rmb'],'￥');
+		//if($vd['break_price']) echo '<br/>IC易站阶梯价：<br/>'.$this->fun->getbreakprice($vd['break_price'],'$');
+		//if($vd['break_price_rmb']) echo '<br/>IC易站阶梯价：<br/>'.$this->fun->getbreakprice($vd['break_price_rmb'],'￥');
+		?>
+        </td>
+        <!--<td><?php if($vd['break_price']){ echo 'USD:<br/>'.str_replace(";", "<br/>", $vd['break_price']);}
+		elseif($vd['break_price_rmb']){ echo 'RMB:<br/>'.str_replace(";", "<br/>", $vd['break_price_rmb']);}
+		?></td>-->
+        <td><?=$vd['brand']?></td>
+        <td><?=$vd['mpq']?></td>
+        <td><?=$vd['number']?></td>
+        <!--<td><?=$vd['expected_amount']?></td>-->
+        <td><?=$vd['price']?></td>
+        <?php if(count($this->inqhistory) >= 2) echo '<td>'.$vd['other_vendors'].'</td>';?>
+        
+        <td><p id="leadtime_<?=$vd['part_id']?>"><?=$vd['inq_lead_time']?$vd['inq_lead_time']:$vd['lead_time']?></p>
+        <a class="gbqfbb" href="javascript:;" style="min-width:20px" onclick="changeLeadtime('<?=$vd['part_id']?>','<?=$vd['id']?>')">修改</a></td>
+        
+        <td><input type="text" class="input-mini"  name="pmpq" id="pmpq"  onkeyup="<?=ISNUMBER?>" value="<?=($vd['pmpq']?$vd['pmpq']:$vd['number'])?>"/></td>
+        
+        <td><input type="text" class="input-mini"  name="price" id="price"  onkeyup="<?=ISFLOAT?>" value="<?=$vd['result_price']?$vd['result_price']:($vd['oa_result_price']?$vd['oa_result_price']:$vd['special_result_price'])?>"/>
+        <?php if(!$vd['oa_result_price']){?>
+        <p><a class="gbqfbb" href="javascript:;" style="min-width:20px" onclick="pricehistory('<?=$vd['part_id']?>','<?=$key?>')">选择</a></p>
+        <?php }?>
+        </td>
+        <td>
+        <?php $expiration_time = $vd['expiration_time']?$vd['expiration_time']:$vd['oa_expiration_time']?>
+        <input type="text" name="expiration_time"  style="width:80px;" onclick="WdatePicker({startDate:'<?=date('Y-m-d',$expiration_time?$expiration_time:strtotime("1 month"))?>',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" value="<?=date('Y-m-d',$expiration_time?$expiration_time:strtotime("1 month"))?>" title="点击选择日期"></td>
+        <td>
+        <textarea name="detailed_remark" id="detailed_remark"  rows="4" class="input-small"><?=$vd['result_remark']?></textarea>
+</td>
+       </tr>
+       <?php }?>
+       </table>
+	<?php }else{?>
+        <a href="javascript:;" onclick="showh_history()">查看历史询价记录&gt;&gt;</a><br/>
+        <div  style="display:none" id="show_history">
+		<table class="tab_tb" border="0">
+            <thead>
+            <th width="100">询价说明</th>
+            <th width="80">询价日期</th>
+            <th width="100">回复留言</th>
+            <th width="80">报价日期</th>
+            </thead>
+             <tr class="hover_tr bgf9">
+              <td width="100"><?=$v['remark']?></td>
+              <td width="100"><?=date('Y-m-d H:i',$v['created'])?></td>
+              <td width="100"><?=$v['result_remark']?></td>
+              <td><?=$v['modified']==0?'':date('Y-m-d H:i',$v['modified'])?></td>
+            </tr>
+            <tr id="tr_show_inquiry_1" style="display: table-row;" rel="1" class="hover_tr bgf9 tr_show_inquiry hover_tr_color">
+              <td colspan="8"><table width="100%" cellspacing="0" cellpadding="0">
+                  <tbody><tr>
+                    <td colspan="8"><div id="show_inquiry_1" class="subtal"><div class="up"></div>
+                        <table width="100%" cellspacing="0" cellpadding="0" class="subtablei">
+                          <tbody><tr>
+                            <th>型号</th>
+                            <th>品牌</th>
+                            <th>标准包装</th>
+                            <th>采购数量</th>
+                            <th>年用量</th>
+                            <th>目标单价</th>
+                            <th>标准交期</th>
+                            <th>最少起订量</th>
+                            <th>单价</th>
+                            <th>有效期</th>
+                          </tr>
+                          <?php foreach($detaile as $dv){?>
+                          	<tr>
+                            <td width="150"><?php if($vd['part_id']){ ?>
+                            <a href="/proddetails?partid=<?=$vd['part_id'];?>" target="_blank"><?=$vd['part_no']?></a><?php }else echo $vd['part_no'];?></td>
+                            <td><?=$dv['brand']?></td>
+                            <td><?=$dv['mpq']?></td>
+                            <td><?=$dv['number']?></td>
+                            <td><?=$dv['expected_amount']?></td>
+                            <td><?=$dv['price']?></td>
+                            <td><?=$dv['inq_lead_time']?$dv['inq_lead_time']:$dv['lead_time']?></td>
+                           <td><?=$dv['pmpq']?$dv['pmpq']:'';?></td>
+                           <td><?=$dv['result_price']?$dv['result_price']:''?></td>
+                            <td><?php if($dv['expiration_time']<time() && $dv['expiration_time']>0){?>
+                              <font color="#FF0000">
+                              <?=date('Y-m-d H:i',$dv['expiration_time']);?>
+                              </font>
+                              <?php }else{ echo $dv['expiration_time']?'<font color="009944">'.date('Y-m-d',$dv['expiration_time']).'</font>':'';}?>
+                            </td>
+						  <?php }?>
+                            </tbody></table>
+                      </div></td>
+                  </tr>
+                </tbody></table></td>
+            </tr>
+             </table></div>
+		<?php }}?>
+        
+        <?php if($this->type=='no') echo '</div>';?>
+        
+            </div>
+		    <div class="applyexplain ">
+                <dl class="PublicDl">
+                    <dt><em>*</em>报价说明：<br/>(针对客户)</dt>
+                    <dd>
+                        <textarea name="result_remark" id="result_remark" rows="3" style="width:650px;"><?php echo $this->inqhistory[0]['result_remark'];?></textarea>
+                    </dd>
+                </dl>
+            </div>
+            <div class="clear"></div>
+            <div class="bottombutton" id="baojiabtn">
+            	 <input type="button" onclick="editAction()" value="提 交 报 价" class="btnabig">
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+//选择历史报价
+function pricehistory(partid,key)
+{
+    var pmpq=0;
+	var pmpqboj = document.getElementsByName("pmpq");
+	for (var i=0;i < pmpqboj.length;i++)
+	{
+		if(i==key) pmpq = pmpqboj[i].value;
+	}
+	$.openPopupLayer({
+	   name:'pricehistory',
+	   url:'/icwebadmin/QuoInq/pricehistory/partid/'+partid+'/key/'+key+'/pmpq/'+pmpq+'/currency/'+'<?php echo $this->inqhistory[0]['currency'];?>'
+	});
+}
+
+
+//不支持报价
+function notsupport(){
+	$.openPopupLayer({
+	   name:'notsupport',
+	   url:'/icwebadmin/QuoInq/notsupport/id/'+<?php echo $this->inqhistory[0]['id'];?>
+	});
+}
+function removenotsupport(){
+	var statusobj = document.getElementsByName('status');
+	for(i=0;i<statusobj.length;i++){
+	   statusobj[i].checked = false;
+	}
+}
+//修改标准交期
+function changeLeadtime(pratid,inqdid){
+	 $.openPopupLayer({
+        name:'changeLeadtime',
+        url:'/icwebadmin/QuoInq/changeleadtime/pratid/'+pratid+'/inqdid/'+inqdid
+    });
+}
+	function selectdownpayment(){
+		var percentageobj = document.getElementsByName('percentage');
+	    var percentage='';
+	    for(i=0;i<percentageobj.length;i++){
+	      if(percentageobj[i].value=='0')
+		  {
+	     	 percentageobj[i].checked=true;
+		  }
+	   }
+	}
+
+function showh_history()
+{
+  $("#show_history").slideToggle();
+}
+function editAction() {
+      var down_payment='';
+	   var pmpq=new Array();
+	   var price=new Array();
+	   var expiration_time = new Array();
+	   var det_id = new Array();
+	   var part_id = new Array();
+	   var result_price_oa = new Array();
+	   var paytype = new Array();
+	   var detailed_remark = new Array();
+	   var pmpqboj = document.getElementsByName("pmpq");
+	   var priceboj = document.getElementsByName("price");
+	   var timeobj  = document.getElementsByName("expiration_time");
+	   var idobj  = document.getElementsByName("det_id");
+	   var part_idobj  = document.getElementsByName("part_id");
+	   var detailed_remarkobj  = document.getElementsByName("detailed_remark");
+	   var statusobj = document.getElementsByName('status');
+	   var status='';
+	   for(i=0;i<statusobj.length;i++){
+	   if(statusobj[i].checked){
+	       status = statusobj[i].value;
+	       break;
+	     }
+	   }
+	   if(!status) {alert('请选择审核结果');return;}
+	   if(status==201){notsupport();return;}
+	   var percentageobj = document.getElementsByName('percentage');
+	   var percentage='';
+	   var other_percentage='';
+	   for(i=0;i<percentageobj.length;i++){
+	   if(percentageobj[i].checked){
+	       if(percentageobj[i].value=='other'){
+		        other_percentage = parseFloat(document.getElementById("other_percentage").value);
+			    if(other_percentage=='') {alert('请输入预付金额百分比');document.getElementById('other_percentage').focus();return;}
+				else if(isNaN(other_percentage)){alert('预付金额百分比为数字');document.getElementById('other_percentage').focus();return;}
+				else if(other_percentage <= 0){alert('金额百分比必须大于0');document.getElementById('other_percentage').focus();return;}
+				else if(other_percentage > 100){alert('金额百分比不能大于100');document.getElementById('other_percentage').focus();return;}
+				else percentage = other_percentage;
+		   }else{
+	          percentage = percentageobj[i].value;
+		   }
+	       break;
+	     }
+	   }
+	   //纸质合同
+	   var paper_contract=0;
+	   var paper_contractobj = document.getElementsByName('paper_contract');
+	   for(i=0;i<paper_contractobj.length;i++){
+	   if(paper_contractobj[i].checked){
+	       paper_contract = paper_contractobj[i].value;break;
+	     }
+	   }
+	  var paytypeobj = document.getElementsByName('paytype');   
+      for(var i=0;i<paytypeobj.length; i++)    
+      {         
+         if(paytypeobj[i].checked== true)      
+         {
+       	    paytype[i] = paytypeobj[i].value;
+         }                 
+      }  
+	  
+	   if(status == 2)
+	   {
+	       var canedit = false;
+	       var not_part_no = '';
+	       var part_no_obj = document.getElementsByName("part_no");
+	       var numberobj = document.getElementsByName("number");
+		   var result_price_oa_obj = document.getElementsByName("result_price_oa");
+		   
+	   	   if(percentage=='') {alert('请选择支付条款');return;}
+		   //预付定金不能在线支付
+		   if(percentage !=100 && percentage !='100_cod'){
+		   		for(var i=0;i<paytype.length; i++)    
+				{         
+				   if(paytype[i]=='online' || paytype[i]=='cod'){
+				   	  {alert('预付定金不能选择在线支付和货到付款(支票、现金、银行转账等)');return;}
+				   }             
+				}  
+		   }
+		   if( percentage =='100_cod'){
+		   		for(var i=0;i<paytype.length; i++)    
+				{         
+				   if(paytype[i]=='online' || paytype[i]=='transfer'){
+				   	  {alert('COD只支付选择货到付款(支票、现金、银行转账等)');return;}
+				   }             
+				}  
+		   }else{
+		   	   for(var i=0;i<paytype.length; i++)    
+				{         
+				   if(paytype[i]=='cod'){
+				   	  {alert('预付金额不支持货到付款(支票、现金、银行转账等)');return;}
+				   }             
+				}   
+		   }
+		   //预付一定金额
+		   if(percentage ==0){
+		   		down_payment = document.getElementById('down_payment').value;
+				if(down_payment=='') {alert('请输入预付金额');document.getElementById('down_payment').focus();return;}
+				else if(isNaN(down_payment)){alert('预付金额必须为数字');document.getElementById('down_payment').focus();return;}
+				//else if(down_payment <= 0){alert('预付金额必须大于0');document.getElementById('down_payment').focus();return;}
+		   }
+		   if(paytype.length<1) {alert('请选择支付方式');return;}
+		   for (var i=0;i < priceboj.length;i++)
+		   {
+				if(pmpqboj[i].value=='') {alert('请输入最低购买数');pmpqboj[i].focus();return;}
+				else if(isNaN(pmpqboj[i].value)){alert('最低购买数必须为数字');pmpqboj[i].focus();return;}
+				else pmpq[i]= pmpqboj[i].value;
+				
+			    if(parseInt(pmpqboj[i].value) < parseInt(numberobj[i].value)){
+				   if(!confirm('你确认最低购买数小于客户采购数量吗？'))
+                   {
+				   		//alert('订单最少起订量不能小于客户采购数量。');
+						pmpqboj[i].focus();return;
+				   }
+				}
+				if(priceboj[i].value!=''){
+				   if(priceboj[i].value==0) price[i]=priceboj[i].value;
+				   else if(!BASEisFloat(priceboj[i].value)) {alert('报价必须为数字，如果对型号不报价可以不填写或者填写0');priceboj[i].focus();return;}
+				   else if(priceboj[i].value<0) {alert('报价不能为小于等于0，不报价可以不填写或者填写0');priceboj[i].focus();return;}
+				   else if(parseFloat(priceboj[i].value) < parseFloat(result_price_oa_obj[i].value)){alert('报价不能小于PMSC报价：'+result_price_oa_obj[i].value);priceboj[i].value=parseFloat(result_price_oa_obj[i].value);priceboj[i].focus();return;}
+				   else price[i]=priceboj[i].value;
+				   
+				   if(priceboj[i].value!=0) canedit = true;
+				   else not_part_no +=part_no_obj[i].value+';';
+				}else{
+				   not_part_no +=part_no_obj[i].value+';';
+				}
+				if(timeobj[i].value!='') expiration_time[i]=timeobj[i].value;
+				else {alert('请输入报价过期时间');timeobj[i].focus();return;}
+				
+				det_id[i] = idobj[i].value;
+				
+				part_id[i] = part_idobj[i].value;
+				
+				result_price_oa[i] = result_price_oa_obj[i].value;
+				
+				detailed_remark[i] = detailed_remarkobj[i].value;
+		   }
+		   //允许只报一个价
+		   if(canedit && not_part_no!=''){
+				   if(!confirm('你确定对型号：'+not_part_no+' 不进行报价吗？'))
+                   {
+						return;
+				   }
+				}
+				if(!canedit){
+					alert('请填写型号单价进行报价！');return;
+				}
+	   }
+	   var son_id = document.getElementById('son_id').value;
+	   var result_remark = document.getElementById('result_remark').value;
+	   if(status == 4)
+	   {
+	   	   for (var i=0;i < idobj.length;i++)
+		   {	
+			  det_id[i]  = idobj[i].value;
+			  detailed_remark[i] = detailed_remarkobj[i].value;
+		   }
+	   	  if(result_remark==''){alert('请输入报价说明');document.getElementById('result_remark').focus();return;}
+	   }
+	   var subtmp = document.getElementById("baojiabtn");
+	   subtmp.innerHTML = '<input type="button" class="btnabig" value="提交中..."/>';
+	   $.ajax({
+		url: '<?=$this->editurl;?>',
+		data: {'uid':'<?=$this->user['uid']?>','id':'<?=$this->id;?>','currency':'<?php echo $this->inqhistory[0]['currency'];?>','status':status,'percentage':percentage,'paytype':paytype,'down_payment':down_payment,'paper_contract':paper_contract,'son_id':son_id,'det_id':det_id,'part_id':part_id,'result_price_oa':result_price_oa,'pmpq':pmpq,'price':price,'expiration_time':expiration_time,'detailed_remark':detailed_remark,'result_remark':result_remark},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0){
+				  location.reload();
+             }
+			subtmp.innerHTML = '<button type="button" class="btnabig" onclick="editAction()">提 交 报 价</button>';
+		}
+		});
+		
+}
+</script>

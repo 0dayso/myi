@@ -1,0 +1,38 @@
+<div class="daybox"  style="margin-left:-540px;">
+<div class="fl dayinfo">
+		<div class="dayinfo_t">
+        <?php if(isset($_SESSION['userInfo']['unameSession'])){?>
+        <strong class="fl"><?=$_SESSION['userInfo']['unameSession']?></strong>
+        <span class="fr">当前积分：<b><?php echo $this->MyScore();?></b></span>
+        <?php }else{?>
+        <strong class="fl"><a href="javascript:;" onClick="openlogin()">请登录</a></strong>
+        <?php }?>
+        </div>
+		<ul>  
+           <?php if(isset($_SESSION['userInfo']['unameSession']) && $this->jifenview<=0){?>
+           <li>
+                <p class="fl">您已经签到，获得<b>1</b>个积分</p>
+                <a class="fr gbqfb " href="/jifen" target="_self">去兑换</a>
+            </li>
+           <?php }else{?>
+           <li>
+                <p class="fl">每天签到能获取<b>1</b>个积分</p>
+                <a class="fr gbqfb " href="/jifen" target="_self">去签到领积分</a>
+            </li>
+            <?php }?>
+			<li><?=$this->viewpage?>
+				<p class="fl">每日浏览<b>≥6</b>个页面，获得<b>2</b>积分。(已浏览<em>1</em>篇)</p>
+                <a class="fr gbqfb" href="/solutionlist">去看看</a>
+			</li>
+			<li>
+				<p class="fl">每分享一款产品、一篇产品资讯、技术研讨会或应用方案获得<b>1</b>积分。(<em>5</em>积分封顶)</p>
+                <a class="fr gbqfb" href="/news">去分享</a>
+			</li>
+		</ul>
+	</div>
+    <div class="daysep">
+    	<p class="fl">活动期间，每邀请一位好友得20分，还有机会抽得豪华大奖。</p>
+        <a class="fr gbqfb" href="javascript:;" onClick="openinvitebox()">邀请好友</a>
+    </div>
+	<div class="fl newsbtn"><img src="/css/jifen/img/day.png" alt="每日任务"></div>
+</div>

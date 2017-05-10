@@ -1,0 +1,231 @@
+<!--content-->
+<?php 
+$statusarr = array('101'=>'<font color="#FF0000">待付预付款</font>',
+'102'=>'<font color="009944">处理中</font>',
+'103'=>'<font color="#FF0000">待支付余款</font>',
+'201'=>'<font color="009944">待发货</font>',
+'202'=>'<font color="009944">待确认收货</font>',
+'301'=>'已完成',
+'302'=>'已完成',
+'401'=>'订单被取消',
+'501'=>'退款',
+'502'=>'退货退款');
+
+$codarr = array('101'=>'<font color="#FF0000">等待审核</font>',
+'102'=>'<font color="009944">处理中</font>',
+'103'=>'<font color="#FF0000">待支付余款</font>',
+'201'=>'<font color="009944">待发货</font>',
+'202'=>'<font color="009944">待确认收货</font>',
+'301'=>'已完成',
+'302'=>'已完成',
+'401'=>'订单被取消',
+'501'=>'退款',
+'502'=>'退货退款');
+
+//301代表待评价，第一阶段没有评价功能
+$paytypearr = array('transfer'=>'银行转账','online'=>'在线支付','cod'=>'货到付款','mts'=>'款到发货');
+$wuliuarr = array('202','301','302');
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+$type = array('spot'=>'现货','order'=>'订货');
+?>
+<link rel="stylesheet" type="text/css" href="/<?=$_SESSION['new_version']?>/css/default/myself2013.css"/>
+<link rel="stylesheet" type="text/css" href="/css/default/myself<?=$_SESSION['new_version']?>.css"/>
+
+<link href="/js/jsplug/persontooltip/popup.css" media="all" rel="stylesheet" type="text/css"/>
+<script src="/js/jsplug/persontooltip/popup.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript"> center_css();</script>
+<div class="w">
+  <div class="breadcrumbs2013"> <span>
+    <a  class="focs">我的IC易站</a>&nbsp;&nbsp;»&nbsp;&nbsp;<a ><?=$this->translate('Menu_MyDelivery')?></a>
+  </div>
+</div>
+
+<div class="blank10"></div>
+<div class="w clearfix ourbox">
+       <!--左边导航-->
+        <?php echo $this->render('center/leftmenu.phtml');?>
+	<div class="fr u_right msg24">
+     <div class="<?php if(isset($_SESSION['postsess']['code'])){if($_SESSION['postsess']['code']>0) echo "error";else echo "ok";}?>" id="message"> <?php if(isset($_SESSION['postsess']['message'])){echo $_SESSION['postsess']['message'];unset($_SESSION['postsess']);}?></div>
+     <div class="col_main" id="onlineorder">
+     <h1>交期变更</h1>
+     <div class="tiporder fontorange">注意：交期变更申请要在离IC易站返回的预计交期前<strong class="fontred">28天</strong>提出。</div>
+
+            <div class="order_tab_head">
+                <ul>
+          <li <?php if($this->type=='') echo 'class="on"';?>><a href="/center/delivery">可申请订单<em>(<?=$this->allnum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='wpay') echo 'class="on"';?>><a href="/center/delivery?type=wpay">审核中<em>(<?=$this->wpaynum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='pass') echo 'class="on"';?>><a href="/center/delivery?type=pass">已通过<em>(<?=$this->passnum?>)</em><b class="blank3"></b></a></li>
+          <li <?php if($this->type=='nopass') echo 'class="on"';?>><a href="/center/delivery?type=nopass">不通过<em>(<?=$this->nopassnum?>)</em><b class="blank3"></b></a></li>
+                </ul>
+            </div>
+            <div class="table_box order" >
+            <?php  if(empty($this->salesorder)){?>
+            		<div class="nodata">暂无记录</div>
+            <?php }else{
+				 foreach($this->salesorder as $k=>$sodata){
+ 			?>
+                <div class="A_order">
+                    <div class="numberbox">
+                    	<em class="emtrianglebottom5px"></em>
+                        <p>订单号：<a href="/inquiryorder/view?salesnumber=<?=$sodata['salesnumber']?>" class="number" title="查看订单详细" target="_blank"><b><?=$sodata['salesnumber']?></b></a><span class="time"><?=date('Y-m-d H:i:s',$sodata['created'])?></span></p>  								
+               <div class="orderbtn">
+                	<?php if(in_array($sodata['status'],array('103','201')) && $sodata['delivery_status']==0 && $sodata['back_status']!=102){
+		             echo '<a href="javascript:" onclick="deliverychange(\''.$sodata['salesnumber'].'\')" class="button">申请更改</a><br />';
+		           }
+			      if($sodata['delivery_change_date']){ echo '<span>申请交货期：'.date("Y-m-d",$sodata['delivery_change_date']).'</span>';
+				   }
+		          ?>
+                </div>	
+                </div>
+                    <table class="vac_table table" cellpadding="0" cellspacing="0">   
+                        <thead>    
+                            <tr>            
+                                <th width="20%">订单商品</th>
+                                <th width="10%">交货地</th>
+                                <th width="10%">货物情况</th>
+                                <th width="10%">需求日期</th>
+                                <th width="10%">预计交期</th>                        
+                                <th width="10%">币种</th>
+                                <th width="10%">订单金额</th>
+                                <th width="10%">支付类型</th>
+                                <th width="10%">订单状态</th>
+                            </tr>   
+                        </thead>            
+                        <tbody>  
+                            <tr>
+                              <td class="modeltable" align="center">
+                                  <?php $partnos = explode(',',$sodata['partnos']);
+						foreach($partnos as $k=>$part_no){ 
+						echo '<p class="model">'.$part_no.'</p>';}?>
+                              </td>
+                              <td><?=$deliveryArr[$sodata['delivery_place']]?></td>
+                              <td><?=$type[$sodata['shipments']]?></td>
+                              <td><?=$sodata['needs_time']==0?'':date('Y-m-d',$sodata['needs_time'])?></td>
+			  <td class="centerp"><p class="time"><?=$sodata['delivery_time']==0?$sodata['delivery_about_time']:date('Y-m-d',$sodata['delivery_time'])?></p>
+              <p>
+              <?php
+			  if($sodata['delivery_status']>0 && $sodata['back_status']!=102){?>
+                    <?php if($sodata['delivery_status']==101) echo '<span style="color:#FF8920" title="申请更改的交货期：'.date("Y-m-d",$sodata['delivery_change_date']).'">申请审批中</span>';
+						elseif($sodata['delivery_status']==201) echo '<span  style="color:#009944" title="原来交期：'.date("Y-m-d",$sodata['delivery_time_back']).'">申请通过</span>';
+						elseif($sodata['delivery_status']==301) echo '<span  style="color:#FF0000" title="申请更改的交货期：'.date("Y-m-d",$sodata['delivery_change_date']).'">申请不通过</span>';
+				}
+		     ?></p>
+              </td>
+                              <td class="en"><strong><?=$sodata['currency']?></strong></td> 
+                              <td class="centerp">
+                                <p>总&nbsp;&nbsp;&nbsp;计：<strong class="fontred"><?=number_format($sodata['total'],DECIMAL)?></strong></p>
+                                <?php if($sodata['paytype']=='transfer'){echo '<p>预付款：<strong class="fontred">'.number_format($sodata['down_payment'],DECIMAL).'</strong></p>';
+			        echo '<p>剩余款：<strong class="fontred">'.number_format($sodata['total'] - $sodata['down_payment'],DECIMAL).'</strong></p>';}?>
+                              </td>
+                              <td class="fontgray"><?=$paytypearr[$sodata['paytype']];?></td>                  
+                              <td class="fontorange"><?php if($sodata['back_status']!=102){if($sodata['paytype']=='transfer') 
+			       echo $statusarr[$sodata['status']];
+			       else echo $codarr[$sodata['status']];
+				   }else echo '审核不通过';?></td>
+                            </tr>  
+                        </tbody>         
+                        </table>                            
+                </div>
+                 <?php }}?> 
+                  <div class="pagination fr"> <?=$this->page_bar;?></div>            
+            </div>
+        </div>
+  </div>
+</div>
+<div class="clr"></div>
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script type="text/javascript" src="/js/jsplug/AjaxFileUploader/ajaxfileupload.js"></script>
+<script type="text/javascript">
+//取消订单
+function canOrder(id,salesnumber){
+
+	$.ajax({
+            url: '/inquiryorder/cancel',
+            data: {'id':id,'salesnumber':salesnumber},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }else{
+				    alert(arr.message);
+				}
+            }
+	 });
+
+}
+//恢复订单
+function resOrder(id,salesnumber){
+	$.ajax({
+            url: '/inquiryorder/restoration',
+            data: {'id':id,'salesnumber':salesnumber},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }else{
+				    alert(arr.message);
+				}
+            }
+	});
+}
+//删除订单
+function delOrder(id,salesnumber){
+if(confirm('你确定删除订单：'+salesnumber+'？'))
+ {
+	$.ajax({
+            url: '/inquiryorder/delete',
+            data: {'id':id,'salesnumber':salesnumber},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }else{
+				    alert(arr.message);
+				}
+            }
+	});
+  }
+}
+//上传回执单
+function transfer(salesnumber){
+    $.openPopupLayer({
+		name: "transferBox",
+		url: "/inquiryorder/transfer?salesnumber="+salesnumber
+	});
+}
+//确认收货
+function receipt(id,salesnumber){
+	$.ajax({
+            url: '/inquiryorder/receipt',
+            data: {'id':id,'salesnumber':salesnumber},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	if(arr.code == 0)
+                {
+                    location.reload();
+                }else{
+				    alert(arr.message);
+				}
+            }
+	});
+}
+//交货期申请
+function deliverychange(salesnumber)
+{
+	 $.openPopupLayer({
+		name: "deliverychangeBox",
+		url: "/inquiryorder/deliverychange?salesnumber="+salesnumber
+	});
+}
+setTimeout('hidMessage()',3000);
+function hidMessage(){
+	document.getElementById("message").style.display = 'none';
+}
+</script>

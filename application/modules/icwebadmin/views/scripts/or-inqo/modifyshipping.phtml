@@ -1,0 +1,56 @@
+<div class="popup" style="width:770px;">
+    <div class="popup-header">
+    <h2>修改运费 订单编号#：<?=$this->salesnumber?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a>
+     </div>
+    <div class="popup-body">
+        <!--订单详情-->
+        <div id='soinfo' style="height:900px;"><img src="/images/admin/ajax-loader.gif" /></div>
+    	<!-- end 订单详情-->
+        
+        <div class="passorno ">
+            <dl class="PublicDl">
+                <dt>运费：</dt>
+                <dd>
+                   <input type="text" name="freight" id="freight"  class="input-small"  onkeyup="<?=ISFLOAT?>"/>
+                </dd>
+            </dl>
+            <dl class="PublicDl">
+                <dt>说明：</dt>
+                <dd>
+                    <textarea name="directions" id="directions" rows="3" style="width:400px;"></textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="clear"></div>
+        <div class="bottombutton">
+            <input type="button"  class="btnabig"  value="确认修改" onclick="modifyshipping('<?=$this->salesnumber?>')"/>
+        </div>
+<div class="clear"></div>
+    </div>
+    
+</div>
+<script type="text/javascript">
+//审核订单
+function modifyshipping(salesnumber){
+
+  var freight    =  document.getElementById('freight').value;
+  if(freight==''){alert('请填写新运费！');document.getElementById('freight').focus();return;}
+  var directions =  document.getElementById('directions').value;
+  if(directions==''){alert('请填说明！');document.getElementById('directions').focus();return;}
+  
+
+	$.ajax({
+            url: '/icwebadmin/OrInqo/modifyshipping',
+            data: {'salesnumber':salesnumber,'freight':freight,'directions':directions},
+            type: 'post',
+            dataType: 'json',
+            success: function(arr) {
+            	alert(arr.message);
+				if(arr.code == 0) location.reload();
+            }
+	});
+   
+}
+getinqorder('<?=$this->salesnumber?>');
+</script>

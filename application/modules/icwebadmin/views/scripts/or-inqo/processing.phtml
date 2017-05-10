@@ -1,0 +1,52 @@
+<style>
+.info{ margin-left:10px;}
+</style>
+<div id="myHiddenDiv">
+  <div class="popup">
+    <div class="popup-header">
+    <h2>交期反馈：<?=$this->salesnumber?></h2>
+    <a href="javascript:;" onclick="$.closePopupLayer('processingBox');" title="关闭" class="dialogBoxClose">关闭</a> </div>
+    <div class="popup-body" style="width:550px;">
+     <!-- 需要填写的区域-->
+      <table width="740px" border="0" cellpadding="1">
+        <tr>
+         <td height="10" colspan="3" align="center">
+         <div id="message_sess_son" style="display:none" class="message_sess">
+         <span title="关闭" class="but" onclick="document.getElementById('message_sess_son').style.display='none'"></span>
+         <span id="alert_message_son"></span>
+         </div></td>
+         </tr>
+        <tr>
+          <td align="right"><font color="#FF0000">*</font>交货日期：</td>
+          <td><input type="text" name="delivery_time" id='delivery_time' value="<?=$this->deliverytime_old?>"  style="width:160px;" readonly="readonly" onclick="WdatePicker({startDate:'<?=$this->deliverytime_old?>',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" title="点击选择日期"></td>
+        </tr>
+        <tr>
+          <td align="center" colspan="2"><div id="orderbtn"> <input type="button"  class="btnabig"  value="确认" onclick="editaction()"/></div>
+          </td>
+        </tr>
+      </table>
+      <!-- 结束区域-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function editaction() { 
+	   var delivery_time = document.getElementById('delivery_time').value;
+	    if(delivery_time==''){alert('请选择交货日期');document.getElementById('delivery_time').focus();return;}
+		var subtmp = document.getElementById("orderbtn");
+	     subtmp.innerHTML = '<input type="button"  class="btnabig" value="提交中" />';
+	   $.ajax({
+		url: '<?php echo $this->processingurl;?>',
+		data: {'salesnumber':'<?=$this->salesnumber;?>','delivery_time':delivery_time,'deliverytime_old':'<?=$this->deliverytime_old?>','type':'<?=$this->type?>'},
+		type: 'post',
+		dataType: 'json',
+		success: function(arr) {
+		    alert(arr.message);
+			if(arr.code == 0){
+				  location.reload();
+            }
+			subtmp.innerHTML = '<input type="button"  class="btnabig" value="确认" onclick="editaction()"/>';
+		}
+		});
+}
+</script>

@@ -1,0 +1,157 @@
+
+	<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?>
+    
+    <?php if($this->saporder){?>
+   -> <a href="/icwebadmin/FinaReco/export?type=<?=$this->type?>&sdata=<?=$this->sdata?>&edata=<?=$this->edata?>&keyword=<?=$this->keyword?>" target="_blank" title="将搜索结果导出成Excel">导出Excel</a>
+  <?php }?>
+    
+    </h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+          
+<form id="myform"  name="myform" class="form-search"  action="" method="get">
+<input type="hidden" name="type" value="<?=$this->type?>" />
+
+<label>开始时间：</label><input type="text"  style="width:80px;" name="sdata" value="<?=$this->sdata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+<label>结束时间：</label><input type="text"  style="width:80px;" name="edata" value="<?=$this->edata?>" onclick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})"/>
+
+<label>订单号：</label>
+<div class="input-append">
+  <input type="text" class="search-query ac_input" id="keyword" style="width:135px"  value="<?=$this->keyword?>" name="keyword" autocomplete="off"/>
+</div>
+<input type="submit" class="btn" value="查 找"/>         
+</form>
+
+	  <!-- 需要填写的区域-->
+      <div class="fr u_right">
+    <div class="tab_content">
+    	<div class="tab_tit1">
+        <ul class="fl">
+          <li <?=$this->type=='wait'?'class="on"':''?>><a href="?type=wait<?=$selecturl?>" style="width:120px;">待对账<em>(<?=$this->waitnum?>)</em><b class="blank3"></b></a></li>
+          <li <?=$this->type=='already'?'class="on"':''?>><a href="?type=already<?=$selecturl?>" style="width:120px;">已对账<em>(<?=$this->alreadynum?>)</em><b class="blank3"></b></a></li>
+        </ul>
+        </div>
+    </div>
+    <div class="tab_con ">
+        <table class="tableanew" border="0" cellspacing="0" cellpadding="0"  width="100%"  >
+            <tr>
+                <th width="120"  align="center">订单号</th>
+                <th width="150">IC易站客户名称</th>
+                <th width="40">货币</th>
+                <th width="80">订单总金额</th>
+                <th width="60">SAP订单号</th>
+                <th width="70">SAP订单类型</th>
+                <th  width="60">SAP客户号</th>
+                <th width="150">SAP客户名称</th>
+                <th width="50">SAP发票号</th>
+                <th width="50">下单时间</th>
+                <th width="60" align="center">操作</th>
+            </tr>
+             <?php 
+				if(empty($this->saporder)){?>
+                <tr>
+                  <td colspan="12"><center>暂无记录。</center></td>
+                </tr>
+                <?php }else{
+			   foreach($this->saporder as $k=>$v){
+				$bgclass='class="hover_tr"';
+				if($k%2==1) $bgclass = 'class="bgf9 hover_tr" bgcolor="#F0EDED"';
+						
+				?>
+                 <tr valign="top" <?=$bgclass?>>
+                <td align="left">
+                <?php if($v['ic_ordertype']==2 || $v['so_type']==100){?>
+                <a href="javascript:;" onclick="viewSo('<?=$v['salesnumber']?>')" title="查看订单"><strong class="fontorange"><?=$v['salesnumber']?></strong></a>
+                <?php }else{?>
+                <a href="javascript:;" onclick="viewInqSo('<?=$v['salesnumber']?>')" title="查看订单"><strong class="fontorange"><?=$v['salesnumber']?></strong></a>
+                <?php }?>
+                </td>
+                <td align="left">
+				<a href="javascript:;" onclick="viewUser('<?=$v['uid']?>')" title="用户详情" class="company"><?=$v['companyname']?$v['companyname']:$v['uname']?></a>
+                </td>
+                <td align="right"><?=$v['currency']?></td>
+                <td align="right"><?=$v['total']?></td>
+                <td><?=$v['order_no']?></td>
+                <td><?=$v['auart']?></td>
+                <td><?=$v['kunnr']?></td>
+                <td><?=$v['cname']?></td>
+                <td><?=$v['invoice_no']?></td>
+                <td><?=($v['created']?date('Y/m/d',$v['created']):'')?></td>
+                <td valign="middle">
+                <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                     <p><a  class="gbqfb" href="javascript:;" onclick="changestatus('<?=$v['salesnumber']?>')">确认对账</a></p>
+                <?php }//end checkA?>
+              
+                </td>
+            </tr>
+		<?php }
+		}?> 
+        </table>
+    <div class="pagination divpage">
+       <?=$this->page_bar;?>
+  </div>
+</div>
+
+</div>
+      <!-- 结束区域-->
+	</div>  
+<script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script type="text/javascript">
+//对账
+function changestatus(salesnumber){
+  if(confirm('你确定订单：'+salesnumber+'，已付对账成功吗？'))
+  {
+	$.ajax({
+			url: '<?=$this->editurl?>',
+			data: {'salesnumber':salesnumber},
+			type: 'post',
+			dataType: 'json',
+			success: function(arr) {
+				alert(arr.message);
+				if(arr.code == 0) location.reload();
+			}
+	});
+  }
+}
+//查看订单
+function viewInqSo(salesnumber){
+	$.openPopupLayer({
+		name: "box",
+		url: "/icwebadmin/OrInqo/viewso?salesnumber="+salesnumber
+	});
+}
+function getinqorder(salesnumber){
+ $.ajax({
+            url: '/icwebadmin/OrInqo/ajaxorderinfo?salesnumber='+salesnumber,
+            data: {},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+            	document.getElementById('soinfo').innerHTML = html;
+				$("#soinfo").height($("#ajaxorderinfo").height()+10);
+            }
+	});
+}
+//查看订单
+function viewSo(salesnumber){
+	$.openPopupLayer({
+		name: "viewsoBox",
+		url: "/icwebadmin/OrOrgl/viewso?salesnumber="+salesnumber
+	});
+}
+function getorder(salesnumber){
+ $.ajax({
+            url: '/icwebadmin/OrOrgl/ajaxorderinfo?salesnumber='+salesnumber,
+            data: {},
+            type: 'post',
+            dataType: 'html',
+            success: function(html) {
+            	document.getElementById('soinfo').innerHTML = html;
+				$("#soinfo").height($("#ajaxorderinfo").height()+10);
+            }
+	});
+}
+</script>

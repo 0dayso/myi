@@ -1,0 +1,98 @@
+<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?></h1>
+				<div class="message_sess" style="display:none" id="message_sess"> 
+          <div onclick="document.getElementById('message_sess').style.display='none'" class="but" title="关闭">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+<form id="myform"  class="form-search" name="myform" action="" method="get">
+
+
+<select name="vendor">
+<option value="">Vendor-全部</option>
+<?php foreach($this->vendor as $bd){?>
+<option value='<?=$bd['vendor_id']?>' <?=$bd['vendor_id']==$this->selectvendor?'selected':''?>><?=$bd['vendor_name']?></option>
+<?php }?>
+</select>
+
+<select name="brand">
+<option value="">产品线-全部</option>
+<?php foreach($this->brand as $bd){?>
+<option value='<?=$bd['id']?>' <?=$bd['id']==$this->selectbrand?'selected':''?>><?=$bd['name']?></option>
+<?php }?>
+</select>
+<!-- <select name="Vendor" class="span1">
+<option value="">Vendor-全部</option>
+<option value="Y"  <?php echo $this->part_img =='Y' ? "selected" : ""; ?>>图片 - Y</option>
+<option value="N" <?php echo $this->part_img =='N' ? "selected" : "";?>>图片 - N</option>
+</select>
+<select name="datasheet" class="span1">
+<option value="" >仓库地-全部</option>
+<option value="Y"  <?php echo $this->datasheet =='Y'  ? "selected" : "";?>>文档 -Y</option>
+<option value="N" <?php echo $this->datasheet =='N'  ? "selected" : "";?>>文档 -N</option>
+</select>
+<select name="params" class="span1">
+<option value="">仓库-全部</option>
+<option value="Y"  <?php echo $this->params =='Y' ? "selected" : "";?>>参数 - Y</option>
+<option value="N" <?php echo $this->params =='N'  ? "selected" : "";?>>参数 - N</option>
+</select>-->
+<label>Part No.：</label>
+<div class="input-append">
+  <input type="text" class="span3 search-query" style="width:60px;" id="partno" value="<?=$this->partno?>" name="partno" />
+</div>
+
+ <label><input type="checkbox" name="stock" <?=$this->stock?'checked':''?> />库存</label>
+ <label><input type="checkbox" name="stockcover" <?=$this->stockcover?'checked':''?> />库存占用</label>
+&nbsp;
+
+<input type="submit" value="查 找" class="btn" />
+
+
+</form>
+	  <!-- 需要填写的区域-->
+      <div class="contentmia">
+      <table border="1" style=" margin-top:-1px;" class="table ordertable">
+          <thead>
+           <tr>
+            <th>型号</th>
+            <th>品牌</th>
+            <th>Vendor</th>
+            <th>仓库地</th>
+            <th>仓库</th>
+            <th>供应商moq</th>
+            <th>供应商mpq</th>
+            <th>库存</th>
+            <th>库存占用</th>
+            <th>阶梯价（USD）</th>
+            <th>香港交期</th>
+            <th>国内交期</th>
+            <th>更新时间</th>
+            </tr>
+            </thead>
+          <tbody>
+          <?php 
+		  if(empty($this->data)){
+		  	echo "<tr><td colspan='12'>暂无记录。</td></tr>";
+		  }else{
+		  foreach($this->data as $v){?>
+            <tr>
+                <td><a href="/proddetails?partid=<?=$v['part_id']?>" target="_blank"><?=$v['part_no']?></td>
+                <td><?=$v['name']?></td>
+                <td><?=$v['vendor_name']?></td>
+                <td><?=$v['location']?></td>
+                <td><?=$v['location_code']?></td>
+                <td><?=$v['moq']?></td>
+                <td><?=$v['mpq']?></td>
+                <td><?=$v['stock']?></td>
+                <td><?=$v['bpp_stock_cover']?></td> 
+                <td><?=$v['break_price']?></td>
+                <td><?=$v['lead_time_hk']?></td>
+                <td><?=$v['lead_time_cn']?></td>
+                <td><?=$v['updated_at']?></td>
+            </tr>
+           <?php }}?>
+            </tbody>    
+        </table>
+        <div class="pagination divpage"><?=$this->page_bar;?></div>
+        </div>
+      <!-- 结束区域-->
+	</div>

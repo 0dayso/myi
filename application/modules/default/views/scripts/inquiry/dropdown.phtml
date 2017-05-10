@@ -1,0 +1,44 @@
+<div>
+                 
+   <?php if($this->items['total_items']<1){?>
+     <table border="0" cellpadding="0" cellspacing="0" class="toptiptable">
+   <tr><td>暂时没有询价产品，赶紧询价吧</td></tr></table>
+    <?php }else{
+			?>
+     <table border="0" cellpadding="0" cellspacing="0" class="toptiptable">
+      <tbody>
+      
+      <tr>
+        <th width="160">型号</th>
+        <th width="40">品牌</th>
+        <th width="90">查考交期</th>
+        <th width="80">购买数量</th>
+        <th width="80">目标单价</th>
+        <th width="50">&nbsp;</th>
+      </tr>
+           <?php
+			foreach($this->items as $item){
+				if(is_array($item)){
+			?>
+      <tr>
+        <td>
+            <p><a href="/item-0-0-<?=$item['id'];?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank" class="model"><?=$item['part_no'];?></a></p>
+          </td>
+        <td><?=$item['options']['brand'];?></td>
+        <td><?=$item['options']['lead_time'];?></td>
+        <td><?=$item['hope_number'];?></td>
+        <td><?=$item['hope_price'];?></td>
+        <td><a href="javascript:" onclick="delectinquiry('<?=$item['rowid']?>')"  class="fblue">删除</a></td>
+      </tr>
+      <?php }//end if(is_array($item))
+		 }//end foreach
+	  ?>
+    </tbody></table>
+    <div class="bottomtable">
+               <p><a class="abutton" href="/inquiry">去提交询价</a></p>
+           </div>
+    <?php }?>
+</div>
+<script type="text/javascript">
+$(".inquirynumber").html('<?=($this->items['total_items'])?>');
+</script>

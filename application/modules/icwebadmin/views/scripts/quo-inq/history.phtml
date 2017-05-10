@@ -1,0 +1,94 @@
+<?php 
+// 状态
+$statusArr = array (
+		'1' => '<font color="#FF0000">待报价</font>',
+		'2' => '<font color="#009944">已报价</font>',
+		'3' => '<font color="#FF912F">议价审核中</font>',
+		'4' => '<font color="#FF912F">审核不通过</font>',
+		'5' => '<font color="#FF912F">已下单</font>',
+		'6' => '<font color="#FF912F">成功下单</font>'
+);
+$deliveryArr = array('HK'=>'香港','SZ'=>'国内');
+?>
+
+<div class="popup" style="width:840px;">
+    <div class="popup-header">
+        <h2>询价历史</h2>
+        <a href="javascript:;" onclick="$.closePopupLayer('box');" title="关闭" class="dialogBoxClose">关闭</a> 
+    </div>
+            <?php foreach($this->inquiry as $v){
+				$detaile = $v['detaile'];?>
+            <table width="50%">
+            <tr><td  align="right"><b>交货地：</b></td><td align="left"><?=$deliveryArr[$v['delivery']];?></td>
+            <td align="right"><b>结算货币：</b></td><td align="left"><?=$v['currency'];?></td></tr>
+            <tr><td  align="right"><b>询价编号：</b></td><td align="left"><?=$v['inq_number']?></td>
+            <td align="right"><b>状态：</b></td><td align="left"><?=$statusArr[$v['status']]?></td></tr>
+            <?php if($v['re_inquiry']==1){?>
+             <tr><td  align="right"><b>项目名称：</b></td><td align="left"><?=$v['project_name'];?></td>
+            <td align="right"><b>项目状态：</b></td><td align="left"><?=$v['project_status'];?></td></tr>
+            <tr><td  align="right"><b>量产时间：</b></td><td align="left"><?=date("Y-m-d",$v['production_time']);?></td></tr>
+            <?php }?>
+            </table>
+            <table class="tab_tb" border="0" style="width:100%">
+             <thead>
+            <table class="tab_tb" border="0">
+             <thead>
+            <th width="100">询价说明</th>
+            <th width="80">询价日期</th>
+            <th width="100">回复留言</th>
+            <th width="80">报价日期</th>
+            </thead>
+             <tr class="hover_tr bgf9">
+              <td width="100"><?=$v['remark']?></td>
+              <td width="100"><?=date('Y-m-d H:i',$v['created'])?></td>
+              <td width="100"><?=$v['result_remark']?></td>
+              <td><?=$v['modified']==0?'':date('Y-m-d H:i',$v['modified'])?></td>
+            </tr>
+            <tr id="tr_show_inquiry_1" style="display: table-row;" rel="1" class="hover_tr bgf9 tr_show_inquiry hover_tr_color">
+              <td colspan="8"><table width="100%" cellspacing="0" cellpadding="0">
+                  <tbody><tr>
+                    <td colspan="8"><div id="show_inquiry_1" class="subtal"><div class="up"></div>
+                        <table width="100%" cellspacing="0" cellpadding="0" class="subtablei">
+                          <tbody><tr>
+                            <th>型号</th>
+                            <th>参考交期</th>
+                            <th>标准包装</th>
+                            <th>采购数量</th>
+                            <th>年用量</th>
+                            <th>目标单价</th>
+                            <th>其它厂家报价</th>
+                            <th>订单最少起订量</th>
+                            <th>IC易站报价</th>
+                            <th>有效期</th>
+                            <th>备注</th>
+                          </tr>
+                          <?php foreach($detaile as $dv){?>
+                          	<tr>
+                            <td width="150"><?php if($dv['part_id']){ ?>
+                            <a href="/proddetails?partid=<?=$dv['part_id'];?>" target="_blank"><?=$dv['part_no']?></a>
+							<?php }else echo $dv['part_no'];?></td>
+                            <td><?=$dv['lead_time']?></td>
+                            <td><?=$dv['mpq']?></td>
+                            <td><?=$dv['number']?></td>
+                            <td><?=$dv['expected_amount']?></td>
+                            <td><?=$dv['price']?></td>
+                            <td><?=$dv['other_vendors']?></td>
+                            <td><?=$dv['pmpq']?></td>
+                            <td><?php echo $dv['result_price']==0?'':$dv['result_price'];?></td>
+                            <td><?php if($dv['expiration_time']<time() && $dv['expiration_time']>0){?>
+                              <font color="#FF0000"><?=date('Y-m-d',$dv['expiration_time']);?></font>
+                              <?php }else{ echo $dv['expiration_time']==0?'':'<font color="009944">'.date('Y-m-d',$dv['expiration_time']).'</font>';}?>
+                            </td>
+                            <td><?=$dv['result_remark']?></td>
+						  <?php }?>
+                            </tbody></table>
+                      </div></td>
+                  </tr>
+                </tbody></table></td>
+            </tr>
+             </table>
+            <?php }?>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

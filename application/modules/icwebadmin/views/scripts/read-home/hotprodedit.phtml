@@ -1,0 +1,31 @@
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 热销产品推荐 -> 编辑 <a href="/icwebadmin/ReadHome/hotprod">返回&gt;&gt;</a></h1>
+  <?php if (isset($_SESSION['messages'])) : ?><div class="alert fade in">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+    <p class="message"><strong><?php echo $_SESSION['messages'];unset($_SESSION['messages']);?></strong></p></div><?php endif; ?>  
+    
+	  <!-- 需要填写的区域-->
+	<div class="fr u_right">
+    <div class="tab_content">
+      <div class="tab_tit1">
+        <div class="tab_con mb10">
+        <form id="thisform" class="form-horizontal form-validate" style="text-align:left" method="post" action="" >
+        <table class="table" border="0" style=" margin-top:-1px;">
+                  <?php foreach($this->hot_prod as $key=>$partarr){?>
+                  <tr>
+                       <input type="hidden" name="id[]" value="<?=$partarr['id']?>" />
+                       <td>Part No:<a href="/proddetails?partid=<?=$partarr['comid']?>" target="_blank"><?=$partarr['part_no']?></a></td>
+                       <td>产品id：<input type="text" name="comid[]" value="<?=$partarr['comid']?>" /></td>
+                       <td>排序：<input type="text" name="displayorder[]" value="<?=$partarr['displayorder']?>" /></td>
+                       <td><label>上线：<input type="checkbox" name="status[]" value="<?=$partarr['comid']?>" <?=($partarr['status'])?"checked":''?> /></label></td>
+                       <tr>
+				 <?php }?>
+                 <tr><td></td><td colspan="3"><input type="submit" value="提 交" class="btn"/></td></tr>
+           </form>
+          </table>
+        </div>
+      </div>
+     </div>
+     </div>
+      <!-- 结束区域-->
+ </div>

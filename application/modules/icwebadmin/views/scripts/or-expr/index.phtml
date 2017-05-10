@@ -1,0 +1,123 @@
+<?php 
+$statusarr = array('101'=>'待付款','201'=>'已付款待发货','202'=>'待确认收货',
+'301'=>'已完成','302'=>'已评价','401'=>'订单被取消');
+$paytypearr = array('transfer'=>'银行汇款','online'=>'在线支付');
+
+$statustmp = array('202','301','302');
+?>
+<script src="/js/jsplug/bettertip/jquery.bettertip.js" type="text/javascript"></script>
+<link href="/js/jsplug/bettertip/jquery.bettertip.css" rel="stylesheet">
+<link href="/js/jsplug/ajaxselect/jquery.autocomplete.css" rel="stylesheet">
+<script src="/js/jsplug/ajaxselect/jquery.autocomplete.js" type="text/javascript"></script>
+
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?>  |  <a href="/icwebadmin/OrExpr/samples" >样片订单</a></h1>
+  <form id="myform"  class="form-search" name="myform" action="" method="get">
+    <label>订单号：</label>
+    <input type="hidden" name="type" value="select" />
+    <div class="input-append">
+      <input type="text" class=" search-query ac_input" id="keyword" value="<?=$this->keyword?>" name="keyword"  autocomplete="off"/>
+      <input type="button" name="sub" class="btn" value="查 找" onclick="check()"/>
+    </div>
+  </form>
+  <div class="contentmia">
+  <?php if($this->type == 'select'){?>
+            &nbsp;&nbsp;&nbsp;&nbsp;搜索结果（<?=$this->selnum?>） <a href="/icwebadmin/OrExpr">返回&gt;&gt;</a>
+   <?php }?>
+<div class="<?php if(isset($_SESSION['postsess']['message']) && $_SESSION['postsess']['message']) echo "ok";?>" id="message"> <?php echo $_SESSION['postsess']['message'];$_SESSION['postsess']['message']='';?></div>
+    <table width="100%" cellpadding="1" border="1" class="producttable table">
+      <thead>
+        <tr>
+          <th width="150">订单号</th>
+            <th width="180">订单商品</th>
+            <th width="80">物品总数</th>
+            <th>收货人信息</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      	<?php  if(empty($this->salesorder)){?>
+            <tr>
+              <td colspan="5"><center>
+                  暂无记录。
+                </center></td>
+            </tr>
+            <?php }else{
+				 foreach($this->salesorder as $k=>$sodata){
+
+				 ?>
+            <tr>
+              <td><b><?=$sodata['salesnumber']?></b></td>
+              <td><?php $partnos = explode(',',$sodata['partnos']);
+						foreach($partnos as $k=>$part_no){echo $part_no.'<br/>';}?></td>
+              <td><?=$sodata['quantitys']?></td>
+              <td>
+			  
+			  <?php 
+			  if($sodata['delivery_type']==3){
+			  	echo '用户上门自取';
+			  }else{
+			  echo $this->fun->createAddress($sodata['province'],$sodata['city'],$sodata['area'],$sodata['address']).' , '.$sodata['sname'].' '.$sodata['mobile'].' '.$sodata['tel'];
+			  }?>
+              </td>
+              <td style="border-left:1px solid #ececec">
+                <a href="javascript:" onclick="delivery('<?=$sodata['id']?>','<?=$sodata['salesnumber']?>')" class="btnbuynow mb5">确认已发货</a><br/>
+              </td>
+          </tr>
+          <?php }}?>
+        
+      </tbody>
+    </table>
+    <div class="pagination divpage">
+        <?=$this->page_bar;?>
+      </div>
+  </div>
+</div>
+<script type="text/javascript">
+//确认发货
+function delivery(id,salesnumber){
+	$.openPopupLayer({
+        name:'deliveryBox',
+        url:'<?php echo $this->deliveryurl;?>?sonum='+salesnumber+'&sonid='+id
+    });
+}
+function hidMessage(){
+	document.getElementById("message_sess").style.display = 'none';
+}
+</script>
+<script type="text/javascript" language="javascript">
+
+	function check(){
+		var keyword = document.getElementById('keyword').value;
+		if(keyword=="") {alert("订单号！");document.getElementById('keyword').focus();return;}
+		else $('#myform').submit();
+	}
+	$(document).ready(function() {
+			$("#keyword").autocomplete("/icwebadmin/OrExpr/getajaxtag",
+			{
+				delay:5,
+            	minChars:3,
+            	matchSubset:1,
+            	matchContains:1,
+            	cacheLength:10,
+            	onItemSelect:selectItem,
+            	onFindValue:findValue,
+            	formatItem:formatItem,
+            	autoFill:false
+        	}
+    		);
+			});
+			function findValue(li) {
+    			if( li == null ) return alert("No match!");
+				if( !!li.extra ) var sValue = li.extra[0];
+				else var sValue = li.selectValue;
+				}
+			function selectItem(li) { findValue(li);}
+			function formatItem(row) { return row[0];//return row[0] + " (id: " + row[1] + ")"//如果有其他参数调用row[1]，对应输出格式Sparta|896
+			}
+			function lookupAjax(){
+			var oSuggest = $("#keyword")[0].autocompleter;
+			oSuggest.findValue();
+			return false;
+			}
+</script>

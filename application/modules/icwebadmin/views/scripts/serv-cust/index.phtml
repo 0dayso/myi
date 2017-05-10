@@ -1,0 +1,51 @@
+
+	<div class="conmian">
+	<h1><?php echo $this->AreaTitle;?></h1>
+				<div id="message_sess" style="display:none" class="message_sess"> 
+          <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
+          <div id="alert_message"></div> 
+          </div>
+	<!-- 需要填写的区域-->
+    <div class="fr u_right">
+    <div class="tab_con ">
+   
+        <table class="tableanew" border="0" cellspacing="0" cellpadding="0"  width="100%"  >
+            <tr>
+                <th width="80" align="center">组别</th>
+                <th width="80" align="center">名称</th>
+                <th  width="80" align="center">类型</th>
+                <th  width="80" align="center">技术支持</th>
+                <th  width="80" align="center">状态</th>
+                 <th  width="80" align="center">操作</th>
+            </tr>
+             <?php 
+				if(empty($this->servicelist)){?>
+                <tr>
+                  <td colspan="6"><center> 暂无记录。</center></td>
+                </tr>
+                <?php }else{
+			   foreach($this->servicelist as $k=>$v){
+				?>
+              <tr valign="top">
+                <td align="center"><?=$v['groupname']?></td>
+                <td align="center"><?=$v['username']?></td>
+                <td align="center"><?=($v['stype']==100?'负责销售':'指定人员')?></td>
+                <td align="center"><?=($v['lastname']?$v['lastname'].$v['firstname']."(".$v['staffs'].")":'--')?></td>
+                
+                <td align="center"><?php if($v['status']==1) {?> <font color="#006600">已上线</font><?php }else {?>
+                <font color="#FF0000">已下线</font><?php }?></td>
+                
+                <td valign="middle">
+                <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                <p><a class="gbqfb" href="javascript:;" onclick="openbox('<?php echo $this->url(array('controller'=>'ServCust', 'action'=>'edit', 'id'=>$v['id']));?>')">编辑</a></p>
+                <?php }?>
+                </td>
+            </tr>
+		<?php }
+		}?> 
+        </table>
+</div>
+
+</div>
+      <!-- 结束区域-->
+	</div>

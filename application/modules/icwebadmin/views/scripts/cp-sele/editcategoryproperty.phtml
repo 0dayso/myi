@@ -1,0 +1,21 @@
+
+	<div class="conmian">
+	<h1><a href="<?=$this->indexurl;?>"><?php echo $this->AreaTitle;?></a> -> <a href="<?=$this->selectionurl?>/cid/<?=$this->category['id']?>"><?=$this->category['name']?> </a> -> 编辑产品分类与属性关系</h1>
+
+	  <!-- 需要填写的区域-->
+      <h3><a href="javascript:;" onclick="openbox('<?=$this->indexurl?>/addcpvalue/cid/<?=$this->category['id']?>')">+添加属性关联</a></h3>
+      <table border="1" width="80%">
+      <tr bgcolor="<?=$bg?>">
+        <td>
+            <?php 
+			for($i=0;$i<count($this->propertycategory);$i++){
+				 $pc_arr = $this->propertycategory[$i];
+			?>
+                <b><a href="javascript:;" onclick="openbox('<?=$this->indexurl?>/editcpvalue/pcid/<?=$pc_arr['id']?>')" <?=$pc_arr['status']?'':'style="color:#FF0000"'?>><?=$pc_arr['cname']?></a></b>&nbsp;|&nbsp;
+			 <?php }?>
+        </td>
+      </tr>
+      </table>
+      <br/>
+      <!-- 结束区域-->
+	</div>
