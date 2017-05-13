@@ -136,76 +136,9 @@ class Icwebadmin_IndexController extends Zend_Controller_Action
     	$this->view->Area   =$area_array;	
     }else{
     //统计
-    	if(in_array('quarterly',$_SESSION['statistics_rule']['value'])){
-    		$year = $_GET['sy']?$_GET['sy']:date('Y');
-    		//季度计划
-    		$this->view->quarterly      = $this->_repoService->quarterlyPlan($year);
-    		//季度统计
-            $this->view->quarterlytotal = $this->_repoService->quarterlyCount($year);
-    	}
-    	if(in_array('income',$_SESSION['statistics_rule']['value'])){
-    		//订单 1小时
-    		$frontendOptions = array('lifeTime' => 3600,'automatic_serialization' => true);
-    		$backendOptions = array('cache_dir' => CACHE_PATH);
-    		$cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
-    		// 查看一个缓存是否存在:
-    		$cache_key = 'order_count';
-    		if(!$orderNumber = $cache->load($cache_key)) {
-    			$orderNumber = $this->_countService->orderNumber();
-    			$cache->save($orderNumber,$cache_key);
-    		}
-    		$this->view->orderNumber = $orderNumber;
-    	}
-    	if(in_array('basic',$_SESSION['statistics_rule']['value'])){
-    		//品牌、研讨会、应用方案统计 5 天
-    		$frontendOptions = array('lifeTime' => 86400*5,'automatic_serialization' => true);
-    		$backendOptions = array('cache_dir' => CACHE_PATH);
-    		$cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
-    		// 查看一个缓存是否存在:
-    		$cache_key = 'common_count';
-    		if(!$commontotle = $cache->load($cache_key)) {
-    			$commontotle = $this->_countService->commonNumber();
-    			$cache->save($commontotle,$cache_key);
-    		}
-    		$this->view->commontotle = $commontotle;
-    		//注册用户 2天
-    		$frontendOptions = array('lifeTime' => 86400*2,'automatic_serialization' => true);
-    		$backendOptions = array('cache_dir' => CACHE_PATH);
-    		$cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
-    		// 查看一个缓存是否存在:
-    		$cache_key = 'usertotle_count';
-    		if(!$usertotle = $cache->load($cache_key)) {
-    			$usertotle = $this->_countService->userNumber();
-    			$cache->save($usertotle,$cache_key);
-    		}
-    		$this->view->usertotle = $usertotle;
-    		//询价 2小时
-    		$frontendOptions = array('lifeTime' => 3600*2,'automatic_serialization' => true);
-    		$backendOptions = array('cache_dir' => CACHE_PATH);
-    		$cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
-    		// 查看一个缓存是否存在:
-    		$cache_key = 'inquiry_count';
-    		if(!$inquiryNumber = $cache->load($cache_key)) {
-    			$inquiryNumber = $this->_countService->inquiryNumber();
-    			$cache->save($inquiryNumber,$cache_key);
-    		}
-    		$this->view->inquiryNumber = $inquiryNumber;
-    	}
-    	if(in_array('product',$_SESSION['statistics_rule']['value'])){
-    	  //产品分类统计 
-    	  $this->view->pcNumber = $this->_countService->prodCategoryNumber();
-    	  //产品统计数据 1 天
-    	  $frontendOptions = array('lifeTime' => 86400,'automatic_serialization' => true);
-    	  $backendOptions = array('cache_dir' => CACHE_PATH);
-    	  $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
-    	  // 查看一个缓存是否存在:
-    	  $cache_key = 'prod_count';
-    	  if(!$prodNumber = $cache->load($cache_key)) {
-    	  	$prodNumber = $this->_countService->prodNumber();
-    	  	$cache->save($prodNumber,$cache_key);
-    	  }
-    	  $this->view->prodNumber = $prodNumber;
-    	}
+
+    	
+
       }
     }
     public function menuAction(){

@@ -475,10 +475,10 @@ class CommonController extends Zend_Controller_Action
     //记录日记
     public function logAction()
     {
-    	$this->_helper->layout->disableLayout();
-    	$this->_helper->viewRenderer->setNoRender();
-    	$this->_defaultlogService = new Default_Service_DefaultlogService();
-    	$this->_defaultlogService->addViewLog($this->getRequest()->getParams());
+//     	$this->_helper->layout->disableLayout();
+//     	$this->_helper->viewRenderer->setNoRender();
+//     	$this->_defaultlogService = new Default_Service_DefaultlogService();
+//     	$this->_defaultlogService->addViewLog($this->getRequest()->getParams());
     }
     //记录日记
     public function viewlogAction()

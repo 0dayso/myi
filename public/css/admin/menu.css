@@ -10,14 +10,14 @@ way to fit your requirements.
 =================================================================== */
 
 
-#menu{background-color:#b40001;width:99%; float:left; padding-left:1% }
+#menu{background-color:#0564A6;width:99%; float:left; padding-left:1% }
 
 #nav { list-style:none; position:relative; z-index:500; }
 
 #nav li.top { float:left;display:inline-block;height:32px; line-height:32px; }
 #nav li a.top_link {display:block; cursor:default; float:left; color:#fff; text-decoration:none; padding:0 12px;}
 #nav li a.top_link span {float:left; display:block; }
-#nav li a.noselected {background:#b40001; border-left:1px solid #bf0016 ; border-right:1px solid #b40001;}
+#nav li a.noselected {background:#0564A6; border-left:1px solid #044D80 ; border-right:1px solid #0564A6;}
 #nav li a.selected ,#nav li a.top_link:hover {background:#777; color:#fff;  border-left:1px solid #777; border-right:1px solid #777; margin-left:0px}
 #nav li:hover > a.top_link {background:#777; color:#fff}
 #nav li:hover {position:relative; z-index:1200;}

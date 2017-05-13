@@ -45,7 +45,7 @@ class Icwebadmin_SaLogsController extends Zend_Controller_Action
     }
     public function indexAction(){
     	if(isset($_GET['type'])) $this->view->type = $_GET['type'];
-    	else $this->view->type = 'default';
+    	else $this->view->type = 'admin';
     	if($this->view->type == 'default'){
     	    $total = $this->_logservice->getDefaultRowNum();
     	}elseif($this->view->type == 'admin'){
