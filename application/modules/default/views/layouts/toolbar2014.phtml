@@ -29,9 +29,7 @@ $(function(){
 	<div class="w">
     	<div class="fl ">
         	<ul class="top_nav_ul">
-            	<li><strong style="color:#ff6600; font-size:13px;">中电器材旗下元器件电商平台</strong></li>
-                <li><span style="color:#ddd; margin:0 3px">|</span></li>
-                
+        		
 				<?php if(isset($_SESSION['userInfo']['unameSession'])){?>
                 <li>
                     <div class="iconA logininfo201312 pos-re">
@@ -45,12 +43,13 @@ $(function(){
                     </div>
                 </li>
                 <?php }else{?>
-                <li><span>您好，欢迎来到<span class="fontArial">IC</span>易站！</span></li>
                 <li>
                     <a href="/user/login?url=<?=rawurlencode($_SERVER['REQUEST_URI'])?>">登录</a>
                     <a href="/user/register">注册</a></span>
                 </li>
+                <li><span style="color:#ddd; margin:0 3px">|</span></li>
                 <?php }?>
+                <li><span>您好，欢迎来到<?php echo $this->siteTitle?>！</span></li>
             </ul>
         </div>
         <div class="fr">
@@ -62,7 +61,7 @@ $(function(){
             	<li>
                     <div class="iconA myse201312 pos-re">
                         <div class="menu-hd201312 icon_t">
-                        	<a href="/center" target="_top" >我的IC易站</a><i><em></em><span></span></i>
+                        	<a href="/center" target="_top" >会员中心</a><i><em></em><span></span></i>
                         </div>
                         <div class="menu-bd-order menu-bd-con">
                             <div class="uclist">
@@ -91,51 +90,10 @@ $(function(){
                         </div>
                     </div>
                 </li>
-                <!--<li><span style="color:#ddd; margin:0 3px">|</span></li>
-                <li>
-                    <div class="iconA myse201312 pos-re">
-                        <div class="menu-hd201312 icon_t">
-                        	<?php if (isset($_COOKIE['style'])){if($_COOKIE['style']=='widescreen') echo '宽屏版';else echo '标准版';} else echo '标准版';?><i><em></em><span></span></i>
-                        </div>
-                        <div class="menu-bd-help menu-bd-con">
-                            <div class="uclist">  
-                                 <div class="fl">          
-                                    <ul class="fore1 ">                              	                  
-                                    <li><a href="javascript:;" onClick="changestyle('style','standard',24*7)">标准版</a></li>
-                                    <li><a href="javascript:;" onClick="changestyle('style','widescreen',24*7)">宽屏版</a></li>
-                                    </ul> 
-                                </div>
-                                                              
-                            </div>
-                            <div class="clr"></div>
-                        </div>
-                    </div>
-                </li>-->
-                <li><span style="color:#ddd; margin:0 3px">|</span></li>
-                <li>
-                    <div class="iconA myse201312 pos-re">
-                        <div class="menu-hd201312 icon_t">
-                        	<a href="/help/customer/type/problem"><?=$this->translate('Foot_CustomerCenter')?></a><i><em></em><span></span></i>
-                        </div>
-                        <div class="menu-bd-help menu-bd-con">
-                            <div class="uclist">
-                                <div class="fl">          
-                                    <ul class="fore1 ">                              	                  
-                                         <li><a href="/help/customer/type/problem" rel="nofollow">常见问题</a></li>
-                                         <li><a href="/help/customer/type/aftermarket" rel="nofollow">售后服务</a></li>
-                                         <li><a href="/help/customer/type/onlineservice" rel="nofollow">在线客服</a></li>
-                                         <li><a href="/help/customer/type/complaint" rel="nofollow">投诉中心</a></li>
-                                         <li><a href="/help/customer/type/servicemail" rel="nofollow">客服邮箱</a></li>                                          
-                                    </ul> 
-                                </div>                                       
-                            </div>
-                            <div class="clr"></div>
-                        </div>
-                    </div>
-                </li>
                 <li><span style="color:#ddd; margin:0 3px">|</span></li>
                 <li><a href="javascript:;" onclick="addfavorite('<?php echo HTTPHOST;?>')">收藏本站</a></li>
-                <li class="menu-bd-tel"><b class="telp">(86) 400-626-1616</b></li>
+                <li><span style="color:#ddd; margin:0 3px">|</span></li>
+                <li class="menu-bd-tel">热线：<?php echo $this->hotTel?></li>
             </ul>
             <?php if (isset($_COOKIE['styleselect']) && $_COOKIE['styleselect']=='alert'){}else{?>
             <!--<div class="tipbox02" id="tipbox02">

@@ -164,7 +164,7 @@ border-color: #ff6600 transparent transparent #ff6600;_border-color: #ff6600 #ff
 .sleter{ -webkit-text-size-adjust:none;}
 #navul2013 li.on a,#navul2013 a:hover,.categorys2013_t,.categorys2013_icon,.nanxunmenu2013 a,.navhuodong201312 a{ background:url(../img/menu_sprite.png) no-repeat; display:inline-block}
 #navul2013 li.on a,.categorys2013_t,.categorys2013_icon,.nanxunmenu2013 a,.navhuodong201312 a{ _background:url(../img/menu_sprite.gif) no-repeat; }
-#newmenu2013{background:#0275C4; width:100%; margin:0 auto; height:40px;z-index:100; position:relative;}
+#newmenu2013{border-bottom: 2px solid #006db7; width:100%; margin:0 auto; height:40px;z-index:100; position:relative;}
 #navul2013{ margin-left:200px; width:700px; position:relative; }
 #navul2013 li{float:left;}
 #navul2013 li a{border-right:#c5000e 1px solid; border-left:#e00010 1px solid;text-align:center; height:40px; line-height:40px;font-size:15px;color:#fff; display:inline-block}
@@ -183,6 +183,68 @@ border-color: #ff6600 transparent transparent #ff6600;_border-color: #ff6600 #ff
 .menushadow2013{ background:url(../img/menushadow2013.png) repeat-x;  display:inline-block; width:100%; height:10px; position:absolute; bottom:-10px; left:0;_display:none; }
 .newmy2013{ position:absolute; top:0px; right:0; }
 .newmy2013 a{ float:left; display:inline-block; font-size:15px; color:#fff;width:100px;height:40px; line-height:40px; text-align:center; background:#08578E;}.newmy2013 a:hover{ text-decoration:none; }
+
+
+.main-nav {
+	height: 40px
+}
+
+.main-nav-ul {
+	margin-left: 210px;
+	font-size: 0;
+	position: relative
+}
+
+.main-nav-ul li {
+	display: inline-block;
+	font: 500 15px/38px \5FAE\8F6F\96C5\9ED1;
+	*zoom: 1;
+	*display: inline;
+	margin-right: 1px;
+	position: relative
+}
+
+.main-nav-ul li a {
+	color:#333333;
+	display: block;
+	padding: 0 15px;
+	height: 40px
+}
+
+.main-nav-ul li a:hover {
+	color: #006db7
+}
+
+.main-nav-ul li .new-icon {
+	background: url(http://www.cecport.com/images/public/free.png) no-repeat;
+	width: 29px;
+	height: 17px;
+	position: absolute;
+	right: -10px;
+	top: -5px
+}
+
+.main-nav-ul li.current a {
+	color: #f60
+}
+.main-nav-ul li.right-nav {
+	width: 230px;
+	height: 36px;
+	text-align: center;
+	vertical-align: middle;
+	position: absolute;
+	right: 0;
+	top: 0
+}
+
+.main-nav-ul li.right-nav a {
+	padding: 0
+}
+
+.main-nav-ul li.right-nav img {
+	vertical-align: top;
+	*margin-top: 0
+}
 
 /*下拉菜单*/
 .categorys2013{ position:absolute; width:190px; cursor:pointer; left:0; top:0; z-index:100}

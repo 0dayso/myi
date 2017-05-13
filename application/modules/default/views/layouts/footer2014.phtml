@@ -1,9 +1,6 @@
 
 <script language="JavaScript" type="text/javascript">
 
-
-
-
 function changestyle(objName,objValue,objHours){
 	var re = addCookie(objName,objValue,objHours);
 	if(re=='widescreen' || re=='standard') location.reload();
@@ -43,91 +40,27 @@ if(temp[0] == objName) return unescape(temp[1]);
 <div id="footer">
 	<div class="clr"></div>
     <div class="w">
-        <div class="footer_pic">
-              <li class="fore1"><a href="/help/index/type/aboutus" target="_blank"><i class="fi_icon i_icon01"></i>100%原厂正品保证</a></li>
-              <li class="fore2"><a href="/help/index/type/aboutus" target="_blank"><i class="fi_icon i_icon02"></i>丰富的设计资源</a></li>
-              <li class="fore3"><a href="/help/index/type/aboutus" target="_blank"><i class="fi_icon i_icon03"></i>便捷下单与快速物流</a></li>
-              <li class="fore4"><a href="/help/index/type/aboutus" target="_blank"><i class="fi_icon i_icon04"></i>一站式产品技术支持</a></li>
+        <div class="footer_pic" style="display: none">
+              <li class="fore1"><a><i class="fi_icon i_icon01"></i>100%原厂正品保证</a></li>
+              <li class="fore2"><a><i class="fi_icon i_icon02"></i>丰富的设计资源</a></li>
+              <li class="fore3"><a><i class="fi_icon i_icon03"></i>便捷下单与快速物流</a></li>
+              <li class="fore4"><a><i class="fi_icon i_icon04"></i>一站式产品技术支持</a></li>
         </div>
-
-        <div class=" footerAear">	        
-            <div class="footerinfo">
-      <div class="helpCol_01">
-        <h3><?=$this->translate('Foot_GettingStarted')?></h3>
-        <ul>
-          <li><a class="track" href="/help/index/type/login"><?=$this->translate('Foot_Login')?></a></li>
-          <li><a class="track" href="/help/index/type/my"><?=$this->translate('Foot_My')?></a></li>
-          <li><a class="track" href="/help/index/type/terms"><?=$this->translate('Foot_Terms')?></a></li>
-          <li><a class="track" href="/help/index/type/clause"><?=$this->translate('Foot_Clause')?></a></li>
-        </ul>
-        <p class="line1"></p>
-      </div>
-      <div class="helpCol_02">
-        <h3><?=$this->translate('Foot_Purchase')?></h3>
-        <ul>
-          <li><a class="track" href="/help/index/type/find"><?=$this->translate('Foot_Find')?></a></li>
-          <li><a class="track" href="/help/index/type/online"><?=$this->translate('Foot_Online')?></a></li>
-          <li><a class="track" href="/help/index/type/inq"><?=$this->translate('Foot_Inq')?></a></li>
-          <li><a class="track" href="/help/index/type/stock"><?=$this->translate('Foot_Stock')?></a></li>
-        </ul>
-        <p class="line1"></p>
-      </div>
-      <div class="helpCol_03">
-        <h3><?=$this->translate('Foot_Delivery')?></h3>
-        <ul>
-          <li><a class="track" href="/help/index/type/pay"><?=$this->translate('Foot_Pay')?></a></li>
-          <li><a class="track" href="/help/index/type/shipping"><?=$this->translate('Foot_Shipping')?></a></li>
-          <li><a class="track" href="/help/index/type/inspection"><?=$this->translate('Foot_Inspection')?></a></li>
-          <li><a class="track" href="/help/index/type/delivery"><?=$this->translate('Foot_Delivery')?></a></li>
-        </ul>
-        <p class="line1"></p>
-      </div>
-      <div class="helpCol_04">
-        <h3><?=$this->translate('Foot_Services')?></h3>
-        <ul>
-          <li><a class="track" href="/help/index/type/technical"><?=$this->translate('Foot_Technical')?></a></li>
-          <li><a class="track" href="/help/index/type/bom"><?=$this->translate('Foot_Bom')?></a></li>
-          <li><a class="track" href="/help/index/type/invoice"><?=$this->translate('Foot_Invoice')?></a></li>
-          <li><a class="track" href="/help/index/type/exchange"><?=$this->translate('Foot_Exchange')?></a></li>
-        </ul>
-        <p class="line1"></p>
-      </div>
-      <div class="helpCol_05">
-        <h3><?=$this->translate('Foot_Help')?></h3>
-        <ul>
-          <li><a class="track" href="/help/index/type/aboutus"><?=$this->translate('Foot_Aboutus')?></a></li>
-          <li><a class="track" href="/help/index/type/question"><?=$this->translate('Foot_Question')?></a></li>
-          <li><a class="track" href="/help/index/type/customer"><?=$this->translate('Foot_Customer')?></a></li>
-          <li><a class="track" href="/help/index/type/privacy"><?=$this->translate('Foot_Privacy')?></a></li>
-        </ul>
-      </div>
-      
-    </div>
-             <div class="servicetel pos-re">电话热线400-626-1616 E-Mail:<a href="mailto:Sales@ceacsz.com.cn" class="footeraemail">Sales@ceacsz.com.cn</a></div>
-            
-            <div class="clr"></div>
-             
-         </div>
-        <!-------------友情链接------------->
+   <!-------------友情链接------------->
    <?php echo $this->frindsLinks();?>
    <!-------------end 友情链接------------->
             
-            <div class="copyRight ">
+    <div class="copyRight ">
               <p class="fr"> <span>
-             <a href="/help/index/type/aboutus"><?=$this->translate('Foot_Aboutus')?></a></span> <span>|</span> <span>
-      <a href="/help/index/type/customer"><?=$this->translate('Foot_ContactUs')?></a></span> <span>|</span> <span>
-      <a href="http://www.ceacsz.com.cn/jobs/" target="_blank"><?=$this->translate('Foot_Recruitment')?></a></span> <span>|</span> <span>
-      <a href="http://www.ceacsz.com.cn/" target="_blank"><?=$this->translate('Foot_Links')?></a></span> </p>
-      <p class="fl"><a href="http://www.ceacsz.com.cn/" target="_blank">深圳中电国际信息科技有限公司</a> 版权所有 <span style="font-family:Arial">©</span> 2012-<?=date('Y')?> 
-       <a href="http://www.miibeian.gov.cn" target="_blank">粤ICP备05143739号-2</a>
-       增值电信业务经营许可证：<a href="/upload/B2-20130478.pdf" target="_blank">粤B2-20130478</a></p>
+     <p class="fl"><a href="<?php echo $this->companyUrl?>" target="_blank"><?php echo $this->company;?></a> 版权所有 <span style="font-family:Arial">©</span> 2012-<?=date('Y')?> 
+       <a href="http://www.miibeian.gov.cn" target="_blank"><?php echo $this->PIC?></a></p>
       <p class="blank10"></p>
             </div>
         <!--备案--> 
-        <div class="w ac " >
+        <div class="w ac " style="display: none">
           <ul class="filing">
              <li >
-              <a href="http://www.ebs.gov.cn/EntCertificate.aspx?domainId=86d51bd6-bb60-49e9-b5bf-747be227f9ab" target="_blank">
+              <a href="http://www.ebs.gov.cn" target="_blank">
                   <img width="108" height="40" title="工商网监" alt="工商网监" src="/images/default/filing/ebsIcon.jpg" ></a>
           </li>
           <li >
@@ -139,23 +72,7 @@ if(temp[0] == objName) return unescape(temp[1]);
         </div>
     </w>
 </div>
-<?php if(!in_array($_SESSION['menu'],array('jifen','event','event_view','cart','order','inquiryorder','help','samples'))){?>
-<script type="text/javascript" language="javascript"> 
 
-/*var Swidth = screen.width;
-var _se, _st; 
-_se = document.createElement("link"); 
-_se.type = "text/css"; 
-_se.rel = "stylesheet"; 
-if (Swidth >= 1280) { 
-_st = "http://www.iceasy.com/2014/css/default/w1190.css"; 
-} 
-_se.href = _st; 
-
-document.getElementsByTagName("body")[0].appendChild(_se); 
-*/
-</script>
-<?php }?>
 <!--登录弹出框-->
 <div id="login_box" style="display:none;">
   <div class="pop pop_login" style="width:440px; height:280px;">

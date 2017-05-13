@@ -493,7 +493,7 @@ function number_format(number,fix,fh,jg)//number传进来的数,fix保留的小�
 }
 //打印特定区域
 function  printDiv(divid){   
-  var newWin=window.open('http://www.iceasy.com', '', '');   
+  var newWin=window.open('http://', '', '');   
   var titleHTML=document.getElementById(divid).innerHTML;   
   newWin.document.write(titleHTML);   
   newWin.print();
@@ -564,28 +564,7 @@ function checkemail(temp)
         
     } 
 	
-//分享
-function shareBaidu(type,key){
-	var tourl = '';
-	var url = window.location.href;
-	var title = '%23ic易站%23惊喜来袭，邀请好友注册即可赚积分，抽大奖，您还在等什么，快呼朋唤友来参加吧！  http%3a%2f%2fwww.iceasy.com%2fuser%2fregister%3finvitekey%3d'+key;
-	if(type=='tqq'){
-		tourl = 'http://share.v.t.qq.com/index.php?c=share&a=index&url='+url+'&title='+title+'&appkey=801cf76d3cfc44ada52ec13114e84a96';
-	}else if(type=='tsina'){
-		tourl = 'http://service.weibo.com/share/share.php?url='+url+'&title='+title+'&appkey=1343713053';
-	}else if(type=='renren'){
-		tourl ='http://widget.renren.com/dialog/share?resourceUrl='+url+'&srcUrl='+url+'&title='+title+'&description=';
-	}else if(type=='qq'){
-		tourl = 'http://connect.qq.com/widget/shareqq/index.html?url='+url+'&title='+title+'&desc=&summary=&site=baidu';
-	}else if(type=='qzone'){
-		tourl = 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='+url+'&title='+title+'&desc=&summary=&site=';
-	}
-	if(url!=''){
-	     window.open(tourl,"_blank");
-	}else{
-		alert('不支持此类型分享');
-	}
-}
+
 //邀请框
 function openinvitebox(){
 	$.ajax({
@@ -611,39 +590,7 @@ function openinvitebox(){
 		}
 	});
 }
-//签到
-function registr(){
-	$.ajax({
-            url: '/index/checklogin',
-            data: {},
-            type: 'post',
-            dataType: 'json',
-            success: function(arr) {
-			   if(arr.code==0)
-			   {  
-			       $.ajax({
-						url: '/common/registr',
-						data: {},
-						type: 'post',
-						dataType: 'json',
-						success: function(arr) {
-							$.openPopupLayer({
-		                         name: "lotteryResult",
-		                         url: "/jifen/lotteryresult?mess="+encodeURI(arr.message)+"&rf=1&t=1"
-	                        });
-						}
-					});
-			   }else if(arr.code==100){
-			   	  $.openPopupLayer({
-		             name: "loginBox",
-		             target: "login_box"
-	              });
-			   }else if(arr.code==200){
-			   	   window.location.href ="/user/verification";
-			   }
-            }
-    });
-}
+
 function openbox(url)
 {
 	 $.openPopupLayer({
@@ -707,7 +654,7 @@ function center_css(){
 }
 function widescreen_css(){
 	if (screen.width >= 1280) { 
-        	document.write('<style type="text/css">.w{width: 1190px}.searchTxt,.searchTxtHover{width: 450px}.searchtext{width: 350px}.indexShowBox,.slider_img,.slider_img img,.indexShow{width: 700px !important;height: 342px}.mainbannerbox{width: 1000px}.brand_wall{width: 672px;}.brand_wall li a,.brand_wall li .empty,.flowTip span,.brand_wall li a.flowTip span{width: 92px}.mainrightbox_buynow{width: 258px;}.mainrightbox_buynow .input150{width: 250px}.mainrightbox .item{width: 278px;}.mod_tab{width: 278px;}.mod_tab .tabbar a{width: 92px;}.ptip201312{margin-bottom: 10px}.por_box2013 .tabelbtn{top: 90px}.hotnew .hotnew_por_box2013{width: 798px;height: 205px}.hotnew .por_box2013{width: 187px;height: 205px;}.hotnew .por_box2013 .s-img img{height: 100px}.hotnew .hotnewbrand{height: 225px}.hotnew .brandlisth a{height: 55px;line-height: 55px;*font-size: 46px}.hotgoods{width: 888px;}.hot_sch{width: 290px;}.hot_sch .indexShowBox,.hot_sch .slider_img,.hot_sch .slider_img img,.hot_sch .indexShow{width: 290px !important;height: 225px}.hot_sch .slider_trigger{top: 200px}.hotRecommend .hotRecommend_A{height: 180px;}.hotRecommend .hotRecommend_A li{margin-right: 10px}.hotRecommend .por_box2013{width: 290px;height: 180px}.hotRecommend .por_box2013 .pbrand201312{top: 140px}.hotRecommend .item .s-img img{height: 110px}.hotRecommend .fore4 .item{width: 290px}.app_soumain{width: 700px}.sou201312{width: 659px;padding: 5px 10px 15px 31px;}.sou201312 ul{width: 639px}.sou201312 .por_box2013{width: 305px}.U-hotRecommend{width: 205px}.U-hotRecommend .por_box2013{width: 203px}.market-cat .section .sublist{width: 455px;}.list1 .market-cat .section{width: 382px;}.prodetail2013{background:url(http: //www.iceasy.com/2014/css/img/rightshadbg.jpg) repeat-y 1000px 0;}.proinfo{width: 708px;}.proinfo_m{width: 710px;}.proinfo_data, .proinfo_s, .proinfo_btn{width: 690px;}.sembox2013 .proinfo_btn{width: 140px;}.code2013 .proinfo_btn{width: 140px;}.prodetail2013_c{width: 995px;}.rigybg{background:url(http://www.iceasy.com/2014/css/img/rightshadbg.jpg) repeat-y 915px 0;}.selectbox201312,.layout .infolist{width: 905px;}.selectbox201312 .catList{width: 800px;}.selectbox201312 dl dd{width: 805px;}.infolist .posts{width: 885px;}.post-cont{width: 670px;}.sembox2013 .post-cont{width: 880px;height: 50px;}.code2013 .post-cont{width: 740px;}.sch_detal .posts{width: 840px}.sch_detal .post-cont,.sch_detal .read_more{width: 840px;}.sch_detal .shoplist,.code2013 .shoplist{width: 905PX;}.schemecontent{width: 990px;}.themain{width: 900px;}.sembox2013 .themain1 .themain_p, .code2013 .themain1 .themain_p{width: 870px;}.sembox2013 .themain1 .themain_p p, .code2013 .themain1 .themain_p p{width: 700px;}.sembox2013 .dl2013 dd{width: 810px;}.codetj{background:url(http://www.iceasy.com/2014/css/img/codetjbg_b.jpg) no-repeat !important;width: 855px;}.BOMinfo{width: 1110px;}.BOMinfo .btnok-new1{margin: 30px 0 10px 450px;}.cat-index li{width: 65px;height: 65px;margin: 10px 0 0px 13px;}.cat-index li a{width: 65px;height: 65px;}.cat-index li .shadow{width: 65px;height: 65px;background:url(http://www.iceasy.com/2014/css/img/p-65-65.png) no-repeat;_background: 0;_filter: progid: dximagetransform.microsoft.alphaimageloader(enabled=true,sizingMethod=noscale,src="../img/p-65-65.png");}.cat-index li .icon{height: 45px;width: 55px;padding: 10px 5px;font-size: 14px;line-height: 20px;}.mymainbox{width: 1055px;}.mymainboxleft{width: 790px;}.ourmain_1, .ourmian2, .ourmain_3, .ourmian6, .ourmian7{width: 760px;}.ourmian6, .ourmian7{width: 1055px !important;}.ourmian6jifen{height: 225px;}.s1_mod{float: left;width: 252px;height: 220px;}.s1_pic{width: 252px;height: 220px;}.s1_pic img{width: 256px;height: 170px;}.s1_info{width: 252px;}.s1_info_name{width: 236px;}.ourmian7 .hotRecommend_A{height: 170px;}.ourmian7 .por_box2013{width: 254px;height: 156px;border: 0}.ourmian7 .por_box2013 .pbrand201312{top: 110px;}.footerinfo{width: 930px;}.footerinfo .helpCol_01, .footerinfo .helpCol_02, .footerinfo .helpCol_03, .footerinfo .helpCol_04, .footerinfo .helpCol_05{width: 176px}.footer_pic li a{width: 236px;}.friendlinkbottom{width: 1158px}.friendlinkli{width: 1050px;}.brandconimg img{width:1190px;}.brand_list dl dd{width:1070px;}.brandZm li{width: 41px;}.brandZm .other{width:53px}.brand_list_sp li{padding:7px 7px 7px 8px;}.brand_list li img{ height:55px;}.indexsearch{width:1188px;}.pro_sortbarul,.ulfore2{ width:1080px }.ulfore2 li,.ulfore3,.ulfore3 li label{ width:180px;}.epsonyycon{width:297px; height:180px;}.GDimgbox_d{ height:200px;}</style>');
+        	document.write('<style type="text/css">.w{width: 1190px}.searchTxt,.searchTxtHover{width: 450px}.searchtext{width: 350px}.indexShowBox,.slider_img,.slider_img img,.indexShow{width: 700px !important;height: 342px}.mainbannerbox{width: 1000px}.brand_wall{width: 672px;}.brand_wall li a,.brand_wall li .empty,.flowTip span,.brand_wall li a.flowTip span{width: 92px}.mainrightbox_buynow{width: 258px;}.mainrightbox_buynow .input150{width: 250px}.mainrightbox .item{width: 278px;}.mod_tab{width: 278px;}.mod_tab .tabbar a{width: 92px;}.ptip201312{margin-bottom: 10px}.por_box2013 .tabelbtn{top: 90px}.hotnew .hotnew_por_box2013{width: 798px;height: 205px}.hotnew .por_box2013{width: 187px;height: 205px;}.hotnew .por_box2013 .s-img img{height: 100px}.hotnew .hotnewbrand{height: 225px}.hotnew .brandlisth a{height: 55px;line-height: 55px;*font-size: 46px}.hotgoods{width: 888px;}.hot_sch{width: 290px;}.hot_sch .indexShowBox,.hot_sch .slider_img,.hot_sch .slider_img img,.hot_sch .indexShow{width: 290px !important;height: 225px}.hot_sch .slider_trigger{top: 200px}.hotRecommend .hotRecommend_A{height: 180px;}.hotRecommend .hotRecommend_A li{margin-right: 10px}.hotRecommend .por_box2013{width: 290px;height: 180px}.hotRecommend .por_box2013 .pbrand201312{top: 140px}.hotRecommend .item .s-img img{height: 110px}.hotRecommend .fore4 .item{width: 290px}.app_soumain{width: 700px}.sou201312{width: 659px;padding: 5px 10px 15px 31px;}.sou201312 ul{width: 639px}.sou201312 .por_box2013{width: 305px}.U-hotRecommend{width: 205px}.U-hotRecommend .por_box2013{width: 203px}.market-cat .section .sublist{width: 455px;}.list1 .market-cat .section{width: 382px;}.prodetail2013{background:url(/2014/css/img/rightshadbg.jpg) repeat-y 1000px 0;}.proinfo{width: 708px;}.proinfo_m{width: 710px;}.proinfo_data, .proinfo_s, .proinfo_btn{width: 690px;}.sembox2013 .proinfo_btn{width: 140px;}.code2013 .proinfo_btn{width: 140px;}.prodetail2013_c{width: 995px;}.rigybg{background:url(/2014/css/img/rightshadbg.jpg) repeat-y 915px 0;}.selectbox201312,.layout .infolist{width: 905px;}.selectbox201312 .catList{width: 800px;}.selectbox201312 dl dd{width: 805px;}.infolist .posts{width: 885px;}.post-cont{width: 670px;}.sembox2013 .post-cont{width: 880px;height: 50px;}.code2013 .post-cont{width: 740px;}.sch_detal .posts{width: 840px}.sch_detal .post-cont,.sch_detal .read_more{width: 840px;}.sch_detal .shoplist,.code2013 .shoplist{width: 905PX;}.schemecontent{width: 990px;}.themain{width: 900px;}.sembox2013 .themain1 .themain_p, .code2013 .themain1 .themain_p{width: 870px;}.sembox2013 .themain1 .themain_p p, .code2013 .themain1 .themain_p p{width: 700px;}.sembox2013 .dl2013 dd{width: 810px;}.codetj{background:url(/2014/css/img/codetjbg_b.jpg) no-repeat !important;width: 855px;}.BOMinfo{width: 1110px;}.BOMinfo .btnok-new1{margin: 30px 0 10px 450px;}.cat-index li{width: 65px;height: 65px;margin: 10px 0 0px 13px;}.cat-index li a{width: 65px;height: 65px;}.cat-index li .shadow{width: 65px;height: 65px;background:url(/2014/css/img/p-65-65.png) no-repeat;_background: 0;_filter: progid: dximagetransform.microsoft.alphaimageloader(enabled=true,sizingMethod=noscale,src="../img/p-65-65.png");}.cat-index li .icon{height: 45px;width: 55px;padding: 10px 5px;font-size: 14px;line-height: 20px;}.mymainbox{width: 1055px;}.mymainboxleft{width: 790px;}.ourmain_1, .ourmian2, .ourmain_3, .ourmian6, .ourmian7{width: 760px;}.ourmian6, .ourmian7{width: 1055px !important;}.ourmian6jifen{height: 225px;}.s1_mod{float: left;width: 252px;height: 220px;}.s1_pic{width: 252px;height: 220px;}.s1_pic img{width: 256px;height: 170px;}.s1_info{width: 252px;}.s1_info_name{width: 236px;}.ourmian7 .hotRecommend_A{height: 170px;}.ourmian7 .por_box2013{width: 254px;height: 156px;border: 0}.ourmian7 .por_box2013 .pbrand201312{top: 110px;}.footerinfo{width: 930px;}.footerinfo .helpCol_01, .footerinfo .helpCol_02, .footerinfo .helpCol_03, .footerinfo .helpCol_04, .footerinfo .helpCol_05{width: 176px}.footer_pic li a{width: 236px;}.friendlinkbottom{width: 1158px}.friendlinkli{width: 1050px;}.brandconimg img{width:1190px;}.brand_list dl dd{width:1070px;}.brandZm li{width: 41px;}.brandZm .other{width:53px}.brand_list_sp li{padding:7px 7px 7px 8px;}.brand_list li img{ height:55px;}.indexsearch{width:1188px;}.pro_sortbarul,.ulfore2{ width:1080px }.ulfore2 li,.ulfore3,.ulfore3 li label{ width:180px;}.epsonyycon{width:297px; height:180px;}.GDimgbox_d{ height:200px;}</style>');
 		}	
 	if (screen.width >= 1366) { 
         	document.write('<style type="text/css">.rightsav .ibox{display:block}.rightsav{top:300px;}</style>');

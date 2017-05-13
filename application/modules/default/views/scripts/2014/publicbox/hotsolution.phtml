@@ -1,5 +1,5 @@
 <div class="dBox p15">
-    <div class="dBoxTitleS"><?=$this->sid?'相关方案':'热门方案'?></div>
+    <div class="dBoxTitleS">行业新闻</div>
     <div class="dBoxConS">
       <ul class="pmListS">
         <?php 
@@ -7,7 +7,7 @@
 		foreach($this->hotArr as $k=>$hotarr){
 		if(!in_array($hotarr['id'],$arr)){$arr[]=$hotarr['id'];
 		?>
-        <li><i class="icon-s icon-s2"></i><a href="/solution-<?=$hotarr['id']?>.html"  title="<?=$hotarr['title']?>" onclick="logclickaction($(this))" rev="hotpord_solution" rel="<?=$hotarr['id']?>"><?=$this->fun->utf_substr($hotarr['title'],23)?></a></li>
+        <li><a href="/solution-<?=$hotarr['id']?>.html"  title="<?=$hotarr['title']?>" onclick="logclickaction($(this))" rev="hotpord_solution" rel="<?=$hotarr['id']?>"><?=$this->fun->utf_substr($hotarr['title'],23)?></a></li>
         <?php }}?>
       </ul>
     </div>
