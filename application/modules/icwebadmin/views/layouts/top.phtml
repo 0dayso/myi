@@ -23,12 +23,12 @@ $online = $this->fun->setOnline();
       <ul class="nostyleul">
         <li><a href="/icwebadmin/index/loginout">退出</a></li>
         <li> | </li>
-        <li><a href="<?php echo HTTPHOST;?>" target="_blank">IC易站</a></li>
+        <li><a href="<?php echo HTTPHOST;?>" target="_blank">网站首页</a></li>
         <li> | </li>
         <li><a href="/icwebadmin">后台首页</a></li>
       </ul>
       <?php if(in_array('online',$_SESSION['statistics_rule']['value'])){?>
-      <p>IC易站在线人数：<font color="#006600">
+      <p>在线人数：<font color="#006600">
         <?=$online['total']?>
         </font> 登录人数：<font color="#006600">
         <?=$online['login_total']?>

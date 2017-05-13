@@ -127,7 +127,6 @@ new FixedMenu(container2, { menu: menu2,
 	onBeforeShow: function(container, menu){ $$("idTitle").innerHTML = menu._elem.innerHTML;}
 });
 </script>
-    
     <div id="nav"> <span class="bleft"></span>
       <ul id="navitems" class="navul201312_da">
         <li><a href="/" class="index <?php if($_SESSION['menu']=='index') echo 'on';?>"><?=$this->translate('Menu_Home')?></a><s></s></li>
@@ -145,6 +144,8 @@ new FixedMenu(container2, { menu: menu2,
       <a href="/?t=2014" style="position:absolute; top:0px; right:5px; color:#fff; filter: alpha(opacity:80);KHTMLOpacity: 0.8;MozOpacity: 0.8;opacity: 0.8; ">新版&gt;</a>
       <p class="lastmenu fr hide"><a href="/center" class="center <?php if($_SESSION['menu']=='center') echo 'on';?>"><?=$this->translate('Menu_Center')?></a><s></s></p>
       <span class="bright"></span> </div>
+      
+      
   </div>
 </div>
 <!--end mainmenu-->

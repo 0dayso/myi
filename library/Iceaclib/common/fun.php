@@ -247,10 +247,10 @@ class MyFun
 		}elseif($email){
 			$mail->addTo($email); //被发送的邮件地址
 		}
-		//try {
+		try {
 			$mail->send($smtpTest);
 			return true;
-// 		} catch (Exception $e) {
+ 		} catch (Exception $e) {
 // 			$adminlogService = new Icwebadmin_Service_AdminlogService();
 // 			$adminlogService->addLog(array('log_id'=>'M','temp1'=>400,'temp2'=>'mail_error','temp4'=>'发送邮件失败','description'=>$e->getMessage()));
 // 			//发送提醒邮件
@@ -274,7 +274,7 @@ class MyFun
 // 		    }catch (Exception $e) {
 // 		    	return false;
 // 		    }
-// 		}
+		}
 		
 	}
 	/**

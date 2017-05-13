@@ -50,68 +50,7 @@ class SearchController extends Zend_Controller_Action {
 		$this->view->st = $searchtype = $_GET['st'];
 		$keyword = strtoupper($this->view->keyword);
 		if(!empty($keyword)){
-			$sModel = new Default_Model_DbTable_Model('solution');
-			//搜索全站
-			if($searchtype=="searchall" || !$searchtype){
-				//型号
-				$productsqltmp = " AND (part_no LIKE '%{$keyword}%')";
-				$productsqlstr = "SELECT count(id) as num FROM product WHERE status=1 {$productsqltmp}";
-				$this->view->producttotal = $sModel->QueryItem($productsqlstr);
-				//方案
-				$solutionsqltmp = " AND (title LIKE '%{$keyword}%' OR description LIKE '%{$keyword}%')";
-				$solutionsqlstr = "SELECT count(id) as num FROM solution WHERE status=1 {$solutionsqltmp}";
-				$this->view->solutiontotal = $sModel->QueryItem($solutionsqlstr);
-				//资讯
-				$newssqltmp = " AND (title LIKE '%{$keyword}%' OR description LIKE '%{$keyword}%')";
-				$newssqlstr = "SELECT count(id) as num FROM news WHERE status=1 {$newssqltmp}";
-				$this->view->newstotal = $sModel->QueryItem($newssqlstr);
-				//研讨会
-				$seminarsqltmp = " AND (title LIKE '%{$keyword}%' OR description LIKE '%{$keyword}%')";
-				$seminarsqlstr = "SELECT count(id) as num FROM seminar WHERE status=1 {$seminarsqltmp}";
-				$this->view->seminartotal = $sModel->QueryItem($seminarsqlstr);
-				//代码库
-				$codesqltmp = " AND (title LIKE '%{$keyword}%' OR description LIKE '%{$keyword}%')";
-				$codesqlstr = "SELECT count(id) as num FROM app_code WHERE status=1 AND published<=".(time())." {$codesqltmp}";
-				$this->view->codetotal = $sModel->QueryItem($codesqlstr);
-			}elseif($searchtype=="searchmodel"){
-				//型号
-				$productsqltmp = " AND (p.part_no LIKE '%{$keyword}%')";
-				$productsqlstr = "SELECT count(p.id) as num 
-				FROM product as p 
-				LEFT JOIN brand as b ON b.id = p.manufacturer
-				WHERE p.status=1 AND b.status=1 {$productsqltmp}";
-				$this->view->producttotal = $sModel->QueryItem($productsqlstr);
-				//如果只搜索到一个型号并型号一样直接跳到这页面
-				
-				if($this->view->producttotal==1){
-					$sp = $sModel->QueryRow("SELECT * FROM product WHERE status=1 AND part_no = '$keyword'");
-					if(!empty($sp)){
-					  $url = "/item-b".$sp['manufacturer']."-".($sp['part_level3']?$sp['part_level3']:$sp['part_level2'])."-".$sp['id'].'-'.$this->fun->filterUrl($sp['part_no']).'.html';
-					  $this->_redirect($url.'?keyword='.$this->view->keyword."&st=searchmodel");
-					}
-				}
-				
-			}elseif($searchtype=="searchsolution"){
-				//方案
-				$solutionsqltmp = " AND (title LIKE '%{$keyword}%' OR description LIKE '%{$keyword}%')";
-				$solutionsqlstr = "SELECT count(id) as num FROM solution WHERE status=1 {$solutionsqltmp}";
-				$this->view->solutiontotal = $sModel->QueryItem($solutionsqlstr);
-			}elseif($searchtype=="searchnews"){
-				//资讯
-				$newssqltmp = " AND (title LIKE '%{$keyword}%' OR description LIKE '%{$keyword}%')";
-				$newssqlstr = "SELECT count(id) as num FROM news WHERE status=1 {$newssqltmp}";
-				$this->view->newstotal = $sModel->QueryItem($newssqlstr);
-			}elseif($searchtype=="searchwebinar"){
-				//研讨会
-				$seminarsqltmp = " AND (title LIKE '%{$keyword}%' OR description LIKE '%{$keyword}%')";
-				$seminarsqlstr = "SELECT count(id) as num FROM seminar WHERE status=1 {$seminarsqltmp}";
-				$this->view->seminartotal = $sModel->QueryItem($seminarsqlstr);
-			}elseif($searchtype=="searchcode"){
-				//代码库
-				$codesqltmp = " AND (title LIKE '%{$keyword}%' OR description LIKE '%{$keyword}%')";
-				$codesqlstr = "SELECT count(id) as num FROM app_code WHERE status=1 AND published<=".(time())." {$codesqltmp}";
-				$this->view->codetotal = $sModel->QueryItem($codesqlstr);
-			}		
+					
 		}else{
 			$_SESSION['message'] = '请输入搜索内容！';
 		}

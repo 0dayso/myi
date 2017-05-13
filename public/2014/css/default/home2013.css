@@ -82,7 +82,7 @@ font:400 16px/22px "\5FAE\8F6F\96C5\9ED1",Arial;_line-height:21px;color:#fff;bor
 .mod_tab_c li{ margin-bottom:10px; font-size:13px; height:20px; overflow:hidden}
 .mod_tab_c .dot{ margin:8px 5px 0 0}
 .mod_tab .tabbar a{width:72px; padding:0; text-align:center; border-left:0}
-.mod_tab .tabbar .selected a{ border-top:2px solid red;}
+.mod_tab .tabbar .selected a{ border-top:2px solid #005B98;}
 
 
 /*精品新品*/

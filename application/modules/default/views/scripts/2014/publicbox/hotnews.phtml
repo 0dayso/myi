@@ -1,11 +1,10 @@
 <div class="dBox p15">
-    <div class="dBoxTitleS">热门新闻</div>
+    <div class="dBoxTitleS">企业动态</div>
     <div class="dBoxConS">
       <ul class="pmListS">
       <?php foreach($this->hotArr as $k=>$hotarr){
-	  $newtype = array('1'=>'【行业】','2'=>'【产品】','3'=>'【企业】');
 	  ?>
-        <li><?=$newtype[$hotarr['news_type_id']]?><a href="/news-<?=$hotarr['id']?>.html"  title="<?=$hotarr['title']?>" onclick="logclickaction($(this))" rev="hotpord_solution" rel="<?=$hotarr['id']?>"><?=$this->fun->utf_substr($hotarr['title'],22)?></a></li>
+        <li><a href="/news-<?=$hotarr['id']?>.html"  title="<?=$hotarr['title']?>" onclick="logclickaction($(this))" rev="hotpord_solution" rel="<?=$hotarr['id']?>"><?=$this->fun->utf_substr($hotarr['title'],22)?></a></li>
         <?php }?>
       </ul>
     </div>

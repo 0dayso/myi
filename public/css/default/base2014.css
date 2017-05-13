@@ -1200,7 +1200,7 @@ line-height: 100%;
 .sleter{ -webkit-text-size-adjust:none;}
 #navul2013 li.on a,#navul2013 a:hover,.categorys2013_t,.categorys2013_icon,.nanxunmenu2013 a,.navhuodong201312 a{ background:url(../img/menu_sprite.png) no-repeat; display:inline-block}
 #navul2013 li.on a,.categorys2013_t,.categorys2013_icon,.nanxunmenu2013 a,.navhuodong201312 a{ _background:url(../img/menu_sprite.gif) no-repeat; }
-#newmenu2013{background:#d7000f; width:100%; margin:0 auto; height:40px;z-index:100; position:relative;}
+#newmenu2013{width:100%; margin:0 auto; height:40px;z-index:100; position:relative;}
 #navul2013{ margin-left:200px; width:700px; position:relative; }
 #navul2013 li{float:left;}
 #navul2013 li a{border-right:#c5000e 1px solid; border-left:#e00010 1px solid;text-align:center; height:40px; line-height:40px;font-size:15px;color:#fff; display:inline-block}

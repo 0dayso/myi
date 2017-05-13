@@ -101,38 +101,38 @@ $(function(){
             </div>
           </div>
           <?php }?>
-          
-          
         </div>
+        
       </div>
+      
     </div>
-    <ul id="navul201312">
-      <li class=" <?php if($_SESSION['menu']=='index') echo 'on';?>" ><a href="/" >首页</a></li>
-      <li class=" <?php if($_SESSION['menu']=='brand') echo 'on';?>" ><a href="/brand" >品牌列表</a></li>
-      <li class=" <?php if($_SESSION['menu']=='category' || $_SESSION['menu']=='product') echo 'on';?>" ><a href="/category" class="fore_s">产品目录</a></li>
-      <li class=" <?php if($_SESSION['menu']=='applications') echo 'on';?> " ><a href="/solution" class="fore_s">应用方案</a></li>
-      <!--<li class=" <?php if($_SESSION['menu']=='news') echo 'on';?>" ><a href="/news" class="fore_s">产品资讯</a></li>-->
-      
-      <li class=" icon_t <?php if($_SESSION['menu']=='news') echo 'on';?>" id="newshudi">
-      <a class="fore_s">新闻速递  <i><em></em><span></span></i></a>
-        <div class="navigation_sub hide">
-            <ul>
-                <li><a href="/news"><span class="link_inner">产品资讯</span></a></li>  
-                <li><a href="/market"><span class="link_inner">行业新闻</span></a></li>  
-                <li><a href="/company"><span class="link_inner">企业动态</span></a></li>  
-            </ul> 
-        </div>     
-     </li>
-      
-      <li class=" addaada <?php if($_SESSION['menu']=='seminar') echo 'on';?> " ><a href="/webinarlist" class="fore_b">技术研讨会</a></li>
-      <li class=" pos-re  <?php if($_SESSION['menu']=='appcode') echo 'on';?>" ><a href="/code" class="fore_b" >代码库</a></li>
-      <li class=" <?php if($_SESSION['menu']=='bom') echo 'on';?>" ><a href="/bompurchase" class="fore_s">BOM采购</a></li>
-      <li class="  <?php if($_SESSION['menu']=='jifen') echo 'on';?>"><a href="/jifen" class="fore_s" >积分商城</a></li>
-      <li class="  <?php if($_SESSION['menu']=='samples') echo 'on';?>"><a href="/samples" class="fore_s">样片中心</a></li>
-      <li class="  last  <?php if($_SESSION['menu']=='lab') echo 'on';?>"><a href="/lab" class="fore_s" style="color:#ffea00; font-weight:800; line-height:42px">开放实验室</a></li>
-      <!--<li class="  last  <?php if($_SESSION['menu']=='nanxunindex') echo 'on';?>"><a href="/event/201308012" class="fore_s">难寻器件</a></li>-->
-    </ul>
-   
+    <div class="main-nav wrap">
+	    <ul class="main-nav-ul">
+	    			<li>
+			        	<a href="/" >首页</a>
+			        </li>
+			        <li>
+			        	<a href="/bompurchase" >批量询价</a>
+			        </li>
+			        <li>
+			        	<a href="/brand" >品牌列表</a>
+			        </li>
+			        <li>
+			        	<a href="/category">产品目录</a>
+			        </li>
+			        <li>
+			        	<a href="/market">行业新闻</a>
+			        </li>
+			        <li>
+			        	<a href="/company">企业动态</a>
+			        </li>
+			        <li>
+			        	<a href="/news">产品资讯</a>
+			        </li>
+	    </ul>
+	    </div>
   </div>
+    
+  
   <div class="menushadow2013"></div>
 </div>

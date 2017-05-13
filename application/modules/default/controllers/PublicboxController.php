@@ -55,22 +55,14 @@ class PublicboxController extends Zend_Controller_Action {
 		$appid = $_POST['appid'];
 		$this->_helper->layout->disableLayout();
 		
-		//产品目录
-		//$frontendOptions = array('lifeTime' => 3600,'automatic_serialization' => true);
-		//$backendOptions = array('cache_dir' => CACHE_PATH);
-		// $cache 在先前的例子中已经初始化了
-		//$cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
-		// 查看一个缓存是否存在:
-		//$cache_key = 'hotscheme_cache_'.$appid;
-		//if(!$hotArr = $cache->load($cache_key)) {
+		
 			$semModer = new Default_Model_DbTable_Seminar();
 		    $sqlstr =" SELECT so.id,so.title,so.created,so.sol_img,app.name,so.solution_img
 				 FROM solution as so
 				 LEFT JOIN app_category as app ON so.app_level1=app.id
 				 WHERE so.app_level1='{$appid}' AND so.status = 1 ORDER BY Rand() LIMIT 5 ";
 		    $hotArr = $semModer->getBySql($sqlstr);
-			//$cache->save($hotArr,$cache_key);
-		//}
+
 		$this->view->hotArr = $hotArr;
 	}
 	/*

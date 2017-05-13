@@ -9,7 +9,7 @@ class Zend_View_Helper_FrindsLinks extends Zend_View_Helper_Abstract
 		$this->frindslink = $frindsservice->getHomeLink();
 		if($this->frindslink){
 			$html .='<div class="friendlinkbottom">
-		        	<strong>合作媒体：</strong>
+		        	<strong>友情链接：</strong>
 		            <div class="friendlinkli">           	
 		            	<ul>';
 			foreach($this->frindslink as $key=>$link){

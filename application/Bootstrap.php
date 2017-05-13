@@ -382,6 +382,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$view->headTitle($this->_seoconfig->general->default_title);
 		$view->headMeta()->appendName('description',$this->_seoconfig->general->default_description);
 		$view->headMeta()->appendName('keywords',$this->_seoconfig->general->default_keywords);
+		
+		$view->siteTitle = $this->_commonconfig->common->site_title;
+		$view->PIC = $this->_commonconfig->common->PIC;
+		$view->company = $this->_commonconfig->common->company;
+		$view->companyUrl = $this->_commonconfig->common->company_url;
+		$view->hotTel = $this->_commonconfig->common->hot_tel;
+		
 	}
 	protected function _initTranslate ()
 	{
