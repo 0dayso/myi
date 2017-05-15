@@ -1,372 +1,136 @@
-<link rel="stylesheet" href="http://www.cecport.com/assets/css/list.css?v=1.0.6.4.7"/>
+<link rel="stylesheet" type="text/css"
+	href="/<?=$_SESSION['new_version']?>/css/default/list.css" />
 <div class="w">
-  <div class="breadcrumbs"> <span>
+	<div class="breadcrumbs">
+		<span>
     <?=$this->translate('Menu_CurrentPosition')?>
     </span><a href="/">
     <?=$this->translate('Menu_Home');?>
-    </a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><b><?=$this->keyword?></b> 搜索结果</span></div>
+    </a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><b><?=$this->keyword?></b> 搜索结果</span>
+	</div>
 </div>
 <div class="searchresult">
-  <div class="w">
-    <div class="wrap filter-box">
-		    <div class="hd">
-		        <h3>搜索结果</h3>
-		        <span class="total">找到与"<strong class="corg">STGB10NC60KDT4</strong>"相关的结果共1条</span>
-		    </div>
-		    <div data-type="search" id="filterNav" class="bd">
-						        <div class="filter-items">
-						            <dl>
-						                <dt>分立器件：</dt>
-						                <dd>
-						                    <ul>
-					                        		<li><span><a cateno="1029" href="/sr/searchKey.jhtml?keyword=STGB10NC60KDT4&amp;catgNo=1003_1029&amp;orderBy=0" class="cblue">IGBT</a></span><em>(1)</em></li>
-						                    </ul>
-						                </dd>
-						            </dl>
-						            <div class="filter-act" style="display: block;">
-						                <a class="ic-btn white-btn22 jsShowMore" href="javascript:;"><span>更多<i class="icon"></i></span></a>
-						            </div>
-						        </div>
-		    </div>
+	<div class="w">
+		<div class="wrap filter-box none">
+			<div data-type="search" id="filterNav" class="bd">
+				<div class="filter-items" id='supplierGrabTab'>
+					<dl>
+					<dt>供应商：</dt>
+					<dd>
+						<ul>
+							<li><span><a id='searchprd-all' href="javascript:;"
+									class='searchprd curr' data-id='all'>不限</a></span></li>
+										                    <?php foreach($this->supplierCrab as $v){?>
+									            <li><span><a id='searchprd-<?php echo $v['id']?>'
+									href="javascript:;" class="searchprd cblue"
+									data-id='<?php echo $v['id']?>'><?php echo $v['name'];?></a></span></li>
+										                    <?php }?>
+										    </ul>
+					</dd>
+				</dl>
+				</div>
+			</div>
 		</div>
-		
-		
-		<div class="wrap pro-list clearfix mt20">
-	    	
-	            
-        		
-        		
-        		
-        		<div class="product-list rel jsDataInfoParent jsTabMore">
-					<div class="hd clearfix">
-        				<div class="fl pro-title">
-        					<div class="img fl imglazy"> 
-        						<img title="STGB10NC60KDT4" class="img-onerror" src="/assets/images/blank.gif" width="80" height="80">
-        					</div>
-          					<div class="fl w630 imglazy">
-            					<h3>
-              						STGB10NC60KDT4
-              						<a href="/brand/detail.jhtml?brandNo=3189" title="STMicroelectronics" data-limit="STGB10NC60KDT4" class="pl10 jsBrandDiv" target="_blank">
-			            					<img class="jsBrandLogo" alt="STMicroelectronics" title="STMicroelectronics" src="http://img.cecport.com/product/brand/images/3189/3189.png" style="display: inline;">
-          							</a>
-            					</h3>
-            					<p class="pro-desc">
-          							IGBT 600V 20A 65W D2PAK
-            					</p>
-          					</div>
-        				</div>
-        				
-   					 	<div class="fr pro-act">
-          					<ul>
-            					<li><a href="/product/devtool.jhtml" target="_blank"><i class="icon42-s i-tools"></i><br>开发工具</a></li>
-            					<li><a href="http://firefly.cecport.com/show/solutionlist?keyWord=STGB10NC60KDT4" target="_blank"><i class="icon42-s i-idea"></i><br>查看方案</a></li>
-				                		<li>
-				                			<a href="http://www.st.com/web/en/resource/technical/document/datasheet/CD00058414.pdf" title="" target="_blank">
-			                						<i class="icon42-s i-datasheet"></i><br>数据手册
-	                						</a>
-				                		</li>
-          					</ul>
-        				</div>
-        				
-	        				<div class="xunjia">
-	        					<p class="pl20">采购数量大于最大阶梯数量，建议 <a class="cblue fb jsAsk" href="javascript:;">询价</a> 获得更优惠价格。</p>
-	        				</div>
-      				</div>
-      				
-	      				<div class="batch-box rel">
-					        <div class="name-batch">批量购买</div>
-					        <table id="proList" class="ic-list-tbl pro-list-tbl rel">
-				          		<colgroup>
-						            <col width="15%">
-						            <col width="5%">
-						            <col width="13%">
-						            <col width="13%">
-						            <col width="7%">
-						            <col width="7%">
-						            <col width="6%">
-						            <col width="10%">
-						            <col width="10%">
-						            <col width="14%">
-					          	</colgroup>
-					          	<thead>
-						          	<tr>
-							            <th class="tl pl20">制造商型号</th>
-							            <th class="tl pl10">仓库</th>
-							            <th>库存</th>
-							            <th>交期</th>
-							            <th>最小包装数<br><span class="c9 f12">(MPQ)</span></th>
-							            <th>起订量<br><span class="c9 f12">(MOQ)</span></th>
-							            <th>阶梯</th>
-							            <th>境内交货<br><span class="c9 f12">(含17%税)</span></th>
-							            <th>境外交货<br><span class="c9 f12">(美元)</span></th>
-							            <th class="tr pr50">购买操作</th>
-					          		</tr>
-					          	</thead>
-					          	<tbody>
-					          			
-											
-											
-						          		 
-							          		<tr class=" ">
-							          			
-							            		<td class="tl pl30">
-							              			<div class="ic-no rel">
-						                				<a title="STGB10NC60KDT4" href="/3189/1002466250.shtml" target="_blank">
-						                  					STGB10NC60KDT4
-						                				</a>
-							              			</div>
-						              			</td>
-						              			
-												<td class="tl pl10">海外P0C</td>
-												
-													<td>
-														<span><em class="corg"> 
-				11
-</em></span>
-													</td>
-							            		
-								            		<td class="tl pl20">
-								            			<span>国内：<em class="corg">13～16个工作日</em></span><br>
-								            			<span>香港：<em class="corg">10～13个工作日</em></span>
-								            		</td>
-							            		
-							            		<td>1</td>
-												<td>5</td>
-												
-								            		<td class="no-padding" colspan="3">
-									              		<div class="price-list jsMore">
-									                		<table class="step-price-tbl " align="center">
-									                  			<colgroup>
-									                    			<col width="30%">
-									                    			<col width="45%">
-									                    			<col width="25%">
-									                  			</colgroup>
-							                 				 	<tbody>
-													                  	<tr>
-													                  		<th>
-													                  						5+
-													                  		</th>
-													                  		<td>
-																								¥35.25786
-													                  		</td>
-													                  		<td>
-																								$4.32251
-													                  		</td>
-													                  	</tr>
-													                  	<tr>
-													                  		<th>
-													                  						10+
-													                  		</th>
-													                  		<td>
-																								¥33.84771
-													                  		</td>
-													                  		<td>
-																								$4.14963
-													                  		</td>
-													                  	</tr>
-													                  	<tr>
-													                  		<th>
-													                  						15+
-													                  		</th>
-													                  		<td>
-																								¥31.73208
-													                  		</td>
-													                  		<td>
-																								$3.89026
-													                  		</td>
-													                  	</tr>
-													                  	<tr>
-													                  		<th>
-													                  						20+
-													                  		</th>
-													                  		<td>
-																								¥30.32185
-													                  		</td>
-													                  		<td>
-																								$3.71737
-													                  		</td>
-													                  	</tr>
-													                  	<tr>
-													                  		<th>
-													                  						25+
-													                  		</th>
-													                  		<td>
-																								¥28.20622
-													                  		</td>
-													                  		<td>
-																								$3.458
-													                  		</td>
-													                  	</tr>
-									                  			</tbody>
-									                		</table>
-									              		</div>
-								            		</td>
-												
-							            		<td> 
-														<a class="pro-addCart jsAddCart" sku="1002466250" href="javascript:;"><span>加入购物车</span></a>
-							            		</td>
-							          		</tr>
-							          		
-				          		</tbody>
-				        	</table>
-				      	</div>
-				      	
-					      	<div class="pd10 f13 clearfix">
-								<p class="fr">
-									如需帮助 ，请拨打
-									<span class="corg"> 4400 626 1616 </span>
-									电话咨询。
-								</p>
-							</div>
-				      	
-					<input name="checkGoods" data-value="{&quot;sku&quot;:&quot;&quot;,&quot;jmoq&quot;:&quot;1000&quot;,&quot;jmpq&quot;:&quot;1000&quot;,&quot;icNo&quot;:&quot;STGB10NC60KDT4-3189&quot;, &quot;partNo&quot;:&quot;STGB10NC60KDT4&quot;,&quot;id&quot;:&quot;2995375&quot;,&quot;cName&quot;:&quot;STGB10NC60KDT4-3189&quot;,&quot;brandId&quot;:&quot;3189&quot;,&quot;brand&quot;:&quot;STMicroelectronics&quot;,&quot;brandType&quot;:&quot;2&quot;,&quot;salePrice&quot;:&quot;&quot;,&quot;picThumb&quot;:&quot;&quot;,&quot;thirdCategoryId&quot;:&quot;1335&quot;}" autocomplete="off" type="hidden">
-      			</div>	
-  			
-		    <div class="page fr mt20 mb20">
-		        	<a class="prev dis"><i></i></a>
-				
-						<a class="current">1</a>
-				
-		        	<a class="next dis"><i></i></a>
-		  	</div>
-	</div>
-	
-	
-	
-	<!-- 没有找到产品 -->
-	    <div class="nodata" style="font-size:16px;display: none"><strong>很抱歉，没有找到任何<em><?=$this->keyword?></em>相关搜索结果。您可以提交型号，我们会尽快帮你寻找！</strong></div>    
-        
-        <form id='searchform' name="searchform" action='' method='post'>
-           <input type="hidden" name="type" value="2" />
-            <?php  
-	       if($this->reUser['mobile'] && $this->reUser['tel'])
-		   	  $contact = $this->reUser['mobile'].';'.$this->reUser['tel'];
-		   elseif($this->reUser['mobile'])
-		      $contact = $this->reUser['mobile'];
-		    else $contact = $this->reUser['tel'];
-	      ?>
-          	<div class="divtitbg1ts" style="display: none">
-            <span class="titbg1ts">提交产品型号</span>
-            <table cellpadding="0" cellspacing="0" class="table nodatatable">
-                <tbody>
-                <tr>
-                    <td width="120" style="border-top:0" align="right">上线通知：</td>
-                    <td width="210" align="left" style="border-top:0">
-              			<input type="checkbox" name="notice" id="notice" value="1" checked="checked"/>
-                    </td>
-                    <td style="border-top:0"></td>
-                </tr>
-                <tr>
-                    <td width="120" style="border-top:0" align="right">型号：</td>
-                    <td width="210" align="left" style="border-top:0"><?=$this->keyword?></td>
-                    <td style="border-top:0"><div id="part_noTip"></div></td>
-                </tr>
-                <tr>
-                    <td width="120" style="border-top:0" align="right"><em>*</em>品牌：</td>
-                    <td width="210" align="left" style="border-top:0">
-              			<select id="brand" name="brand" onchange="showother(this.value)" style="width:210px;">
-                        <option value=''>请选择品牌</option>
-                        <?php foreach($this->allbrand as $k=>$v){
-						    $sel = '';if($_SESSION['brand']==$v['name']) $sel='selected="selected"';
-			                echo "<option value='".$v['name']."' $sel>".$v['name']."</option>";
-		                }?>
-                        <option value="Other">其它</option>
-                        </select>
-                        <div id="brand_other_div"></div>
-                    </td>
-                    <td style="border-top:0"><div id="brandTip"></div></td>
-                </tr>
-                
-                <tr>
-                    <td width="120" align="right"><em>*</em>联系人：</td>
-                    <td width="210" align="left">
-                       <input type="text" name="contact_name" id="contact_name" style="width:200px;" class="nreg_input" value="<?=$this->reUser['truename']?>"/>
-              
-                    </td>
-                    <td><div id="contact_nameTip"></div></td>
-                </tr>
-                <tr>
-                    <td width="120" align="right"><em>*</em>联系方式：</td>
-                    <td width="210" align="left">
-                         <input type="text" name="contact" id="contact"  style="width:200px;" class="nreg_input" value="<?=$contact?>"/>
-              
-                    </td>
-                    <td><div id="contactTip"></div></td>
-                </tr>
-              
-              <tr>
-                <td align="right">说明：</td>
-                <td align="left">
-               <textarea name="explanation" id="explanation" rows="5" cols="27"></textarea>
-                </td><td></td>
-              </tr>
-                <tr>
-                  <td>&nbsp;</td>
-                  <td align="left">
-                  <div id="baojiabtn">
-                  <input type="button" title="提交" value="提交" onclick="tijiaoaction()" class="button bigbutton"/>
-                  </div>
-                  </td>
-                </tr>
-            </tbody></table>
-            
-            </div>
-		</form>
 
+<?php foreach($this->supplierCrab as $v){?>
+		<!-- 供应商 -->
+		<div id="product<?php echo $v['id']?>" class="wrap pro-list clearfix ">
+			<div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div>
+		</div>
+		<!-- end 供应商 -->
+<?php }?>
+
+<div id="filter-null">
+	<div class="filter-null l-box">
+	        很抱歉，我们没有找到与"<strong class="corg"><?=$this->keyword?></strong>"相关的制造商型号
+	</div>
+</div>
+    
 <script type="text/javascript">
-function tijiaoaction(){
+$(function(){
+	var keyword = '<?=$this->keyword?>';
+	var seachArr = [];
+	var allid = [];
+	<?php foreach($this->supplierCrab as $v){?>
+		if(keyword.length >= 3){
+			seachprd('<?php echo $v['id']?>','<?=$this->keyword?>');
+			allid[<?php echo $v['id']?>] = <?php echo $v['id']?>;
+		}else{
+			$(".pro-list").html('');
+			alert('型号最小字符必须为3个字符以上');
+			return;
+		}
+	<?php }?>
+	$(".searchprd").click(function(){
+		var id = $(this).data("id");
+		var allnull = true;
+		if(id=='all'){
+			for (var key in allid) {
+				$("#product"+key).css('display','block');
+			}
+			for (var key in seachArr) {
+				seachArr[key] = 0;
+			}
+		}else{
+			if (!inarray(id, seachArr)) {
+				seachArr[id] = id;
+	        }else{
+	        	seachArr[id] = 0;
+	        }
+			for (var key in allid) {
+				$("#product"+key).css('display','none');
+			}
+		}
+		for (var key in seachArr) {
+			 if(seachArr[key]==0){
+				 $("#product"+key).css('display','none');
+				 $("#searchprd-"+key).removeClass("curr");
+			 }else{
+				 allnull = false;
+				 $("#product"+key).css('display','block');
+				 $("#searchprd-"+key).addClass("curr");
+			 }
+		}
+		//全部空
+		if(allnull){
+			for (var key in allid) {
+				$("#product"+key).css('display','block');
+			}
+			$("#searchprd-all").addClass("curr");
+		}else{
+			$("#searchprd-all").removeClass("curr");
+		}
+		//$("#searchboxtmp").removeClass("searchTxt");
+		//$("#searchboxtmp").addClass("searchTxtHover");
+    });	
+	
+})
+function seachprd(sup,keyworld){
 	$.ajax({
-            url: '/index/checklogin',
-            data: {},
-            type: 'post',
-            dataType: 'json',
-            success: function(arr) {
-			   if(arr.code==100){
-			   	  $.openPopupLayer({
-		             name: "loginBox",
-		             target: "login_box"
-	              });
-			   }else if(arr.code==200){
-			   	   window.location.href ="/user/verification";
-			   }else{
-			   	   //提交
-				   var notice = 0;
-			       var notice_checked = $("#notice").attr("checked");
-	               if(notice_checked=='checked'){notice=1;}
-				   var brand = $("#brand").val();
-				   var brand_other = '';
-				   if(brand=='Other'){
-				   	   brand_other = $("#brand_other").val();
-					   if(brand_other=='' || typeof(brand_other)=="undefined") {alert('请填写其它品牌名称');$("#brand_other").focus();return;}
-				   }else{
-				   	   if(brand=='' || typeof(brand)=="undefined") {alert('请选择品牌');return;}
-				   }
-				   var contact_name = $("#contact_name").val();
-				   if(contact_name=='' || typeof(contact_name)=="undefined") {alert('请填写联系人');$("#contact_name").focus();return;}
-				   var contact = $("#contact").val();
-				   if(contact=='' || typeof(contact)=="undefined") {alert('请填写联系方式');$("#contact").focus();return;}
-				   var explanation = $("#explanation").val();
-				   
-				    //提交
-					 var subtmp = document.getElementById("baojiabtn");
-					 subtmp.innerHTML = '<input type="button" value="提 交 中..." class="button bigbutton">';
-					 $.ajax({
-							url: '/search/noproduct',
-							data: {'part_no':'<?=$this->keyword?>','notice':notice,'brand':brand,'brand_other':brand_other,'contact_name':contact_name,'contact':contact,'explanation':explanation},
-							type: 'post',
-							dataType: 'json',
-							success: function(arr) {
-							    alert(arr.message);
-								subtmp.innerHTML ='<input type="button" title="提交" value="提交" onclick="tijiaoaction()" class="button bigbutton"/>';
-							}
-					});
-			   }
-            }
-    });
+	       type: 'post',
+	       url: "/search/product",
+	       dataType: 'html',
+	       data: {keyworld:keyworld,sup:sup},
+	       success: function(result){
+		       if(result=='"no"'){
+		    	   $("#searchprd-"+sup).remove();
+		    	   $("#product"+sup).html('');
+		       }else{
+		    	   $("#filter-null").css('display','none');
+	    	   	   $("#product"+sup).html(result);
+		       }
+	       }
+	   }); 	
+}
+function inarray(search, array) {
+    for (var i in array) {
+        if (array[i] == search) {
+            return true;
+        }
+    }
+    return false;
 }
 </script>
-	<!-- 没有找到产品 -->
-	
-      <div class="clr"></div> 
-  </div>
+		<div class="clr"></div>
+	</div>
 </div>

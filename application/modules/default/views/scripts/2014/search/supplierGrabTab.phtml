@@ -1,0 +1,14 @@
+<dl>
+	<dt>供应商：</dt>
+	<dd>
+		<ul>
+			<li><span><a id='searchprd-all' href="javascript:;"
+					class='searchprd curr' data-id='all'>不限</a></span></li>
+						                    <?php foreach($this->supplierCrab as $v){?>
+					            <li><span><a id='searchprd-<?php echo $v['id']?>'
+					href="javascript:;" class="searchprd cblue"
+					data-id='<?php echo $v['id']?>'><?php echo $v['name'];?></a></span></li>
+						                    <?php }?>
+						    </ul>
+	</dd>
+</dl>

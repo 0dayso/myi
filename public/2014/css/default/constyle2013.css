@@ -9,6 +9,9 @@ body{font:12px/18px Tahoma, Helvetica, Arial, "微软雅黑","宋体", sans-seri
 background:#fff;_background-image:url(about:blank);_background-attachment:fixed; position:relative; overflow-x:hidden}
 ul{list-style:none;}
 
+.none {
+    display: none;
+}
 
 :focus{outline:0;}
 a img{border:0;}img{vertical-align:middle;}

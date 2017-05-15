@@ -98,6 +98,9 @@ function enter(evt){
 function searchaction(){
 	var keywordobj = document.getElementById('keyword');
 	var keyword = keywordobj.value.replace(/[ ]/g,"");
+	if(keyword.length < 3){
+		alert('型号最小字符必须为3个字符以上');return;
+	}
 	if(keyword=='' || keyword=='请输入搜索型号') {keywordobj.value='';keywordobj.focus();return;}
 	else document.getElementById('searchForm').submit();
 }
