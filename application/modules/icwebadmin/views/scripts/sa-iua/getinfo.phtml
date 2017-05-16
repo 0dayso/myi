@@ -65,68 +65,7 @@ if(!empty($this->StaffInfo["staff_area_rule"]) && !empty($this->StaffInfo["right
   <tr>
     <td colspan="4">&nbsp;</td>
   </tr>
-  <tr bgcolor="#FFF4DF">
-    <td align="right" valign="top"><font color="#666600"><b>负责应用领域：</b></font></td>
-    <td colspan="3">
-    	<table width="100%"><tr height="30">
-    <?php
-	 foreach($this->provincearr as $i=>$apparr){
-	        $app_rule = explode(",",$this->StaffInfo['app_rule']);
-			if(in_array($apparr['id'],$app_rule)) $checked = 'checked';
-			else $checked = '';
-			echo '<td align="left"><input type="checkbox" disabled="disabled" '.$checked.'>'.$apparr['name'].'</td>';
-			if($i!=0 && ($i+1)%4==0) echo '<tr>';
-		}
-	?>
-    	</table>
-    </td>
-  </tr>
-  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)) {?>
-  <tr height="50px">
-    <td colspan="4" align="center"><a href="#edit" onclick="openeditapp('<?php echo $this->StaffInfo['staff_id']?>')">[编辑负责应用领域]</a></td>
-  </tr>
-  <?php }?>
-  
-  <?php $statistics = explode(",",$this->StaffInfo['statistics']);?>
-  <tr bgcolor="#FFF4DF">
-    <td align="right" valign="top"><font color="#666600"><b>首页统计：</b></font></td>
-    <td colspan="3">
-    	<table width="100%">
-   			<tr><td><input type="checkbox" disabled="disabled" <?=(in_array('quarterly',$statistics)?'checked="checked"':'')?>>季度统计</td>
-            <td><input type="checkbox" disabled="disabled" <?=(in_array('income',$statistics)?'checked="checked"':'')?>>交易总金额统计</td>
-            <td><input type="checkbox" disabled="disabled"  <?=(in_array('basic',$statistics)?'checked="checked"':'')?>>基本数据统计</td>
-            <td><input type="checkbox" disabled="disabled"  <?=(in_array('product',$statistics)?'checked="checked"':'')?>>产品统计</td>
-            <td><input type="checkbox" disabled="disabled"  <?=(in_array('online',$statistics)?'checked="checked"':'')?>>在线人数统计</td></tr>
-    	</table>
-    </td>
-  </tr>
-  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)) {?>
-  <tr height="50px">
-    <td colspan="4" align="center"><a href="#edit" onclick="openbox('<?=($this->indexurl.'/statistics/staffid/'.$this->StaffInfo['staff_id'])?>')">[编辑首页统计]</a></td>
-  </tr>
-  <?php }?>
-  
-  
-  
-   <?php $lab = explode(",",$this->StaffInfo['lab_rule']);?>
-  <tr bgcolor="#FFF4DF">
-    <td align="right" valign="top"><font color="#666600"><b>开发实验室负责区域：</b></font></td>
-    <td colspan="3">
-    	<table width="100%">
-           <tr><?php foreach($this->place as $place){?>
-   			<td><input type="checkbox" disabled="disabled" <?=(in_array($place['id'],$lab)?'checked="checked"':'')?>><?=$place['city']?></td>
-            <?php }?>
-            </tr>
 
-    	</table>
-    </td>
-  </tr>
-  <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)) {?>
-  <tr height="50px">
-    <td colspan="4" align="center"><a href="#edit" onclick="openbox('<?=($this->indexurl.'/lab/staffid/'.$this->StaffInfo['staff_id'])?>')">[编辑开发实验室负责区域]</a></td>
-  </tr>
-  <?php }?>
-  
   <tr bgcolor="#FFF4DF">
     <td align="right" valign="top"><font color="#666600"><b>拥有用户权限：</b></font></td>
     <td colspan="3">
@@ -135,11 +74,6 @@ if(!empty($this->StaffInfo["staff_area_rule"]) && !empty($this->StaffInfo["right
     	</table>
     </td>
   </tr>
-     <?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)) {?>
-     <tr height="50px">
-    <td colspan="4" align="center"><a href="#edit" onclick="openbox('<?=($this->indexurl.'/controlstaff/staffid/'.$this->StaffInfo['staff_id'])?>')">[编辑拥有用户权限]</a></td>
-    </tr>
-     <?php }?>
 
   <tr>
     <td colspan="4">&nbsp;</td>

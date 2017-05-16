@@ -19,69 +19,19 @@ class Default_Service_CrawlerService
 		if(empty($keyworld)){
 			return $productArray;
 		}
-		$searchEngine = 'iclego';
-		if($searchEngine=='ichunt'){
-			if($supId==3){
-				$productArray = $this->getIchuntFuture($keyworld);
-			}elseif($supId==4){
-				$productArray = $this->getIchuntMouser($keyworld);
-			}elseif($supId==5){
-				$productArray = $this->getIchuntDigiKey($keyworld);
-			}elseif($supId==6){
-				$productArray = $this->getIchuntElement14($keyworld);
-			}elseif($supId==7){
-				$productArray = $this->getIchuntVerical($keyworld);
-			}elseif($supId==8){
-				$productArray = $this->getIchuntRs($keyworld);
-			}elseif($supId==9){
-				$productArray = $this->getIchuntAvnet($keyworld);
-			}elseif($supId==10){
-				$productArray = $this->getIchuntChipOneStop($keyworld);
-			}
-		}elseif($searchEngine=='icgoo'){
-			if($supId==2){
-				$productArray = $this->getIcgooArrow($keyworld);
- 			}elseif($supId==3){
-				$productArray = $this->getIcgooFuture($keyworld);
-			}elseif($supId==4){
-				$productArray = $this->getIcgooMouser($keyworld);
-			}elseif($supId==5){
-				$productArray = $this->getIcgooDigiKey($keyworld);
-			}elseif($supId==6){
-				$productArray = $this->getIcgooElement14($keyworld);
-			}elseif($supId==7){
-				$productArray = $this->getIcgooVerical($keyworld);
-			}elseif($supId==8){
-				$productArray = $this->getIcgooRs($keyworld);
-			}elseif($supId==9){
-				$productArray = $this->getIcgooAvnet($keyworld);
-			}elseif($supId==10){
-				$productArray = $this->getIcgooChipOneStop($keyworld);
-			}
-		}elseif($searchEngine=='iclego'){
-			$url = "http://user.iclego.com/search_api.php?keyword=".$keyworld."&view=gys&first=1";
-			$html = $this->getContents($url);
-			if($supId==2){
-				$productArray = $this->getIclegoArrow($html);
- 			}elseif($supId==3){
-				$productArray = $this->getIclegoFuture($html);
-			}elseif($supId==4){
-				$productArray = $this->getIclegoMouser($html);
-			}elseif($supId==5){
-				$productArray = $this->getIclegoDigiKey($html);
-			}elseif($supId==6){
-				$productArray = $this->getIclegoElement14($html);
-			}elseif($supId==7){
-				$productArray = $this->getIclegoVerical($html);
-			}elseif($supId==8){
-				$productArray = $this->getIclegoRs($html);
-			}elseif($supId==9){
-				$productArray = $this->getIclegoAvnet($html);
-			}elseif($supId==10){
-				$productArray = $this->getIclegoChipOneStop($html);
-			}
+		$sqlstr = "SELECT sc.g_excode,scs.excode
+		FROM sx_collection_supplier as scs
+		LEFT JOIN sx_collection as sc ON sc.id=scs.collection_id
+		LEFT JOIN sx_supplier_grab as ssg ON ssg.id=scs.supplier_id
+		WHERE sc.activation = 1 AND ssg.state = 1 AND ssg.id='{$supId}' LIMIT 1";
+		$rateModel = new Default_Model_DbTable_SupplierGrab();
+		$excode = $rateModel->getByOneSql($sqlstr);
+		$code = $excode['g_excode'].$excode['excode'];
+		if($code){	
+			eval($code);
 		}
 		return $productArray;
+		
 	}
 	/*************************************www.ichunt.com*****************************/
 	public function getIchuntFuture($keyworld){
