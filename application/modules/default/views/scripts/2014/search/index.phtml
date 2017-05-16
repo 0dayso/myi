@@ -32,10 +32,12 @@
 			</div>
 		</div>
 
-<?php foreach($this->supplierCrab as $v){?>
+<?php foreach($this->supplierCrab as $k=>$v){?>
 		<!-- 供应商 -->
 		<div id="product<?php echo $v['id']?>" class="wrap pro-list clearfix ">
+			<?php if($k==0){?>
 			<div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div>
+			<?php }?>
 		</div>
 		<!-- end 供应商 -->
 <?php }?>

@@ -14,7 +14,7 @@ class Default_Service_SupplierGrabService
 	*/
 	public function getSupplierGrab()
 	{
-		$sqlstr = "SELECT * FROM sx_supplier_grab WHERE state='1'";
+		$sqlstr = "SELECT * FROM sx_supplier_grab WHERE state='1' ORDER BY displayorder DESC";
 		$arr = $this->_supplierGrabServiceModer->getBySql($sqlstr,array('uidtmp'=>$_SESSION['userInfo']['uidSession']));
 		return $arr;
 	}

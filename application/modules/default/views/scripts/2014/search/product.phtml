@@ -11,6 +11,7 @@
 		border='0'>
 		<colgroup>
 			<col width="15%">
+			<col width="10%">
 			<col width="13%">
 			<col width="13%">
 			<col width="7%">
@@ -22,7 +23,7 @@
 		<thead>
 			<tr>
 				<th class="tl pl20">制造商型号</th>
-
+				<th>制造商</th>
 				<th>库存</th>
 				<th>交期</th>
 				<th>起订量<br> <span class="c9 f12">(MOQ)</span></th>
@@ -42,6 +43,7 @@
 						target="_blank"> <?php echo $pv['pratNo'];?> </a>
 					</div>
 				</td>
+				<td align="center"><?php echo $pv['brand'];?></td>
 				<td align="center"><span><em class="corg">  <?php echo $pv['stock'];?> </em></span></td>
 				<td align="center">
 				    <span>国内：<em class="corg"><?php echo $this->supplierCrab['delivery_cn']?></em></span>
