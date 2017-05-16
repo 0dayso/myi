@@ -1,0 +1,110 @@
+<link rel="stylesheet" href="/js/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="/js/kindeditor/kindeditor.js"></script>
+<script src="/js/kindeditor/lang/zh_CN.js"></script>
+<style type="text/css">
+span.tag{
+border: 1px solid #DDD;
+background: #F6F6F6 ;
+font-weight: bold;
+padding:3px;
+margin-right:5px;
+}
+.tag a{ padding-left:5px;}
+#ic-box{ margin-bottom:10px;}
+</style>
+<?php $this->data = $_SESSION['post'];unset($_SESSION['post']);?>
+<div class="conmian">
+  <h1><?php echo $this->AreaTitle;?> -> 添加供应商 <a href="<?=$this->indexurl?>">返回&gt;&gt;</a> </h1>
+<?php if (count($this->messages)) : ?>
+<div class="alert alert-error">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+<?php foreach ($this->messages as $message) : ?>
+    <strong><?php echo ($message); ?></strong>
+<?php endforeach; ?>
+ </div>
+<?php endif; ?>  
+<form id="thisform" class="form-horizontal validate-form" style="text-align:left" method="post" action="<?php echo $this->addurl;?>" enctype="multipart/form-data">
+  <div class="control-group">
+    <label class="control-label" for="contents">状态</label>
+    <div class="controls">
+     <label style="color:#14A659"><input name="state" type="radio" value="1" <?=$this->data['state']!=2?'checked':''?>/>上线</label>
+     <label style="color:#D82A20"><input name="state" type="radio" value="2" <?=$this->data['state']==2?'checked':''?>/>下线</label>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="title"><em>*</em>供应商名称</label>
+    <div class="controls">
+      <input type="text" id="name" name="name" value="<?=$this->data['name']?>" class="required input-xlarge" title="required">
+    </div>
+  </div>
+  
+	<div class="control-group">
+	  <label class="control-label"  for="image"><em>*</em>供应商logo </label>
+	  <div class="controls">
+	    <input type="text" id="img"  name="img"  value="<?=$this->data['img']?>" class="input-large required">
+	    <button type="button" class="btn file_manager"  id="image-upload">选择图片</button>
+	  </div>
+	</div>  
+  <div class="control-group">
+    <label class="control-label" for="description">供应商网址</label>
+    <div class="controls">
+      <input type="text" id="weburl" name="weburl" value="<?=$this->data['weburl']?>" class="required input-xlarge" title="required">
+    </div>
+  </div>       
+  <div class="control-group">
+    <label class="control-label" for="description"><em>*</em>国内交期(天)</label>
+    <div class="controls">
+      <input type="text" id="delivery_cn" name="delivery_cn" value="<?=$this->data['delivery_cn']?>" class="required input-xlarge" title="required">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="description"><em>*</em>香港交期(天)</label>
+    <div class="controls">
+      <input type="text" id="delivery_hk" name="delivery_hk" value="<?=$this->data['delivery_hk']?>" class="required input-xlarge" title="required">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="description">排序</label>
+    <div class="controls">
+      <input type="text" id="displayorder" name="displayorder" value="<?=$this->data['displayorder']?>" class="required input-xlarge" title="required" style="width:50px;">
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <input type="submit" value="添加" class="btn" />
+    </div>
+  </div>
+</form>
+        <br>
+      <!-- 结束区域-->
+</div>
+<?php  $_SESSION['post'] = array();?>
+<script type="text/javascript">
+
+KindEditor.ready(function(K) {
+			//Image
+			var spe_head_editor = K.editor({
+					allowFileManager : true,
+					uploadJson : '/icwebadmin/common/upload?part=upload/default/supplier/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/supplier/'
+			});
+			K('#image-upload').click(function() {
+				spe_head_editor.loadPlugin('image', function() {
+					spe_head_editor.plugin.imageDialog({
+						imageUrl : K('#image-upload').val(),
+						clickFn : function(url, title, width, height, border, align) {
+							K('#image-upload').val(url);
+							K('#img').val(url);
+							spe_head_editor.hideDialog();
+						}
+					});
+				});
+			});
+});
+
+
+</script>
+<script src="/js/bootstrap/bootstrap.min.js" type="text/javascript"></script>
+<script src="/js/jsplug/jquery.chained.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>

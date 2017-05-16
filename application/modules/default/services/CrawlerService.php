@@ -698,45 +698,52 @@ class Default_Service_CrawlerService
 	public function getIclegoArrow($html){
 		$re = [];
 		if($html){
-			$exphtml = new simple_html_dom();
-			// 从字符串中加载
-			$exphtml->load($html);
-			$re = array();
-			foreach($exphtml->find('div[gys=6]',0)->find('table',0)->find('tr') as $key=>$element){
-				if($key>0){
-					$newprod = array();
-					$newprod['bookprice'] = array();
-					$newprice = array();
-					foreach($element->find('td') as $k=>$elementTd){
-						if($k==0){
-							$newprod['pratNo'] = $elementTd->innertext;
-			 			}elseif($k==1){
-			 				$newprod['brand'] = $elementTd->innertext;
-			 			}elseif($k==3){
-		 					$newprod['stock'] = $this->number($elementTd->innertext);
-			 			}elseif($k==4){
-			 				foreach($elementTd->find('li') as $item=>$elementLi){
-			 					$newprice[$item]['moq'] = $this->number($elementLi->innertext);
-			 				}
-						}elseif($k==5){
-							foreach($elementTd->find('li') as $item=>$elementLi){
-								$newprice[$item]['usdprice'] = $this->number($elementLi->innertext);
-							}
-						}elseif($k==6){
-							foreach($elementTd->find('div') as $item=>$elementLi){
-								$newprice[$item]['rmbprice'] = $this->number($elementLi->innertext);
-							}
-						}elseif($k==8){
-							if(isset($newprice[0]['moq'])){
-								$newprod['moq'] = $newprice[0]['moq'];
-							}else{
-								$newprod['moq'] = $newprod['stock'];
+			try {
+				$exphtml = new simple_html_dom();
+				// 从字符串中加载
+				$exphtml->load($html);
+				$re = array();
+				if(!$exphtml->find('div[gys=6]',0)){
+					return $re;
+				}
+				foreach($exphtml->find('div[gys=6]',0)->find('table',0)->find('tr') as $key=>$element){
+					if($key>0){
+						$newprod = array();
+						$newprod['bookprice'] = array();
+						$newprice = array();
+						foreach($element->find('td') as $k=>$elementTd){
+							if($k==0){
+								$newprod['pratNo'] = $elementTd->innertext;
+							}elseif($k==1){
+								$newprod['brand'] = $elementTd->innertext;
+							}elseif($k==3){
+								$newprod['stock'] = $this->number($elementTd->innertext);
+							}elseif($k==4){
+								foreach($elementTd->find('li') as $item=>$elementLi){
+									$newprice[$item]['moq'] = $this->number($elementLi->innertext);
+								}
+							}elseif($k==5){
+								foreach($elementTd->find('li') as $item=>$elementLi){
+									$newprice[$item]['usdprice'] = $this->number($elementLi->innertext);
+								}
+							}elseif($k==6){
+								foreach($elementTd->find('div') as $item=>$elementLi){
+									$newprice[$item]['rmbprice'] = $this->number($elementLi->innertext);
+								}
+							}elseif($k==8){
+								if(isset($newprice[0]['moq'])){
+									$newprod['moq'] = $newprice[0]['moq'];
+								}else{
+									$newprod['moq'] = $newprod['stock'];
+								}
 							}
 						}
+						$newprod['bookprice'] = $newprice;
+						$re[]=$newprod;
 					}
-					$newprod['bookprice'] = $newprice;
-					$re[]=$newprod;
 				}
+			} catch (Exception $e) {
+				
 			}
 		}
 		return $re;
@@ -744,45 +751,52 @@ class Default_Service_CrawlerService
 	public function getIclegoFuture($html){
 		$re = [];
 		if($html){
-			$exphtml = new simple_html_dom();
-			// 从字符串中加载
-			$exphtml->load($html);
-			$re = array();
-			foreach($exphtml->find('div[gys=7]',0)->find('table',0)->find('tr') as $key=>$element){
-				if($key>0){
-					$newprod = array();
-					$newprod['bookprice'] = array();
-					$newprice = array();
-					foreach($element->find('td') as $k=>$elementTd){
-						if($k==0){
-							$newprod['pratNo'] = $elementTd->innertext;
-						}elseif($k==1){
-							$newprod['brand'] = $elementTd->innertext;
-						}elseif($k==3){
-							$newprod['stock'] = $this->number($elementTd->innertext);
-						}elseif($k==4){
-							foreach($elementTd->find('li') as $item=>$elementLi){
-								$newprice[$item]['moq'] = $this->number($elementLi->innertext);
-							}
-						}elseif($k==5){
-							foreach($elementTd->find('li') as $item=>$elementLi){
-								$newprice[$item]['usdprice'] = $this->number($elementLi->innertext);
-							}
-						}elseif($k==6){
-							foreach($elementTd->find('div') as $item=>$elementLi){
-								$newprice[$item]['rmbprice'] = $this->number($elementLi->innertext);
-							}
-						}elseif($k==8){
-							if(isset($newprice[0]['moq'])){
-								$newprod['moq'] = $newprice[0]['moq'];
-							}else{
-								$newprod['moq'] = $newprod['stock'];
+			try {
+				$exphtml = new simple_html_dom();
+				// 从字符串中加载
+				$exphtml->load($html);
+				$re = array();
+				if(!$exphtml->find('div[gys=7]',0)){
+					return $re;
+				}
+				foreach($exphtml->find('div[gys=7]',0)->find('table',0)->find('tr') as $key=>$element){
+					if($key>0){
+						$newprod = array();
+						$newprod['bookprice'] = array();
+						$newprice = array();
+						foreach($element->find('td') as $k=>$elementTd){
+							if($k==0){
+								$newprod['pratNo'] = $elementTd->innertext;
+							}elseif($k==1){
+								$newprod['brand'] = $elementTd->innertext;
+							}elseif($k==3){
+								$newprod['stock'] = $this->number($elementTd->innertext);
+							}elseif($k==4){
+								foreach($elementTd->find('li') as $item=>$elementLi){
+									$newprice[$item]['moq'] = $this->number($elementLi->innertext);
+								}
+							}elseif($k==5){
+								foreach($elementTd->find('li') as $item=>$elementLi){
+									$newprice[$item]['usdprice'] = $this->number($elementLi->innertext);
+								}
+							}elseif($k==6){
+								foreach($elementTd->find('div') as $item=>$elementLi){
+									$newprice[$item]['rmbprice'] = $this->number($elementLi->innertext);
+								}
+							}elseif($k==8){
+								if(isset($newprice[0]['moq'])){
+									$newprod['moq'] = $newprice[0]['moq'];
+								}else{
+									$newprod['moq'] = $newprod['stock'];
+								}
 							}
 						}
+						$newprod['bookprice'] = $newprice;
+						$re[]=$newprod;
 					}
-					$newprod['bookprice'] = $newprice;
-					$re[]=$newprod;
 				}
+			} catch (Exception $e) {
+			
 			}
 		}
 		return $re;
@@ -790,10 +804,14 @@ class Default_Service_CrawlerService
 	public function getIclegoMouser($html){
 		$re = [];
 		if($html){
+			try{
 			$exphtml = new simple_html_dom();
 			// 从字符串中加载
 			$exphtml->load($html);
 			$re = array();
+			if(!$exphtml->find('div[gys=13]',0)){
+				return $re;
+			}
 			foreach($exphtml->find('div[gys=13]',0)->find('table',0)->find('tr') as $key=>$element){
 				if($key>0){
 					$newprod = array();
@@ -830,16 +848,23 @@ class Default_Service_CrawlerService
 					$re[]=$newprod;
 				}
 			}
+			} catch (Exception $e) {
+			
+			}
 		}
 		return $re;
 	}
 	public function getIclegoDigiKey($html){
 		$re = [];
 		if($html){
+			try{
 			$exphtml = new simple_html_dom();
 			// 从字符串中加载
 			$exphtml->load($html);
 			$re = array();
+			if(!$exphtml->find('div[gys=8]',0)){
+				return $re;
+			}
 			foreach($exphtml->find('div[gys=8]',0)->find('table',0)->find('tr') as $key=>$element){
 				if($key>0){
 					$newprod = array();
@@ -876,16 +901,23 @@ class Default_Service_CrawlerService
 					$re[]=$newprod;
 				}
 			}
+			} catch (Exception $e) {
+			
+			}
 		}
 		return $re;
 	}
 	public function getIclegoElement14($html){
 		$re = [];
 		if($html){
+			try{
 			$exphtml = new simple_html_dom();
 			// 从字符串中加载
 			$exphtml->load($html);
 			$re = array();
+			if(!$exphtml->find('div[gys=252]',0)){
+				return $re;
+			}
 			foreach($exphtml->find('div[gys=252]',0)->find('table',0)->find('tr') as $key=>$element){
 				if($key>0){
 					$newprod = array();
@@ -922,16 +954,23 @@ class Default_Service_CrawlerService
 					$re[]=$newprod;
 				}
 			}
+			} catch (Exception $e) {
+			
+			}
 		}
 		return $re;
 	}
 	public function getIclegoVerical($html){
 		$re = [];
 		if($html){
+			try{
 			$exphtml = new simple_html_dom();
 			// 从字符串中加载
 			$exphtml->load($html);
 			$re = array();
+			if(!$exphtml->find('div[gys=70]',0)){
+				return $re;
+			}
 			foreach($exphtml->find('div[gys=70]',0)->find('table',0)->find('tr') as $key=>$element){
 				if($key>0){
 					$newprod = array();
@@ -968,16 +1007,23 @@ class Default_Service_CrawlerService
 					$re[]=$newprod;
 				}
 			}
+			} catch (Exception $e) {
+			
+			}
 		}
 		return $re;
 	}
 	public function getIclegoRs($html){
 		$re = [];
 		if($html){
+			try{
 			$exphtml = new simple_html_dom();
 			// 从字符串中加载
 			$exphtml->load($html);
 			$re = array();
+			if(!$exphtml->find('div[gys=69]',0)){
+				return $re;
+			}
 			foreach($exphtml->find('div[gys=69]',0)->find('table',0)->find('tr') as $key=>$element){
 				if($key>0){
 					$newprod = array();
@@ -1014,16 +1060,23 @@ class Default_Service_CrawlerService
 					$re[]=$newprod;
 				}
 			}
+			} catch (Exception $e) {
+				
+			}
 		}
 		return $re;
 	}
 	public function getIclegoAvnet($html){
 		$re = [];
 		if($html){
+			try{
 			$exphtml = new simple_html_dom();
 			// 从字符串中加载
 			$exphtml->load($html);
 			$re = array();
+			if(!$exphtml->find('div[gys=152]',0)){
+				return $re;
+			}
 			foreach($exphtml->find('div[gys=152]',0)->find('table',0)->find('tr') as $key=>$element){
 				if($key>0){
 					$newprod = array();
@@ -1060,16 +1113,23 @@ class Default_Service_CrawlerService
 					$re[]=$newprod;
 				}
 			}
+			} catch (Exception $e) {
+			
+			}
 		}
 		return $re;
 	}
 	public function getIclegoChipOneStop($html){
 		$re = [];
 		if($html){
+			try{
 			$exphtml = new simple_html_dom();
 			// 从字符串中加载
 			$exphtml->load($html);
 			$re = array();
+			if(!$exphtml->find('div[gys=81]',0)){
+				return $re;
+			}
 			foreach($exphtml->find('div[gys=81]',0)->find('table',0)->find('tr') as $key=>$element){
 				if($key>0){
 					$newprod = array();
@@ -1105,6 +1165,9 @@ class Default_Service_CrawlerService
 					$newprod['bookprice'] = $newprice;
 					$re[]=$newprod;
 				}
+			}
+			} catch (Exception $e) {
+			
 			}
 		}
 		return $re;

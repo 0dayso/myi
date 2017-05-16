@@ -1,12 +1,59 @@
-
-	<div class="conmian">
-	<h1><?php echo $this->AreaTitle;?></h1>
+<div class="conmian">
+<h1><?php echo $this->AreaTitle;?>
+<?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+     <a href="<?php echo $this->addurl;?>" >添加+</a>
+ <?php }?>
+	</h1>
 				<div id="message_sess" style="display:none" class="message_sess"> 
           <div title="关闭" class="but" onclick="document.getElementById('message_sess').style.display='none'">&nbsp;</div>
           <div id="alert_message"></div> 
           </div>
 	  <!-- 需要填写的区域-->
-      <h2><?php echo "工作区域";?></h2>
-      <br/>
+	  <?php if (count($this->messages)) : ?>
+<div class="alert fade in">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+<?php foreach ($this->messages as $message) : ?>
+    <p class="message"><strong><?php echo $this->escape($message); ?></strong></p>
+<?php endforeach; ?>
+ </div>
+<?php endif; ?>
+      <table class="table ordertable"  border="0" style=" margin-top:-1px;">
+                <thead>
+                <tr>
+                <th>编号</th>
+                <th>状态</th>
+                <th>供应商名称</th>
+                <th>logo</th>
+                <th>国内交期(天)</th>
+                <th>香港交期(天)</th>
+                <th>排序(降序)</th>
+                <th>网址</th>
+                <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+				<?php 
+				foreach($this->data as $data) : ?>
+				<tr>
+                <td><?php echo $data['id'];?></td>
+                <td><?php echo $data['state']==1?'<label style="color:#14A659">上线</label>':'<label style="color:#D82A20">下线</label>';?></td>
+				<td><?php echo $data['name'];?></td>
+				<td><img src="<?php echo $data['img'];?>" width="80" height="40"/></td>
+				<td><?php echo $data['delivery_cn'];?></td>
+				<td><?php echo $data['delivery_hk'];?></td>
+				<td><?php echo $data['displayorder'];?></td>
+				<td><a href="<?php echo $data['weburl'];?>" target="_blank"><?php echo $data['weburl'];?></a></td>
+				<td>
+				<?php if($this->mycommon->checkA($this->Staff_Area_ID) || $this->mycommon->checkW($this->Staff_Area_ID)){?>
+                <a href="<?php echo $this->url(array('controller'=>'GrabSupp', 'action'=>'edit', 'id'=>$data['id']));?>" >修改</a>
+                <?php }?>
+				</td>
+				</tr>
+				<?php endforeach ; ?>
+                </tbody>
+            </table>   
+            <div class="pagination divpage" >
+            <?=$this->page_bar;?>
+       	 </div>
       <!-- 结束区域-->
 	</div>
