@@ -11,38 +11,24 @@
 </div>
 <div class="searchresult">
 	<div class="w">
-		<div class="wrap filter-box none">
+		<div class="wrap filter-box">
 			<div data-type="search" id="filterNav" class="bd">
 				<div class="filter-items" id='supplierGrabTab'>
 					<dl>
 					<dt>供应商：</dt>
 					<dd>
-						<ul>
-							<li><span><a id='searchprd-all' href="javascript:;"
-									class='searchprd curr' data-id='all'>不限</a></span></li>
-										                    <?php foreach($this->supplierCrab as $v){?>
-									            <li><span><a id='searchprd-<?php echo $v['id']?>'
-									href="javascript:;" class="searchprd cblue"
-									data-id='<?php echo $v['id']?>'><?php echo $v['name'];?></a></span></li>
-										                    <?php }?>
-										    </ul>
+					<div id='searchprdDiv'></div>	
 					</dd>
 				</dl>
 				</div>
 			</div>
 		</div>
-
-<?php foreach($this->supplierCrab as $k=>$v){?>
-		<!-- 供应商 -->
-		<div id="product<?php echo $v['id']?>" class="wrap pro-list clearfix ">
-			<?php if($k==0){?>
+		
+		<div id='suppProduct'>
 			<div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div>
-			<?php }?>
 		</div>
-		<!-- end 供应商 -->
-<?php }?>
 
-<div id="filter-null">
+<div id="filter-null" style="display: none;">
 	<div class="filter-null l-box">
 	        很抱歉，我们没有找到与"<strong class="corg"><?=$this->keyword?></strong>"相关的制造商型号
 	</div>
@@ -51,87 +37,43 @@
 <script type="text/javascript">
 $(function(){
 	var keyword = '<?=$this->keyword?>';
-	var seachArr = [];
-	var allid = [];
+	
+	var allsupid = [];
 	<?php foreach($this->supplierCrab as $v){?>
 		if(keyword.length >= 3){
-			seachprd('<?php echo $v['id']?>','<?=$this->keyword?>');
-			allid[<?php echo $v['id']?>] = <?php echo $v['id']?>;
+			allsupid[<?php echo $v['id']?>] = <?php echo $v['id']?>;
 		}else{
 			$(".pro-list").html('');
 			alert('型号最小字符必须为3个字符以上');
 			return;
 		}
 	<?php }?>
-	$(".searchprd").click(function(){
-		var id = $(this).data("id");
-		var allnull = true;
-		if(id=='all'){
-			for (var key in allid) {
-				$("#product"+key).css('display','block');
-			}
-			for (var key in seachArr) {
-				seachArr[key] = 0;
-			}
-		}else{
-			if (!inarray(id, seachArr)) {
-				seachArr[id] = id;
-	        }else{
-	        	seachArr[id] = 0;
-	        }
-			for (var key in allid) {
-				$("#product"+key).css('display','none');
-			}
-		}
-		for (var key in seachArr) {
-			 if(seachArr[key]==0){
-				 $("#product"+key).css('display','none');
-				 $("#searchprd-"+key).removeClass("curr");
-			 }else{
-				 allnull = false;
-				 $("#product"+key).css('display','block');
-				 $("#searchprd-"+key).addClass("curr");
-			 }
-		}
-		//全部空
-		if(allnull){
-			for (var key in allid) {
-				$("#product"+key).css('display','block');
-			}
-			$("#searchprd-all").addClass("curr");
-		}else{
-			$("#searchprd-all").removeClass("curr");
-		}
-		//$("#searchboxtmp").removeClass("searchTxt");
-		//$("#searchboxtmp").addClass("searchTxtHover");
-    });	
 	
+    //查询
+	seachprd(allsupid,'<?=$this->keyword?>');
 })
-function seachprd(sup,keyworld){
+
+
+function seachprd(allsupid,keyworld){
 	$.ajax({
 	       type: 'post',
 	       url: "/search/product",
 	       dataType: 'html',
-	       data: {keyworld:keyworld,sup:sup},
+	       data: {keyworld:keyworld,allid:allsupid},
 	       success: function(result){
 		       if(result=='"no"'){
-		    	   $("#searchprd-"+sup).remove();
-		    	   $("#product"+sup).html('');
+		    	   $("#filter-null").css('display','block');
+		    	   $(".filter-box").css('display','none');
+		    	   $("#suppProduct").html('');
 		       }else{
-		    	   $("#filter-null").css('display','none');
-	    	   	   $("#product"+sup).html(result);
+		    	   var resultArray =result.split("||");
+		    	   $("#searchprdDiv").html(resultArray[0]);
+	    	   	   $("#suppProduct").html(resultArray[1]);
 		       }
 	       }
 	   }); 	
 }
-function inarray(search, array) {
-    for (var i in array) {
-        if (array[i] == search) {
-            return true;
-        }
-    }
-    return false;
-}
+
 </script>
 		<div class="clr"></div>
 	</div>

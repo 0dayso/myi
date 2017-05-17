@@ -1,109 +1,187 @@
-<div class="product-list rel jsDataInfoParent jsTabMore">
-<div class="hd clearfix">
-	<div class="fl pro-title">
-		<div class=" fl imglazy">
-			<img title="f" class="img-onerror" src="<?php echo $this->supplierCrab['img']?>">
+<ul><li><span><a id='searchprd-all' href="javascript:;"
+									class='searchprd curr' data-id='all'>不限</a></span></li>
+<?php foreach($this->productAll['product'] as $supId=>$v){
+if(!empty($v[0])){
+	?>
+<li><span><a id='searchprd-<?php echo $this->productAll['sup'][$supId]['id']?>'
+href="javascript:;" class="searchprd cblue"
+data-id='<?php echo $this->productAll['sup'][$supId]['id']?>'><?php echo $this->productAll['sup'][$supId]['name'];?></a></span></li>
+<?php }
+}?>
+</ul>
+||
+<!-- 供应商 -->
+<?php foreach($this->productAll['product'] as $supId=>$v){
+	if(!empty($v[0])){
+?>
+<div id="product<?php echo $this->productAll['sup'][$supId]['id']?>" class="wrap pro-list clearfix ">
+		<div class="product-list rel jsDataInfoParent jsTabMore">
+		<div class="hd clearfix">
+			<div class="fl pro-title">
+				<div class=" fl imglazy">
+					<img title="f" class="img-onerror" src="<?php echo $this->productAll['sup'][$supId]['img']?>">
+				</div>
+			</div>
 		</div>
-	</div>
-</div>
-<div class="batch-box rel">
-	<table class="ic-list-tbl pro-list-tbl rel" style="width: 100%;"
-		border='0'>
-		<colgroup>
-			<col width="15%">
-			<col width="10%">
-			<col width="13%">
-			<col width="13%">
-			<col width="7%">
-			<col width="6%">
-			<col width="10%">
-			<col width="10%">
-			<col width="14%">
-		</colgroup>
-		<thead>
-			<tr>
-				<th class="tl pl20">制造商型号</th>
-				<th>制造商</th>
-				<th>库存</th>
-				<th>交期</th>
-				<th>起订量<br> <span class="c9 f12">(MOQ)</span></th>
-				<th>阶梯</th>
-				<th>境内交货<br> <span class="c9 f12">(含17%税)</span></th>
-				<th>境外交货<br> <span class="c9 f12">(美元)</span></th>
-				<th class="tr pr50">购买操作</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach($this->product as $k=>$pv){?>
-			<tr <?php if($k>2) echo 'class="productTr'.$this->supplierCrab['id'].' none"';?>>
-				<td class="tl pl30">
-					<div class="ic-no rel">
-						<a title="<?php echo $pv['pratNo'];?>" 
-						href="/3189/1002466250.shtml"
-						target="_blank"> <?php echo $pv['pratNo'];?> </a>
-					</div>
-				</td>
-				<td align="center"><?php echo $pv['brand'];?></td>
-				<td align="center"><span><em class="corg">  <?php echo $pv['stock'];?> </em></span></td>
-				<td align="center">
-				    <span>国内：<em class="corg"><?php echo $this->supplierCrab['delivery_cn']?></em></span>
-				    <br>
-					<span>香港：<em class="corg"><?php echo $this->supplierCrab['delivery_hk']?></em></span>
-				</td>
-
-
-				<td align="center"><?php echo $pv['moq'];?></td>
-
-				<td class="no-padding" colspan="3">
-					<div class="price-list jsMore">
-						<?php if($pv['bookprice']){?>
-						<table class="step-price-tbl " align="center">
-							<colgroup>
-								<col width="20%">
-								<col width="40%">
-								<col width="40%">
-							</colgroup>
-							<tbody>
-								<?php foreach($pv['bookprice'] as $bp){?>
-								<tr>
-									<th><?php echo $bp['moq']?'+'.$bp['moq']:'--';?></th>
-									<td><?php echo $bp['rmbprice']?'¥'.$bp['rmbprice']:'--';?></td>
-									<td><?php echo $bp['usdprice']?'$'.$bp['usdprice']:'--';?></td>
-								</tr>
+		<div class="batch-box rel">
+			<table class="ic-list-tbl pro-list-tbl rel" style="width: 100%;"
+				border='0'>
+				<colgroup>
+					<col width="15%">
+					<col width="10%">
+					<col width="13%">
+					<col width="13%">
+					<col width="7%">
+					<col width="6%">
+					<col width="10%">
+					<col width="10%">
+					<col width="14%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th class="tl pl20">制造商型号</th>
+						<th>制造商</th>
+						<th>库存</th>
+						<th>交期</th>
+						<th>起订量<br> <span class="c9 f12">(MOQ)</span></th>
+						<th>阶梯</th>
+						<th>境内交货<br> <span class="c9 f12">(含17%税)</span></th>
+						<th>境外交货<br> <span class="c9 f12">(美元)</span></th>
+						<th class="tr pr50">购买操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach($v as $k=>$pv){
+						?>
+					<tr <?php if($k>2) echo 'class="productTr'.$this->productAll['sup'][$supId]['id'].' none"';?>>
+						<td class="tl pl30">
+							<div class="ic-no rel">
+								<a title="<?php echo $pv['pratNo'];?>" 
+								href="/3189/1002466250.shtml"
+								target="_blank"> <?php echo $pv['pratNo'];?> </a>
+							</div>
+						</td>
+						<td align="center"><?php echo $pv['brand'];?></td>
+						<td align="center"><span><em class="corg">  <?php echo $pv['stock'];?> </em></span></td>
+						<td align="center">
+						    <span>国内：<em class="corg"><?php echo $this->productAll['sup'][$supId]['delivery_cn']?></em></span>
+						    <br>
+							<span>香港：<em class="corg"><?php echo $this->productAll['sup'][$supId]['delivery_hk']?></em></span>
+						</td>
+		
+		
+						<td align="center"><?php echo $pv['moq'];?></td>
+		
+						<td class="no-padding" colspan="3">
+							<div class="price-list jsMore">
+								<?php if($pv['bookprice']){?>
+								<table class="step-price-tbl " align="center">
+									<colgroup>
+										<col width="20%">
+										<col width="40%">
+										<col width="40%">
+									</colgroup>
+									<tbody>
+										<?php foreach($pv['bookprice'] as $bp){?>
+										<tr>
+											<th><?php echo $bp['moq']?'+'.$bp['moq']:'--';?></th>
+											<td><?php echo $bp['rmbprice']?'¥'.$bp['rmbprice']:'--';?></td>
+											<td><?php echo $bp['usdprice']?'$'.$bp['usdprice']:'--';?></td>
+										</tr>
+										<?php }?>
+									</tbody>
+								</table>
 								<?php }?>
-							</tbody>
-						</table>
-						<?php }?>
-					</div>
-				</td>
-
-				<td class="tl pl30">
-
-					<div class="tabelbtn">
-
-						<a href="javascript:" onclick="buy('37377.')"
-							class="gbqfb logclick" title="购买" rev="prodlist_part_id"
-							rel="37377"><i class="i_buy_s"></i>在线购买</a> <br /> <a
-							href="javascript:" onclick="openInquiry('37377')"
-							class="gbqfb logclick" title="询价" rev="prodlist_part_id"
-							rel="37377"><i class="i_xun_s"></i>批量询价</a><br>
-					</div>
-
-				</td>
-			</tr>
-			<?php }?>
-			<?php if(count($this->product)>3){?>
-			<tr><td colspan="9"><div class="tab-more jsShowMoreTr<?php echo $this->supplierCrab['id']?>">查看更多<i></i></div></td></tr>
-			<?php }?>
-		</tbody>
-	</table>
+							</div>
+						</td>
+		
+						<td class="tl pl30">
+		
+							<div class="tabelbtn">
+		
+								<a href="javascript:" onclick="buy('37377.')"
+									class="gbqfb logclick" title="购买" rev="prodlist_part_id"
+									rel="37377"><i class="i_buy_s"></i>在线购买</a> <br /> <a
+									href="javascript:" onclick="openInquiry('37377')"
+									class="gbqfb logclick" title="询价" rev="prodlist_part_id"
+									rel="37377"><i class="i_xun_s"></i>批量询价</a><br>
+							</div>
+		
+						</td>
+					</tr>
+					<?php }?>
+					<?php if(count($v)>3){?>
+					<tr><td colspan="9"><div class="tab-more jsShowMoreTr<?php echo $this->productAll['sup'][$supId]['id']?>">查看更多<i></i></div></td></tr>
+					<?php }?>
+				</tbody>
+			</table>
+		</div>
+		</div>
 </div>
-</div>
+<?php }
+}?>
+<!-- end 供应商 -->
 <script type="text/javascript">
 $(function(){
-	$(".jsShowMoreTr<?php echo $this->supplierCrab['id']?>").click(function(){
-		$(".productTr<?php echo $this->supplierCrab['id']?>").show();
-		$(".jsShowMoreTr<?php echo $this->supplierCrab['id']?>").remove();
-	});	
+	var allid = [];
+	var seachArr = [];
+	<?php foreach($this->productAll['product'] as $supId=>$v){
+	if(!empty($v[0])){?>
+			allid[<?php echo $this->productAll['sup'][$supId]['id']?>] = <?php echo $this->productAll['sup'][$supId]['id']?>;
+			$(".jsShowMoreTr<?php echo $this->productAll['sup'][$supId]['id']?>").click(function(){
+				$(".productTr<?php echo $this->productAll['sup'][$supId]['id']?>").show();
+				$(".jsShowMoreTr<?php echo $this->productAll['sup'][$supId]['id']?>").remove();
+			});	
+	<?php }}?>
+
+
+	$(".searchprd").click(function(){
+		var id = $(this).data("id");
+		var allnull = true;
+		if(id=='all'){
+			for (var key in allid) {
+				$("#product"+key).css('display','block');
+			}
+			for (var key in seachArr) {
+				seachArr[key] = 0;
+			}
+		}else{
+			if (!inarray(id, seachArr)) {
+				seachArr[id] = id;
+	        }else{
+	        	seachArr[id] = 0;
+	        }
+			for (var key in allid) {
+				$("#product"+key).css('display','none');
+			}
+		}
+		for (var key in seachArr) {
+			 if(seachArr[key]==0){
+				 $("#product"+key).css('display','none');
+				 $("#searchprd-"+key).removeClass("curr");
+			 }else{
+				 allnull = false;
+				 $("#product"+key).css('display','block');
+				 $("#searchprd-"+key).addClass("curr");
+			 }
+		}
+		//全部空
+		if(allnull){
+			for (var key in allid) {
+				$("#product"+key).css('display','block');
+			}
+			$("#searchprd-all").addClass("curr");
+		}else{
+			$("#searchprd-all").removeClass("curr");
+		}
+    });	
 })
+function inarray(search, array) {
+    for (var i in array) {
+        if (array[i] == search) {
+            return true;
+        }
+    }
+    return false;
+}
 </script>
