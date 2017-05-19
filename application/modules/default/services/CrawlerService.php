@@ -24,15 +24,15 @@ class Default_Service_CrawlerService
 		//$cache 在先前的例子中已经初始化了
 		$cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
 		// 查看一个缓存是否存在:
+		$sqlstr = "SELECT sc.id,sc.g_excode
+					FROM  sx_collection as sc
+					WHERE sc.activation = 1 LIMIT 1";
+		$rateModel = new Default_Model_DbTable_SupplierGrab();
+		$scre = $rateModel->getByOneSql($sqlstr);
 		$cache_key = 'crawler_product_'.$scre['id'].'_'.md5($keyworld);
 		if(!$productArrayAll = $cache->load($cache_key)) {
 			$isnonull = false;
 			if($allid){
-				$sqlstr = "SELECT sc.id,sc.g_excode
-					FROM  sx_collection as sc
-					WHERE sc.activation = 1 LIMIT 1";
-				$rateModel = new Default_Model_DbTable_SupplierGrab();
-				$scre = $rateModel->getByOneSql($sqlstr);
 				if($scre['g_excode']){
 					eval($scre['g_excode']);
 				}
@@ -55,6 +55,7 @@ class Default_Service_CrawlerService
 						}
 						$productArrayAll['product'][$supId] = $productArray;
 						$productArrayAll['sup'][$supId]['id'] = $reexcode['id'];
+						$productArrayAll['sup'][$supId]['scid'] = $scre['id'];
 						$productArrayAll['sup'][$supId]['name'] = $reexcode['name'];
 						$productArrayAll['sup'][$supId]['img'] = $reexcode['img'];
 						$productArrayAll['sup'][$supId]['delivery_cn'] = $reexcode['delivery_cn'];

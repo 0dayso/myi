@@ -660,4 +660,67 @@ class Default_Service_ProductService
 		}
 		return $allArr;
 	}
+	
+	/**
+	 * 添加爬取产品
+	 */
+	public function addSupplierProduct($collection_id,$supplier_id,$part_no,$item){
+		$frontendOptions = array('lifeTime' => 3600*24,'automatic_serialization' => true);
+		$backendOptions = array('cache_dir' => CACHE_PATH);
+		//$cache 在先前的例子中已经初始化了
+		$cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
+		// 查看一个缓存是否存在:
+		$sqlstr = "SELECT sc.id,sc.g_excode
+					FROM  sx_collection as sc
+					WHERE sc.activation = 1 LIMIT 1";
+		$rateModel = new Default_Model_DbTable_SupplierGrab();
+		$scre = $rateModel->getByOneSql($sqlstr);
+		$cache_key = 'crawler_product_'.$collection_id.'_'.md5($part_no);
+	   if($product = $cache->load($cache_key)) {
+			$prodInfo = [];
+			foreach($product['product'] as $supid=>$prodArray){
+				if($supid==$supplier_id){
+					foreach($prodArray as $k=>$prod){
+						if($k==$item){
+							$prodInfo = $prod;break;
+						}
+					}
+				}
+			}
+			if($prodInfo){
+				$productSupplier = new Default_Model_DbTable_ProductSupplier();
+				$productPrice = new Default_Model_DbTable_ProductPrice();
+				$data['part_no'] = $prodInfo['pratNo'];
+				$data['manufacturer'] = $prodInfo['brand'];
+				$productId = $this->_proModer->addData($data);
+				if($productId){
+					$datas['part_no'] = $prodInfo['pratNo'];
+					$datas['product_id'] = $productId;
+					$datas['collection_id'] = $collection_id;
+					$datas['supplier_id'] = $supplier_id;
+					$datas['stock'] = $prodInfo['stock'];
+					$datas['moq'] = $prodInfo['moq'];
+					$datas['update_time'] = date("Y-m-d");
+					$productSupplier->addData($datas);
+					$dataps = [];
+					foreach($prodInfo['bookprice'] as $bp){
+						$tmp = [];
+						$tmp['product_id'] = $productId;
+						$tmp['collection_id'] = $collection_id;
+						$tmp['supplier_id'] = $supplier_id;
+						$tmp['moq'] = $bp['moq'];
+						$tmp['rmbprice'] = $bp['rmbprice'];
+						$tmp['usdprice'] = $bp['usdprice'];
+						$dataps[] = $tmp;
+					}
+					if($dataps){
+						$productPrice->addDatas($dataps);
+					}
+				}
+			}
+			echo '<pre>';
+			print_r($prodInfo);
+		}
+		return false;
+	}
 }

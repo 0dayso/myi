@@ -20,15 +20,13 @@ class ProddetailsController extends Zend_Controller_Action {
 		$this->view->fun =$this->fun =new MyFun();
 		$this->_prodhistory=new Prodhistory();
 		//产品目录
-		$prodService = new Default_Service_ProductService();
-		$prodCategory = $prodService->getProdCategory();
+		$this->_prodService = new Default_Service_ProductService();
+		$prodCategory = $this->_prodService->getProdCategory();
 		$this->view->first = $prodCategory['first'];
 		$this->view->second = $prodCategory['second'];
 		$this->view->third  = $prodCategory['third'];
 		//目录推荐品牌
-		$this->view->categorybarnd = $prodService->getCategoryBrand();
-		
-		$this->_prodService = new Default_Service_ProductService();
+		$this->view->categorybarnd = $this->_prodService->getCategoryBrand();
 		
 		$this->config = Zend_Registry::get('config');
 		$this->seoconfig = $this->view->seoconfig = Zend_Registry::get('seoconfig');
@@ -44,44 +42,43 @@ class ProddetailsController extends Zend_Controller_Action {
 		$this->view->keyword = trim($this->_getParam('keyword'));
 		$id_no='';
 		if($this->_getParam('item')){
-			$item = explode("-",$this->_getParam('item'));
-			$partid = $id_no = (int)$item[3];
-			$qstr = "po.id ='$partid'";
+			$item = explode("_",$this->_getParam('item'));
+			$collection_id = (int)$item[1];
+			$supplier_id = (int)$item[2];
+			$partid = (int)$item[3];
+			$keyworld  = $item[4];
+			$itemk = (int)$item[5];
+			$part_no  = $item[6];
+			//查询是否存在
+			$qstr = " 1 ";
+			if($partid){
+				$qstr = " po.id = '{$partid}'";
+			}elseif($part_no){
+				$qstr = " po.part_no = '{$part_no}'";
+			}else{
+				$this->_redirect('/error');
+			}
+			$sqlstr ="SELECT po.*,pc1.name as cname1,pc2.name as cname2,pc3.name as cname3
+			FROM product as po
+			LEFT JOIN product_supplier as ps ON ps.product_id=po.id
+			LEFT JOIN prod_category as pc3 ON po.part_level3=pc3.id
+			LEFT JOIN prod_category as pc2 ON po.part_level2=pc2.id
+			LEFT JOIN prod_category as pc1 ON po.part_level1=pc1.id
+			WHERE {$qstr} AND po.status='1' AND ps.collection_id='$collection_id'
+					AND ps.supplier_id='$supplier_id'";
+			$product =  $prodModel->getByOneSql($sqlstr);
+			if(empty($product)){
+				//添加产品
+				$this->_prodService->addSupplierProduct($collection_id,$supplier_id,$keyworld,$itemk);
+			}else{
+				
+			}
 		}else{
-			if(isset($_GET['partno'])) $partno = $this->filter->pregHtmlSql($_GET['partno']);
-		    if(isset($_GET['partid'])){
-		    	$partid = $this->filter->pregHtmlSql($_GET['partid']);
-		    }
-		    if(!empty($partid)){
-		        $qstr = "po.id ='{$partid}'";
-		        $id_no = $partid;
-		    }elseif(!empty($partno)){
-		       $qstr = "po.part_no ='{$partno}'";
-		       $id_no = $partno;
-		    }else $this->_redirect('/error');	
-		    
-		    $sqlstr ="SELECT po.id,po.part_no,po.manufacturer,po.part_level1,po.part_level2,po.part_level3
-		    FROM product as po
-		    LEFT JOIN brand as br ON po.manufacturer=br.id
-		    WHERE {$qstr} AND po.status='1' AND br.status='1'";
-		    $prodarr = $prodModel->getByOneSql($sqlstr);
-		    if($prodarr['part_level3']) $part_level = $prodarr['part_level3'];
-		    elseif($prodarr['part_level2']) $part_level = $prodarr['part_level2'];
-		    else $part_level = $prodarr['part_level1'];
-		    header( "HTTP/1.1 301 Moved Permanently" );
-		    header("Location:/item-b".$prodarr['manufacturer']."-".$part_level."-".$prodarr['id']."-".str_replace("/", "_", $prodarr['part_no']).".html");
+			$this->_redirect('/error');
 		}
 		
-		$sqlstr ="SELECT po.*,pc1.name as cname1,pc2.name as cname2,pc3.name as cname3,
-		    br.id as bid,br.name as bname
-		    FROM product as po 
-		    LEFT JOIN prod_category as pc3 ON po.part_level3=pc3.id
-    	    LEFT JOIN prod_category as pc2 ON po.part_level2=pc2.id
-    	    LEFT JOIN prod_category as pc1 ON po.part_level1=pc1.id
-    	    LEFT JOIN brand as br ON po.manufacturer=br.id
-		    WHERE {$qstr} AND po.status='1' AND br.status='1'";
 		
-		$this->view->prodarr = $product=  $prodModel->getByOneSql($sqlstr);
+		$this->view->prodarr = $product;
 		//pdnpcn
 		$this->view->pdn = $this->_prodService->getPdn($partid);
 		$this->view->pcn = $this->_prodService->getPcn($partid);

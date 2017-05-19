@@ -72,7 +72,7 @@ class SearchController extends Zend_Controller_Action {
 		$allid = $this->_getParam('allid');
 	
 		if($allid){
-			$keyworld = trim($this->filter->pregHtmlSql($this->_getParam('keyworld')));
+			$this->view->keyworld = $keyworld = trim($this->filter->pregHtmlSql($this->_getParam('keyworld')));
 			
 			$crawlerService = new Default_Service_CrawlerService();
 			$this->view->productAll = $crawlerService->getProduct($allid,$keyworld);

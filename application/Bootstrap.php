@@ -147,7 +147,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				$router->addRoute($urlarray[1], $route);
 			}
 			//产品详细页
-			$item = explode("-",$urlarray[1]);
+			$item = explode("_",$urlarray[1]);
 			//去掉？号
 			if(strrpos($item[0],'?')>0) $item[0] = substr($item[0],0,strrpos($item[0],'?'));
 			

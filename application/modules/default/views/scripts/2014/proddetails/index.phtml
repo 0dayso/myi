@@ -44,15 +44,7 @@
 	}
 ?>
 <div class="w">
-  <div class="breadcrumbs2013"> <span>
-    <a href="/category"  class="focs">产品目录</a> &nbsp;&nbsp;»&nbsp;&nbsp; 
-    <a href="/list-<?=$prodarr['part_level1']?>.html" title="<?=$prodarr['cname1']?>"><?=$prodarr['cname1']?></a>&nbsp;&nbsp;»&nbsp;&nbsp; 
-    <a href="/list-<?=$prodarr['part_level1']?>-<?=$prodarr['part_level2']?>.html" title="<?=$prodarr['cname2']?>"><?=$prodarr['cname2']?></a> &nbsp;&nbsp;»&nbsp;&nbsp; 
-   <?php if($prodarr['cname3']){?>
-    <a href="/list-<?=$prodarr['part_level1']?>-<?=$prodarr['part_level2']?>-<?=$prodarr['part_level3']?>.html" title="<?=$prodarr['cname3']?>"><?=$prodarr['cname3']?></a>&nbsp;&nbsp;»&nbsp;&nbsp; 
-    <?php }?>
-    <span title="<?=$this->prodarr['part_no'];?>"><?=$this->prodarr['part_no'];?></span>
-  </div>
+  <div class="breadcrumbs2013"> </div>
 </div>
 
 <input type="hidden" name="part_no" id="part_no" value="<?=$prodarr['part_no'];?>" />
@@ -112,11 +104,6 @@ if($prodarr['part_img']=='' || $prodarr['part_img']=='no.gif') {
             <div class="proinfo fl"  >
                 <div class="proinfo_m fl">
         <h1 class="model" title="<?=$prodarr['part_no'];?>"><?=$prodarr['part_no'];?></h1>
-    <?php 
-	//其它品牌不显示
-	if($prodarr['bid']!=40){?>
-    <a href="/pl/<?=$prodarr['bname']?><?php if(in_array($actingbrand['comid'],array(17,13))){echo '?t=1';}?>" target="_blank"  title="<?=$prodarr['bname']?>"  class="logclick" rev="prodderails_brand" rel="<?=$this->prodarr['bid']?>"><img src="/images/default/brand/<?=$prodarr['bid']?>_h.png"  height="36" title="<?=$prodarr['bname']?>" class="png_ie6"/></a>
-    <?php }?>
                 </div>
                 <div class="proinfo_data fl dl2013">
                 
@@ -165,18 +152,10 @@ if($prodarr['part_img']=='' || $prodarr['part_img']=='no.gif') {
 
                     <dl>
                         <dt>库&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存：</dt><dd>
-                        <?php 
-						if(($prodarr['f_stock_sz']+$prodarr['f_stock_hk']) > 0){echo '<b class="fontgreen">现货</b>';}
+                    <?php 
+					if(($prodarr['f_stock_sz']+$prodarr['f_stock_hk']) > 0){echo '<b class="fontgreen">现货</b>';}
 					else {echo '<b class="fontorange">订货</b>';}
-					/*if($prodarr['f_bpp_stock_id']){echo '<b class="fontgreen">现货</b>';}
-					elseif(($prodarr['f_stock_sz']+$prodarr['f_stock_hk']) > 0){
-						if($prodarr['f_show_price_sz'] && $prodarr['f_stock_sz']>0){
-						     echo '<b class="fontgreen showstock">'.$prodarr['f_stock_sz'].'</b>';
-						}elseif($prodarr['f_show_price_hk'] && $prodarr['f_stock_hk']){
-						     echo '<b class="fontgreen showstock">'.$prodarr['f_stock_hk'].'</b>';
-						}else {echo '<b class="fontorange">订货</b>';}
-					}
-					else {echo '<b class="fontorange">订货</b>';}*/?></dd>
+					?></dd>
                     </dl>
                     <?php if(!$show_price){?>
                     <dl>
@@ -299,20 +278,14 @@ if($prodarr['part_img']=='' || $prodarr['part_img']=='no.gif') {
                     </ul>
                     <?=$break_price;?>
                </div>
-              <?php }elseif(!$this->prodarr['noinquiry']){?>
+              <?php }else{?>
               <h2>询价提示</h2>
-  <ul>
-    <li>1、24小时内快速提供报价</li>
-    <li>2、提交询价后立即发送确认邮件</li>
-    <li>3、登录我的询价实时查看处理情况</li>
-  </ul>
-           <?php }else{?>
-  <h2>提示</h2>
-  <ul>
-    <li>1、此型号已经不支持询价</li>
-    <li>2、如有需要请联系IC易站客服</li>
-  </ul>
-<?php }?>
+				  <ul>
+				    <li>1、24小时内快速提供报价</li>
+				    <li>2、提交询价后立即发送确认邮件</li>
+				    <li>3、登录我的询价实时查看处理情况</li>
+				  </ul>
+           <?php }?>
 
             </div>
             
@@ -320,55 +293,10 @@ if($prodarr['part_img']=='' || $prodarr['part_img']=='no.gif') {
     </div>
     <div class="w ">
         <div class="prodetail2013_c fl ">
-        	<div class="dl2013 clearfix">
-                <dl>
-                    <dt>厂商：</dt><dd><a href="/pl/<?=$this->prodarr['bname'];?>" target="_blank" title="<?=$this->prodarr['bname'];?>" class="logclick" rev="prodderails_brand" rel="<?=$this->prodarr['bid']?>">
-            <?=$this->prodarr['bname'];?>
-            </a></dd>
-                </dl>
-                <dl>
-                    <dt>标准包装：</dt><dd><?=$mpq==0?'--':$mpq;?></dd>
-                </dl>
-                <dl>
-                    <dt>封装：</dt><dd><?=($this->prodarr['supplier_device_package']?$this->prodarr['supplier_device_package']:'--')?></dd>
-                </dl>
-                <dl>
-                    <dt>包装：</dt><dd><?=($this->prodarr['packaging']?$this->prodarr['packaging']:'--')?></dd>
-                </dl>
-                <dl>
-                    <dt>类别：</dt><dd><?php if($this->prodarr['cname3']){?>
-            <a href="/list-<?=$this->prodarr['part_level1']?>-<?=$this->prodarr['part_level2']?>-<?=$this->prodarr['part_level3']?>.html" target="_blank" title="<?=$this->prodarr['cname3']?>" class="logclick" rev="prodderails_category" rel="<?=$this->prodarr['part_level3']?>">
-            <?=$this->prodarr['cname3']?>
-            </a>
-            <?php }else{?>
-            <a href="/list-<?=$this->prodarr['part_level1']?>-<?=$this->prodarr['part_level2']?>.html" target="_blank" title="<?=$this->prodarr['cname2']?>" class="logclick" rev="prodderails_category" rel="<?=$this->prodarr['part_level2']?>">
-            <?=$this->prodarr['cname2']?>
-            </a>
-            <?php }?></dd>
-                </dl>
-                <dl>
-                    <dt>无铅情况/ROHS：</dt><dd>
-                    <?=$this->prodarr['rohs']==1?'<img src="/images/default/RoHS.gif"  title="符合"/>':'<img src="/images/default/NO_RoHS.gif" title="不符合"/>';?></dd>
-                </dl>
-                <dl class="dl100">
-                    <dt>产品描述：</dt><dd><?=($this->prodarr['description']?$this->prodarr['description']:'--')?></dd>
-                </dl>
-            </div>
+        	
             <div class="pos_reltab MT20">
                 <ul class="tabbar clearfix">
                     <li class="selected"><a href="javascript:">产品信息<b class="blank3"></b></a></li>
-                    <?php if($this->prodarr['overview']) {?>
-     <li class=""><a href="javascript:">描述<b class="blank3"></b></a></li>
-      <?php }?> 
-	  <?php if($this->prod_notes) {?>
-      <li class=""><a href="javascript:">技术资料<b class="blank3"></b></a></li> 
-      <?php }?>   
-      <?php if($this->pdn) {?>
-     <li class=""><a href="javascript:">PDN<b class="blank3"></b></a></li>
-      <?php }?>
-      <?php if($this->pcn) {?>
-      <li class=""><a href="javascript:">PCN<b class="blank3"></b></a></li>  
-      <?php }?> 
                 </ul>
                 </div>
             <div>
@@ -378,140 +306,14 @@ if($prodarr['part_img']=='' || $prodarr['part_img']=='no.gif') {
                 <th width="30%"  align="left">参数</th>
                 <th width="70%" align="left">数值</th>
               </tr>
-              <?php if($this->prodarr['parameters'])
-                {
-                   $vtmp = array_filter(explode(';',html_entity_decode($this->prodarr['parameters'])));
-				   foreach($vtmp as $k=>$v){
-				   $value = explode('|', $v);
-				   if($value[0] && $value[1])
-				   {
-						if(!strpos($value[0],"Container") && !strpos($value[0],"Price")  && !strpos($value[0],"Tariff (US)") )
-						{
-						$bg = '';
-						if(($k+1)%2==0){
-						$bg = 'class="trbg"';
-						}
-				   echo '<tr '.$bg.'><td  style="border-right:1px solid #e3e3e3;text-align:left; padding-left:10px;">'.$value[0].'</td><td style="text-align:left; padding-left:10px;">'.$value[1].'</td></tr>';
-					   }
-				   }      
-				  }
-               }
-                ?>
+              <tr><td  style="border-right:1px solid #e3e3e3;text-align:left; padding-left:10px;">hjh</td>
+              <td style="text-align:left; padding-left:10px;">fhfgh</td></tr>
+					 
              </tbody></table>
           </div>
-          <?php if($this->prodarr['overview']) {?>
-          <div class="tab_con" style="display: none;">
-            <table class="listtable"border="0" cellpadding="0" cellspacing="0">
-              <tbody><tr>
-                <td align="left" colspan="2" style="padding:10px;"><?=$this->prodarr['overview']?></td>
-              </tr>
-            </tbody></table>
-          </div>
-         <?php }?>
-                <?php if($this->prod_notes) {?>
-      <div class="tab_con" style="display: none; ">
-      <h3 style="margin-bottom:15px;">应用笔记</h3>
-        <table  class="listtable" border="0" cellpadding="0" cellspacing="0">
-			<thead>
-			<tr>
-			<th width="60%"  style="text-align:center">主题</th>
-			<th  width="15%" style="text-align:center">文件大小</th>
-			<th  width="15%" style="text-align:center">发布日期</th>
-			<th  width="10%" style="text-align:center">下载</th>
-			</tr>
-			</thead>
-			<?php foreach($this->prod_notes as $note):?>
-			<tr>
-			<td ><?php echo $note['filedesc'];?></td>
-			<td style="text-align:center"><?php echo $this->formatFilesize($note['filesize']);?></td>
-			<td style="text-align:center"><?php echo date('d/m/Y',$note['modified']);?></td>
-			<td style="text-align:center"><a href="<?php echo $note['fileurl']?>"  target="_blank"><img src="/images/default/download_pdf.gif" alt="下载"></a>
-			</tr>
-			<?php endforeach;?>
-        </table>
-      </div>
-      <?php }?> 
-      <?php if($this->pdn) {?>
-      <div class="tab_con" style="display: none; ">
-        <table  class="listtable" border="0" cellpadding="0" cellspacing="0">
-          <thead>
-			<tr>
-			<th width="10%"  style="text-align:center">PDN#</th>
-            <th width="20%"  style="text-align:center">Last Time Buy Date
-</th>
-            <th width="20%"  style="text-align:center">Last Time Ship Date
-</th>
-			<th  width="40%" style="text-align:center">Title Of Change</th>
-            <th  width="10%" style="text-align:center">PDNFileDetail
-</th>
-			</tr>
-			</thead>
-            <?php foreach($this->pdn as $pdn):?>
-			<tr>
-			<td style="text-align:center"><?=$pdn['number'];?></td>
-            <td style="text-align:center"><?=($pdn['last_buy']?$pdn['last_buy']:'--')?></td>
-            <td style="text-align:center"><?=($pdn['last_ship']?$pdn['last_ship']:'--')?></td>
-            <td style="text-align:center"><?=($pdn['title']?$pdn['title']:'--')?></td>
-			<td style="text-align:center">
-            <?php if($pdn['file_detail'] && file_exists('upload/default/pdnpcn/pdn/'.$pdn['file_detail'])){?>
-            <a href="<?='/upload/default/pdnpcn/pdn/'.$pdn['file_detail']?>"  target="_blank"><img src="/images/default/download_pdf.gif" alt="下载"></a>
-            <?php }?>
-			</tr>
-			<?php endforeach;?>
-        </table>
-      </div>
-      <?php }?>     
-      <?php if($this->pcn) {?>
-      <div class="tab_con" style="display: none; ">
-        <table class="listtable" border="0" cellpadding="0" cellspacing="0">
-          <thead>
-			<tr>
-			<th width="10%"  style="text-align:center">PCN#</th>
-            <th width="20%"  style="text-align:center">PCN Effective Date
-</th>
-            <th width="20%"  style="text-align:center">PCN Publish Date
-</th>
-			<th  width="40%" style="text-align:center">Title Of Change</th>
-            <th  width="10%" style="text-align:center">PCNFileDetail
-</th>
-			</tr>
-			</thead>
-            <?php foreach($this->pcn as $pcn):?>
-			<tr>
-			<td style="text-align:center"><?=$pcn['number'];?></td>
-            <td style="text-align:center"><?=($pcn['effective_date']?$pcn['effective_date']:'--')?></td>
-            <td style="text-align:center"><?=($pcn['publish_date']?$pcn['publish_date']:'--')?></td>
-            <td style="text-align:center"><?=($pcn['title']?$pcn['title']:'--')?></td>
-			<td style="text-align:center">
-            <?php if($pcn['file_detail'] && file_exists('upload/default/pdnpcn/pcn/'.$pcn['file_detail'])){?>
-            <a href="<?='/upload/default/pdnpcn/pcn/'.$pcn['file_detail']?>"  target="_blank"><img src="/images/default/download_pdf.gif" alt="下载"></a>
-            <?php }?>
-			</tr>
-			<?php endforeach;?>
-        </table>
-      </div>
-      <?php }?>   
         </div>
         </div>
-        <!--应用方案-->
-        <?php if($this->solution){?>
-        <div style="padding: 10px; margin-bottom:15px" class="fr rightbox boxshadow  pos-re">
-        	<div class="subhot  pos-re">
-            	<h2>相关方案</h2>
-                <div class="subshop">
-					<div class="dBoxConS">
-                        <ul class="pmListS">
-                           <?php foreach($this->solution as $k=>$v){?>
-                            <li><i title="资讯" class="icon-s icon-s2"></i><a target="_blank" href="/solution-<?=$v['id']?>.html" title="<?=$v['title']?>"><?=$v['title']?></a></li>
-                            <?php }?>
-                        </ul>
-                    </div>
-                        
-                </div>
-                
-            </div>
-        </div>
-        <?php }?>
+        
         
         <div class="fr rightbox boxshadow  pos-re">
             <!--热销推荐-->
