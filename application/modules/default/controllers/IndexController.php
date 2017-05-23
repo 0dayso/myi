@@ -32,15 +32,7 @@ class IndexController extends Zend_Controller_Action {
 		$rModer = new Default_Model_DbTable_Recommend();
 		$hpModer = new Default_Model_DbTable_HomePhoto();
 
-       //热销产品
-	   $allhotArr = $this->productService->homeHot();
-
-	   $bandhotArr = array();
-	   for($i=0;$i<count($allhotArr);$i++)
-	   {
-	   	 $bandhotArr[$allhotArr[$i]['cat_id']][] = $allhotArr[$i];
-	   }
-	   $this->view->bandhotArr = $bandhotArr;
+       
 	   //代理品牌
 	   $sqlstr ="SELECT re.comid,b.name
 		     FROM recommend as re 
@@ -55,30 +47,23 @@ class IndexController extends Zend_Controller_Action {
 		$this->view->specialimageArr = $hpModer->getAllByWhere("status='1' AND type='special'",array("displayorder ASC","id DESC"));
 		
 		$listnum = 5;
-		$this->view->appArr = $appArr;
-        //技术研讨会
-		$semdertModel = new Default_Model_DbTable_Seminar();
-		$sqlstr ="SELECT sem.id,sem.type,sem.title
-		FROM seminar as sem
-		WHERE sem.status=1 AND sem.title!='' ORDER BY sem.home DESC,sem.type DESC,sem.created DESC LIMIT 0 , {$listnum}";
-		$this->view->sem = $semdertModel->getBySql($sqlstr);
-		
-		//应用方案
-		$solutionModel = new Default_Model_DbTable_Solution();
-		$sqlstr ="SELECT sol.id,sol.title
-		FROM solution as sol
-		WHERE sol.status=1 AND sol.title!='' ORDER BY sol.home DESC,sol.created DESC LIMIT 0 , {$listnum}";
-		$this->view->solution = $solutionModel->getBySql($sqlstr);
-		
-		//产品资讯
+
+		//行业新闻
 		$newsModel = new Default_Model_DbTable_Model('news');
 		$sqlstr ="SELECT id,news_type_id,title
 		FROM news
-		WHERE status=1 AND title!='' ORDER BY home DESC,created DESC LIMIT 0 , {$listnum}";
-		$this->view->news = $newsModel->getBySql($sqlstr);
+		WHERE status=1 AND news_type_id=1 AND title!='' ORDER BY home DESC,created DESC LIMIT 0 , {$listnum}";
+		$this->view->hynews = $newsModel->getBySql($sqlstr);
+		//企业动态
+		$sqlstr ="SELECT id,news_type_id,title
+		FROM news
+		WHERE status=1 AND news_type_id=3 AND title!='' ORDER BY home DESC,created DESC LIMIT 0 , {$listnum}";
+		$this->view->qynews = $newsModel->getBySql($sqlstr);
 		
-		
-			
+		//供应商
+		$supplierGrab = new Default_Model_DbTable_SupplierGrab();
+		$sqlstr ="SELECT * FROM sx_supplier_grab WHERE state = 1 LIMIT 0 , 8";
+		$this->view->supplier = $supplierGrab->getBySql($sqlstr);
 	}
 	/*
 	 * ajax 检查是否登录

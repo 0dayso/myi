@@ -74,11 +74,11 @@ class Icwebadmin_Service_InqOrderService
 		$limit = '';
 		if($offset || $perpage) $limit ="LIMIT $offset,$perpage";
 		if(!$orderbystr) $orderbystr = "ORDER BY so.status ASC,so.created DESC";
-		$sqlstr = "SELECT so.*,sapo.auart,sapo.order_no,sapo.kunnr,sapo.cname,sapo.bstnk,u.uname,up.companyname,up.annex1,up.annex2,st.lastname,st.firstname FROM inq_sales_order as so
+		$sqlstr = "SELECT so.*,u.uname,up.companyname,up.annex1,up.annex2,st.lastname,st.firstname 
+		FROM inq_sales_order as so
 		LEFT JOIN user as u ON u.uid = so.uid
 		LEFT JOIN user_profile as up ON u.uid = up.uid
 		LEFT JOIN admin_staff as st ON st.staff_id = up.staffid
-		LEFT JOIN sap_order as sapo ON so.salesnumber = sapo.salesnumber
 		WHERE  so.available!=0 {$typestr} {$orderbystr} {$limit}";
 		
 		$orderarr = $this->_inqsalesorderModel->getBySql($sqlstr);

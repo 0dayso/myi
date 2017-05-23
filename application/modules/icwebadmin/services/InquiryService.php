@@ -157,7 +157,7 @@ class Icwebadmin_Service_InquiryService
      */
      public function getOainqInquiry($offset,$perpage,$xswhere)
      {
-     	$sqlstr = $this->getInquirySql(" AND iq.status IN ('1','3') AND iq.oa_status IN ('100','101') ".$xswhere,$offset,$perpage);
+     	$sqlstr = $this->getInquirySql(" AND iq.status IN ('1','3') ".$xswhere,$offset,$perpage);
      	return $this->getInquiryBySql($sqlstr);
      }
     
@@ -166,7 +166,7 @@ class Icwebadmin_Service_InquiryService
     */
     public function getWaitInquiry($offset,$perpage,$xswhere)
     {
-    	$sqlstr = $this->getInquirySql(" AND iq.status IN ('1','3') AND iq.oa_status=102 ".$xswhere,$offset,$perpage);
+    	$sqlstr = $this->getInquirySql(" AND iq.status IN ('1','3') ".$xswhere,$offset,$perpage);
     	return $this->getInquiryBySql($sqlstr);
     }
     
@@ -218,14 +218,13 @@ class Icwebadmin_Service_InquiryService
     private function getInquirySql($where,$offset,$perpage){
     	$limit = '';
     	if($offset || $perpage) $limit = "LIMIT $offset,$perpage";
-    	return "SELECT iq.*,uoa.id as uoaid,up.companyname ,up.staffid as upstaffid,up.oa_code,up.property,
+    	return "SELECT iq.*,up.companyname ,up.staffid as upstaffid,up.property,
     	sta.email,sta.lastname,sta.firstname,app1.name as appname1,app2.name as appname2
     	FROM inquiry as iq 
     	LEFT JOIN user_profile as up ON iq.uid = up.uid 
     	LEFT JOIN admin_staff as sta ON sta.staff_id = up.staffid
     	LEFT JOIN app_category as app1 ON app1.id = iq.app_1_id
     	LEFT JOIN app_category as app2 ON app2.id = iq.app_2_id
-    	LEFT JOIN user_oa_apply as uoa ON iq.uid = uoa.uid
     	WHERE iq.id!='' {$where} {$limit}";
     }
     /*

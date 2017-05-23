@@ -37,18 +37,7 @@ class Icwebadmin_IndexController extends Zend_Controller_Action
     	}else{
     		$sellsql = "up.staffid='".$_SESSION['staff_sess']['staff_id']."'";
     	}
-    	//发放优惠券的订单
-    	/*$couponService = new Icwebadmin_Service_CouponService();
-    	$coupsalenum = $couponService->getCouponSalesnumber($_SESSION['staff_sess']['staff_id']);
-    	if(!empty($coupsalenum)){
-    		$cstr = '(';
-    		foreach($coupsalenum as $k=>$v){
-    			if($k==0) $cstr .="'".$v['salesnumber']."'";
-    			else $cstr .=",'".$v['salesnumber']."'";
-    		}
-    		$cstr .= ')';
-    		$sellsql .= " OR so.salesnumber IN ".$cstr;
-    	}*/
+
     	$selectstr .=" AND (".$sellsql.")";
     	//待审核
     	$relsql = " AND so.status IN ('101','201') AND so.back_status='101'".$selectstr;
@@ -62,11 +51,7 @@ class Icwebadmin_IndexController extends Zend_Controller_Action
     	
     	$amount ++;
     }
-    //线下订单
-    $this->view->unso = array();
-    /*if(in_array('Unso',$_SESSION['staff_area']['value'])){
-    	$this->view->unso = array(1,2);
-    }*/
+    
     //客户询价
     $this->view->inqcan = 0;
     $this->view->inq = array();
@@ -110,36 +95,27 @@ class Icwebadmin_IndexController extends Zend_Controller_Action
     	$this->view->inqso['send'] = $this->_inqsoService->getAllSo(0, 0, $sendsql);
     	$amount ++;
     }
-    //数据统计
-    $this->view->amount = array();
-    /*if($amount>=2){
-    	$this->view->amount = array(1,2);
-    }*/
+   
     
-    if(empty($_SESSION['statistics_rule']['value'])){
-    //菜单
-    	$section_array = $area_array = array();
-    	$Section       = new Icwebadmin_Model_DbTable_Section();
-    	$Sectionarea   = new Icwebadmin_Model_DbTable_Sectionarea();
-    	$where         ="(status='1') ";
-    	$order         ="CAST(`order_id` AS SIGNED) ASC ";
-    	$section_array = $Section->getAllByWhere($where,$order);
-    	$sectionNum         = count($section_array);
-    	for($a=0;$a<$sectionNum;$a++)
-    	{
-    	$section = $section_array[$a]["section_area_id"];
-    		$where   ="(status='1') AND section_area_id='".$section."'";
-    	    		$order   ="CAST(`order_id` AS SIGNED) ASC ";
-    		$area_array[$section]=$Sectionarea->getAllByWhere($where,$order);
-    	}
-    	$this->view->Section=$section_array;
-    	$this->view->Area   =$area_array;	
-    }else{
-    //统计
-
-    	
-
-      }
+        if(empty($_SESSION['statistics_rule']['value'])){
+        //菜单
+        	$section_array = $area_array = array();
+        	$Section       = new Icwebadmin_Model_DbTable_Section();
+        	$Sectionarea   = new Icwebadmin_Model_DbTable_Sectionarea();
+        	$where         ="(status='1') ";
+        	$order         ="CAST(`order_id` AS SIGNED) ASC ";
+        	$section_array = $Section->getAllByWhere($where,$order);
+        	$sectionNum         = count($section_array);
+        	for($a=0;$a<$sectionNum;$a++)
+        	{
+        	$section = $section_array[$a]["section_area_id"];
+        		$where   ="(status='1') AND section_area_id='".$section."'";
+        	    		$order   ="CAST(`order_id` AS SIGNED) ASC ";
+        		$area_array[$section]=$Sectionarea->getAllByWhere($where,$order);
+        	}
+        	$this->view->Section=$section_array;
+        	$this->view->Area   =$area_array;	
+        }
     }
     public function menuAction(){
     	$this->_helper->layout->disableLayout();

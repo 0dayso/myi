@@ -161,8 +161,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 						array('item'=>'item|[\-]+[0-9]+')
 				);
 				$router->addRoute('/', $route);
-			}
+			}    
 			//分类列表页
+			$item = explode("-",$urlarray[1]);
 		    if($item[0]=='list'){
 				$route = new Zend_Controller_Router_Route(
 						'/:list',

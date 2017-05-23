@@ -57,7 +57,7 @@ data-id='<?php echo $this->productAll['sup'][$supId]['id']?>'><?php echo $this->
 						<td class="tl pl30">
 							<div class="ic-no rel">
 								<a title="<?php echo $pv['pratNo'];?>" 
-								href="/item_<?php echo $this->productAll['sup'][$supId]['scid'];?>_<?php echo $supId;?>_0_<?php echo $this->keyworld;?>_<?php echo $k;?>_<?php echo $pv['pratNo'];?>"
+								href="/item?scid=<?php echo $this->productAll['sup'][$supId]['scid'];?>&supid=<?php echo $supId;?>&pid=0&kw=<?php echo $this->keyworld;?>&item=<?php echo $k;?>&pn=<?php echo $pv['pratNo'];?>"
 								target="_blank"> <?php echo $pv['pratNo'];?> </a>
 							</div>
 						</td>

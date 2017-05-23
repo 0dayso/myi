@@ -133,8 +133,7 @@ behavior: url(/js/ie-css3.htc); }
     <?php }}?>
     
 	<!--<div id="jifenleft"></div>-->
-    
-    <div id="totop_box"></div>
+
     
 <?php if($_SESSION['menu'] != 'event_view'){?>
 <!--<div class="hdfloatbox" >
@@ -169,21 +168,6 @@ $(function(){
 		$(this).removeClass("tabelbtn_h");
 	});
 });
-
-//兑换产品
-$(function(){
-	  /* var daybox = $("#jifenleft");
-	   daybox.hover(function(){
-		  daybox.find(".daybox").css("margin-left","0px");
-	   },function(){
-		  daybox.find(".daybox").css("margin-left","-540px");
-	   });
-	   $("#jifenleft").load("/common/leftmenu");*/
-	   //回到顶部
-	   <?php if(isset($_SESSION['new_version'])){?>
-	    $("#totop_box").load("/publicbox/totop");
-		<?php }?>
-})
 </script>
 <?php echo $this->render('toolbar'.$_SESSION['new_version'].'.phtml');?>
 <?php

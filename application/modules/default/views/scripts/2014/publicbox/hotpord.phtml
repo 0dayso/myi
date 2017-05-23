@@ -4,7 +4,7 @@
                 <div class="subshop">
  						
     				<?php for($i=0;$i<count($this->hotArr);$i++){
-                     $data = $this->fun->filterProduct($this->hotArr[$i]);
+                     $data = $this->hotArr[$i];//$this->fun->filterProduct($this->hotArr[$i]);
                      $break_price='';$stock = 0;$show_price = 0;
                     if($data['f_show_price_sz']){
                         $show_price = $data['f_show_price_sz'];

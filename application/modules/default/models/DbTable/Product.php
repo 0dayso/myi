@@ -87,6 +87,10 @@ class Default_Model_DbTable_Product extends Zend_Db_Table_Abstract
 	{
 		$this->update($data, 'id = '.(int)$id);
 	} 
+	public function updateByPartNo($data,$partNo)
+	{
+	    $this->update($data, "part_no = '{$partNo}'");
+	}
 	public function deleteAlbum($id)
 	{
 		$this->delete('id='.(int)$id);

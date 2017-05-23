@@ -192,6 +192,9 @@ class Icwebadmin_CommonController extends Zend_Controller_Action
     		$newfilename = $message = "";
     		$type = $_POST['type'];
     		$path = $_POST['path'];
+    		if (! file_exists ( $part )) {
+    		    @mkdir ( $part, 0777, true );
+    		}
     		$file     = $_FILES['fileToUpload'];
     		$filesize = @filesize($file['tmp_name']);
     		$filetype = @getimagesize($file['tmp_name']);
@@ -230,6 +233,9 @@ class Icwebadmin_CommonController extends Zend_Controller_Action
     	$this->_helper->viewRenderer->setNoRender();
     	$part     = $_GET['part'];
     	$file     = $_FILES['imgFile'];
+    	if (! file_exists ( $part )) {
+    	    @mkdir ( $part, 0777, true );
+    	}
     	$file_url = $part . $file['name'];
     	$filesize = @filesize($file['tmp_name']);
     	$filetype = @getimagesize($file['tmp_name']);
@@ -275,6 +281,9 @@ class Icwebadmin_CommonController extends Zend_Controller_Action
     	$file     = $_FILES['imgFile'];
     	$ext    = end(explode('.',$file['name']));
     	$filename = uniqid('img_') .".".$ext;
+    	if (! file_exists ( $part )) {
+    	    @mkdir ( $part, 0777, true );
+    	}
     	$file_url = $part . $filename;
     	$filesize = @filesize($file['tmp_name']);
     	$filetype = @getimagesize($file['tmp_name']);

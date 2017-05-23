@@ -15,7 +15,7 @@ margin-right:5px;
 </style>
 <?php $this->data = $_SESSION['post'];?>
 <div class="conmian">
-  <h1><?php echo $this->AreaTitle;?> -> 添加新闻 <a href="<?=$this->indexurl?>">返回&gt;&gt;</a> </h1>
+  <h1><?php echo $this->AreaTitle;?> -> 添加企业动态 <a href="<?=$this->indexurl?>">返回&gt;&gt;</a> </h1>
 <?php if (count($this->messages)) : ?>
 <div class="alert alert-error">
      <button type="button" class="close" data-dismiss="alert">×</button>
@@ -25,6 +25,7 @@ margin-right:5px;
  </div>
 <?php endif; ?>  
 <form id="thisform" class="form-horizontal validate-form" style="text-align:left" method="post" action="<?php echo $this->addurl;?>" enctype="multipart/form-data">
+  <input type="hidden" value="3" name="news_type_id"> 
   <div class="control-group">
     <label class="control-label" for="contents">立即上线</label>
     <div class="controls">
@@ -37,12 +38,7 @@ margin-right:5px;
      <input type="checkbox" name="home" value="1" <?=$this->data['home']==1?'checked':''?> >
     </div>
   </div>  
-  <div class="control-group">
-    <label class="control-label" for="published"><em>*</em>上线日期</label>
-    <div class="controls">
-      <input type="text" id="published" name="published" class="required input-xlarge" title="required" value="<?=$this->data['published']?>">
-    </div>
-  </div>  
+
   <div class="control-group">
     <label class="control-label" for="title"><em>*</em>标题</label>
     <div class="controls">
@@ -57,7 +53,7 @@ margin-right:5px;
   </div>
   <div class="control-group">
     <label class="control-label" for="source"><em>*</em>来源</label>
-    <div class="controls">
+     <div class="controls">
       <input type="text" id="source"  class="input-xlarge" name="source" value="<?=$this->data['source']?>">
     </div>
   </div>  
@@ -66,13 +62,7 @@ margin-right:5px;
     <div class="controls">
       <input  id="keyword"  class="input-xlarge" name="keyword"  type="text" value="<?=$this->data['keyword']?>">
     </div>
-  </div>     
- <div class="control-group">
-    <label class="control-label" for="news_type_id"><em>*</em>新闻类型</label>
-    <div class="controls">
-    <?php echo $this->pressTypeSelect('news_type_id',$this->data['news_type_id']);?>
-    </div>
-  </div>    
+  </div>      
 
 	<div class="control-group">
 	  <label class="control-label"  for="image">新闻图片 </label>
@@ -93,8 +83,7 @@ margin-right:5px;
       <textarea name="content" id="content" rows="20" class="kindeditor span9"><?php echo $this->data['content'];?></textarea>
     </div>
   </div>
-  <!--微博-->
-  <?php echo $this->render('common/weibo.phtml');?>
+ 
   <div class="control-group">
     <div class="controls">
       <input type="submit" value="添加" class="btn" />
@@ -118,8 +107,8 @@ KindEditor.ready(function(K) {
 			 //News Image
 			var spe_head_editor = K.editor({
 					allowFileManager : true,
-					uploadJson : '/icwebadmin/common/upload?part=upload/default/news/',
-                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/news/'
+					uploadJson : '/icwebadmin/common/upload?part=upload/default/news/<?php echo date("Ym")?>/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/news/<?php echo date("Ym")?>/'
 			});
 			K('#image-upload').click(function() {
 				spe_head_editor.loadPlugin('image', function() {

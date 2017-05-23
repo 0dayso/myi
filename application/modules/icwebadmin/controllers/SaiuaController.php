@@ -441,11 +441,7 @@ class Icwebadmin_SaiuaController extends Zend_Controller_Action
     		//区域
     		$this->view->Section = $section_array = $this->section->getAllByWhere("section_area_id!=''");
     		$this->view->Area    = $this->getArea($this->area, $section_array);
-    		//应用领域 其它
-    		$this->view->provincearr = $this->_appModel->getAllByWhere("level='1' AND status=1");
-    		$this->view->provincearr[] = array('id'=>'other','name'=>'其它');
-    		$placeModel = new Icwebadmin_Model_DbTable_Model("lab_place");
-    		$this->view->place = $placeModel->getBySql("SELECT * FROM `lab_place` WHERE status=1");
+    		
     	}
     }
     /**

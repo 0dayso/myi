@@ -1,7 +1,11 @@
 
-<link rel="stylesheet" type="text/css" href="<?=$_SESSION['new_version']?>/css/default/home2013.css"/>
+<link rel="stylesheet" type="text/css"
+	href="<?=$_SESSION['new_version']?>/css/default/home2013.css" />
+<link rel="stylesheet" type="text/css"
+	href="<?=$_SESSION['new_version']?>/css/default/index.css" />
 <script type="text/javascript" language="javascript"> widescreen_css();</script>
-<link rel="stylesheet" type="text/css" href="/js/jsplug/scroll/scroll<?=$_SESSION['new_version']?>.css"/>
+<link rel="stylesheet" type="text/css"
+	href="/js/jsplug/scroll/scroll<?=$_SESSION['new_version']?>.css" />
 <script type="text/javascript" src="/js/jsplug/scroll/scroll.js"></script>
 
 
@@ -55,32 +59,42 @@ tab.click(function(){
 
 <!---------------------------------------------------------------------首页内容 开始--------------------------------------------------------------------->
 <div class="home201312">
-<div class="w ">
-  <div class="mainbannerbox">
-    <div class="fl">
-      <div class="indexShow scroll">
-        <div class="indexShowBox scroll_cont" id="FS_Cont_01" data-client="focus">
-          <!-- 抓站_焦点图 begin -->
+	<div class="w ">
+		<div class="mainbannerbox">
+			<div class="fl">
+				<div class="indexShow scroll">
+					<div class="indexShowBox scroll_cont" id="FS_Cont_01"
+						data-client="focus">
+						<!-- 抓站_焦点图 begin -->
           
-          <?php 
-		  foreach($this->topimageArr as $v){
-		        $url_target = '_self';
-				if($v['url_target']==2) $url_target = '_blank';
-		  ?>
+          <?php
+        foreach ($this->topimageArr as $v) {
+            $url_target = '_self';
+            if ($v['url_target'] == 2)
+                $url_target = '_blank';
+            ?>
           <div class="box homeimages">
-            <div><a href="<?=$v['url']?>" target="<?=$url_target?>" title="<?=$v['title']?>" class="logclick" rev='topimage' rel='<?=$v['id']?>'><img class="homeimages" height="342" alt="<?=$v['title']?>" src="<?=$v['image']?>" title="<?=$v['title']?>"/></a></div>
-            <div class="bg"></div>
-            <!--<div class="txt">
+							<div>
+								<a href="<?=$v['url']?>" target="<?=$url_target?>"
+									title="<?=$v['title']?>" class="logclick" rev='topimage'
+									rel='<?=$v['id']?>'><img class="homeimages" height="342"
+									alt="<?=$v['title']?>" src="<?=$v['image']?>"
+									title="<?=$v['title']?>" /></a>
+							</div>
+							<div class="bg"></div>
+							<!--<div class="txt">
               <p><a href="<?=$v['url']?>"  target="<?=$url_target?>" title="<?=$v['title']?>"  class="logclick" rev='topimage' rel='<?=$v['id']?>'><?=$v['title']?></a></p>
             </div>-->
-          </div>
+						</div>
           <?php }?>
           <!-- 抓站_焦点图 end -->
-        </div>
-        <a href="javascript:;" title="上一张" class="arr_left" id="FS_arr_left_01"></a> <a href="javascript:;" title="下一张" class="arr_right" id="FS_arr_right_01"></a>
-        <div class="scroll_num" id="FS_numList_01"></div>
-      </div>
-<script type="text/javascript" language="javascript"> 
+					</div>
+					<a href="javascript:;" title="上一张" class="arr_left"
+						id="FS_arr_left_01"></a> <a href="javascript:;" title="下一张"
+						class="arr_right" id="FS_arr_right_01"></a>
+					<div class="scroll_num" id="FS_numList_01"></div>
+				</div>
+				<script type="text/javascript" language="javascript"> 
 var widescreen = false;
 var standard_width = 550;
 if (screen.width >= 1280) { 
@@ -89,7 +103,7 @@ if (screen.width >= 1280) {
 }
 $(".homeimages").css("width", standard_width); 
 </script>
-      <script language="javascript" type="text/javascript">
+				<script language="javascript" type="text/javascript">
 			  <!--//--><![CDATA[//><!--
 			  var focusScroll_01 = new ScrollPic();
 			  focusScroll_01.scrollContId   = "FS_Cont_01"; //内容容器ID
@@ -167,67 +181,142 @@ $(".homeimages").css("width", standard_width);
 					});
 			  }
 		</script>
-      <div class="brand_wall btnpx">
-        <ul class="brandBox">
-          <li id="marqueebox" >
+				<div class="brand_wall btnpx">
+					<ul class="brandBox">
+						<li id="marqueebox">
             <?php foreach($this->actingBrand as $k=>$actingbrand){ $showclass = $k<12?'brand_1':'brand_2';?>
-            <a href="/pl/<?=$actingbrand['name']?><?php if(in_array($actingbrand['comid'],array(17,13))){echo '?t=1';}?>" title="<?=$actingbrand['name']?>" class="flowTip logclick <?=$showclass?>" rev="acting_brand" rel="<?=$actingbrand['comid']?>" target="_blank">
-            <img height="40" src="/images/default/brand/<?=$actingbrand['comid']?>.png" <?=$icss?> title="<?=$actingbrand['name']?>"/> <span><?=$actingbrand['name']?></span></a>
+            <a
+							href="/pl/<?=$actingbrand['name']?><?php if(in_array($actingbrand['comid'],array(17,13))){echo '?t=1';}?>"
+							title="<?=$actingbrand['name']?>"
+							class="flowTip logclick <?=$showclass?>" rev="acting_brand"
+							rel="<?=$actingbrand['comid']?>" target="_blank"> <img
+								height="40"
+								src="/images/default/brand/<?=$actingbrand['comid']?>.png"
+								<?=$icss?> title="<?=$actingbrand['name']?>" /> <span><?=$actingbrand['name']?></span></a>
             <?php }?>
           </li>
-        </ul>
-        <a class="btn_prev" id="btn_prev" href="javascript:;" onClick="showbrand('brand_1','brand_2')"></a> 
-        <a class="btn_next" id="btn_next" href="javascript:;" onClick="showbrand('brand_2','brand_1')"></a> </div>
-    </div>
-    <div class="clr"></div>
-    <div class="mainrightbox">
+					</ul>
+					<a class="btn_prev" id="btn_prev" href="javascript:;"
+						onClick="showbrand('brand_1','brand_2')"></a> <a class="btn_next"
+						id="btn_next" href="javascript:;"
+						onClick="showbrand('brand_2','brand_1')"></a>
+				</div>
+			</div>
+			<div class="clr"></div>
+			<div class="mainrightbox">
 
-      <div class="mod_tab boxshadow_h">
-        <div class="clearfix ">
-          <ul class="tabbar clearfix">
-            <li class="li_1_a selected"><a href="/market">行业新闻<b class="blank3"></b></a></li>
-          </ul>
-        </div>
-        <div class="mod_tab_c">
-          <div class="content">
-            <div class="div_1">
-              <ul>
-                <?php 
-		    foreach($this->solution as $solutiontmp){?>
-                <li><ins class="dot"></ins><a href="/solution-<?=$solutiontmp['id']?>.html" title="<?=$solutiontmp['title']?>"  class="logclick" rev="index_solution" rel="<?=$solutiontmp['id']?>" target="_blank">
+				<div class="mod_tab boxshadow_h">
+					<div class="clearfix ">
+						<ul class="tabbar clearfix">
+							<li class="li_1_a selected"><a href="/market">行业新闻<b
+									class="blank3"></b></a></li>
+						</ul>
+					</div>
+					<div class="mod_tab_c">
+						<div class="content">
+							<div class="div_1">
+								<ul>
+                <?php
+                foreach ($this->hynews as $solutiontmp) {
+                    ?>
+                <li><ins class="dot"></ins><a
+										href="/news-<?=$solutiontmp['id']?>.html"
+										title="<?=$solutiontmp['title']?>" class="logclick"
+										rev="index_solution" rel="<?=$solutiontmp['id']?>"
+										target="_blank">
                   <?=$this->fun->utf_substr($solutiontmp['title'],34)?>
                   </a></li>
                 <?php }?>
               </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="clr"></div>
-      <div class="mod_tab boxshadow_h">
-        <div class="clearfix ">
-          <ul class="tabbar clearfix">
-            <li class="li_1_a selected"><a href="/company">企业动态<b class="blank3"></b></a></li>
-          </ul>
-        </div>
-        <div class="mod_tab_c">
-          <div class="content">
-            <div class="div_1">
-              <ul>
-                <?php 
-		    foreach($this->solution as $solutiontmp){?>
-                <li><ins class="dot"></ins><a href="/solution-<?=$solutiontmp['id']?>.html" title="<?=$solutiontmp['title']?>"  class="logclick" rev="index_solution" rel="<?=$solutiontmp['id']?>" target="_blank">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="clr"></div>
+				<div class="mod_tab boxshadow_h">
+					<div class="clearfix ">
+						<ul class="tabbar clearfix">
+							<li class="li_1_a selected"><a href="/company">企业动态<b
+									class="blank3"></b></a></li>
+						</ul>
+					</div>
+					<div class="mod_tab_c">
+						<div class="content">
+							<div class="div_1">
+								<ul>
+                <?php
+                foreach ($this->qynews as $solutiontmp) {
+                    ?>
+                <li><ins class="dot"></ins><a
+										href="/news-<?=$solutiontmp['id']?>.html"
+										title="<?=$solutiontmp['title']?>" class="logclick"
+										rev="index_solution" rel="<?=$solutiontmp['id']?>"
+										target="_blank">
                   <?=$this->fun->utf_substr($solutiontmp['title'],34)?>
                   </a></li>
                 <?php }?>
               </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="clr"></div>
-  </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clr"></div>
+
+		</div>
+
+		<div style="margin-bottom: 20px">
+			<h2>热卖推荐</h2>
+			<div class="home container">
+				<ul class="overseas-sub-list col-md-24">
+					<?php for($i=0;$i<5;$i++){?>
+					<li>
+						<div>
+							<a class="fr" target="_blank"
+								href="#"> <img
+								src="/upload/default/product/icon/no.gif"
+								alt="" width="60px"
+								data-original="/upload/default/product/icon/no.gif"
+								class="lazy" />
+							</a>
+							<div class="sub-list">
+								<h5 class="ellipsis" title="TPS767D301PWPR">
+									<a class="theme-link-default" target="_blank"
+										href="#">
+										TPS767D301PWPR</a>
+								</h5>
+								<p class="stress">￥6.38</p>
+								<p class="fs-12 c-999">
+									<span>库存：</span><em>30000</em>
+								</p>
+							</div>
+						</div>
+					</li>
+					<?php }?>
+					
+				</ul>
+			</div>
+			<div class="clr"></div>
+		</div>
+		<div class="index_box_three">
+
+			<div class="cont clear">
+				<div class="ad">
+					<a href="#"><img src="/images/default/nx/home1.jpg"></a>
+				</div>
+				<ul class="block">
+                <?php foreach($this->supplier as $v){?>
+                    <li title="<?php echo $v['name'];?>"><a> <img
+							src="<?php echo $v['img'];?>"><span><?php echo $v['name'];?></span></a></li>
+                   <?php }?> 
+                 </ul>
+			</div>
+		</div>
+<div class="clr"></div>
+		<div style="padding-top: 20px">
+			<img class="" src="/images/default/nx/ad1.jpg" width="1180"
+				height="100">
+		</div>
+	</div>
 </div>
-
 

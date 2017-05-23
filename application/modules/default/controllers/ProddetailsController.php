@@ -41,14 +41,15 @@ class ProddetailsController extends Zend_Controller_Action {
 		$this->view->freetotl_hk = $this->config->cost->inquiry_free_USD;
 		$this->view->keyword = trim($this->_getParam('keyword'));
 		$id_no='';
+		
 		if($this->_getParam('item')){
 			$item = explode("_",$this->_getParam('item'));
-			$collection_id = (int)$item[1];
-			$supplier_id = (int)$item[2];
-			$partid = (int)$item[3];
-			$keyworld  = $item[4];
-			$itemk = (int)$item[5];
-			$part_no  = $item[6];
+			$collection_id = (int)$this->_getParam('scid');
+			$supplier_id = (int)$this->_getParam('supid');
+			$partid = (int)$this->_getParam('pid');
+			$keyworld  = $this->filter->pregHtmlSql(trim($this->_getParam('kw')));
+			$itemk = (int)$this->_getParam('item');
+			$part_no  = $this->filter->pregHtmlSql(trim($this->_getParam('pn')));
 			//查询是否存在
 			$qstr = " 1 ";
 			if($partid){
@@ -58,20 +59,14 @@ class ProddetailsController extends Zend_Controller_Action {
 			}else{
 				$this->_redirect('/error');
 			}
-			$sqlstr ="SELECT po.*,pc1.name as cname1,pc2.name as cname2,pc3.name as cname3
-			FROM product as po
-			LEFT JOIN product_supplier as ps ON ps.product_id=po.id
-			LEFT JOIN prod_category as pc3 ON po.part_level3=pc3.id
-			LEFT JOIN prod_category as pc2 ON po.part_level2=pc2.id
-			LEFT JOIN prod_category as pc1 ON po.part_level1=pc1.id
-			WHERE {$qstr} AND po.status='1' AND ps.collection_id='$collection_id'
-					AND ps.supplier_id='$supplier_id'";
-			$product =  $prodModel->getByOneSql($sqlstr);
+			$product =  $this->_prodService->getProductNew($qstr,$collection_id,$supplier_id);
 			if(empty($product)){
 				//添加产品
 				$this->_prodService->addSupplierProduct($collection_id,$supplier_id,$keyworld,$itemk);
+				$product =  $this->_prodService->getProductNew($qstr,$collection_id,$supplier_id);
 			}else{
-				
+				//更新产品库存和价格信息
+				//待开发
 			}
 		}else{
 			$this->_redirect('/error');
@@ -79,23 +74,14 @@ class ProddetailsController extends Zend_Controller_Action {
 		
 		
 		$this->view->prodarr = $product;
-		//pdnpcn
-		$this->view->pdn = $this->_prodService->getPdn($partid);
-		$this->view->pcn = $this->_prodService->getPcn($partid);
-		
-		$series = $product['series'];
-		$app_notes = $this->view->prod_notes = $this->_prodService->getAppNotesBySeries($series);
-		if(empty($this->view->prodarr)) $this->_redirect('/error');
+
+	
 		//记录浏览记录
 		$this->_prodhistory->addhistry($id_no);
-		//关联型号
-		$this->view->relevance = $this->_prodService->getRelevanceInfo($partid);
+		
 		//重新设置headtitle 、 description和keywords等
 		$part_no = $this->view->prodarr['part_no'];
-		if($this->view->prodarr['cname3']) $cname   = $this->view->prodarr['cname3'];
-		elseif($this->view->prodarr['cname2']) $cname   = $this->view->prodarr['cname2'];
-		else $cname   = $this->view->prodarr['cname1'];
-		$bandname = $this->view->prodarr['bname'];
+		$bandname = $this->view->prodarr['manufacturer'];
 		$layout = $this->_helper->layout();
 		$viewobj = $layout->getView();;
 		$viewobj->headTitle(str_ireplace(array("<part_no>","<brand_name>","<category_name>"),array($part_no,$bandname,$cname),$this->seoconfig->general->details_title),'SET');
@@ -106,19 +92,7 @@ class ProddetailsController extends Zend_Controller_Action {
 			$this->fun = new MyFun();
 			$this->fun->changeView($this->view,$_SESSION['new_version']);
 		}	
-		//限时促销
-		$eventservice = new Default_Service_EventService();
-		$pod = $eventservice->getEvent("id = 6");
-		$pod['data'];
-		@eval($pod['data']);
-		$this->view->stime = $this->view->oldprice = '';
-		if($viewer->specials[$partid]){
-		  $this->view->stime = $viewer->time;
-		  $this->view->oldprice = $viewer->specials[$partid][0][0];
-		}
-		//推荐方案
-		$appserivce = new Default_Service_ApplicationsService;
-		$this->view->solution = $appserivce->getSolutionByCode($partid);
+		
 	}
 	/**
 	 * 分类列表

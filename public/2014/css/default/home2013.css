@@ -120,12 +120,94 @@ font:400 16px/22px "\5FAE\8F6F\96C5\9ED1",Arial;_line-height:21px;color:#fff;bor
 .hotRecommend .por_box2013 .pbox201312{position:relative}
 .hotRecommend .por_box2013 .pbrand201312{top:110px }
 .hotRecommend .item .s-img img {display: block; height:90px; right:0px; bottom:0}
-.hotRecommend .fore1 .item{ background:#fff6f7}
-.hotRecommend .fore2 .item{ background:#ffe9e1}
-.hotRecommend .fore3 .item{ background:#edf8fe;}
-.hotRecommend .fore4 .item{ background:#ffffe1; width:240px;margin:0 }
+.hotRecommend .fore1 .item{ background:#F2F2F2}
+.hotRecommend .fore2 .item{ background:#F2F2F2}
+.hotRecommend .fore3 .item{ background:#F2F2F2;}
+.hotRecommend .fore4 .item{ background:#F2F2F2; width:240px;margin:0 }
 .hotRecommend li.fore4 { margin:0}
 
+
+.container, .container-fluid {
+	float:left;
+	margin-right: auto;
+	margin-left: auto
+}
+
+.container, .container-fluid {
+	padding-left: 0;
+	padding-right: 0
+}
+
+.container, body {
+	min-width: 1190px
+}
+
+.container h5, .container li, .container p, .container ul {
+	margin: 0;
+	padding: 0
+}
+.home .overseas-sub-list li {
+	width: 230px;
+	height: 100px;
+	float: left;
+	margin-right: 10px;
+	overflow: hidden
+}
+
+.home .overseas-sub-list li>div {
+	background: #f2f2f2;
+	width: 230px;
+	height: 100px
+}
+
+.home .overseas-sub-list li>div img {
+	-webkit-transform: translateX(0);
+	-moz-transform: translateX(0);
+	transform: translateX(0);
+	-moz-transition: transform .25s ease-in-out 0s, -moz-transform .25s
+		ease-in-out 0s;
+	transition: transform .25s ease-in-out 0s;
+	transition: transform .25s ease-in-out 0s, -webkit-transform .25s
+		ease-in-out 0s, -moz-transform .25s ease-in-out 0s
+}
+
+.home .overseas-sub-list li>div:hover img {
+	-webkit-transform: translateX(-5px);
+	-moz-transform: translateX(-5px);
+	transform: translateX(-5px)
+}
+
+.home .overseas-sub-list li img {
+	max-height: 70px;
+	margin-top: 20px
+}
+
+.home .overseas-sub-list li img[src$='.gif'] {
+	float: right;
+	margin-top: 18px;
+	margin-right: 15px;
+}
+
+.home .overseas-sub-list li .sub-list {
+	width: 50%;
+	display: inline-block;
+	float: left;
+	padding-left: 20px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	height: 100px;
+	position: relative;
+	z-index: 1
+}
+
+.home .overseas-sub-list li .sub-list .stress {
+	margin-top: 10px;
+	font-size: 16px
+}
+
+.home .overseas-sub-list li:last-child {
+	margin-right: 0
+}
 
 
 

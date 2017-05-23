@@ -19,19 +19,10 @@ class PublicboxController extends Zend_Controller_Action {
 	public function hotpordAction() {
 		$this->_helper->layout->disableLayout();
 		$rModer = new Default_Model_DbTable_Recommend();
-		$sqlstr ="SELECT re.cat_id,br.name as brandname,pro.part_level1,pro.part_level2,pro.part_level3,
-			pro.id,pro.part_no,pro.part_img,pro.manufacturer,pro.break_price,pro.moq,pro.mpq,
-		    pro.break_price_rmb,pro.sz_stock,pro.hk_stock,pro.sz_cover,pro.hk_cover,pro.bpp_stock,pro.bpp_cover,pro.can_sell,
-			pro.surplus_stock_sell,pro.special_break_prices,pro.show_price,pro.price_valid,pro.price_valid_rmb,pc.name,
-				pc1.name as cname1,pc2.name as cname2,pc3.name as cname3
-		FROM recommend as re 
-		LEFT JOIN product as pro ON re.comid=pro.id
-		LEFT JOIN prod_category as pc ON pro.part_level3=pc.id
-		LEFT JOIN brand as br ON re.cat_id=br.id
-		LEFT JOIN prod_category as pc3 ON pro.part_level3=pc3.id
-		LEFT JOIN prod_category as pc2 ON pro.part_level2=pc2.id
-		LEFT JOIN prod_category as pc1 ON pro.part_level1=pc1.id
-		WHERE re.type='hot' AND re.part='home' AND re.status = 1 AND br.status = 1 ORDER BY re.displayorder ASC";
+		$sqlstr ="SELECT *
+		FROM product
+		
+		WHERE status = 1 ORDER BY Rand() LIMIT 5";
 		$allhotArr = $rModer->getBySql($sqlstr, array());
 		$bandhotArr = array();
 		for($i=0;$i<count($allhotArr);$i++)
@@ -39,9 +30,7 @@ class PublicboxController extends Zend_Controller_Action {
 		   $bandhotArr[$allhotArr[$i]['cat_id']][] = $allhotArr[$i];
 		}
 		//随机取出品牌
-		$this->view->bandid    = array_rand($bandhotArr);
-		$this->view->hotArr    = $bandhotArr[$this->view->bandid];
-		$this->view->brandname = $this->view->hotArr[0]['brandname'];
+		$this->view->hotArr    = $allhotArr;
 		//新版本
 		if(isset($_SESSION['new_version'])){
 			$this->fun = new MyFun();
@@ -163,39 +152,23 @@ class PublicboxController extends Zend_Controller_Action {
 		$this->view->searchRight = $this->_searchService->getClickPartNo();
 	}
 	/**
-	 * 热门方案
+	 * 行业新闻
 	 */
 	public function hotsolutionAction(){
 		//新版本
 		if(isset($_SESSION['new_version'])){
 			$this->fun->changeView($this->view,$_SESSION['new_version']);
 		}
-		$this->view->hotArr = array();
 		$this->_helper->layout->disableLayout();
-		$this->view->sid = $sid = $_GET['sid'];
-		if($sid){
-			//推荐方案
-			$this->_sprodModer = new Default_Model_DbTable_Model('solution_product');
-			$arr = $this->_sprodModer->Query("SELECT distinct(sp.prod_id) FROM `solution_product` as sp
-				WHERE sp.solution_id ='{$sid}' AND sp.type='core' AND sp.status=1");
-			$appserivce = new Default_Service_ApplicationsService;
-			if($arr){
-			  foreach($arr as $v){
-			  	  $solution = $appserivce->getSolutionByCode($v['prod_id']);
-			  	  $this->view->hotArr = array_merge($solution,$this->view->hotArr);
-			  }
-			}
-		}
-		if(empty($this->view->hotArr)){
-		   $sqlstr =" SELECT id,title
-		   FROM solution
-		   WHERE  status = 1 ORDER BY Rand() LIMIT 5 ";
-		   $hotArr = $this->semModer->getBySql($sqlstr);
-		   $this->view->hotArr = $hotArr;
-		}
+		$sqlstr =" SELECT id,news_type_id,title
+		FROM news
+		WHERE  status = 1 AND news_type_id=1 ORDER BY Rand() LIMIT 5 ";
+		$hotArr = $this->semModer->getBySql($sqlstr);
+		$this->view->hotArr = $hotArr;
+		
 	}
 	/**
-	 * 热门资讯
+	 * 产品资讯
 	 */
 	public function hotnewsAction(){
 		//新版本
@@ -205,13 +178,13 @@ class PublicboxController extends Zend_Controller_Action {
 		$this->_helper->layout->disableLayout();
 		$sqlstr =" SELECT id,news_type_id,title
 		FROM news
-		WHERE  status = 1 ORDER BY Rand() LIMIT 5 ";
+		WHERE  status = 1 AND news_type_id=2 ORDER BY Rand() LIMIT 5 ";
 		$hotArr = $this->semModer->getBySql($sqlstr);
 		$this->view->hotArr = $hotArr;
 		
 	}
 	/**
-	 * 热门研讨会
+	 * 企业动态
 	 */
 	public function hotwebinarAction(){
 		//新版本
@@ -219,9 +192,9 @@ class PublicboxController extends Zend_Controller_Action {
 			$this->fun->changeView($this->view,$_SESSION['new_version']);
 		}
 		$this->_helper->layout->disableLayout();
-		$sqlstr =" SELECT id,title
-		FROM seminar
-		WHERE  status = 1 ORDER BY Rand() LIMIT 5 ";
+		$sqlstr =" SELECT id,news_type_id,title
+		FROM news
+		WHERE  status = 1 AND news_type_id=3 ORDER BY Rand() LIMIT 5 ";
 		$hotArr = $this->semModer->getBySql($sqlstr);
 		$this->view->hotArr = $hotArr;
 	}
@@ -293,6 +266,42 @@ class PublicboxController extends Zend_Controller_Action {
 		LEFT JOIN app_category as app ON  sol.app_level1 = app.id
 		WHERE sol.status=1 AND sol.title!='' ORDER BY sol.created DESC LIMIT {$snum} , {$count}";
 		$this->view->solution = $solModel->getBySql($sqlstr);
+	}
+	/*
+	 * 获取产品参数信息
+	 */
+	public function prodattributeAction(){
+	    //新版本
+	    if(isset($_SESSION['new_version'])){
+	        $this->fun->changeView($this->view,$_SESSION['new_version']);
+	    }
+	    $crawlerService = new Default_Service_CrawlerService();
+	    $this->_helper->layout->disableLayout();
+	    $partNo = $this->_getParam('partNo');
+	    $attribute = array();
+	    if($partNo){
+	        //先查询产品是否已经有参数
+	        $productService = new Default_Service_ProductService();
+	        $prodInfo = $productService->getProductByPartno($partNo);
+	        $str = '';
+	        if($prodInfo['attribute']){
+	            $str = $prodInfo['attribute'];
+	        }else{
+    	        $str = $crawlerService->getAttributeE14($partNo);
+    	        if(!$str){
+    	            $str = $crawlerService->getAttributeRs($partNo);
+    	        }
+    	        if($str){
+    	            //更新
+    	            $proModer = new Default_Model_DbTable_Product();
+    	            $proModer->updateByPartNo(array('attribute'=>$str),$partNo);
+    	        }
+	        }
+	        if($str){
+	           $attribute = explode("[]", $str);
+	        }
+	    }
+	    $this->view->attribute = $attribute;
 	}
 }
 

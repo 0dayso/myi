@@ -211,6 +211,15 @@ class Default_Service_ProductService
 		return $this->_proModer->getByOneSql($sql, array('partnotmp'=>$partno));
 	}
 	/**
+	 * 根据part no 查询 产品
+	 */
+	public function getProductByPartno($partno)
+	{
+	    $sql ="SELECT p.* FROM product as p
+		WHERE p.part_no =:partnotmp";
+	    return $this->_proModer->getByOneSql($sql, array('partnotmp'=>$partno));
+	}
+	/**
 	 * 更加part no 查询 产品
 	 */
 	public function getProductByWhere($where)
@@ -692,7 +701,11 @@ class Default_Service_ProductService
 				$productPrice = new Default_Model_DbTable_ProductPrice();
 				$data['part_no'] = $prodInfo['pratNo'];
 				$data['manufacturer'] = $prodInfo['brand'];
-				$productId = $this->_proModer->addData($data);
+				$productId = $this->getPid($data['part_no']);
+				//如果不存在，添加
+				if(!$productId){
+				    $productId = $this->_proModer->addData($data);
+				}
 				if($productId){
 					$datas['part_no'] = $prodInfo['pratNo'];
 					$datas['product_id'] = $productId;
@@ -718,9 +731,23 @@ class Default_Service_ProductService
 					}
 				}
 			}
-			echo '<pre>';
-			print_r($prodInfo);
+			return true;
 		}
 		return false;
+	}
+	/**
+	 * 获取产品
+	 */
+	public function getProductNew($qstr,$collection_id,$supplier_id){
+		$prodModel = new Default_Model_DbTable_Product();
+		$sqlstr ="SELECT po.*,pc1.name as cname1,pc2.name as cname2,pc3.name as cname3
+		FROM product as po
+		LEFT JOIN product_supplier as ps ON ps.product_id=po.id
+		LEFT JOIN prod_category as pc3 ON po.part_level3=pc3.id
+		LEFT JOIN prod_category as pc2 ON po.part_level2=pc2.id
+		LEFT JOIN prod_category as pc1 ON po.part_level1=pc1.id
+		WHERE {$qstr} AND po.status='1' AND ps.collection_id='$collection_id' AND ps.supplier_id='$supplier_id'";
+		$product =  $prodModel->getByOneSql($sqlstr);
+		return $product;
 	}
 }

@@ -7,7 +7,7 @@
 		foreach($this->hotArr as $k=>$hotarr){
 		if(!in_array($hotarr['id'],$arr)){$arr[]=$hotarr['id'];
 		?>
-        <li><a href="/solution-<?=$hotarr['id']?>.html"  title="<?=$hotarr['title']?>" onclick="logclickaction($(this))" rev="hotpord_solution" rel="<?=$hotarr['id']?>"><?=$this->fun->utf_substr($hotarr['title'],23)?></a></li>
+        <li><a href="/news-<?=$hotarr['id']?>.html"  title="<?=$hotarr['title']?>" onclick="logclickaction($(this))" rev="hotpord_solution" rel="<?=$hotarr['id']?>"><?=$this->fun->utf_substr($hotarr['title'],23)?></a></li>
         <?php }}?>
       </ul>
     </div>

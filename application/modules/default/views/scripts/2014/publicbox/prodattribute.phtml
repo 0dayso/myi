@@ -1,0 +1,23 @@
+<?php if(!$this->attribute){?>
+    <div style=" margin:20px;">暂无参数</div>
+<?php }else{?>
+<table class="listtable" border="0" cellpadding="0" cellspacing="0">
+              <tbody><tr>
+                <th width="30%"  align="left">参数</th>
+                <th width="70%" align="left">数值</th>
+<?php foreach ($this->attribute as $v){
+     if($v){
+            $vst = explode("<>", $v);
+            ?>
+            </tr>
+              <tr><td  style="border-right:1px solid #e3e3e3;text-align:left; padding-left:10px;"><?php echo $vst[0]?></td>
+              <td style="text-align:left; padding-left:10px;"><?php echo $vst[1]?></td></tr>
+        <?php 
+        }
+    }?>
+</tbody></table>
+<?php }?>
+
+              
+					 
+             

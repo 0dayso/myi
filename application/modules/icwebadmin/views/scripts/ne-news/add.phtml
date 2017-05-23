@@ -37,12 +37,7 @@ margin-right:5px;
      <input type="checkbox" name="home" value="1" <?=$this->data['home']==1?'checked':''?> >
     </div>
   </div>  
-  <div class="control-group">
-    <label class="control-label" for="published"><em>*</em>上线日期</label>
-    <div class="controls">
-      <input type="text" id="published" name="published" class="required input-xlarge" title="required" value="<?=$this->data['published']?>">
-    </div>
-  </div>  
+  
   <div class="control-group">
     <label class="control-label" for="title"><em>*</em>标题</label>
     <div class="controls">
@@ -67,49 +62,13 @@ margin-right:5px;
       <input  id="keyword"  class="input-xlarge" name="keyword"  type="text" value="<?=$this->data['keyword']?>">
     </div>
   </div>     
-   <div class="control-group">
-    <label class="control-label" for="keyword">相关IC</label>
-    <div class="controls">
-      <input  id="related_ic"  class="input-xlarge" name="related_ic"  type="text" value="<?=$this->data['related_ic']?>">
-    </div>
-  </div>  
-  <div class="controls"  id="ic-box">
-  <?php if($this->data['part_id']){
-  					foreach($this->data['part_id'] as $key=>$val){
-  	?>
-  				<span class="tag"><span class="tag-label"><?=$key?></span><a href="#" class="tag-close">x</a>
-  				<input type="hidden" name="part_id[<?=$key?>]"  value="<?=$val?>" >
-  				</span>
-  <?php 		} 
-		}?>
-  </div>
  <div class="control-group">
     <label class="control-label" for="news_type_id"><em>*</em>资讯类型</label>
     <div class="controls">
     <?php echo $this->newsTypeSelect('news_type_id',$this->data['news_type_id']);?>
     </div>
   </div>    
-  <div class="control-group">
-    <label class="control-label" for="app_level"><em>*</em>应用分类</label>
-    <div class="controls">
-		<?php echo $this->appSelect('app_level1',1,$this->data['app_level1']);?>
-		<?php echo $this->appSelect('app_level2',2,$this->data['app_level2']);?>
-    </div>
-  </div>    
-  <div class="control-group">
-    <label class="control-label" for="part_level1">产品分类</label>
-    <div class="controls">
-		<?php echo $this->productCategorySelect('part_level1',1,$this->data['part_level1']);?>
-		<?php echo $this->productCategorySelect('part_level2',2,$this->data['part_level2']);?>
-		<?php echo $this->productCategorySelect('part_level3',3,$this->data['part_level3']);?>
-    </div>
-  </div>      
-   	<div class="control-group">
-    <label class="control-label" for="keyword">品牌</label>
-    <div class="controls">
-		<?php echo $this->brandSelect('brand_id',$this->data['brand_id']);?>
-    </div>
-    </div>
+
 	<div class="control-group">
 	  <label class="control-label"  for="image">资讯图片 </label>
 	  <div class="controls">
@@ -129,8 +88,6 @@ margin-right:5px;
       <textarea name="content" id="content" rows="20" class="kindeditor span9"><?php echo $this->data['content'];?></textarea>
     </div>
   </div>
-  <!--微博-->
-  <?php echo $this->render('common/weibo.phtml');?>
   <div class="control-group">
     <div class="controls">
       <input type="submit" value="添加" class="btn" />
@@ -142,45 +99,9 @@ margin-right:5px;
 </div>
 <?php  $_SESSION['post'] = array();?>
 <script type="text/javascript">
-
 $(function(){
 	$( "#published" ).datepicker({'dateFormat':'yy-mm-dd'});
-	$("#app_level2").chained("#app_level1"); 
-	$('#part_level2').chained('#part_level1');
-	$('#part_level3').chained('#part_level2');
-	$('#related_ic').typeahead(
-		{	
-			items:8,
-			minLength:3,			
-		    source: function (query, process) {
-		        return $.getJSON('<?php echo $this->ajax_url?>', { q: query }, function (data) {
-			        var part =[];
-			        map =[];
-			        $.each(data,function(id,item){
-			        	part.push(item);
-			        	map[item] = id;
-				     });
-		            return process(part);
-		        });
-		    },
-		    updater : function(item)
-		    {
-				var part_id = map[item];
-				var button = '<span class="tag"><span class="tag-label">'+item+'</span><a class="tag-close" href="#">x'+'</a>'
-									+'<input type="hidden" name="part_id['+item+']" value="'+part_id+'" ></span>';
-				$('#ic-box').append(button);
-				return '';
-		    }
-		    
-
-		}
-	);
-	$('.tag-close').live('click',function(){
-		$(this).parent().remove();
-		return false;
-	});
 });
-
 KindEditor.ready(function(K) {
 			var editor =  K.create('#content', {
 		     allowFileManager : true,
@@ -189,8 +110,8 @@ KindEditor.ready(function(K) {
 			 //News Image
 			var spe_head_editor = K.editor({
 					allowFileManager : true,
-					uploadJson : '/icwebadmin/common/upload?part=upload/default/news/',
-                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/news/'
+					uploadJson : '/icwebadmin/common/upload?part=upload/default/news/<?php echo date("Ym")?>/',
+                    fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/news/<?php echo date("Ym")?>/'
 			});
 			K('#image-upload').click(function() {
 				spe_head_editor.loadPlugin('image', function() {

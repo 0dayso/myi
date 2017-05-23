@@ -1,3 +1,104 @@
+<style>
+.right-bar {
+    height: 214px;
+    position: fixed;
+    right: 0;
+    top: 60%;
+    width: 42px;
+    z-index: 999;
+}
+.right-bar a {
+    background: #006db7 url("../images/default/nx/icon-server.png") no-repeat scroll 0 0;
+    display: block;
+    height: 42px;
+    margin-bottom: 1px;
+    position: relative;
+    width: 42px;
+}
+.right-bar a.sgin {
+    background-position: 0 -43px;
+}
+.right-bar a.service {
+    background-position: 0 -86px;
+}
+.right-bar a.dimensions-code {
+    background-position: 0 -129px;
+}
+.right-bar a.feedback {
+    background-position: 0 -172px;
+}
+.right-bar a.gotop {
+    background-position: 0 -215px;
+}
+.right-bar a:hover {
+    background-color: #ffc300;
+}
+.right-bar a.sgined {
+    background-position: 0 0;
+}
+.right-bar .bar-label {
+    background: #c0ebff none repeat scroll 0 0;
+    color: #006db7;
+    height: 42px;
+    left: -100px;
+    line-height: 42px;
+    padding: 0;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100px;
+}
+.right-bar .erweima-label {
+    background: #fff url("../images/default/nx/erweima.png") no-repeat scroll center center;
+    border: 1px solid #d8d8d8;
+    height: 170px;
+    left: -172px;
+    top: -85px;
+    width: 170px;
+}
+.right-bar .tel-label {
+    background: rgba(0, 0, 0, 0) url("../images/default/nx/tel-serves.png") no-repeat scroll center center;
+    height: 171px;
+    left: -150px;
+    top: -43px;
+    width: 150px;
+}
+.right-bar .bar-label i {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: transparent transparent transparent #c0ebff;
+    border-image: none;
+    border-style: dashed dashed dashed solid;
+    border-width: 8px;
+    display: none;
+    font-size: 0;
+    height: 0;
+    margin-top: -8px;
+    position: absolute;
+    right: -16px;
+    top: 64px;
+    width: 0;
+}
+.right-bar .erweima-label i {
+    border-left: 8px solid #fff;
+    margin-top: 10px;
+    top: 85px;
+}
+</style>
+
+<div class="right-bar jsRightBar">
+<a class="sgin jsSgin" id="jsSignCtrl" href="javascript:void(0)">
+<span class="bar-label" style="display: none;"><i></i></span></a>
+<a class="service jsService" id="qqOnline4" href="javascript:void(0);">
+<span class="bar-label tel-label" style="display: none;"><i></i></span></a>
+<a class="dimensions-code" href="javascript:void(0)">
+<span class="bar-label erweima-label" style="display: none;"><i></i></span></a> 
+<a class="feedback jsFeedBack" href="#">
+<span class="bar-label" style="display: none;"><i></i></span></a>
+<a class="gotop" id="goScrollTop" style="display: none; bottom: 0px; top: auto;" href="javascript:void(0)"></a>
+</div>
 
 <script language="JavaScript" type="text/javascript">
 
@@ -103,32 +204,7 @@ $(function(){
 
 <div style="display:none">
 <script src="<?=HTTPHOST?>/common/logjs" language="JavaScript"></script>
-<!--<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-34705065-1']);
-  _gaq.push(['_trackPageview']);
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>
 
-<script type="text/javascript">
-var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Ff8e7da29ec9c4e17446651e82f6a9b14' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-53113773-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-<script src="http://s22.cnzz.com/stat.php?id=4545212&web_id=4545212" language="JavaScript"></script>-->
 </div>
 <?php  
 //记录在线人数

@@ -47,7 +47,8 @@ class SearchController extends Zend_Controller_Action {
 		if(isset($_SESSION['new_version'])){
 			$this->fun->changeView($this->view,$_SESSION['new_version']);
 		}
-		$this->view->keyword = trim($this->filter->pregHtmlSql($this->_getParam('keyword')));
+		$this->view->keyword = $this->filter->pregHtmlSql(trim($this->_getParam('keyword')));
+		 //urlencode(
 		$this->view->sup = $sup = $_GET['sup'];
 		$keyword = strtoupper($this->view->keyword);
 		if(!empty($keyword)){

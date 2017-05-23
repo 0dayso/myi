@@ -26,7 +26,6 @@ class CompanyController extends Zend_Controller_Action {
 		$this->seoconfig = Zend_Registry::get('seoconfig');
 		$this->commonconfig = Zend_Registry::get('commonconfig');
 		$this->_searchService = new Default_Service_SearchService();
-		$this->PartNokeywords = $this->_searchService->getClickPartNokeywords();
 	}
 	public function indexAction() {
 		//新版本
@@ -44,7 +43,7 @@ class CompanyController extends Zend_Controller_Action {
 		$this->view->records = $data;
 		$appModel = new Default_Model_DbTable_AppCategory();
 		$this->view->semLevel1 = $semLevel1 = $appModel->getAllByWhere("level = 1 AND status=1","displayorder ASC");
-		$keywords = $this->seoconfig->general->news_keywords.$this->PartNokeywords;
+		$keywords = $this->seoconfig->general->news_keywords;
 		$desc = $this->seoconfig->general->news_description;
 		$page_title = $this->seoconfig->general->news_title;
 		$this->view->headTitle($page_title,'SET');

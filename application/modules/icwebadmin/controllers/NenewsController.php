@@ -81,34 +81,12 @@ class Icwebadmin_NeNewsController extends Zend_Controller_Action
     	}
     	$request = $this->getRequest();
     	if($request->isPost()){
-    		$weibodata = $data = $this->_process($request->getPost());
-    		unset($data['sinaweibo']);
-    		unset($data['qqweibo']);
-    		unset($data['weibocontent']);
-    		unset($data['weibopic']);
+    		$data = $this->_process($request->getPost());
+ 
     		$id = $this->_model->add($data);
     		
-    		$weibocontent = $weibodata['weibocontent'].HTTPHOST.'/news-'.$id.'.html';
-    		//发新浪微博
-    		if($weibodata['weibocontent'] && $weibodata['sinaweibo']){
-    			$sina = new Icwebadmin_Service_SinaweiboService();
-    			if($weibodata['weibopic'] && $weibodata['image']){
-    				$sina->upload($weibocontent, HTTPHOST.$weibodata['image']);
-    			}else{
-    				$sina->update($weibocontent);
-    			}
-    		}
-    		//发腾讯微博
-    		if($weibodata['weibocontent'] && $weibodata['qqweibo']){
-    			$tencent = new Icwebadmin_Service_TencentweiboService();
-    			if($weibodata['weibopic'] && $weibodata['image']){
-    				$tencent->add_pic($weibocontent, HTTPHOST.$weibodata['image']);
-    			}else{
-    				$tencent->add($weibocontent);
-    			}
-    		}
     		
-    		$message = "Records added! ";
+    		$message = "添加成功! ";
     		$this->_helper->flashMessenger->addMessage($message);
     		$this->_redirect($this->indexurl);
     	}    	
@@ -126,41 +104,16 @@ class Icwebadmin_NeNewsController extends Zend_Controller_Action
     	if(!$id) $this->_redirect($this->indexurl);
     	$request = $this->getRequest();
     	if($request->isPost()){
-    		$weibodata = $data = $this->_process($request->getPost());
-    		unset($data['sinaweibo']);
-    		unset($data['qqweibo']);
-    		unset($data['weibocontent']);
-    		unset($data['weibopic']);
+    		$data = $this->_process($request->getPost());
+    		
     		$this->_model->updateById($data,$id);
-    		
-    		$weibocontent = $weibodata['weibocontent'].HTTPHOST.'/news-'.$id.'.html';
-    		//发新浪微博
-    		if($weibodata['weibocontent'] && $weibodata['sinaweibo']){
-    			$sina = new Icwebadmin_Service_SinaweiboService();
-    			if($weibodata['weibopic'] && $weibodata['image']){
-    				$sina->upload($weibocontent, HTTPHOST.$weibodata['image']);
-    			}else{
-    				$sina->update($weibocontent);
-    			}
-    		}
-    		//发腾讯微博
-    		if($weibodata['weibocontent'] && $weibodata['qqweibo']){
-    			$tencent = new Icwebadmin_Service_TencentweiboService();
-    			if($weibodata['weibopic'] && $weibodata['image']){
-    				$tencent->add_pic($weibocontent, HTTPHOST.$weibodata['image']);
-    			}else{
-    				$tencent->add($weibocontent);
-    			}
-    		}
-    		
-    		$message = "Records #{$id} updated! ";
+
+    		$message = "更新成功! ";
     		$this->_helper->flashMessenger->addMessage($message);
     		$this->_redirect($this->view->url());
     	}    	
     	$data = $this->_model->getOneById($id);
-    	$product_model = new Icwebadmin_Model_DbTable_Product();
-    	$part_no = ($data['part_id']) ? $product_model->getBySql("select id,part_no from product where id in($data[part_id])") : array();
-    	$this->view->part_no = $part_no;
+    	
     	$this->view->data = $data;
     	$this->view->messages = $this->_helper->flashMessenger->getMessages();
     }
@@ -184,7 +137,7 @@ class Icwebadmin_NeNewsController extends Zend_Controller_Action
     	}
     	if(!$id) $this->_redirect($this->indexurl);
     	$this->_model->activeById($id, $data);
-    	$message = "Records updated.";
+    	$message = "更新成功.";
     	$this->_helper->flashMessenger->addMessage($message);
     	$this->_redirect($this->indexurl);	
     }
@@ -221,10 +174,7 @@ class Icwebadmin_NeNewsController extends Zend_Controller_Action
     		$error++;
     		$message .= "请选择资讯类型.<br/>";
     	}   
-    	if(!$post['app_level1']){
-    		$error++;
-    		$message .= "请选择应用分类.<br/>";
-    	}    
+    	
     	if(!$post['description']){
     		$error++;
     		$message .= "请输入资讯简介.<br/>";

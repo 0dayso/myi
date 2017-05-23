@@ -9,7 +9,7 @@ class Icwebadmin_Model_DbTable_News extends Zend_Db_Table_Abstract
     	$select = $this->_db->select();
 		$select->from(array('a' => $this->_name),              			   '*')
 					->joinLeft(array('b'=>'news_type'),'b.id = a.news_type_id','b.news_type')
-					->joinLeft(array('c'=>'app_category'),'c.id = a.app_level1','c.name');;
+					->joinLeft(array('c'=>'app_category'),'c.id = a.app_level1','c.name');
 		if(!empty($where)){
 			 
 			foreach($where as $w)
@@ -34,9 +34,18 @@ class Icwebadmin_Model_DbTable_News extends Zend_Db_Table_Abstract
     	->where('a.id ='.$id);
     	return $this->_db->fetchRow($select);    	
     }
-    public function getTotal(){
     
-    	return  $this->getAdapter()->select()->from($this->_name,'COUNT(*)')->query()->fetchColumn();
+    public function getTotal($where){
+        $select = $this->_db->select();
+        $select->from(array('a' => $this->_name),'COUNT(*) AS num');
+        if(!empty($where)){
+            foreach($where as $w)
+            {
+                $select->where($w);
+            }
+        }
+        $re = $this->_db->fetchRow($select);
+        return $re['num'];
     }    
 	public function add($data)
 	{

@@ -44,11 +44,12 @@ class Icwebadmin_NePrssController extends Zend_Controller_Action
     }
     public function indexAction(){
     	$perpage=20;
-    	$total = $this->_model->getTotal();
+    	$where[] = 'news_type_id=3';// 只查询企业动态
+    	$total = $this->_model->getTotal($where);
     	$page_ob = new Page(array('total'=>$total,'perpage'=>$perpage));
     	$offset  = $page_ob->offset();
     	$this->view->page_bar= $page_ob->show(6);
-    	$where[] = 'news_type_id=3';// 去掉产品资讯
+    	
 		if($_GET['news_type_id']){
 			$news_type_id = (int) $_GET['news_type_id'];
 			$where[] = 'a.news_type_id='.$news_type_id;
@@ -81,34 +82,12 @@ class Icwebadmin_NePrssController extends Zend_Controller_Action
     	}
     	$request = $this->getRequest();
     	if($request->isPost()){
-    		$weibodata = $data = $this->_process($request->getPost());
-    		unset($data['sinaweibo']);
-    		unset($data['qqweibo']);
-    		unset($data['weibocontent']);
-    		unset($data['weibopic']);
+    		$data = $this->_process($request->getPost());
+    		
     		$id = $this->_model->add($data);
     		
-    		$weibocontent = $weibodata['weibocontent'].HTTPHOST.'/news-'.$id.'.html';
-    		//发新浪微博
-    		if($weibodata['weibocontent'] && $weibodata['sinaweibo']){
-    			$sina = new Icwebadmin_Service_SinaweiboService();
-    			if($weibodata['weibopic'] && $weibodata['image']){
-    				$sina->upload($weibocontent, HTTPHOST.$weibodata['image']);
-    			}else{
-    				$sina->update($weibocontent);
-    			}
-    		}
-    		//发腾讯微博
-    		if($weibodata['weibocontent'] && $weibodata['qqweibo']){
-    			$tencent = new Icwebadmin_Service_TencentweiboService();
-    			if($weibodata['weibopic'] && $weibodata['image']){
-    				$tencent->add_pic($weibocontent, HTTPHOST.$weibodata['image']);
-    			}else{
-    				$tencent->add($weibocontent);
-    			}
-    		}
     		
-    		$message = "Records added! ";
+    		$message = "添加成功! ";
     		$this->_helper->flashMessenger->addMessage($message);
     		$this->_redirect($this->indexurl);
     	}    	
@@ -153,7 +132,7 @@ class Icwebadmin_NePrssController extends Zend_Controller_Action
     			}
     		}
     		
-    		$message = "Records #{$id} updated! ";
+    		$message = "更新成功 ";
     		$this->_helper->flashMessenger->addMessage($message);
     		$this->_redirect($this->view->url());
     	}    	
@@ -184,7 +163,7 @@ class Icwebadmin_NePrssController extends Zend_Controller_Action
     	}
     	if(!$id) $this->_redirect($this->indexurl);
     	$this->_model->activeById($id, $data);
-    	$message = "Records updated.";
+    	$message = "更新成功.";
     	$this->_helper->flashMessenger->addMessage($message);
     	$this->_redirect($this->indexurl);	
     }

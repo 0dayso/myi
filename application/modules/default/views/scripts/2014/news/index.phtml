@@ -2,33 +2,12 @@
 <script type="text/javascript" language="javascript"> widescreen_css();</script>
 
 
-<div class="w">
-  <div class="breadcrumbs2013"> <span>
-    <a href="/news" class="focs"> 产品资讯</a> 
-    <?php foreach($this->semLevel1 as $sem){
-        	  	 if($this->selectid==$sem['id']) echo '&nbsp;&nbsp;»&nbsp;&nbsp; <span>'.$sem['name'].'</span>';
-		}
-    ?>  
-  </div>
-</div>
 
 <div class="news2013 ">  
 	<div class="w" > 
         <div class="layout rigybg" >
             <div class="fl infolist MT10">
-            	<div class="selectbox201312 ">
-                    <dl>
-                        <dt>资讯分类：</dt>
-                        <dd>
-                            <ul class="catList clearfix">                
-                               <li><a <?php if(!$this->selectid) echo 'class="curr"';?> href="/news">全部</a></li>
-                            <?php foreach($this->semLevel1 as $app){?>
-                             <li <?php if($this->selectid==$app['id']) echo 'class="curr"';?>><span class="fore<?=$app['id']?>"></span><s></s><a href="/newslist-<?=$app['id']?>.html"  title="<?=$app['name']?>" class="logclick" rev="newslist" rel="<?=$app['id']?>"><?=$app['name']?></a></li>
-							 <?php }?>
-                            </ul>
-                        </dd>
-                    </dl>
-                </div>
+
                 <div class="list—tit">
                          <h2>产品资讯</h2>
                 </div>
@@ -74,9 +53,9 @@
                 <div class="page_box"><div class="page clearfix"><?=$this->page_bar;?></div></div> 
             </div>    
             <div class="fr righttuij">
-            <div id="hotsearch"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
-            <div id="hotsolution"></div>
-            <div id="hotnews"></div>
+          
+            <div id="hotsolution"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
+          <div id="hotnews"></div>
             <div id="hotwebinar"></div>
             </div>
             <div class="clr"></div>
@@ -91,7 +70,6 @@
 	},function(){
 		$(this).removeClass("boxshadow");
 	});
-		$("#hotsearch").load("/publicbox/hotsearch");
 		$("#hotsolution").load("/publicbox/hotsolution");
 		$("#hotnews").load("/publicbox/hotnews");
 		$("#hotwebinar").load("/publicbox/hotwebinar");

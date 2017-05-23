@@ -6,10 +6,10 @@
   <div class="breadcrumbs2013"> <span>
     <?php if($this->data['news_type_id']==1){?>
     <a href="/market"class="focs">行业新闻</a> &nbsp;&nbsp;»&nbsp;&nbsp; 
-    <a href="/marketlist-<?=$this->data['news_type_id']?>.html"><?=$this->data['name']?></a> &nbsp;&nbsp;»&nbsp;&nbsp; 
+   
     <?php }elseif($this->data['news_type_id']==2){?>
     <a href="/news"class="focs">产品资讯</a> &nbsp;&nbsp;»&nbsp;&nbsp; 
-    <a href="/newslist-<?=$this->data['news_type_id']?>.html"><?=$this->data['name']?></a> &nbsp;&nbsp;»&nbsp;&nbsp; 
+    
     <?php }else{?>
      <a href="/company"class="focs">企业动态</a> &nbsp;&nbsp;»&nbsp;&nbsp; 
     <?php }?>
@@ -42,8 +42,8 @@
 
 		</div>                
         <div class="fr righttuij">
-            <div id="hotsearch"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
-            <div id="hotsolution"></div>
+            
+            <div id="hotsolution"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
             <div id="hotnews"></div>
             <div id="hotwebinar"></div>
             </div>

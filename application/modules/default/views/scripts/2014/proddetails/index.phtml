@@ -4,7 +4,7 @@
 <script type="text/javascript" language="javascript"> widescreen_css();</script>
 <?php 
 	//过滤产品
-	$prodarr = $this->fun->filterProduct($this->prodarr);
+	$prodarr = $this->prodarr;//$this->fun->filterProduct($this->prodarr);
 	//获得零售价
 	$partid = $prodarr['id'];
 	$moq    = $prodarr['moq'];
@@ -109,45 +109,11 @@ if($prodarr['part_img']=='' || $prodarr['part_img']=='no.gif') {
                 
                     <?php if($show_price){?>
                     
-                    <?php if($this->stime && $this->oldprice){?>
-                    <dl class="dl100">
-                        <dt>IC易站原价：</dt><dd><del><?=$unit?> <span id="sell_price_old"><?php  echo number_format($sell_price*1.03,5);?></span></del></dd>
-                    </dl>
-                    <dl class="dl100 dlhd">
-                        <dt>活动单价：</dt><dd><strong class="price"><span class="price_unit"><?=$unit?></span><span id="sell_price"><?php  echo number_format($sell_price,5);?></span></strong><span style="margin-left:10px">活动剩余时间：<b id="t_d">00</b>天<b id="t_h">00</b>时<b id="t_m">00</b>分<b id="t_s">00</b>秒</span></dd>
-                    </dl>
-                    <SCRIPT type="text/javascript">
-   GetRTime();
-   function GetRTime(){
-       var EndTime= new Date('<?=$this->stime?>');
-	   
-       var NowTime = new Date();
-	   //超时停止
-	   
-	   if(NowTime > EndTime) return;
-       var t =EndTime.getTime() - NowTime.getTime();
-
-       var d=Math.floor(t/1000/60/60/24);
-       var h=Math.floor(t/1000/60/60%24);
-       var m=Math.floor(t/1000/60%60);
-       var s=Math.floor(t/1000%60);
-       
-       document.getElementById("t_d").innerHTML = pad(d.toString()) ;
-       document.getElementById("t_h").innerHTML = pad(h.toString()) ;
-       document.getElementById("t_m").innerHTML = pad(m.toString()) ;
-       document.getElementById("t_s").innerHTML = pad(s.toString()) ;
-   }
-   function pad(num) {
-      if(num.length==1) return '0'+num;
-	  else return num;
-   }  
-  setInterval(GetRTime,1000);
-</SCRIPT>
-                    <?php }else{?>
+         
                     <dl class="dl100">
                         <dt>零&nbsp;&nbsp;&nbsp;售&nbsp;&nbsp;&nbsp;价：</dt><dd><strong class="price"><span class="price_unit"><?=$unit?></span><span id="sell_price"><?php  echo number_format($sell_price,5);?></span></strong></dd>
                     </dl>
-                    <?php }?>
+
                     <?php }?>
 
                     <dl>
@@ -300,16 +266,8 @@ if($prodarr['part_img']=='' || $prodarr['part_img']=='no.gif') {
                 </ul>
                 </div>
             <div>
-          <div class="tab_con" style="display: block;">
-            <table class="listtable" border="0" cellpadding="0" cellspacing="0"><!--注意:第二行加上 class="trbg"-->
-              <tbody><tr>
-                <th width="30%"  align="left">参数</th>
-                <th width="70%" align="left">数值</th>
-              </tr>
-              <tr><td  style="border-right:1px solid #e3e3e3;text-align:left; padding-left:10px;">hjh</td>
-              <td style="text-align:left; padding-left:10px;">fhfgh</td></tr>
-					 
-             </tbody></table>
+          <div id='prodattribute' class="tab_con" style="margin-left:20px;: block;">
+            <div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div>
           </div>
         </div>
         </div>
@@ -318,58 +276,6 @@ if($prodarr['part_img']=='' || $prodarr['part_img']=='no.gif') {
         <div class="fr rightbox boxshadow  pos-re">
             <!--热销推荐-->
             <div id='hotpord'></div>
-            
-            <?php if($this->relevance){?>
-        
-            <div class="subhot  pos-re">
-            	<h2>相关商品</h2>
-                <div class="subshop">
- 						
- 
-                 <?php foreach($this->relevance as $i=>$prod){
-                     $data = $this->fun->filterProduct($prod);
-                     $break_price='';$stock = 0;$show_price = 0;
-                    if($data['f_show_price_sz']){
-                        $show_price = $data['f_show_price_sz'];
-                        $stock      = $data['f_stock_sz'];
-                        $showprice = $data['f_rmb'].number_format($data['f_lowest_price_sz'],DECIMAL); 
-                        $break_price = $data['f_break_price_notitle_sz'];
-                    }elseif($data['f_show_price_hk']){
-                        $show_price = $data['f_show_price_hk'];
-                        $stock      = $data['f_stock_hk'];
-                        $showprice = $data['f_usd'].number_format($data['f_lowest_price_hk'],DECIMAL); 
-                        $break_price = $data['f_break_price_notitle_hk'];
-                    }
-					
-                     if(($data['f_stock_sz']+$data['f_stock_hk'])>0){
-                         $goodsprice_title = '<strong class="fontorange">现货</strong>';
-                     }else{
-                         $goodsprice_title = '<strong class="">订货</strong>';
-                     }
-                     if($show_price){		
-                         $goodsprice = '<div class="icon_t">低至：<span class="priceti">'.$showprice.'<i><em></em><span></span></i></span><div class="pprice201312_detail">'.$break_price.'</div></div>';
-                     }else{
-                        $goodsprice = '';
-                     }
-                  ?>
-                  <div class="por_box2013 item ">
-                  <a href="<?=$data['f_produrl']?>" title="<?=$data['part_no']?>" class="s-img logclick" rev="related_part_id" rel="<?=$data['id']?>"><img alt="img" src="<?=PRODUCTICON.($data['part_img']==''?'no.gif':$data['part_img'])?>"  title="<?=$data['part_no']?>"></a>
-                            <div class="pbox201312">
-                                <div class="spot201312"></div>
-                                <div class="pmodel201312">
-                                <a href="<?=$data['f_produrl']?>"  title="<?=$data['part_no']?>" class="logclick" rev="related_part_id" rel="<?=$data['id']?>"><?=$this->fun->utf_substr(($data['part_no']),11,'...')?></a></div>
-                                <div class="ptip201312"><?=$goodsprice_title?>-<a href="/list-<?=$data['part_level1']?>-<?=$data['part_level2']?>-<?=$data['part_level3']?>.html"><?=($data['cname3']==''?$data['cname2']:$data['cname3'])?></a></div>
-                                <div class="pprice201312">
-                                    <?=$goodsprice?>
-                                </div>
-                            </div>
-                        </div>
-                  <?php }//end foreach($this->relevance as $i=>$prod)?> 
-            </div>
-        </div>
-    
-        <?php }//end 相关型号?>
-            
         </div>
     </div>
 </div>
@@ -416,6 +322,8 @@ $(function(){
 	},function(){
 		$(this).removeClass("item-hover");
 	});
+	//加载产品参数信息
+	$("#prodattribute").load("/publicbox/prodattribute?partNo=<?php echo $prodarr['part_no']?>");
 });
 
 var break_price_sz = '<ul><li class="w30">数量</li><li class="w70"  class="titbg1ts">含税(17%)</li></ul><?=$prodarr['f_break_price_new_d_sz']?>';
@@ -494,7 +402,12 @@ function favorites(prodid){
     });
 }
 //加载热销
-hotpord();
+$(function(){
+
+		$("#hotpord").load("/publicbox/hotpord");
+
+	})
+	
 function hidAlert(){
 	$.closePopupLayer('favAlert');
 	$.closePopupLayer('cartshowBox');
@@ -510,4 +423,3 @@ function changeStock(dv){
 }
 </script>
 <script src="/js/jsplug/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
-<?php //echo '<pre>';print_r($prodarr);?>

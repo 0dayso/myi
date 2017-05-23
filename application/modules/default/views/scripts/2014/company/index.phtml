@@ -58,8 +58,8 @@
                 <div class="page_box"><div class="page clearfix"><?=$this->page_bar;?></div></div> 
             </div>    
             <div class="fr righttuij">
-            <div id="hotsearch"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
-            <div id="hotsolution"></div>
+
+            <div id="hotsolution"><div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div></div>
             <div id="hotnews"></div>
             <div id="hotwebinar"></div>
             </div>
@@ -75,7 +75,7 @@
 	},function(){
 		$(this).removeClass("boxshadow");
 	});
-		$("#hotsearch").load("/publicbox/hotsearch");
+
 		$("#hotsolution").load("/publicbox/hotsolution");
 		$("#hotnews").load("/publicbox/hotnews");
 		$("#hotwebinar").load("/publicbox/hotwebinar");
