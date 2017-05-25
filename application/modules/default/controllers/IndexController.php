@@ -46,6 +46,13 @@ class IndexController extends Zend_Controller_Action {
 		$this->view->solutionimageArr = $hpModer->getAllByWhere("status='1' AND type='solution'",array("displayorder ASC","id DESC"));
 		$this->view->specialimageArr = $hpModer->getAllByWhere("status='1' AND type='special'",array("displayorder ASC","id DESC"));
 		
+		//热推产品
+		$sqlstr ="SELECT pro.*
+		FROM recommend as re
+		LEFT JOIN product as pro ON re.comid=pro.id
+		WHERE re.type='hot_prod' AND re.part='home' AND re.status=1 ORDER BY re.displayorder ASC LIMIT 0 , 5";
+		$this->view->hot_prod = $rModer->getBySql($sqlstr, array());
+		
 		$listnum = 5;
 
 		//行业新闻

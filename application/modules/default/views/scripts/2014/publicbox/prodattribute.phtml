@@ -7,7 +7,7 @@
                 <th width="70%" align="left">数值</th>
 <?php foreach ($this->attribute as $v){
      if($v){
-            $vst = explode("<>", $v);
+            $vst = explode("||", $v);
             ?>
             </tr>
               <tr><td  style="border-right:1px solid #e3e3e3;text-align:left; padding-left:10px;"><?php echo $vst[0]?></td>

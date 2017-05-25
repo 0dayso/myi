@@ -89,18 +89,30 @@
 </style>
 
 <div class="right-bar jsRightBar">
-<a class="sgin jsSgin" id="jsSignCtrl" href="javascript:void(0)">
-<span class="bar-label" style="display: none;"><i></i></span></a>
+
 <a class="service jsService" id="qqOnline4" href="javascript:void(0);">
-<span class="bar-label tel-label" style="display: none;"><i></i></span></a>
-<a class="dimensions-code" href="javascript:void(0)">
-<span class="bar-label erweima-label" style="display: none;"><i></i></span></a> 
-<a class="feedback jsFeedBack" href="#">
-<span class="bar-label" style="display: none;"><i></i></span></a>
-<a class="gotop" id="goScrollTop" style="display: none; bottom: 0px; top: auto;" href="javascript:void(0)"></a>
+	<span class="bar-label tel-label" style="display: none;"><i></i></span></a>
+<a class="dimensions-code" id="wxLine" href="javascript:void(0)">
+	<span class="bar-label erweima-label" style="display: none;"><i></i></span></a> 
+<a class="feedback jsFeedBack" href="#" title="意见反馈">
+	<span class="bar-label" style="display: none;"><i></i></span></a>
+<a class="gotop" id="goScrollTop" style="bottom: 0px; top: auto;" href="#"></a>
 </div>
 
 <script language="JavaScript" type="text/javascript">
+
+$("#qqOnline4").mouseenter(function(){
+	$(this).find(".bar-label").css("display","block");
+  });
+$("#qqOnline4").mouseleave(function(){
+	$(this).find(".bar-label").css("display","none");
+  });
+$("#wxLine").mouseenter(function(){
+	$(this).find(".bar-label").css("display","block");
+  });
+$("#wxLine").mouseleave(function(){
+	$(this).find(".bar-label").css("display","none");
+  });
 
 function changestyle(objName,objValue,objHours){
 	var re = addCookie(objName,objValue,objHours);

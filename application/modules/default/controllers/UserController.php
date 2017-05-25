@@ -241,10 +241,7 @@ class UserController extends Zend_Controller_Action
     	$userModel = new Default_Model_DbTable_User();
     	
     	$this->view->appLevel1 = $appcModel->getAllByWhere("level = 1 AND status=1","displayorder ASC");
-    	//用户协议
-    	$this->_helpModel = new Default_Model_DbTable_HelpCenter();
-    	$this->view->user_agreement = $this->_helpModel->getRowByWhere("type = 'user_agreement' AND status=1");
-    	$this->view->clause = $this->_helpModel->getRowByWhere("type = 'clause' AND status=1");
+   
     	$this->view->invitekey = trim($_GET['invitekey']);
     	if($this->getRequest()->isPost()){
     		$this->view->formData = $formData = $this->getRequest()->getPost();

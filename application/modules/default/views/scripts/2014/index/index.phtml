@@ -269,25 +269,25 @@ $(".homeimages").css("width", standard_width);
 			<h2>热卖推荐</h2>
 			<div class="home container">
 				<ul class="overseas-sub-list col-md-24">
-					<?php for($i=0;$i<5;$i++){?>
+					<?php foreach ($this->hot_prod as $hotProd) {?>
 					<li>
 						<div>
 							<a class="fr" target="_blank"
-								href="#"> <img
-								src="/upload/default/product/icon/no.gif"
+								href="/search?keyword=<?php echo $hotProd['part_no'];?>&st=searchall"> 
+								<img
+								src="<?=PRODUCTICON.($hotProd['part_img']==''?'no.gif':$hotProd['part_img'])?>"
 								alt="" width="60px"
-								data-original="/upload/default/product/icon/no.gif"
+								data-original="<?=PRODUCTICON.($hotProd['part_img']==''?'no.gif':$hotProd['part_img'])?>"
 								class="lazy" />
 							</a>
 							<div class="sub-list">
-								<h5 class="ellipsis" title="TPS767D301PWPR">
+								<h5 class="ellipsis" title="<?php echo $hotProd['part_no'];?>">
 									<a class="theme-link-default" target="_blank"
-										href="#">
-										TPS767D301PWPR</a>
+										href="/search?keyword=<?php echo $hotProd['part_no'];?>&st=searchall">
+										<?php echo $hotProd['part_no'];?></a>
 								</h5>
-								<p class="stress">￥6.38</p>
-								<p class="fs-12 c-999">
-									<span>库存：</span><em>30000</em>
+		
+								<p class="fs-12 c-999"><?php echo $hotProd['manufacturer'];?>
 								</p>
 							</div>
 						</div>
