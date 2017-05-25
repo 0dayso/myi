@@ -72,9 +72,10 @@ class ProddetailsController extends Zend_Controller_Action {
 			$this->_redirect('/error');
 		}
 		
-		
+		//查询产品可销售几个和库存
+		$product['stockInfo'] = $this->_prodService->getStockPrice($product['id'],$collection_id,$supplier_id);
 		$this->view->prodarr = $product;
-
+		//echo '<pre>';print_r($product);exit;
 	
 		//记录浏览记录
 		$this->_prodhistory->addhistry($id_no);

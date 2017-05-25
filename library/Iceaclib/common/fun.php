@@ -958,250 +958,42 @@ class MyFun
 	 * 过滤产品
 	 * @param array $prod_arr
 	 */
-	public function filterProduct($prodarr,$bpp_stock_id=0){
+	public function filterProduct($prodarr){
 		$arr_tmp = array();
 		$nowtime = time();
 		//价格符号
 		$arr_tmp['f_usd'] = '$';
 		$arr_tmp['f_rmb'] ='￥';
 		//产品链接url
-		$arr_tmp['f_produrl'] = "/item-b".$prodarr['manufacturer']."-".($prodarr['part_level3']?$prodarr['part_level3']:$prodarr['part_level2'])."-".($prodarr['part_id']?$prodarr['part_id']:$prodarr['id']).'-'.$this->filterUrl($prodarr['part_no']).'.html';
-		/* 库存规则
-		 * 1、SZ只能在国内销售，HK可在两地销售
-		 * 2、如果国内购买优先使用SZ库存
-		 * 是否显示价格规则 (都是可显示价格，价格在有效期内)
-		 * 1、指定可销售，有阶梯价格。(库存不考虑)
-		 * 2、没指定可销售，需要有库存，有阶梯价格
-		 * 3、rmb阶梯价格优先显示
-		 */
-		
-		//深圳库存
-		$arr_tmp['f_stock_sz_tmp'] = $prodarr['sz_stock'] - $prodarr['sz_cover'];
-		//bpp库存
-		$arr_tmp['f_stock_bpp']    = 0;//$prodarr['bpp_stock'] - $prodarr['bpp_cover'];
-		//香港库存
-		$arr_tmp['f_stock_hk_tmp'] = $prodarr['hk_stock'] - $prodarr['hk_cover'];
-		//香港可销售库存
-		$arr_tmp['f_stock_hk']     = $arr_tmp['f_stock_hk_tmp'];// + $arr_tmp['f_stock_bpp'];
-		//国内可销售库存
-		$arr_tmp['f_stock_sz']     = $arr_tmp['f_stock_sz_tmp'] + $arr_tmp['f_stock_hk_tmp'];// + $arr_tmp['f_stock_bpp'];
-
-		//处理最少起订量为0
-		$prodarr['moq'] = ($prodarr['moq']?$prodarr['moq']:$prodarr['mpq']);
-		
-		//如何整包购买，阶梯价格改变
-		$break_price_rmb = $break_price = '';
-		if($prodarr['show_price']){
-			//国内
-		    if($prodarr['can_sell'] || $arr_tmp['f_stock_sz']>=$prodarr['moq']){
-		    	if($prodarr['break_price_rmb'] && (!$prodarr['price_valid_rmb'] || $prodarr['price_valid_rmb'] >=$nowtime)){
-		    	   $break_price_rmb= $prodarr['break_price_rmb'];
-		    	   $arr_tmp['f_show_price_sz'] = 1;
-		        }else $arr_tmp['f_show_price_sz'] = 0; 
-		    }elseif($prodarr['break_price_rmb'] && (!$prodarr['price_valid_rmb'] || $prodarr['price_valid_rmb'] >=$nowtime)){
-		    	$break_price_rmb= $prodarr['break_price_rmb'];
-		    	$arr_tmp['f_show_price_sz'] = 0;
-		    }else $arr_tmp['f_show_price_sz'] = 0;
-		    //香港
-		    if($prodarr['can_sell'] || $arr_tmp['f_stock_hk']>=$prodarr['moq']){
-		    	if($prodarr['break_price'] && (!$prodarr['price_valid'] || $prodarr['price_valid'] >=$nowtime)){
-		    		$break_price= $prodarr['break_price'];
-		    		$arr_tmp['f_show_price_hk'] = 1;
-		    	}else $arr_tmp['f_show_price_hk'] = 0;
-		    }elseif($prodarr['break_price'] && (!$prodarr['price_valid'] || $prodarr['price_valid'] >=$nowtime)){
-		    	$break_price= $prodarr['break_price'];
-		    	$arr_tmp['f_show_price_hk'] = 0;
-		    }else $arr_tmp['f_show_price_hk'] = 0;
-		    //如果没rmb阶梯价格，有usd阶梯价格
-		    if($prodarr['can_sell']){
-		    	if(!$break_price_rmb && $prodarr['break_price'] && (!$prodarr['price_valid_rmb'] || $prodarr['price_valid_rmb'] >=$nowtime)){
-		    		$break_price_rmb = $prodarr['break_price_rmb'] = $this->breakpriceUsdtormb($prodarr['break_price']);
-		    		$arr_tmp['f_show_price_sz'] = 1;
-		    	}
-		    }else{
-		      if(!$break_price_rmb && $prodarr['break_price'] && ($arr_tmp['f_stock_hk']>=$prodarr['moq'] || $arr_tmp['f_stock_sz']>=$prodarr['moq']) && (!$prodarr['price_valid'] || $prodarr['price_valid'] >=$nowtime)){
-		    	  $break_price_rmb = $prodarr['break_price_rmb'] = $this->breakpriceUsdtormb($prodarr['break_price']);
-		    	  $arr_tmp['f_show_price_sz'] = 1;
-		      }else{
-		      	    if($prodarr['break_price']){
-		    		$break_price_rmb = $prodarr['break_price_rmb'] = $this->breakpriceUsdtormb($prodarr['break_price']);
-		      	    }
-		    		//$arr_tmp['f_show_price_sz'] = 0;
-		    	}
-		    }
-		    //如果是整包购买 ,显示阶梯价
-		    $break_price_rmb_show = $break_price_rmb;
-		    $break_price_show     = $break_price;
-			//如果是整包购买
-		    if($prodarr['mpq']!=0 && ($prodarr['moq']%$prodarr['mpq'])==0){
-		    	$break_price_rmb = $prodarr['moq'].'|'.$this->getPrice($break_price_rmb,$prodarr['moq']);
-		    	$break_price     = $prodarr['moq'].'|'.$this->getPrice($break_price,$prodarr['moq']);
-		    }
-		    /* 处理库存小于moq的情况
-		     * 1、如果surplus_stock_sell为1,special_break_prices为空，将剩余库存设为moq，使用原来阶梯价。
-		     * 2、如果surplus_stock_sell为1,special_break_prices有值，moq和价格都使用special_break_prices。
-		     */
-		    if($prodarr['surplus_stock_sell']){
-		    	//标志改变moq是否改变起作用
-		    	$surplus_zs = $surplus_hk = 0;
-		    	//国内
-		    	if(!$arr_tmp['f_show_price_sz'] && $arr_tmp['f_stock_sz']>0 && $arr_tmp['f_stock_sz']<=$prodarr['moq']){
-		    		$nwemoq = $arr_tmp['f_stock_hk']?$arr_tmp['f_stock_hk']:$arr_tmp['f_stock_sz'];
-		    		if($prodarr['break_price_rmb'] && (!$prodarr['price_valid'] || $prodarr['price_valid'] >=$nowtime)){
-		    			$break_price_rmb= $prodarr['break_price_rmb'];
-		    			$prodarr['moq'] = $nwemoq;
-		    			$arr_tmp['f_show_price_sz'] = $surplus_zs = 1;
-		    		}elseif($prodarr['break_price'] && (!$prodarr['price_valid'] || $prodarr['price_valid'] >=$nowtime)){
-		    			$break_price_rmb = $prodarr['break_price_rmb'] = $this->breakpriceUsdtormb($prodarr['break_price']);
-		    			$prodarr['moq'] = $nwemoq;
-		    			$arr_tmp['f_show_price_sz'] = $surplus_zs = 1;
-		    		}else $arr_tmp['f_show_price_hk'] = 0;
-		    	}
-		    	//香港  因为moq没分国内和香港，所以只能将香港库存设为moq
-		    	if(!$arr_tmp['f_show_price_hk'] && $arr_tmp['f_stock_hk']>0 && $arr_tmp['f_stock_hk']<=$prodarr['moq']){
-		    		if($prodarr['break_price'] && (!$prodarr['price_valid'] || $prodarr['price_valid'] >=$nowtime)){
-		    			$break_price= $prodarr['break_price'];
-		    			$prodarr['moq'] = $arr_tmp['f_stock_hk'];
-		    			$arr_tmp['f_show_price_hk'] = $surplus_hk = 1;
-		    		}else $arr_tmp['f_show_price_hk'] = 0;
-		    	}
-		    	//有特殊阶梯价并且改变了moq
-		    	if($prodarr['special_break_prices']){
-		    		$sbp_arr = explode('|',$prodarr['special_break_prices']);
-		    		//特殊moq
-		    		if((int)$sbp_arr[0]>0){
-		    			$prodarr['moq'] = (int)$sbp_arr[0];
-		    		}
-		    		//特殊价格，rmb
-		    		if($sbp_arr[1] && $sbp_arr[1]>0){
-		    			$break_price_rmb= $prodarr['break_price_rmb'] = $prodarr['moq'].'|'.$sbp_arr[1];
-		    		}
-		    		if($sbp_arr[2] && $sbp_arr[2]>0){
-		    			$break_price= $prodarr['break_price'] = $prodarr['moq'].'|'.$sbp_arr[2];
-		    			//如果没有rmb
-		    			if(!$sbp_arr[1]){
-		    				$break_price_rmb= $prodarr['break_price_rmb'] = $prodarr['moq'].'|'.$this->usdtocny($sbp_arr[2]);
-		    			}
-		    		}
-		    		//可以销售
-		    		if($sbp_arr[1] && $sbp_arr[1]>0 && $arr_tmp['f_stock_sz']){
-		    			$arr_tmp['f_show_price_sz']  = 1;
-		    		}
-		    		if($sbp_arr[2] && $sbp_arr[2]>0 && $arr_tmp['f_stock_hk']){
-		    			$arr_tmp['f_show_price_hk']  = 1;
-		    			//如果没有rmb
-		    			if(!$sbp_arr[1]){
-		    				$arr_tmp['f_show_price_sz']  = 1;
-		    			}
-		    		}
-		    	}
-		    	$break_price_rmb_show = $break_price_rmb;
-		    	$break_price_show     = $break_price;
-		    }
-		}else{
-			$arr_tmp['f_show_price_sz'] = 0;
-			$arr_tmp['f_show_price_hk'] = 0;
+		$arr_tmp['f_produrl'] = "/item?scid=".$prodarr['stockInfo']['collection_id']."&supid=".$prodarr['stockInfo']['supplier_id']."&pid=".$prodarr['id']."&pn=".$prodarr['part_no'];
+		if($prodarr['stockInfo']['stock']>0 && $prodarr['stockInfo']['rmbprice']){
+			$arr_tmp['f_show_price_sz'] = 1;
 		}
-		//没有自有库存销售合作伙伴库存
-		if($arr_tmp['f_stock_hk']<=0 && $arr_tmp['f_stock_sz']<=0 && $bpp_stock_id==0){
-			$partId = ($prodarr['part_id']?$prodarr['part_id']:$prodarr['id']);
-			$bppService = new Default_Service_BppService();
-			$pr = $bppService->getBestPrice($partId);
-			if(!empty($pr)){
-				$prodarr["moq"] = $pr["moq"];
-				if($pr["mpq"] >0 ) $prodarr["mpq"] = $pr["mpq"];
-				
-				//香港可销售库存
-				$arr_tmp['f_stock_hk_tmp'] = $arr_tmp['f_stock_hk']  = $pr['stock'] - $pr['bpp_stock_cover'];
-				//国内可销售库存
-				$arr_tmp['f_stock_sz_tmp'] = $arr_tmp['f_stock_sz']  = $pr['stock'] - $pr['bpp_stock_cover'];
-				if($pr['break_price']){
-					if($pr['location']=="Asia"){
-						$arr_tmp['f_show_price_sz'] = 1;
-						$arr_tmp['f_show_price_hk'] = 1;
-					}else{
-					    $arr_tmp['f_show_price_sz'] = 0;
-					    $arr_tmp['f_show_price_hk'] = 0;
-					}
-					$prodarr["lead_time_cn"]    = $pr['lead_time_cn'];
-					$prodarr["lead_time_hk"]    = $pr['lead_time_hk'];
-					$prodarr['break_price']     =$break_price_show= $break_price    = $pr['break_price'];
-					$prodarr['break_price_rmb'] =$break_price_rmb_show=$break_price_rmb = $this->breakpriceUsdtormb($pr['break_price']);
-				
-					//记录供应商信息
-					$arr_tmp['f_bpp_stock_id']  = $pr['id'];
-					$arr_tmp['f_vendor_name']   = $pr['vendor_name'];
-					$arr_tmp['f_location']      = $pr['location'];
-					$arr_tmp['f_location_code'] = $pr['location_code'];
-
-				}
-			}
-		}elseif($bpp_stock_id>0){ //特定bpp
-			$bppService = new Default_Service_BppService();
-			$pr = $bppService->getBppById($bpp_stock_id);
-			if(!empty($pr)){
-				$prodarr["moq"] = $pr["moq"];
-				if($pr["mpq"] >0 ) $prodarr["mpq"] = $pr["mpq"];
-			
-				//香港可销售库存
-				$arr_tmp['f_stock_hk_tmp'] = $arr_tmp['f_stock_hk']  = $pr['stock'] - $pr['bpp_stock_cover'];
-				//国内可销售库存
-				$arr_tmp['f_stock_sz_tmp'] = $arr_tmp['f_stock_sz']  = $pr['stock'] - $pr['bpp_stock_cover'];
-				if($pr['break_price']){
-				    if($pr['location']=="Asia"){
-						$arr_tmp['f_show_price_sz'] = 1;
-						$arr_tmp['f_show_price_hk'] = 1;
-					}else{
-					    $arr_tmp['f_show_price_sz'] = 0;
-					    $arr_tmp['f_show_price_hk'] = 0;
-					}
-					$prodarr["lead_time_cn"]    = $pr['lead_time_cn'];
-					$prodarr["lead_time_hk"]    = $pr['lead_time_hk'];
-					$prodarr['break_price']     = $break_price_show=$break_price    = $pr['break_price'];
-					$prodarr['break_price_rmb'] =$break_price_rmb_show=$break_price_rmb = $this->breakpriceUsdtormb($pr['break_price']);
-			
-					//记录供应商信息
-					$arr_tmp['f_bpp_stock_id']  = $pr['id'];
-					$arr_tmp['f_vendor_name']   = $pr['vendor_name'];
-					$arr_tmp['f_location']      = $pr['location'];
-					$arr_tmp['f_location_code'] = $pr['location_code'];
-			
-				}
-			}
+		if($prodarr['stockInfo']['stock']>0 && $prodarr['stockInfo']['usdprice']){
+			$arr_tmp['f_show_price_hk'] = 1;
 		}
 		//从阶梯价格获取售价
-		$arr_tmp['f_sell_price_hk'] = $this->getPrice($break_price,$prodarr['moq']);
-		$arr_tmp['f_sell_price_sz'] = $this->getPrice($break_price_rmb,$prodarr['moq']);
+		$arr_tmp['f_sell_price_hk'] = $this->getPrice($prodarr['stockInfo']['usdprice'],$prodarr['stockInfo']['moq']);
+		$arr_tmp['f_sell_price_sz'] = $this->getPrice($prodarr['stockInfo']['rmbprice'],$prodarr['stockInfo']['moq']);
 		//从阶梯价格获取最低售价
-		$arr_tmp['f_lowest_price_hk'] = $this->getbplast($break_price);
-		$arr_tmp['f_lowest_price_sz'] = $this->getbplast($break_price_rmb);
+		$arr_tmp['f_lowest_price_hk'] = $this->getbplast($prodarr['stockInfo']['usdprice']);
+		$arr_tmp['f_lowest_price_sz'] = $this->getbplast($prodarr['stockInfo']['rmbprice']);
 		//从阶梯价格获取最后价格
-		$arr_tmp['f_last_price_hk'] = $this->getbplast($prodarr['break_price']);
-		$sz_tmp = $prodarr['break_price_rmb']?$prodarr['break_price_rmb']:$this->breakpriceUsdtormb($prodarr['break_price']);
-		$arr_tmp['f_last_price_sz'] = $this->getbplast($sz_tmp);
+		$arr_tmp['f_last_price_hk'] = $this->getbplast($prodarr['stockInfo']['usdprice']);
+		$arr_tmp['f_last_price_sz'] = $this->getbplast($prodarr['stockInfo']['rmbprice']);
 		//阶梯价格
-		$arr_tmp['f_break_price_hk'] = $this->getbreakprice($break_price_show,$arr_tmp['f_usd']);
-		$arr_tmp['f_break_price_sz'] = $this->getbreakprice($break_price_rmb_show,$arr_tmp['f_rmb']);
+		$arr_tmp['f_break_price_hk'] = $this->getbreakprice($prodarr['stockInfo']['usdprice'],$arr_tmp['f_usd']);
+		$arr_tmp['f_break_price_sz'] = $this->getbreakprice($prodarr['stockInfo']['rmbprice'],$arr_tmp['f_rmb']);
 		//没有title阶梯价格
-		$arr_tmp['f_break_price_notitle_hk'] = $this->getbreakprice_notitle($break_price_show,$arr_tmp['f_usd']);
-		$arr_tmp['f_break_price_notitle_sz'] = $this->getbreakprice_notitle($break_price_rmb_show,$arr_tmp['f_rmb']);
+		$arr_tmp['f_break_price_notitle_hk'] = $this->getbreakprice_notitle($prodarr['stockInfo']['usdprice'],$arr_tmp['f_usd']);
+		$arr_tmp['f_break_price_notitle_sz'] = $this->getbreakprice_notitle($prodarr['stockInfo']['rmbprice'],$arr_tmp['f_rmb']);
 		//新版详细页阶梯价格
-		$arr_tmp['f_break_price_new_d_hk'] = $this->getbreakprice_new_d($break_price_show,$arr_tmp['f_usd']);
-		$arr_tmp['f_break_price_new_d_sz'] = $this->getbreakprice_new_d($break_price_rmb_show,$arr_tmp['f_rmb']);
-		
+		$arr_tmp['f_break_price_new_d_hk'] = $this->getbreakprice_new_d($prodarr['stockInfo']['usdprice'],$arr_tmp['f_usd']);
+		$arr_tmp['f_break_price_new_d_sz'] = $this->getbreakprice_new_d($prodarr['stockInfo']['rmbprice'],$arr_tmp['f_rmb']);
+
 		//交期
-		if(isset($prodarr['lead_time_hk'])){
-		    $arr_tmp['f_lead_time_hk'] = $prodarr['lead_time_hk']?$prodarr['lead_time_hk']:$prodarr['lead_time'];
-		}elseif(isset($prodarr['lead_time'])){
-			$arr_tmp['f_lead_time_hk'] = $prodarr['lead_time'];
-		}else $arr_tmp['f_lead_time_hk'] = '';
-		if(isset($prodarr['lead_time_cn'])){
-		    $arr_tmp['f_lead_time_cn'] = $prodarr['lead_time_cn']?$prodarr['lead_time_cn']:$prodarr['lead_time'];
-		}elseif(isset($prodarr['lead_time'])){
-			$arr_tmp['f_lead_time_cn'] = $prodarr['lead_time'];
-		}else $arr_tmp['f_lead_time_cn'] = '';
-		
-		
+		$arr_tmp['lead_time_sz'] = $prodarr['stockInfo']['supplierInfo']['delivery_cn']?$prodarr['stockInfo']['supplierInfo']['delivery_cn'].'天':'--';
+		$arr_tmp['lead_time_hk'] = $prodarr['stockInfo']['supplierInfo']['delivery_hk']?$prodarr['stockInfo']['supplierInfo']['delivery_hk'].'天':'--';
 		return array_merge($prodarr,$arr_tmp);
 	}
 	/*

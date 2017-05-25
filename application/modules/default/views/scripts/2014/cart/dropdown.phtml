@@ -6,7 +6,7 @@
     <tbody>
       <tr>
         <th width="140" align="center">型号</th>
-        <th width="80" align="center">品牌</th>
+        <th width="80" align="center">制造商</th>
         <th width="40" align="center">数量</th>
         <th width="50" align="center">单价</th>
         <th width="70" align="center">小计</th>
@@ -23,7 +23,7 @@
 			?>
       <tr>
         <td width="140">
-            <p><a href="/item-0-0-<?=$item['pord_id'];?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank" class="model"><?=$item['part_no'];?></a></p>
+            <?=$item['part_no'];?>
           </td>
         <td width="80"><?=$item['options']['brand'];?></td>
         <td width="40"><?=$item['qty'];?></td>

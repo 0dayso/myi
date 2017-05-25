@@ -221,7 +221,7 @@ var setAmountBase={
 				}else x--;
 			}
 		}else{
-			alertbox("请输入正确的数量！");
+			alert("请输入正确的数量！");
 			$(obj).val(moq);
 			$(obj).focus();
 		}
@@ -233,16 +233,16 @@ var setAmountBase={
 		mpq = parseInt(mpq);
 		if((moq%mpq)==0 && mpq!=0){
 			if(x<moq){
-					alertbox("不要低于最少购买数量:"+moq+"！");
+					alert("不要低于最少购买数量:"+moq+"！");
 					$(obj).val(moq);
-					//$(input).val(moq/mpq);
+					$(input).val(moq/mpq);
 			}else $(obj).val(x);
 		}else{
 				if (x>=moq){
 				   $(obj).val(x);
 				}else{
-				   alertbox("不要低于最少购买数量:"+moq+"！");
-				  // $(obj).val(moq);
+					alert("不要低于最少购买数量:"+moq+"！");
+				   $(obj).val(moq);
 				   $(obj).focus();
 				}
 		}	
@@ -258,7 +258,7 @@ var setAmountBase={
 		moq = parseInt(moq);
 		mpq = parseInt(mpq);
 			if (!this.reg(x)){
-				alertbox("请输入正确的数量！");
+				alert("请输入正确的数量！");
 				$(obj).val(moq);
 				$(obj).focus();
 			}else{
@@ -266,8 +266,8 @@ var setAmountBase={
 				   $(obj).val(x);
 				}else{
 				   if(x=='') return true;
-				   alertbox("不要低于最少购买数量:"+moq+"！");
-				  // $(obj).val(moq);
+				   alert("不要低于最少购买数量:"+moq+"！");
+				   $(obj).val(moq);
 				   $(obj).focus();
 				}
 			}	
@@ -278,7 +278,7 @@ var setAmountBase={
 		var num = $(obj).val();
 		var allnum = x*mpq;
 			if (!this.reg(x)){
-				alertbox("请输入正确的数量！");
+				alert("请输入正确的数量！");
 				$(input).val(moq/mpq);
 				$(obj).val(moq);
 				$(input).focus();
@@ -295,6 +295,8 @@ function outride_buynum(stock,id)
 {
 	var part_id = 0;
 	var idboj = document.getElementById('partid');
+    var collection_id = document.getElementById('collection_id').value;
+	var supplier_id = document.getElementById('supplier_id').value;
 	if(idboj==undefined) {
 		part_id = id;
 		//alertbox('剩余库存：'+stock+'，您输入的购买数量超过库存数!');
@@ -306,7 +308,7 @@ function outride_buynum(stock,id)
 	   old_partid = part_id;
 	   $.openPopupLayer({
 		  name: "outrideBox",
-		  url: "/cart/outridebuynum?id="+part_id+"&stock="+stock
+		  url: "/cart/outridebuynum?id="+part_id+"&stock="+stock+"&collection_id="+collection_id+"&supplier_id="+supplier_id
 	   });
   // }
 }
@@ -316,6 +318,8 @@ function subtotal(obj){
    var delivery_place='SZ';
    var buynum = parseInt($(obj).val());
    var partid = document.getElementById('partid').value;
+   var collection_id = document.getElementById('collection_id').value;
+   var supplier_id = document.getElementById('supplier_id').value;
    var delivery_place_obj        = document.getElementsByName("delivery_place");
    for (var i=delivery_place_obj.length-1;i>=0;i--)
 	{
@@ -323,16 +327,15 @@ function subtotal(obj){
     }
    $.ajax({
             url: '/cart/calculate',
-            data: {'buynum':buynum,'partid':partid,'delivery_place':delivery_place},
+            data: {'buynum':buynum,'partid':partid,'delivery_place':delivery_place,'collection_id':collection_id,'supplier_id':supplier_id},
             type: 'post',
             dataType: 'json',
             success: function(arr) {
 			   if(arr.code==0)
 			   {  
 			      if(arr.surplus==1){
-				  	 outride_buynum(arr.stock,partid);
-					 //alert("很抱歉，库存不足");
-					 //location.reload();
+					 alert("很抱歉，库存不足");
+					 location.reload();
 					 return;
 				  }
 				  $("#sell_price").html(arr.price);
@@ -342,9 +345,8 @@ function subtotal(obj){
 				  $(".stock_type").html(arr.stock_type);
 			   }else if(arr.code==100)
 			   {
-				   	outride_buynum(arr.stock,partid);
-				   //alert(arr.message);
-				   //location.reload();
+				   alert(arr.message);
+				   location.reload();
 			   }else{
 			   	  alertbox(arr.message);
 			   }
@@ -395,9 +397,11 @@ function buyBpp(id,bpp_stock_id,delivery_place,buynum)
 }
 //添加到购物车
 function buy_details_add(id,buynum,delivery_place){
+	var collection_id = document.getElementById('collection_id').value;
+	var supplier_id = document.getElementById('supplier_id').value;
 	$.ajax({
             url: '/cart/add',
-            data: {'id':id,'buynum':buynum,'delivery_place':delivery_place},
+            data: {'id':id,'buynum':buynum,'delivery_place':delivery_place,'collection_id':collection_id,'supplier_id':supplier_id},
             type: 'post',
             dataType: 'json',
             success: function(arr) {
@@ -412,9 +416,8 @@ function buy_details_add(id,buynum,delivery_place){
 				  $(".cartnumber").html(arr.cartnumber);
 			   }else if(arr.code==101)
 			   {
-				 outride_buynum(arr.stock,id);
-				 
-				 //location.reload();
+				 alert(arr.message);
+				 location.reload();
 			   }else alertbox(arr.message);
             }
     });

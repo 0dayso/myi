@@ -26,6 +26,7 @@ class CartController extends Zend_Controller_Action
     	$this->ip = $this->fun->getIp();
         $this->config = Zend_Registry::get('config');
         $this->_defaultlogService = new Default_Service_DefaultlogService();
+        $this->_prodService = new Default_Service_ProductService();
     }
 
     public function indexAction()
@@ -67,39 +68,29 @@ class CartController extends Zend_Controller_Action
     		$buynum = (int)($formData['buynum']);
     		$delivery_place = $formData['delivery_place'];
     		$bpp_stock_id = (int)($formData['bpp_stock_id']);
+    		
+    		$collection_id         = (int)($formData['collection_id']);
+    		$supplier_id         = (int)($formData['supplier_id']);
+    		
 			$product = $this->_proService->getStockProd($id);
-			$product = $this->fun->filterProduct($product,$bpp_stock_id);
+			$product['stockInfo'] = $this->_prodService->getStockPrice($id,$collection_id,$supplier_id);
+			$product = $this->fun->filterProduct($product);
+			
     		if(empty($product) || !in_array($delivery_place,array('SZ','HK'))){
     			echo Zend_Json_Encoder::encode(array("code"=>200,"message"   =>'参数错误'));
     			exit;
     		}
-    	    if(!$product['surplus_stock_sell'] && $buynum < $product['moq']){
-    			echo Zend_Json_Encoder::encode(array("code"=>200,"message"=>'不要低于最少购买数量:'.$product['moq'].'！'));
+    		if($buynum < $product['stockInfo']['moq']){
+    			echo Zend_Json_Encoder::encode(array("code"=>200,"message"=>'不要低于最少购买数量:'.$product['stockInfo']['moq'].'！'));
     			exit;
     		}
-    		if(!$buynum) $buynum = $product['moq'];
+    	    
+    		if(!$buynum) $buynum = $product['stockInfo']['moq'];
     		$surplus = 0;
     		$lead_time_show = '';
     		$stock_type = '<b class="fontgreen">现货</b>';
     		$stock      = 0;
-    		if($delivery_place == 'SZ'){
-    			if($buynum > $product['f_stock_sz'])
-    			{
-    				$surplus = 1;
-    				$lead_time_show = $product['lead_time'];
-    				$stock_type = '<b class="fontorange">订货</b';
-    				$stock      = $product['f_stock_sz'];
-    			}
-    		}elseif($delivery_place == 'HK'){
-    			if($buynum > $product['f_stock_hk'])
-    			{
-    				$surplus = 1;
-    				$lead_time_show = $product['lead_time'];
-    				$stock_type = '<b class="fontorange">订货</b';
-    				$stock      = $product['f_stock_hk'];
-    			}
-    		}
-    		if($surplus==1){
+    		if($buynum > $product['stockInfo']['stock']){
     			if($product['can_sell']!=1){
     			echo Zend_Json_Encoder::encode(array("code"=>101,
     					"message"       =>'购买数量超出库存',
@@ -113,9 +104,12 @@ class CartController extends Zend_Controller_Action
     			}
     		}
     		//加入购物车
-    		$re = $this->_cartService->addCartlist($id, $buynum, $product,$delivery_place,$bpp_stock_id);
+    		$re = $this->_cartService->addCartlist($collection_id,$supplier_id,$id, $buynum, $product,$delivery_place,$bpp_stock_id);
+    
     		//寄存购物车
     		$this->cdModel->insert(array('ip'=>$this->ip,
+    				'collection_id'=>$collection_id,
+    				'supplier_id'=>$supplier_id,
     				'prod_id'=>$product['id'],
     				'number'=>$buynum,
     				'delivery'=>$delivery_place,
@@ -147,37 +141,30 @@ class CartController extends Zend_Controller_Action
     		$formData = $this->getRequest()->getPost();
     		$rowid    = $this->filter->pregHtmlSql($formData['rowid']);
     		$qty      = (int)($formData['qty']);
-    		$ids      = $this->cart->total_ids();
     		$total = $this->cart->contents();
-    		$product = $this->_proService->getStockProd($ids[$rowid]);
+    		$pord_id = $total[$rowid]['pord_id'];
+    		
+    		$collection_id = $total[$rowid]['collection_id'];
+    		$supplier_id = $total[$rowid]['supplier_id'];
+    		
+    		$product = $this->_proService->getStockProd($pord_id);
+    		$product['stockInfo'] = $this->_prodService->getStockPrice($pord_id,$collection_id,$supplier_id);
+    		$product = $this->fun->filterProduct($product);
+    		
     		if(empty($product)){
     			echo Zend_Json_Encoder::encode(array("code"=>200,"message"   =>'参数错误'));
     			exit;
     		}
-    		$product = $this->fun->filterProduct($product,$total[$rowid]['options']['bpp_stock_id']);
-    		if(!$product['surplus_stock_sell'] && $qty < $product['moq']){
-    			echo Zend_Json_Encoder::encode(array("code"=>200,"message"=>'不要低于最少购买数量:'.$product['moq'].'！'));
+    		if($qty < $product['stockInfo']['moq']){
+    			echo Zend_Json_Encoder::encode(array("code"=>200,"message"=>'不要低于最少购买数量:'.$product['stockInfo']['moq'].'！'));
     			exit;
     		}
-    		
-    		if($total[$rowid]['delivery_place'] == 'SZ'){
-    			
-    			if($qty > $product['f_stock_sz'])
-    			{
-    				$surplus = 1;
-    			}
-    		}elseif($total[$rowid]['delivery_place'] == 'HK'){
-    			if($qty > $product['f_stock_hk'])
-    			{
-    				$surplus = 1;
-    			}
-    		}
-    		if($surplus==1){
+    		if($qty > $product['stockInfo']['stock']){
     			if($product['can_sell']!=1){
     			echo Zend_Json_Encoder::encode(array("code"=>0,
     					"message"       =>'很抱歉，库存不足',
-    					'id'            =>$ids[$rowid],
-    					'surplus'       =>$surplus,
+    					'id'            =>$pord_id,
+    					'surplus'       =>1,
     					"price"         =>number_format($total[$rowid]['byprice'],DECIMAL),
     					"itemtotal"     =>number_format($total[$rowid]['byprice']*$total[$rowid]['qty'],DECIMAL)
     			));
@@ -189,11 +176,12 @@ class CartController extends Zend_Controller_Action
     		$total = $this->cart->contents();
     		$surplus = 0;
     		//寄存购物车
-    		$this->cdModel->update(array('number'=>$total[$rowid]['qty']), "ip='{$this->ip}' AND prod_id='".$total[$rowid]['id']."'");
+    		$this->cdModel->update(array('number'=>$total[$rowid]['qty']), 
+    				"ip='{$this->ip}' AND prod_id='".$total[$rowid]['pord_id']."'");
 
             echo Zend_Json_Encoder::encode(array("code"=>0, 
     						"message"       =>'更新成功',
-            		        'id'            =>$ids[$rowid],
+            		        'id'            =>$pord_id,
             		        'surplus'       =>$surplus,
             			    "price"         =>number_format($total[$rowid]['byprice'],DECIMAL),
     						"itemtotal"     =>number_format($total[$rowid]['byprice']*$total[$rowid]['qty'],DECIMAL)
@@ -215,44 +203,34 @@ class CartController extends Zend_Controller_Action
     	if($this->getRequest()->isPost()){
     		$formData = $this->getRequest()->getPost();
     		$partid         = (int)($formData['partid']);
+    		$collection_id         = (int)($formData['collection_id']);
+    		$supplier_id         = (int)($formData['supplier_id']);
     		$buynum         = (int)($formData['buynum']);
     		$delivery_place = $formData['delivery_place'];
-    		$product = $this->_proService->getStockProd($partid);
+    		
+    		$product['stockInfo'] = $this->_prodService->getStockPrice($partid,$collection_id,$supplier_id);
+
     		if(empty($product) || !in_array($delivery_place,array('SZ','HK'))){
     			echo Zend_Json_Encoder::encode(array("code"=>200,"message"   =>'参数错误'));
     			exit;
     		}
     		$product = $this->fun->filterProduct($product);
-    		if(!$product['surplus_stock_sell'] && $buynum < $product['moq']){
-    			echo Zend_Json_Encoder::encode(array("code"=>200,"message"=>'不要低于最少购买数量:'.$product['moq'].'！'));
+    		
+    		if($buynum < $product['stockInfo']['moq']){
+    			echo Zend_Json_Encoder::encode(array("code"=>200,"message"=>'不要低于最少购买数量:'.$product['stockInfo']['moq'].'！'));
     			exit;
     		}
     		$surplus = 0;
     		$lead_time_show = '';
-    		$stock_type = '<b class="fontgreen">现货</b>';
-    		$stock      = 0;
+    		if($buynum > $product['stockInfo']['stock']){
+    			echo Zend_Json_Encoder::encode(array("code"=>100,"message"=>'购买数量不能超过库存数:'.$product['stockInfo']['stock'].'！'));
+    			exit;
+    		}
     		if($delivery_place == 'SZ'){
-    			if($buynum > $product['f_stock_sz'])
-    			{
-    				$surplus = 1;
-    				$lead_time_show = $product['lead_time'];
-    				$stock_type = '<b class="fontorange">订货</b';
-    				$stock      = $product['f_stock_sz'];
-    			}else{
-    				$lead_time_show = $product['f_lead_time_cn'];
-    			}
-    			$byprice = $this->fun->getPrice($product['break_price_rmb'], $buynum);
+    			$byprice = $this->fun->getPrice($product['stockInfo']['rmbprice'], $buynum);
     		}elseif($delivery_place == 'HK'){
-    			if($buynum > $product['f_stock_hk'])
-    			{
-    				$surplus = 1;
-    				$lead_time_show = $product['lead_time'];
-    				$stock_type = '<b class="fontorange">订货</b';
-    				$stock      = $product['f_stock_hk'];
-    			}else{
-    				$lead_time_show = $product['f_lead_time_hk'];
-    			}
-    			$byprice = $this->fun->getPrice($product['break_price'], $buynum);
+    			
+    			$byprice = $this->fun->getPrice($product['stockInfo']['usdprice'], $buynum);
     		}
     		//计算价格
     		$total   = $this->fun->formnum($byprice*$buynum);
@@ -261,10 +239,7 @@ class CartController extends Zend_Controller_Action
     				"price"         =>$this->fun->formnum($byprice,5),
     				"total"         =>$total,
     				"buynum"        =>$buynum,
-    				"surplus"       =>$surplus,
-    				"lead_time_show"=>$lead_time_show,
-    				"stock_type"    =>$stock_type,
-    				"stock"         =>$stock
+    				"stock"         =>$product['stockInfo']['stock']
     		));
     	}
     }
@@ -453,19 +428,7 @@ class CartController extends Zend_Controller_Action
     	   $items = $this->cart->contents_by_delivery();
     	   if(!empty($items[$delivery_place]))
     	   {
-    	      foreach($items[$delivery_place] as $pordarr){
-    	      	 $product = $this->_proService->getInqProd($pordarr['pord_id']);
-    	      	 $re = $this->_cartService->checkProdInCart($product,$delivery_place,$pordarr);
-    	      	 if(!$re){
-    	      	 	echo Zend_Json_Encoder::encode(array("code"=>101, "message"=>'很抱歉，购物车数据过期，请清空购物车再购买。'));
-    	      	 	exit;
-    	      	 }elseif($re==1){
-    	      	 	
-    	      	 	echo Zend_Json_Encoder::encode(array("code"=>102, "message"=>'您购买产品其中有购买产品数量超过库存数，需要向工厂订货，预计货期会延长，确定需要继续购买吗?','items'=>$this->fun->encrypt_aes($delivery_place),'key' => md5(session_id())));
-    	      	 	exit;
-    	      	 	
-    	      	 }
-    	      }
+    	      
     	      echo Zend_Json_Encoder::encode(array("code"=>0, "message"=>'订单有效','items'=>$this->fun->encrypt_aes($delivery_place),'key' => md5(session_id())));
     	      exit;
     	   }else{
@@ -582,7 +545,6 @@ class CartController extends Zend_Controller_Action
     	$this->_helper->layout->disableLayout();
     	$this->view->partid = $_GET['id'];
     	$this->view->stock  = $_GET['stock'];
-    	$this->view->lead_time = $this->_proService->getLeadtime($_GET['id']);
     	$this->view->tel    = $this->commonconfig->email->foot_tel;
     }
     /**

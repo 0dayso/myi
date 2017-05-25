@@ -636,7 +636,7 @@ $annexurl2= $annexur_part.$this->myinfo['annex2'];
     <table border="0" cellpadding="0" cellspacing="0" class="shopbox table ">
       <tbody>
         <tr>
-          <th width="40%">型号</th>
+          <th width="250">型号</th>
           <th width="100">客户物料号</th>
           <th width="110">阶梯价格</th>
           <th>包装数</th>
@@ -654,13 +654,11 @@ $annexurl2= $annexur_part.$this->myinfo['annex2'];
         <tr>
           <td style="border-right: 0"><div class="productinfo"> <img src="<?php echo PRODUCTICON.($item['options']['part_img']==''?'no.gif':$item['options']['part_img']);?>">
               <div class="productinfop">
-                <p> <a href="/item-0-0-<?=$item['pord_id'];?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank"><?php echo $item['part_no'];?></a> </p>
+                <p><a class="model"><?php echo $item['part_no'];?></a></p>
                 <p>
                   <?=$item['options']['brand'];?>
                 </p>
-                <p>
-                  <?=$this->fun->utf_substr($item['options']['description'],68)?>
-                </p>
+
               </div>
             </div></td>
           <td><input type="text" name="customer_material"/></td>
@@ -684,12 +682,10 @@ $annexurl2= $annexur_part.$this->myinfo['annex2'];
                   <label name='cart_total' class="cart_total_freight"><?php echo number_format($this->total+$this->freight,DECIMAL);?></label>
                   </b> </p>
 
-                  <p style="padding-top: 4px;"> 优惠券抵扣金额：<b class="fontred">
-                  <?=$this->unit?><label class="deductions">0.00</label></b></p>
                   <p style="padding-top: 4px;"> 运费及包装费：<b class="fontred">
                   <?=$this->unit?>
                   <label name='freight'><?php echo number_format($this->freight,DECIMAL);?></label>
-                  </b> - </p>
+
                   <p style="padding-top: 4px;"> 产品总金额：<b class="fontred">
                   <?=$this->unit?>
                   <label name='cart_total'><?php echo number_format($this->total,DECIMAL);?></label>
@@ -702,13 +698,10 @@ $annexurl2= $annexur_part.$this->myinfo['annex2'];
                   </b> 
                 </p>
                 </p>
-                
-                  <p style="padding-top: 4px;"> 优惠券抵扣金额：<b class="fontred">
-                  <?=$this->unit?><label class="deductions">0.00</label></b></p>
                 <p style="padding-top: 4px;"> 运费及包装费：<b class="fontred">
                   <?=$this->unit?>
                   <label name='freight'><?php echo number_format($this->packageprice,DECIMAL);?></label>
-                  </b> -
+                  </b> 
                 </p>
                 <p style="padding-top: 4px;"> 产品总金额：<b class="fontred">
                   <?=$this->unit?>

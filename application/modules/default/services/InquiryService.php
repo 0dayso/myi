@@ -215,7 +215,7 @@ class Default_Service_InquiryService
 				'options'     => array(
 						'mpq'    => $product['mpq'],
 						'part_img'    => $product['part_img'],
-						'brand'       => $product['brand'],
+						'brand'       => $product['manufacturer'],
 						'lead_time'   => $product['lead_time']
 				));
 		//加入询价列表

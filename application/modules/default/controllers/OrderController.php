@@ -71,7 +71,10 @@ class OrderController extends Zend_Controller_Action
     	$this->view->freermb = $this->config->cost->inquiry_free_RMB;
     	$this->view->freeusd = $this->config->cost->inquiry_free_USD;
     	
-    	if($this->_getParam('key') != md5(session_id())) $this->_redirect('/cart');
+    	if($this->_getParam('key') != md5(session_id())) {
+    		echo 'dd';exit;
+    		$this->_redirect('/cart');
+    	}
     	$this->view->delivery = $delivery = $this->fun->decrypt_aes($this->_getParam('items'));
     	//收货地址
     	$addressModel = new Default_Model_DbTable_Address();
@@ -177,9 +180,7 @@ class OrderController extends Zend_Controller_Action
     	//货币单位
     	$this->view->total = $total;
     	$this->view->unit = $this->view->items[0]['unit'];
-    	//取得用户优惠券
-    	$couponservice = new Default_Service_CouponService();
-    	$this->view->coupon = $couponservice->getCanUsedCoupon();
+
     	//快递商
     	$addService = new Default_Service_AddressService();
     	$this->view->expressadd = $addService->getExpressAddress();
@@ -415,6 +416,8 @@ class OrderController extends Zend_Controller_Action
     		$addressModel = new Default_Model_DbTable_Address();
     		$invoiceModel = new Default_Model_DbTable_Invoice();
     		$addre = $addressModel->getRowByWhere("id='{$addressid}'");
+    		
+    		
     		//如果发票地址不等与收货地址
     		$invoiceaddre = array();
     		if($addressid != $invoiceaddress)
@@ -464,7 +467,7 @@ class OrderController extends Zend_Controller_Action
     		if(empty($subtract)){
     			$this->_redirect('/');
     		}
-    		
+  
     		//每次最多购买20条产品，防止攻击
     		if(count($subtract)>20) {
     			$message ='数据出错，每个订单最多添加购买20个产品';
@@ -477,20 +480,7 @@ class OrderController extends Zend_Controller_Action
     			$message ='很抱歉，你下的订单过多，请及时付款。付款后才能继续下单。';
     			$error++;
     		}
-    		//优惠券
-    		$coupon_code ='';
-    		$deductions = 0;
-    		if($formData['coupon']){
-    			$couponservice = new Default_Service_CouponService();
-    			foreach($formData['coupon'] as $couponcode){
-    				$coupon_code .=$couponcode.',';
-    				$coupon = $couponservice->getCouponByCode($couponcode,"AND cp.status='200'");
-    				if($coupon){
-    					$re = $couponservice->checkCoupon($coupon,$subtract,$delivery);
-    					$deductions +=$re['deductions'];
-    				}
-    			}
-    		}
+
     		if($error){
     			//记录日志
     			$this->_defaultlogService->addLog(array('log_id'=>'A','temp1'=>400,'temp4'=>'在线订单提交失败','description'=>$message));
@@ -515,74 +505,15 @@ class OrderController extends Zend_Controller_Action
     			$items = count($subtract);
     			
     			foreach($subtract as $j=>$item){
-    			   $prod_new = $this->fun->filterProduct($this->_productService->getStockProd($item['pord_id']));
-    			   if(!$this->cartService->checkProdInCart($prod_new,$delivery,$item)){
-    			   	$message = '很抱歉，购物车数据过期，请清空购物车再购买。';
-    			   	$this->_defaultlogService->addLog(array('log_id'=>'A','temp1'=>400,'temp4'=>'在线订单提交失败','description'=>$message));
-    			   	echo Zend_Json_Encoder::encode(array("code"=>100, "message"=>$message));
-    			   	exit;
-    			   }
-    			   //首先判断产品库存如果有库存就继续库存更新
-    			   //如果现货更新产品库存
-    			    $udstr = '';$sz_cover = $hk_cover = $bpp_cover = 0;
-    			   	
-    			   	//合作伙伴库存
-    			   	if(isset($item['options']['bpp_stock_id']) && $item['options']['bpp_stock_id']>0){
-    			   		$bpp_cover = $item['qty'];
-    			   		$udstr = "UPDATE bpp_stock  SET bpp_stock_cover = bpp_stock_cover + ".$bpp_cover." 
-    			   				WHERE id='".$item['options']['bpp_stock_id']."'";
-    			   	}else{
-    			   	  if($delivery=='SZ'){
-    			   		if($prod_new['f_stock_sz'] >= $item['qty']){
-    			   			if($prod_new['f_stock_sz_tmp'] >= $item['qty']){
-    			   				$sz_cover = $item['qty'];
-    			   				$udstr = "UPDATE product SET sz_cover = sz_cover + ".$sz_cover." WHERE id='".$item['pord_id']."'";
-    			   			}else{
-    			   				//国内占用仓库后剩余
-    			   				$surplus_1 = $item['qty']-$prod_new['f_stock_sz_tmp'];
-    			   				if($prod_new['f_stock_hk'] >= $surplus_1){
-    			   					$sz_cover = $prod_new['f_stock_sz_tmp'];
-    			   					$hk_cover = $surplus_1;
-    			   					$udstr = "UPDATE product SET hk_cover = hk_cover + ".$hk_cover.", sz_cover =sz_cover + ".$sz_cover." WHERE id='".$item['pord_id']."'";
-    			   				}else{
-    			   					$sz_cover  = $prod_new['f_stock_sz_tmp'];
-    			   					$hk_cover  = $prod_new['f_stock_hk'];
-    			   					$udstr = "UPDATE product SET hk_cover = hk_cover + ".$hk_cover.", sz_cover =sz_cover + ".$sz_cover.", bpp_cover =bpp_cover + ".$bpp_cover." WHERE id='".$item['pord_id']."'";
-    			   				}
-    			   			}
-    			   		}
-    			   	  }elseif($delivery=='HK'){
-    			   		if($prod_new['f_stock_hk_tmp'] >= $item['qty']){
-    			   			$hk_cover = $item['qty'];
-    			   		    $udstr = "UPDATE product SET hk_cover =hk_cover + ".$hk_cover." WHERE id='".$item['pord_id']."'";
-    			   		}else{
-    			   			$hk_cover  = $prod_new['f_stock_hk_tmp'];		   	
-    			   			$udstr = "UPDATE product SET hk_cover = hk_cover + ".$hk_cover.", bpp_cover =bpp_cover + ".$bpp_cover." WHERE id='".$item['pord_id']."'";
-    			   		}
-    			   	  }
-    			   	}
-    			   	//执行更新
-    			   if($udstr) {
-    			   	  $prodModel->updateBySql($udstr);
-    			   }
     			   $tmp=array('salesnumber'=>$salesnumber,
+    			   				'collection_id'=>$item['collection_id'],
+    			   				'supplier_id'=>$item['supplier_id'],
     						    'prod_id' =>$item['pord_id'],
     						    'part_no' =>$item['part_no'],
     			   		        'customer_material'=>$this->filter->pregHtmlSql($customer_material[$j]),
     						    'brand'   =>$item['options']['brand'],
     							'buynum'  =>$item['qty'],
-    			   		        'sz_cover'=>$sz_cover,
-    			   		        'hk_cover'=>$hk_cover,
-    			   		        'bpp_cover'=>$bpp_cover,
-    			   		        'shipments' =>($udstr?'spot':'order'),
     							'buyprice'=>$item['byprice'],
-    							'integral'=>$item['options']['integral'],
-    							'rebate'  =>$item['options']['rebate'],
-    			   		        'staged'  =>$item['options']['staged'],
-    			   		'bpp_stock_id' => $item['options']['bpp_stock_id'], //记录供应商信息
-    			   		'vendor_name' => $item['options']['vendor_name'],
-    			   		'location' => $item['options']['location'],
-    			   		'location_code' => $item['options']['location_code'],
     							'created' =>time());
     			   $itemdata[]=$tmp;
     			   $total +=$item['qty']*$item['byprice'];
@@ -660,6 +591,7 @@ class OrderController extends Zend_Controller_Action
     			$this->_userService->upInfoByOrder($data,$_SESSION['userInfo']['uidSession']);
     			
     			$paytotal = ($total+$this->freight);
+    			$deductions = 0;
     			if($deductions >= $paytotal){
     				$paytotal = 0;
     				$status = 201;
@@ -667,33 +599,7 @@ class OrderController extends Zend_Controller_Action
     				$paytotal = $paytotal-$deductions;
     				$status = 101;
     			}
-    			/*如果订单总金额为0
-    			 *1、判断是否已经填写好备注
-    			*2、直接释放内部订单
-    			*/
-    			if(($total-$deductions)==0){
-    				$customer       =$this->filter->pregHtmlSql($formData['customer']);
-    				$efficiency     =$this->filter->pregHtmlSql($formData['efficiency']);
-    				$effective_time =$this->filter->pregHtmlSql($formData['effective_time']);
-    			
-    				if(!$customer){
-    					$message ='请填写使用工具客户名称。';
-    					$error++;
-    				}elseif(!$efficiency){
-    					$message ='请填写预计产生的市场效益。';
-    					$error++;
-    				}elseif(!$effective_time){
-    					$message ='请填写预计完成的效益时间。';
-    					$error++;
-    				}
-    				if($error){
-    					//记录日志
-    					$salesorderModel->rollBack();
-    					$this->_defaultlogService->addLog(array('log_id'=>'A','temp1'=>400,'temp4'=>'在线订单提交失败','description'=>$message));
-    					echo Zend_Json_Encoder::encode(array("code"=>100, "message"=>$message));
-    					exit;
-    				}
-    			}
+    
     			$orderdata = array('uid'=>$_SESSION['userInfo']['uidSession'],
     					'salesnumber'=>$salesnumber,
     					'addressid'=>$soaddid,
@@ -717,21 +623,12 @@ class OrderController extends Zend_Controller_Action
     					'remark'   =>$remark,
     					'ip'=>$this->fun->getIp(),
     					'created'=>time(),
-    					'modified'=>time(),
-    					'customer'=>$customer,
-    					'efficiency'=>$efficiency,
-    					'effective_time'=>$effective_time);
+    					'modified'=>time());
     			if(!empty($needinvoice)) $orderdata['invoiceid']=$invoiceid;
     			$orderid = $salesorderModel->addData($orderdata);
     			if($orderid)
     			{
-    				//更新优惠券
-    				if($formData['coupon']){
-    					foreach($formData['coupon'] as $couponcode){
-    						$update = array('salesnumber'=>$salesnumber,'status'=>201,'used_date'=>time());
-    						$this->_orderService->updateCoupon($couponcode,$update);
-    					}
-    				}
+    				
     				//记录产品销售详细
 				    $salesproductModel->addDatas($itemdata);
 				    $this->_defaultlogService->addLog(array('log_id'=>'A','temp2'=>$salesnumber,'temp4'=>'在线订单提交成功'));
@@ -742,86 +639,11 @@ class OrderController extends Zend_Controller_Action
 				    	$this->cart->update(array('rowid' => $item['rowid'],'qty'=> 0));
 				    }
 				    $_SESSION['cartnumber']=$this->cart->total_items();
-				    //添加积分
-				    $this->_scoreService = new Default_Service_ScoreService();
-				    $this->_scoreService->addScore('first_onorder');
 				    $salesorderModel->commit();
 				   //异步请求开始
     			   $this->fun->asynchronousStarts();
     			   $orderarr = $this->_orderService->geSoinfo($salesnumber);
     			   $orderSer = new Default_Service_OrderService();
-    			   //用户信息
-    			   $user = $this->_userService->getUserProfile();
-    			   //发邮件给用户
-    			   $emailreturn = $orderSer->sendordermail($user['email'],$user['uname'],$orderarr);
-    			   //邮件日志
-    			   if($emailreturn){
-    				   $this->_defaultlogService->addLog(array('log_id'=>'M','temp2'=>$salesnumber,'temp4'=>'发送在线订单邮件成功'));
-    			   }else{
-    				$this->_defaultlogService->addLog(array('log_id'=>'M','temp1'=>400,'temp2'=>$salesnumber,'temp4'=>'发送在线订单邮件失败'));
-    			   }
-    			   //发邮件给销售
-    			   $orderSer->sendordermailsell($orderarr);
-    			   
-    			   /*如果订单总金额为0
-    			   *1、判断是否已经填写好备注
-    			   *2、直接释放内部订单
-    			   */
-    			   if(($total-$deductions)==0){
-    			   	  //直接释放订单
-    			      $title = '#内部订单# - 订单号:'.$salesnumber.'，请处理';
-			$hi_mess     = '<table cellspacing="0" border="0" cellpadding="0" width="730" style="font-family:\'微软雅黑\';">
-                            <tbody>
-                                <tr>
-                                    <td valign="top"  height="30" >
-                                        <div style="margin:0; font-size:16px; font-weight:bold; color:#fd2323 ;font-family:\'微软雅黑\'; ">尊敬的Jill Cen,</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td valign="middle" >
-                                        <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
-                                            <tr>
-                                                <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; font-size:14px">IC易站内部订单，请使用
-                                                <b style="color:#fd2323; font-size:15px;"> SQS Customer Code </b>处理。
-       											</div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </tbody>
-               </table>';
-			   $this->_soService = new Icwebadmin_Service_OrderService();
-			   $this->orderarr = $this->_soService->getSoInfo($salesnumber);
-			   $this->pordarr = $this->_soService->getSoPart($salesnumber);
-			   //负责销售情况
-		       $this->_staffService=new Icwebadmin_Service_StaffService();
-		       $this->_emailService = new Default_Service_EmailtypeService();
-		       $sellinfo = $this->_staffService->sellbyuid($this->orderarr['uid']);
-			   $mess = $this->_orderService->getOrderTable($this->orderarr,$this->pordarr,$hi_mess,$sellinfo);
-			   $emailarr = $this->_emailService->getEmailAddress('sqs_order_release_noinvoice',$this->orderarr['uid']);
-			   $emailto = $emailcc = $emailbcc = array();
-			   if(!empty($emailarr['to'])){
-			   	$emailto = $emailarr['to'];
-			   }
-			   if(!empty($emailarr['cc'])){
-			   	$emailcc = $emailarr['cc'];
-			   }
-			   if(!empty($emailarr['bcc'])){
-			   	$emailbcc = $emailarr['bcc'];
-			   }
-			   //中电品牌抄送给研发
-			   $staffservice = new Icwebadmin_Service_StaffService();
-			   $emailcc = $staffservice->ccToYafa($this->pordarr,$emailcc);
-			   $fromname = 'IC易站';   
-			   $retmp =$this->fun->sendemail($emailto, $mess, $fromname, $title,$emailcc,$emailbcc,array(),$sellinfo,0);
-			    if($retmp){
-			    	//更新状态
-			    	$soModel = new Icwebadmin_Model_DbTable_SalesOrder();
-			    	$soModel->update(array('status'=>201,'back_status'=>202,'modified'=>time()), "salesnumber='{$salesnumber}'");
-			    }
-    		  }
     			   echo Zend_Json_Encoder::encode(array("code"=>0, "message"=>'下单成功。','hashkey'=>$this->fun->encryptVerification($salesnumber)));
     			   //异步请求开始
     			   $this->fun->asynchronousEnd();

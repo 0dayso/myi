@@ -750,4 +750,44 @@ class Default_Service_ProductService
 		$product =  $prodModel->getByOneSql($sqlstr);
 		return $product;
 	}
+	/**
+	 * 获取库存和价格
+	 */
+    public function getStockPrice($product_id,$collection_id,$supplier_id){
+    	$productSupplierModel = new Default_Model_DbTable_ProductSupplier();
+    	$sqlstr ="SELECT *
+    	FROM product_supplier
+    	WHERE product_id='{$product_id}' 
+    	AND collection_id='$collection_id'
+    	AND supplier_id='$supplier_id'";
+    	$stockInfo =  $productSupplierModel->getByOneSql($sqlstr);
+    	//查询价格
+    	$sqlstr ="SELECT *
+    	FROM product_price
+    	WHERE product_id='{$product_id}'
+    	AND collection_id='$collection_id'
+    	AND supplier_id='$supplier_id' ORDER BY moq ASC";
+    	$priceInfo =  $productSupplierModel->getBySql($sqlstr);
+    	$stockInfo['priceInfo'] = $priceInfo;
+    	$stockInfo['rmbprice'] = '';
+    	$stockInfo['usdprice'] = '';
+    	if($priceInfo){
+    		foreach($priceInfo as $k=>$v){
+    			if($k==0){
+    				$stockInfo['rmbprice'] = $v['moq'].'|'.$v['rmbprice'];
+    				$stockInfo['usdprice'] = $v['moq'].'|'.$v['usdprice'];
+    			}else{
+    				$stockInfo['rmbprice'] .= ';'.$v['moq'].'|'.$v['rmbprice'];
+    				$stockInfo['usdprice'] .= ';'.$v['moq'].'|'.$v['usdprice'];
+    			}
+    		}
+    	}
+    	//供应商信息
+    	$sqlstr ="SELECT *
+    	FROM sx_supplier_grab
+    	WHERE id='$supplier_id'";
+    	$stockInfo['supplierInfo'] =  $productSupplierModel->getByOneSql($sqlstr);
+    	
+    	return $stockInfo;
+    }
 }

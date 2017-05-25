@@ -26,9 +26,9 @@
 .shopbox .rightp .price{ font-size:22px; line-height:24px }
 
 .shopbox .price{ text-align:left}
-.productinfo{ text-align:left;width:300px;}
+.productinfo{ text-align:left;width:200px;}
 .productinfo img{ float:left; height:50px; padding:5px; width:60px; }
-.productinfo .productinfop{ float:left; width:230px; }
+.productinfo .productinfop{ float:left;  }
 .productinfo p{ margin-bottom:2px; line-height:16px}
 
 /*购买数量*/
