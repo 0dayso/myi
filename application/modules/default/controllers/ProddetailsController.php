@@ -117,10 +117,7 @@ class ProddetailsController extends Zend_Controller_Action {
 		    $secid = $this->view->secid = (int)$this->_getParam('secid');
 		    $thiid = $this->view->thiid = (int)$this->_getParam('thiid');
 		}
-		//库存
-		$stock = $this->view->stock = $this->filter->pregHtmlSql($this->_getParam('stock'));
-		if($stock=='spot') $strwhere .=" (po.sz_stock- po.sz_cover)>0 AND ";
-		elseif($stock=='order') $strwhere .=" (po.sz_stock- po.sz_cover)<=0 AND ";
+		
 		//品牌
 		$brandid = $this->view->brandid = (int)$this->_getParam('brand');
 		$this->view->brand = $this->_prodService->getBrand();
@@ -170,11 +167,6 @@ class ProddetailsController extends Zend_Controller_Action {
 		}else{
 		    $brandid = (int)$this->_getParam('bid');
 		}
-		
-		//OTAX 跳到专题页
-		//if($_GET['t']==1 && $brandid==17) $this->_redirect('/event/201312044');
-		//EPSON 跳转专题页
-		//if($_GET['t']==1 && $brandid==13) $this->_redirect('/event/201404228');
 		if($brandid){
 			
 			$this->view->allbrand = $allbrand = $brandModel->getAllByWhere("status='1'","displayorder ASC");
@@ -187,19 +179,9 @@ class ProddetailsController extends Zend_Controller_Action {
 			
 			//获取品牌信息
 			$this->view->brandinfo = $this->_prodService->getBrandInfoById($brandid);
-			//获取品牌所有系列
-			$this->view->series = $this->_prodService->getSeriesByBrand($brandid);
-				
-			if($this->view->brandinfo['show']==1){
-				//品牌应用分类
-				$this->view->app = $this->_prodService->getAppByBrandId($brandid,$this->view->brandinfo['apporder']);
-			}
+
 			$strwhere ='';
-			//库存
-			/*$stock = $this->view->stock = $this->_getParam('stock');
-			if($stock=='spot') $strwhere =" (po.sz_stock- po.sz_cover)>0 AND ";
-			elseif($stock=='order') $strwhere =" (po.sz_stock- po.sz_cover)<=0 AND ";
-			*/
+
 			//筛选
 			$app2 = $_GET['app2'];
 			$app3 = $_GET['app3'];
@@ -259,15 +241,6 @@ class ProddetailsController extends Zend_Controller_Action {
 			$viewobj->headMeta()->setName('description',str_ireplace(array("<brand_name>"),array($brandname),$this->seoconfig->general->brand_description));
 			$viewobj->headMeta()->setName('keywords',str_ireplace(array("<brand_name>"),array($brandname),$this->seoconfig->general->brand_keywords));
 
-			//查询方案列表
-			$solModel = new Default_Model_DbTable_Solution();
-			$sqlstr = "SELECT count(s.id) as num
-			FROM solution as s
-			LEFT JOIN solution_product  as sp ON s.id = sp.solution_id
-			LEFT JOIN product as p ON sp.prod_id = p.id
-			WHERE p.manufacturer='{$brandid}' AND sp.type='core' AND s.status=1 AND sp.status=1 ";
-			$allcan = $solModel->getBySql($sqlstr,array());
-			$this->view->bsNum = $allcan[0]['num'];
 			
 		}else $this->_redirect('/brand');
 	}

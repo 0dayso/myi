@@ -20,11 +20,7 @@ class Default_Service_FavoritesService
 	 */
 	public function getRecord($offset,$perpage)
 	{
-		$sqlstr = "SELECT f.id as fid,b.name as bname,pro.id,pro.part_no,pro.part_img,pro.manufacturer,pro.break_price,
-			    pro.part_level1,pro.part_level2,pro.part_level3,pro.moq,pro.mpq,pro.noinquiry,
-				pro.break_price_rmb,pro.sz_stock,pro.hk_stock,pro.sz_cover,pro.hk_cover,pro.bpp_stock,pro.bpp_cover,
-                pro.mpq,pro.moq,pro.can_sell,pro.surplus_stock_sell,pro.special_break_prices,pro.show_price,
-	            pro.price_valid,pro.price_valid_rmb,pro.description
+		$sqlstr = "SELECT f.id as fid,b.name as bname,pro.*
 		FROM favorites as f 
 		LEFT JOIN product as pro ON f.prod_id=pro.id
         LEFT JOIN brand as b ON pro.manufacturer=b.id

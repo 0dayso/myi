@@ -65,14 +65,10 @@ class Default_Service_ProductService
 	 * 根据sql条件获取产品
 	*/
 	public function getProdPage($sqlstr,$offset,$perpage){
-		$sqlstr ="SELECT po.id,po.part_img,po.part_no,po.manufacturer,po.part_level1,po.part_level2,po.part_level3,po.description,po.sz_stock,
-		           po.sz_cover,po.hk_stock,po.hk_cover,po.bpp_stock,po.sample_stock,po.bpp_cover,po.mpq_price,po.show_price,po.noinquiry,
-				   po.price_valid,po.price_valid_rmb,po.mpq_price,po.show_price,po.mpq,po.moq,po.can_sell,po.surplus_stock_sell,
-				   po.special_break_prices,po.break_price,po.break_price_rmb,po.samples,po.datasheet,br.name as bname
+		$sqlstr ="SELECT po.*,br.name as bname
 				   FROM product as po 
 				   LEFT JOIN brand as br ON po.manufacturer=br.id
-				   WHERE {$sqlstr} AND po.status=1 AND br.status=1  
-		         ORDER BY po.sort_order DESC,po.sample_stock DESC,po.sz_stock DESC,po.hk_stock DESC,po.break_price DESC,po.break_price_rmb DESC LIMIT {$offset},{$perpage}";
+				   WHERE {$sqlstr} AND po.status=1 AND br.status=1 LIMIT {$offset},{$perpage}";
 		return $this->_proModer->getBySql($sqlstr);
 	}
 	/*

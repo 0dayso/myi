@@ -90,12 +90,9 @@ class Default_Service_UserService
 	 */
 	public function getCenterUserInfo()
 	{
-		return $this->_userModel->getRowBySql("SELECT u.uname,u.lasttime,u.lastip,up.* ,
-				st.head,dep.department,st.level_id,st.email,st.tel,st.phone,st.lastname,st.firstname
+		return $this->_userModel->getRowBySql("SELECT u.uname,u.lasttime,u.lastip,up.* 
 				FROM user as u
 				LEFT JOIN user_profile as up ON u.uid = up.uid
-				LEFT JOIN admin_staff as st ON up.staffid = st.staff_id
-				LEFT JOIN admin_department as dep ON dep.department_id = st.department_id
     			WHERE u.uid=:uidtmp",array('uidtmp'=>$_SESSION['userInfo']['uidSession']));
 	}
 	/**

@@ -42,6 +42,7 @@ class CenterController extends Zend_Controller_Action
 
     public function indexAction()
     {       
+        $this->_redirect('/center/order');//跳转到订单
     	$_SESSION['leftmenu_select'] ='index';
     	//资料和客户经理
     	$this->view->usrinfo = $this->_userService->getCenterUserInfo();
@@ -50,8 +51,7 @@ class CenterController extends Zend_Controller_Action
     	$this->view->inqsoinfo = $this->_userService->getInqSoInfo();
     	//询价相关
     	$this->view->inqinfo = $this->_userService->getInqInfo();
-    	//热推产品
-    	$this->view->hotpord = $this->_userService->getHotPord();
+
     	//新版本
     	if(isset($_SESSION['new_version'])){
     		$this->fun->changeView($this->view,$_SESSION['new_version']);
@@ -1043,28 +1043,11 @@ class CenterController extends Zend_Controller_Action
     		    }
     		}
     	}
-    	//查询应用
-    	$appcModel = new Default_Model_DbTable_AppCategory();
-    	$this->view->appLevel1 = $appcModel->getAllByWhere("level = 1 AND status=1","displayorder ASC");
-    	
+
     	$myinfoarray = $this->user->getBySql("SELECT * FROM user as u,user_profile as up
     			WHERE u.uid = up.uid AND u.uid=:uidtmp",array('uidtmp'=>$_SESSION['userInfo']['uidSession']));
     	$this->view->myinfo = $myinfoarray[0];
-    	//查询企业所在地区 或 企业资料审核回复
-    	if($myinfoarray[0]['companyapprove']==1){
-    		$sqlstr ="SELECT p.province,c.city,e.area
-    	              FROM province as p ,city as c ,area as e
-    	              WHERE p.provinceid='".$myinfoarray[0]['province']."' 
-    		          AND c.cityid = '".$myinfoarray[0]['city']."'
-    		          AND e.areaid = '".$myinfoarray[0]['area']."'";
-    	    $this->view->addressArr = $this->user->getBySql($sqlstr, array());
-    	}else{
-    		$replylogModel = new Icwebadmin_Model_DbTable_ReplyLog();
-    		$this->view->replylog = $replylogModel->getAllByWhere("uid='".$_SESSION['userInfo']['uidSession']."' AND area_name='companyapprove'");
-    	}
-    	//部门
-    	$officeModel = new Default_Model_DbTable_Model('user_department');
-    	$this->view->office = $officeModel->getAllByWhere("status=1","displayorder ASC");
+
     }
     /**
      * 积分兑换
