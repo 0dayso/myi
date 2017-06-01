@@ -4,7 +4,7 @@
 <!--content-->
 <div class="w">
   <div class="breadcrumbs2013"> <span>
-    <a  class="focs">我的IC易站</a>&nbsp;&nbsp;»&nbsp;&nbsp;<a ><?=$this->translate('Menu_MyInfo')?></a>
+    <a  class="focs">我的盛芯</a>&nbsp;&nbsp;»&nbsp;&nbsp;<a ><?=$this->translate('Menu_MyInfo')?></a>
   </div>
 </div>
 
@@ -21,7 +21,7 @@
       <div class="order_tab_head">
         <ul>
           <li <?php if($_SESSION['postsess']['ptype']=='1'|| empty($_SESSION['postsess']['ptype'])) echo 'class="on"'?>><a href="javascript:">基本资料<b class="blank3"></b></a></li>
-          <li <?php if($_SESSION['postsess']['ptype']=='2') echo 'class="on"'?>><a href="javascript:">企业资料<b class="blank3"></b></a></li>
+          
           <li <?php if($_SESSION['postsess']['ptype']=='3') echo 'class="on"'?>><a href="javascript:">修改密码<b class="blank3"></b></a></li>
         </ul>
       </div>
@@ -82,160 +82,7 @@
           </form>
           <div class="clr"></div>
         </div>
-        <div class="table_box" <?php if($_SESSION['postsess']['ptype']!='2') echo 'style="display:none;"'?>>
-          <div class="add_address" >
-            <form id='company' name="company" action='' method='post' enctype="multipart/form-data">
-              <input type="hidden" name="ptype" value="2"/>
-              <dl>
-                <dt><font color="#FF0000">* </font>公司名称：</dt>
-                <dd>
-                  <input type="text" class="input120"  style="width:340px;" name="companyname" id="companyname" value="<?php echo $this->myinfo['companyname'];?>"/>
-                  <div id="companynameTip" style="position:absolute; top:0; left:350px;"></div>
-                </dd>
-              </dl>
-              <dl>
-              <dt><font color="#FF0000">*</font>企业性质：</dt>
-              <dd>
-                <select name="property" id="property">
-                  <option value="enduser" <?=$this->myinfo['property']=='enduser'?'selected':'';?>>终端用户</option>
-                  <option value="merchant" <?=$this->myinfo['property']=='merchant'?'selected':'';?>>贸易商</option>
-                </select>
-              </dd>
-              </dl>
-              <dl>
-              <dt><font color="#FF0000">*</font>行业领域：</dt>
-              <dd>
-                <select id="industry" name="industry" onchange="showother(this.value)">
-                <?php foreach($this->appLevel1 as $k=>$v){
-			    $sel='';
-			    if($this->myinfo['industry'] == $v['id']) $sel = 'selected="selected"';
-			    echo "<option value='".$v['id']."' $sel>".$v['name']."</option>";
-		        }?>
-               <option value='other' <?php if($this->myinfo['industry'] == 'other') echo 'selected="selected"';?>>其它</option>
-               </select>
-               <div id="industry_other_div"></div>
-              </dd>
-              </dl>
-              <dl>
-                <dt><font color="#FF0000">*</font>常用币种：</dt>
-                <dd>
-                  <select name="currency" id="currency">
-                    <option value="RMB" <?=$this->myinfo['currency']=='RMB'?'selected':'';?>>人民币(RMB)</option>
-                    <option value="USD" <?=$this->myinfo['currency']=='USD'?'selected':'';?>>美元(USD)</option>
-                    <option value="HKD" <?=$this->myinfo['currency']=='HKD'?'selected':'';?>>港币(HKD)</option>
-                  </select>
-                </dd>
-              </dl>
-              <dl>
-                <dt><font color="#FF0000">*</font>联系人：</dt>
-                <dd>
-                  <input type="text" class="input120" name="contact" id="contact" value="<?php echo $this->myinfo['truename'];?>"/>
-                  <div id="contactTip" style="position:absolute; top:0; left:220px;"></div>
-                </dd>
-              </dl>
-              <dl>
-                <dt><font color="#FF0000">*</font>部门：</dt>
-                <dd>
-                  <select name="department_id" id="department_id">
-                  <?php foreach($this->office as $v){?>
-                  <option value="<?=$v['id']?>" <?=$this->myinfo['department_id']==$v['id']?'selected':'';?>><?=$v['department']?></option>
-                  <?php }?>
-                  </select>
-                </dd>
-              </dl>
-              <dl>
-                <dt><font color="#FF0000">*</font>公司电话：</dt>
-                <dd>
-                  <input type="text" class="input120" name="tel" id="tel" value="<?php echo $this->myinfo['tel'];?>"/>
-                  <div id="telTip" style="position:absolute; top:0; left:220px;"></div>
-                </dd>
-              </dl>
-              <dl>
-                <dt><font color="#FF0000">*</font>公司传真：</dt>
-                <dd>
-                  <input type="text" class="input120" name="fax" id="fax" value="<?php echo $this->myinfo['fax'];?>"/>
-                  <div id="faxTip" style="position:absolute; top:0; left:220px;"></div>
-                </dd>
-              </dl>
-              <dl>
-                <dt><font color="#FF0000">* </font>所在地区：</dt>
-                <dd> <span id="provinceSpan">
-                  <select id="province" name="province">
-                    <option value="">请选择省</option>
-                  </select>
-                  </span> <span id="citySpan">
-                  <select id="city" name="city">
-                    <option value="">请选择市</option>
-                  </select>
-                  </span> <span id="areaSpan" style="position:relative;">
-                  <select id="area" name="area">
-                    <option value="">请选择区</option>
-                  </select>
-                  </span>
-                  <input type="hidden" id="areatmp" name="areatmp" value="<?php echo $this->myinfo['area'];?>"/>
-                  <div style="float:right">
-                    <div id="areatmpTip"></div>
-                  </div>
-                </dd>
-              </dl>
-              <dl>
-                <dt><font color="#FF0000">* </font>详细地址：</dt>
-                <dd>
-                  <input type="text" class="input120" style="width:340px;" name="address" id="address" value="<?php echo $this->myinfo['address'];?>"/>
-                  <div id="addressTip" style="position:absolute; top:0; left:350px;"></div>
-                </dd>
-              </dl>
-              <dl>
-                <dt>邮政编码：</dt>
-                <dd>
-                  <input type="text" class="input120" name="zipcode" id="zipcode" value="<?php echo $this->myinfo['zipcode'];?>"/>
-                  <div id="zipcodeTip" style="position:absolute; top:0; left:220px;"></div>
-                </dd>
-              </dl>
-              <dl>
-                <dt>营业执照：</dt>
-                <dd>
-                  <input type="file" name="uploadtext1" id="uploadtext1" class="input200">
-                  <div id="uploadtext1Tip" style="position:absolute; top:0; left:220px;"></div>
-                  <?php 
-				  $annexurl = COM_ANNEX.$_SESSION['userInfo']['uidSession'].'/'.$this->myinfo['annex1'];
-				  if(file_exists($annexurl) && $this->myinfo['annex1']){?><a href="<?='/'.$annexurl?>" target="_blank" title="查看">查看&gt;&gt;</a><?php }?>
-                </dd>
-              </dl>
-             <dl>
-                <dt>税务登记证：</dt>
-                <dd>
-                  <input type="file" name="uploadtext2" id="uploadtext2" class="input200">
-                  <div id="uploadtext2Tip" style="position:absolute; top:0; left:220px;"></div>
-                   <?php 
-				  $annexurl2 = COM_ANNEX.$_SESSION['userInfo']['uidSession'].'/'.$this->myinfo['annex2'];
-				  if(file_exists($annexurl2) && $this->myinfo['annex2']){?><a href="<?='/'.$annexurl2?>" target="_blank" title="查看">查看&gt;&gt;</a><?php }?>
-                </dd>
-              </dl>
-              <!-- <dl>
-                <dt>附件3：</dt>
-                <dd>
-                  <input type="file" name="uploadtext3" id="uploadtext3" class="input200">
-                  <div id="uploadtext3Tip" style="position:absolute; top:0; left:220px;"></div>
-                </dd>
-              </dl>-->
-              <dl>
-                <dt>&nbsp;</dt>
-                <dd style="text-align:left;">( 请提供公司相关证件的扫描件，以方便我们为你提供更好服务。)<br/>
-                  1、中国大陆地区请提供营业执照，非大陆地区请提供商务登记证。<br/>
-                  2、可以上传.JPG/.GIF/.PNG/.PDF/.ZIP/.RAR 格式的文件，单个文件大小不能超过8M。</dd>
-              </dl>
-              <dl>
-                <dt>&nbsp;</dt>
-                <dd>
-                  <input type="submit"  value="保 存" class="button"/>
-                </dd>
-              </dl>
-            </form>
-             </div>
-            <div class="clr"></div>
-         
-        </div>
+        
         <div class="table_box" <?php if($_SESSION['postsess']['ptype']!='3') echo 'style="display:none;"'?>>
           <form id="changepass" name="changepass" action="" method='post' >
             <input type="hidden" name="ptype" value="3"/>

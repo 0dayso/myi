@@ -9,7 +9,7 @@ ul{list-style:none;}
 :focus{outline:0;}
 a img{border:0;}img{vertical-align:middle;}
 table{empty-cells:show;}ins{text-decoration:none;}del{text-decoration:line-through;}
-em{font-style:normal; color:#f00}
+em{font-style:normal; color:#0564A6}
 input{font-family:"微软雅黑" !important;} 
 input[ type="text"],input[ type="password"],select{/* border:1px solid #ddd;*/ padding:1px 3px;font-family:"微软雅黑"}/*input为radio时有边*/
 button{ border:0}
@@ -22,12 +22,12 @@ h1{font-family:"微软雅黑"; font-size:18px; padding:10px 0 2px 8px}
 h2,h3{font-size:14px; font-family:"微软雅黑"}
 h4,h5,h6{font-size:12px; font-family:"微软雅黑"}
 a:link,a:visited{color:#1a66b3;text-decoration:none;font-family:"微软雅黑"}
-a:hover{color:#f00;text-decoration:underline;}
+a:hover{color:#0564A6;text-decoration:underline;}
 a:active{color:#a2000b;}
 
 .pos-re{ position:relative}
 
-.fontred {color: #f00 !important;}
+.fontred {color: #0564A6 !important;}
 .fontorange{color:#ff3d00;}
 .fontgray{color:#aaaaaa;}
 .fontbold{ font-weight:bold}
@@ -69,7 +69,7 @@ a.user_name {color: #C00;margin-right:2px;display: inline-block;}
 .menus span {float: left;  color:#ddd;display: inline-block; margin:0 1px}
 .ui_first_nav a,.ui_hover a{background-position: right 0;width:64px; line-height:29px; padding-top:1px;  display:block; text-align:left; padding-left:10px;font-weight: normal;}
 .ui_first_nav a:hover,.ui_hover a{background-position:right -30px; text-decoration:none}
-.cart u{ color:#f00; }
+.cart u{ color:#0564A6; }
 .cart a:hover.user_act u{ color:#fff ;}
 .ui_navs .user_act{ margin:4px 0px 0 0px}
 .ui_navs a:hover.user_act{ color:#fff;}
@@ -92,7 +92,7 @@ a.user_name {color: #C00;margin-right:2px;display: inline-block;}
 .searchMenu {float: left;}
 .searchtext{float: left;border: 0;background:white;color: #666;font: 14px/22px '宋体',verdana,tahoma,arial,'SimSun',sans-serif;/*width:220px;*/width:160px;height: 22px;  margin:2px 0 0 0;outline: medium none;padding: 4px 0;_padding: 2px 0; border:0 !important; }
 .searchBtn {float: left;}
-.searchBtn .searchbottom{border: 0;color: white;cursor: pointer;float: left;font-size: 16px;height: 34px; line-height:30px;width:60px;/* background-position:0 -81px*/ background:#f00; }
+.searchBtn .searchbottom{border: 0;color: white;cursor: pointer;float: left;font-size: 16px;height: 34px; line-height:30px;width:60px;/* background-position:0 -81px*/ background:#0564A6; }
 .searchicon{ width:18px; height:18px; cursor:pointer; background-position:-65px -8px; margin:5px 0 0 0; _display:none;}
 .searchTab {display:none;position: absolute;top: 30px;left: -2px;width:74px; padding-bottom:5px;border: 2px solid #d7000f;border-top: 0;background: white;z-index: 20;}
 .searchTab li {width:74px;height: 28px;line-height: 28px;color: #A8A8A8;font-size: 14px;font-weight: bold;text-indent: 10px;cursor: pointer;}
@@ -111,14 +111,14 @@ a.user_name {color: #C00;margin-right:2px;display: inline-block;}
 .buy .hover .icon{ background-position:-55px -249px;}
 .question .icon{ background-position:0 -220px;}
 .question .hover .icon{ background-position:-55px -220px;}
-.bubble{ background:#f00;text-align: center; padding:0 1px; min-width:15px; width:auto !important;width:15px; /*width:18px; height: 20px;line-height: 20px;display: block;font-size: 14px;*/ line-height:16px;
+.bubble{ background:#0564A6;text-align: center; padding:0 1px; min-width:15px; width:auto !important;width:15px; /*width:18px; height: 20px;line-height: 20px;display: block;font-size: 14px;*/ line-height:16px;
  position:absolute; top:-16px; left:12px;color:#fff;z-index:1}
-.bubble b{ display: block;position: absolute;left: 4px;bottom:-3px;height: 0;width: 0;font-size: 0;line-height: 0; border:2px solid #f00; border-width:2px 2px;border-style: solid;-moz-border-radius: 2px;
+.bubble b{ display: block;position: absolute;left: 4px;bottom:-3px;height: 0;width: 0;font-size: 0;line-height: 0; border:2px solid #0564A6; border-width:2px 2px;border-style: solid;-moz-border-radius: 2px;
 　　-webkit-border-radius: 2px;
 　　border-radius: 2px;
-border-color: #f00 transparent transparent #f00;_border-color: #f00 #fff #fff #f00;z-index: 1; }
+border-color: #0564A6 transparent transparent #0564A6;_border-color: #0564A6 #fff #fff #0564A6;z-index: 1; }
 .hoverbox {position: absolute;right:0;top:33px;*top:102px; _top:102px;z-index:0;width:500px; padding:1px;background:#fff;text-align: center; min-height:50px;vertical-align:middle;border:1px solid #ff0101; display:none;float:none;
-/*box-shadow: 0 2px 2px #f00;border-bottom:0px solid #ff0101;*/}
+/*box-shadow: 0 2px 2px #0564A6;border-bottom:0px solid #ff0101;*/}
 .hoverbox span{ line-height:50px;}
 .question .hoverbox{ right:137px !important }
 /*顶部提示表格*/
@@ -175,10 +175,10 @@ font-size:15px;-webkit-text-size-adjust:none; font-weight:normal; font-family:"m
 .show_sort dl{padding:0 0 10px 100px;border-bottom:1px solid #efefef;overflow:hidden;_zoom:1;}
 .show_sort dl dt,.show_sort dl dd{float:left;}
 .show_sort dl dt{margin:10px 0 0 -110px;width:100px;text-align:right;_margin-left:-57px;_float:left;}
-.show_sort dl dt a{font-weight:bold;color:#f00 !important; }
+.show_sort dl dt a{font-weight:bold;color:#0564A6 !important; }
 .show_sort dl dd{border-left:1px solid #ccc;margin:10px 0 0 0;}
 .show_sort dl dd a{display:block;padding:0 5px;float:left;white-space:pre;height:16px;line-height:16px; color:#656565}
-.show_sort dl dd a:hover{color:#f00;  text-decoration:none;}
+.show_sort dl dd a:hover{color:#0564A6;  text-decoration:none;}
 .show_sort .hot_brand{ float:right; width:100px; display:inline-block; padding:10px 0 0 0; }
 .show_sort .hot_brand h3{ font-size:12px; margin-bottom:6px;}
 .show_sort .hot_brand li{ float:left; width:90px}
@@ -187,8 +187,8 @@ font-size:15px;-webkit-text-size-adjust:none; font-weight:normal; font-family:"m
 .container2_2 dl {font-size:12px; width:400px;background:#fff; }
 .container2_2 div {float:left; background:#eee;}
 .container2_2 dt { position:absolute; background:#fff; z-index:100;  width:198px; text-indent:10px; _text-indent:15px;left:-176px; top:-4px;_left:-178px;_top:-10px; height:30px; line-height:30px;}
-.container2_2 dt h2{ float:left; font-weight:normal; color:#f00; }
-.container2_2 dt strong{ float:right; margin-right:13px; _margin-right:10px;color:#f00 !important;  font-weight:normal !important; font-size:14px; }
+.container2_2 dt h2{ float:left; font-weight:normal; color:#0564A6; }
+.container2_2 dt strong{ float:right; margin-right:13px; _margin-right:10px;color:#0564A6 !important;  font-weight:normal !important; font-size:14px; }
 .container2_2 div dt{ position:static;  line-height:14px}
 /*--------------------------------------------------------------头部样式 结束--------------------------------------------------------------*/
 /*--------------------------------------------------------------页脚 开始--------------------------------------------------------------*/
@@ -225,10 +225,10 @@ font-size:15px;-webkit-text-size-adjust:none; font-weight:normal; font-family:"m
 .model{ font-size:13px !important; color:#1a66b3; font-weight:bold; font-family:Arial, Helvetica, sans-serif !important}
 .number{ font-weight:bold !important; color:#3fa156 !important}
 .time{ color:#aaa;  font-size:12px; line-height:16px !important;}
-.price{ font-size:13px; color:#f00 !important; /*font-family:Arial, Helvetica, sans-serif; display:inline-block*/}
+.price{ font-size:13px; color:#0564A6 !important; /*font-family:Arial, Helvetica, sans-serif; display:inline-block*/}
 /*font-family:Arial, Helvetica, sans-serif; ￥显示出错
 display:inline-block在表格中会出错*/
-.priceem{position:absolute; display:block; overflow:hidden; width:0; height:0; border:4px solid #f00; border-color:#f00 transparent; _border-color:#f00 #fff; border-width:4px 4px 0 4px}
+.priceem{position:absolute; display:block; overflow:hidden; width:0; height:0; border:4px solid #0564A6; border-color:#0564A6 transparent; _border-color:#0564A6 #fff; border-width:4px 4px 0 4px}
 .morea{ width:40px; height:19px; line-height:19px; background-position:-154px -286px !important; color:#fff !important; padding-left:6px;}
 a:hover.morea{ text-decoration:none}
 .tipnothing{ padding:10px 5%; width:90%; text-align:center; border:1px solid #ddd; color:#999;}
@@ -236,7 +236,7 @@ a:hover.morea{ text-decoration:none}
 
 
 /*标题样式*/
-.titbg1ts,.titbggray,.titbggreen{padding:1px 5px 3px 5px!important; position:relative; text-align:center;  font-size:14px;background:#f00; color:#fff !important; font-family:"微软雅黑"; font-weight:normal; line-height:18px; display:block}
+.titbg1ts,.titbggray,.titbggreen{padding:1px 5px 3px 5px!important; position:relative; text-align:center;  font-size:14px;background:#0564A6; color:#fff !important; font-family:"微软雅黑"; font-weight:normal; line-height:18px; display:block}
 .titbg1ts:hover{ text-decoration:none}
 .titbggray{padding:2px 5px;font-size:12px;background:#5c5c5c; float:left; position:relative}
 .titbggray .emtrianglebottom5px{ border:5px solid #5c5c5c; border-color:#5c5c5c #ececec; border-width:5px 5px 0 5px; bottom:-5px; left:30px}
@@ -246,18 +246,18 @@ a:hover.morea{ text-decoration:none}
 
 
 .emtrianglebottom5px,.emtriangleright5px,.emtriangleleft5px,.emtrianglerightgray5px,.emtrianglebottomgray5px,.emtriangletopgray5px,.emwhite,.emwhiteright{position:absolute; display:block; overflow:hidden; width:0; height:0 }
-.emtrianglebottom5px{border:5px solid #f00; border-color:red #fff; border-width:5px 5px 0 5px}
-.emtriangleright5px{border:5px solid #f00; border-color:#eee #f00; border-width:5px 0 5px 5px}
+.emtrianglebottom5px{border:5px solid #0564A6; border-color:#0564A6 #fff; border-width:5px 5px 0 5px}
+.emtriangleright5px{border:5px solid #0564A6; border-color:#eee #0564A6; border-width:5px 0 5px 5px}
 .emtriangleleft5px{border:5px solid #3ba308; border-color:transparent #3ba308; _border-color:#fff #3ba308; border-width:5px 5px 5px 0}
 .emtrianglerightgray5px{border:5px solid #666; border-color:#eee #666; border-width:5px 0 5px 5px}
 .emtrianglebottomgray5px{border:5px solid #666; border-color:#666 #fff; border-width:5px 5px 0 5px}
 .emtriangletopgray5px{border:5px solid #666; border-color:#666 #fff; border-width:0 5px 5px 5px}
 .emwhite{border:5px solid #fff; border-color:#fff #eee; border-width:0 5px 5px 5px}
-.emwhiteright{border:4px solid #fff; border-color:#f00 #fff; border-width:4px 0 4px 4px}
+.emwhiteright{border:4px solid #fff; border-color:#0564A6 #fff; border-width:4px 0 4px 4px}
 
 /*简洁头部切换*/
 .SuperClean_headertitle{ position:relative;}
-.SuperClean_headertitle h2{ color:#f00; position:absolute; top:7px; padding:0 0 5px 0; left:0; width:100%;border-bottom:2px solid #aaa;}
+.SuperClean_headertitle h2{ color:#0564A6; position:absolute; top:7px; padding:0 0 5px 0; left:0; width:100%;border-bottom:2px solid #aaa;}
 .ranking{position:relative;width:100%;padding-top:25px;}
 .ranking .sm{margin-bottom:0;}
 .ranking .smt{width:140px;height:16px;line-height:16px;padding:7px 0;border-bottom:2px solid #AAA;position:absolute;top:0; text-align:center;}
@@ -266,7 +266,7 @@ a:hover.morea{ text-decoration:none}
 .ranking .fore2 .smt{right:140px;}
 .ranking .smc{display:none; overflow:hidden; padding-top:10px; padding-left:2px;border-left:1px solid #F1F1F1;border-right:1px solid #F1F1F1;border-bottom:1px solid #DDD;}
 .ranking .smc li{float:left;width:200px;padding:4px 0 4px 5px;overflow:hidden;}
-.curr .smt{color:#f00;}
+.curr .smt{color:#0564A6;}
 .curr .smc{display:block;}
 .ranking .tab-arrow{width:140px;}
 .tab-arrow{position:absolute;z-index:1;top:23px;right:0;height:7px;border-bottom:2px solid #E4393C;overflow:hidden;text-align:center;}
@@ -283,7 +283,7 @@ a:hover.morea{ text-decoration:none}
 .ranking .fore4 .smt{right:420px;}
 .ranking .smc{display:none; overflow:hidden; padding-top:10px; padding-left:2px;border-left:1px solid #F1F1F1;border-right:1px solid #F1F1F1;border-bottom:1px solid #DDD;}
 .ranking .smc li{float:left;width:200px;padding:4px 0 4px 5px;overflow:hidden;}
-.curr .smt{color:#f00;border-bottom:2px solid #fff;}
+.curr .smt{color:#0564A6;border-bottom:2px solid #fff;}
 .curr .smc{display:block;}
 .ranking .tab-arrow{width:140px;}
 .tab-arrow{position:absolute;z-index:1;top:-8px;right:0;height:7px;border-bottom:2px solid #E4393C;overflow:hidden;text-align:center;}
@@ -299,13 +299,13 @@ a:hover.morea{ text-decoration:none}
 .ranking .link_list .RIGHTtriangle{ margin-right:5px}
 
 /*----------------------------------------------字体颜色----------------------------------------------*/
-.fontred{ color:#f00 !important;}
+.fontred{ color:#0564A6 !important;}
 .fontblue{ color:#1a66b3 !important;}
 .fontgreen{ color:#008000 !important;}
 .fontorange{ color:#f5780c !important;}
 .fontgray{ color:#999 !important;}
 
-.fontred {color: #f00 !important;}
+.fontred {color: #0564A6 !important;}
 .fontorange{color:#ff3d00;}
 .fontbold{ font-weight:bold}
 .font42{ font-size:42px; line-height:80px;}
@@ -344,7 +344,7 @@ a:hover.morea{ text-decoration:none}
 .blank10{height:10px}
 
 /*----------------------------------------------按钮----------------------------------------------*/
-.button,.buttongray,.abutton{ background:#f00; padding:2px 4px; color:#fff !important;display:inline}
+.button,.buttongray,.abutton{ background:#0564A6; padding:2px 4px; color:#fff !important;display:inline}
 a.abutton{ color:#fff !important; display:inline-block; padding:2px 6px; font-family:"宋体"}
 .buttongray{ background:#666; color:#fff !important ; border:0; cursor:pointer}
 a:hover.abutton,.button:hover,.buttongray:hover{background:#333;text-decoration:none;}
@@ -367,7 +367,7 @@ a.subabutton{  background:#ddd !important; padding:2px; font-weight:bold}
 .btncancel:hover{background-position:-71px -465px; }
 
 .dingbtn{ background:#555; color:#fff !important; padding:1px 2px;}
-.dingbtn:hover{ background:#f00; text-decoration:none}
+.dingbtn:hover{ background:#0564A6; text-decoration:none}
 
 .btn_sub,.btn_and{ width:15px; height:20px; text-align:center; line-height:20px; padding:0; font-size:12px; font-weight:normal; font-family:"宋体"; cursor:pointer; font-weight:bold; background:#999; color:#fff; border:0}
 .btn_sub:hover,.btn_and:hover{ background:#333}
@@ -377,7 +377,7 @@ a.subabutton{  background:#ddd !important; padding:2px; font-weight:bold}
 .rightbox{ width:230px;  }/*产品目录右边*/
 
 .listleftmenu{ width:200px; float:left; position:relative; top:0px;   background:#fff} /*产品目录子页面左边*/
-.listleftmenu h1,.listleftmenu .listleftmenu_t{  font-size:18px; width:100%; font-weight:bold; color:#f00; height:40px; line-height:40px; color:#1a66b3}
+.listleftmenu h1,.listleftmenu .listleftmenu_t{  font-size:18px; width:100%; font-weight:bold; color:#0564A6; height:40px; line-height:40px; color:#1a66b3}
 /*这里有个h1是以前布局遗留下来可以忽略*/
 .listright{ width:740px; padding-left:20px;  border-left:1px solid #eee; padding-top:10px; }/*产品目录子页面右边*/
 
@@ -402,11 +402,11 @@ a:hover.aleft{ background-position:-176px -327px}
 .goodsprice span{ margin-top:0px; width:36px;}
 .goodsprice .price{ position:relative; /*background:#e51c1c;  color:#fff !important;*/ border:2px solid #fff; font-size:13px;line-height:13px !important;   border-bottom:0; z-index:100; display:inline-block;  padding:0 15px 3px 0; color:#e51c1c !important; font-weight:bold  }
 .goodsprice .priceem{ position:absolute; top:4px; right:3px; border-color:#e51c1c #fff; }
-.goodsprice .price:hover,.goodsprice .hover{background:#fff !important; color:#f00 !important;  text-decoration:none;border:2px solid #f00; border-bottom:0 solid #fff; }
-.goodsprice .price:hover .priceem,.goodsprice .hover .priceem{ border-color:#f00 #fff; border-width:4px 4px 0 4px}
-.tipprice{ position:absolute;display:none; top:16px; left:36px;  z-index:10;  background:#fff;color: #555;text-align: center;border:2px solid #f00 ;
+.goodsprice .price:hover,.goodsprice .hover{background:#fff !important; color:#0564A6 !important;  text-decoration:none;border:2px solid #0564A6; border-bottom:0 solid #fff; }
+.goodsprice .price:hover .priceem,.goodsprice .hover .priceem{ border-color:#0564A6 #fff; border-width:4px 4px 0 4px}
+.tipprice{ position:absolute;display:none; top:16px; left:36px;  z-index:10;  background:#fff;color: #555;text-align: center;border:2px solid #0564A6 ;
 min-width:100px; width:auto !important;}
-.tiptable{color:#f00; font-weight:bold; text-align:left; }
+.tiptable{color:#0564A6; font-weight:bold; text-align:left; }
 .tiptable td{ border-top:0px; padding:0 5px;color:#009944; text-align:left; font-weight:normal; font-size:12px; line-height:18px;}
 .tiptable tr:hover{ background:#eee}
 .price_btn_table{ margin-top:5px}
@@ -420,7 +420,7 @@ td:hover.tabledownload{ background:#ebf6ff;}
 .pagination{ width:100%; text-align:right; padding:10px 0}
 .pagination .previous_page {border: 1px solid #ddd;color: #999;}
 .pagination a, .pagination span, .pagination em {border: 1px solid #bbb;display: inline-block;line-height: 19px;height: 19px;overflow: hidden;padding: 0 6px;text-decoration: none;margin: 0; color:#666;}
-.pagination .disabled,.pagination a:hover{ background:#f00; color:#fff !important; border:1px solid #f00}
+.pagination .disabled,.pagination a:hover{ background:#0564A6; color:#fff !important; border:1px solid #0564A6}
 .pronobor{ border:0 !important; line-height:10px !important; *line-height:16px !important; padding:0 1px !important}
 
 /*热销推荐*/
@@ -446,7 +446,7 @@ td:hover.tabledownload{ background:#ebf6ff;}
 .iquiry_tip,.bomorder_tip {width:146px;  height:175px;border: 1px solid #ff6600;background: #fff; padding:35px 5px 5px; position:relative }
 .iquiry_tip h2,.bomorder_tip h2{/* padding:5px 0 8px;color:#fff;*/ position:absolute; top:5px; left:-1px}
 .iquiry_tip .titbg1ts,.bomorder_tip .titbg1ts{ float:left; /*background:#666; font-size:12px;*/ }
-.iquiry_tip .emtriangleright5px,.bomorder_tip .emtriangleright5px{ right:-5px; top:6px; border-color:#fff #f00;}
+.iquiry_tip .emtriangleright5px,.bomorder_tip .emtriangleright5px{ right:-5px; top:6px; border-color:#fff #0564A6;}
 .olli li{ margin-left:18px;*margin-left:24px;  line-height:18px; margin-bottom:5px;color:#666 }
 
 /*bom采购*/
@@ -498,12 +498,12 @@ td:hover.tabledownload{ background:#ebf6ff;}
 
 
 /*右边的立即联系我们*/
-.Contactnow{ border:1px solid #f00; background:#eee; margin-bottom:10px; padding:30px 0 10px 5%; position:relative; float:left; width:94%; }
-.Contactnow .titbg1ts{ position:absolute; top:5px; left:0; padding:1px 5px 2px; background:#f00; font-size:14px; cursor:text}
+.Contactnow{ border:1px solid #0564A6; background:#eee; margin-bottom:10px; padding:30px 0 10px 5%; position:relative; float:left; width:94%; }
+.Contactnow .titbg1ts{ position:absolute; top:5px; left:0; padding:1px 5px 2px; background:#0564A6; font-size:14px; cursor:text}
 .Contactnow li{ margin:5px 0; width:100%;}
 
 /*询价篮*/
-.subinquiry { border-top:2px solid #f00;}
+.subinquiry { border-top:2px solid #0564A6;}
 .subinquiry .shoplist{ min-height:350px; height:auto; }
 .subinquirytable{ width:100%; /*border-bottom:1px solid #fff;*/}
 .subinquirytable p{ text-align:left;}
@@ -525,10 +525,10 @@ a:hover.go2top{ background:#333 url(../img/go2top.png) no-repeat top left}
 #totop a.cur{_background:url(../img/go2top02.gif) no-repeat 0 0; }
 
 /*产品详细的阶梯价格*/
-.price-box{ width:156px; position:relative; height:215px; border:1px solid #f00; overflow-y:auto; background:#fff}
-.price-box h2{ position:absolute; top:6px; left:45px; color:#f00; background:none}
+.price-box{ width:156px; position:relative; height:215px; border:1px solid #0564A6; overflow-y:auto; background:#fff}
+.price-box h2{ position:absolute; top:6px; left:45px; color:#0564A6; background:none}
 .price-box .titbg1ts{ float:left; margin-top:5px; font-size:13px; padding:2px 8px;}
-.price-box .titbg1ts .emtriangleright5px{ right:-5px; top:6px;border-color:#fff #f00;}
+.price-box .titbg1ts .emtriangleright5px{ right:-5px; top:6px;border-color:#fff #0564A6;}
 .price-box .tiptable{ float:left; width:100%; margin-top:10px; line-height:24px;}
 .price-box .tiptable th{font-weight:bold; text-align:center; background:#eee; color:#666 !important}
 .price-box .tiptable td{ padding-left:10px;}
@@ -581,11 +581,11 @@ a:hover.go2top{ background:#333 url(../img/go2top.png) no-repeat top left}
 .f-box{zoom:1; position:relative; height:55px; overflow:hidden}
 .f-password{ height:40px; margin-top:-10px;}
 .f-box:after{content:"\0020";display:block;visibility:hidden;height:0;clear:both}
-.f-box .f-msg{ position:absolute; bottom:5px; left:95px; color:#f00}
+.f-box .f-msg{ position:absolute; bottom:5px; left:95px; color:#0564A6}
 .login .f-label{font-size:14px;padding-top:6px;line-height:16px;float:left;width:90px;text-align:right;color:#404040}
 .f-input{float:left;*display:inline;margin-left:5px}
 .f-txt{height: 23px; width:180px; padding:0;border: 1px solid #CCC;text-indent:3px;}
-.f-txt:hover{ border:2px solid #f00}
+.f-txt:hover{ border:2px solid #0564A6}
 .f-vcode{display:inline-block;*display:inline;*zoom:1}
 .f-vcode img{vertical-align:middle}
 .refresh{ display:inline-block; cursor:pointer; width:200px; height:30px; line-height:30px; vertical-align:bottom; margin-bottom:3px; margin-top:-1px; /*background:url(../img/refresh.gif) no-repeat 0 10px; font-size:0; text-indent:-9999px;*/}
@@ -601,7 +601,7 @@ a:hover.go2top{ background:#333 url(../img/go2top.png) no-repeat top left}
 .pop_shopbox .price-box{ border:0 !important;width:150px; background:#fff;  }
 .pop_shopbox h1{ margin:5px 0 0 0 !important;  }
 .pop_shopbox .tiptable{ float:left; width:100%;}
-.pop_shopbox .tiptable{ background:#fff; border:1px solid #f00}
+.pop_shopbox .tiptable{ background:#fff; border:1px solid #0564A6}
 .pop_shopbox .tiptable th{ display:none;}
 .pop_shopbox .spboxright{ float:right; width:56%; padding-left:5%;  border-left:1px dotted #ddd; }
 .pop_shopbox .spboxright input[ type="text"]{ width:50px; margin:0 5px;}
@@ -707,18 +707,18 @@ a:hover.go2top{ background:#333 url(../img/go2top.png) no-repeat top left}
 /*友情链接详细页*/
 .friend-wrap{ overflow:hidden}
 .friend-block{position:relative;float:left;_display:inline;overflow:hidden;padding:5px 0 0px 0; }
-.friend-h1{ color:#f00; padding:10px 0 5px 0; font-size:14px;}
+.friend-h1{ color:#0564A6; padding:10px 0 5px 0; font-size:14px;}
 .friend-h2{height:33px;line-height:33px;background-color:#f7f7f7;font-size:14px;font-weight:bold;text-indent:10px;}
 .friend-pre{line-height:24px;margin:13px 0 15px 32px}
 .friend-links{margin:22px 0 5px 23px;overflow:hidden;width:890px; }
 .friend-links a{color:#666;float:left;_display:inline;height:25px;line-height:25px;padding:0 16px;margin:0 12px 10px 0;word-break:keep-all;text-decoration:none}
-.friend-links a:hover{background:#f00;color:#fdfdfb;text-decoration:none}
+.friend-links a:hover{background:#0564A6;color:#fdfdfb;text-decoration:none}
 .friend-imgs{margin:10px 0 0 0px;overflow:hidden}
 .friend-imgs a{float:left;_display:block;height:30px;margin:4px 5px 5px 0px; width:133px; text-align:center; margin-bottom:10px; border:1px solid #f5f5f5   }
 .friend-imgs img{display:block;border:0;height:24px; text-align:center; margin:0 auto;}
 .friend_body{ width:978px; margin:10px auto 10px auto; background:#fff;border:1px solid #eee; }
 .friend_body h3{ padding:3px; background:#ff4e00; float:left; color:#fff; /*font-weight:normal;*/ font-size:12px}
-.friend-h3{color:#f00; padding:10px 0 5px 0; }
+.friend-h3{color:#0564A6; padding:10px 0 5px 0; }
 
 .link_list {float:left; margin-bottom:10px }
 .link_list li {padding:8px 0 8px 28px;float:left; display:inline-block;width:111px;border-bottom:1px dotted #ddd;white-space:nowrap;overflow:hidden; position:relative; }
@@ -783,7 +783,7 @@ a:hover.go2top{ background:#333 url(../img/go2top.png) no-repeat top left}
 .daybox .dayinfo{width:520px;height:156px;overflow:hidden;background:#fff;padding:0 10px}
 .dayinfo .fl{ margin-right:10px}
 .dayinfo_t{font-size:14px;color:#5e5e5e;font-weight:normal;margin:6px 0 4px 0;height:26px;line-height:28px;overflow:hidden;border-bottom:solid 1px #ddd}
-.dayinfo_t strong{ color:#f00}
+.dayinfo_t strong{ color:#0564A6}
 .dayinfo_t b{ color:#ff6600}
 .daybox li b,.daybox li em{ font-weight:bold; color:#555; margin:0 2px; font-size:12px;}
 .daybox .dayinfo li{ float:left; width:100%;overflow:hidden;margin:8px 0 0px 0}
@@ -1172,7 +1172,7 @@ line-height: 100%;
 .popyqform{ padding:20px 0 0px 20px;min-height:180px;max-height:500px;overflow-x:hidden; overflow:scroll}
 .popyqform h4{ font-size:18px; color:#ff6600; padding:0 0 10px 0}
 .popyqform h4 a{color:#2970fe !important;}
-.popyqform h5{ font-size:18px; color:#f00; padding:0 0 10px 0}
+.popyqform h5{ font-size:18px; color:#0564A6; padding:0 0 10px 0}
 .popyqform .yqokt,.popyqform .yqtx,.popyqform .yqno{ float:left; width:100%; margin-bottom:20px}
 .popyqform ul{ float:left; width:100%; margin-bottom:10px}
 .popyqform ul li{ float:left; position:relative; margin-right:20px; background:url(../img/bgshadow01.jpg) no-repeat; width:330px; padding:0 10px; height:45px; line-height:35px;}
@@ -1247,16 +1247,16 @@ line-height: 100%;
 .menudl2013{ float:left;width:415px;padding:20px 20px 0 20px;background:#fff/*background:#fff url(../img/menushadow02.png) repeat-y 0 0;*/}
 .menudl2013 dl{ float:left;  margin-bottom:10px;*padding-bottom:10px;border-bottom:1px solid #efefef; position:relative; overflow:hidden}
 .menudl2013 dl dt{ float:left; width:90px;text-align:left; margin-top:-2px} 
-.menudl2013 dl dt a{font-weight:bold;color:#f00 !important; }
+.menudl2013 dl dt a{font-weight:bold;color:#0564A6 !important; }
 .menudl2013 dl dd{ float:left; width:320px;}
 .menudl2013 dl dd li{ float:left;border-right:1px solid #efefef;margin:0 0 10px 0;padding:0 5px;}
 .menudl2013 dl dd li a{display:block;float:left;white-space:pre;height:16px;line-height:16px; color:#656565}
-.menudl2013 dl dd li a:hover{color:#f00; }
+.menudl2013 dl dd li a:hover{color:#0564A6; }
 .menudl2013 .last{ border-bottom:0}	
 .show_sort2013 .menubrand2013{ float:right; display:inline-block;}
 .show_sort2013 .menubrand2013 img{ height:30px;}
 .menubrand2013{width:100px; padding:20px; display:inline-block;}
-.menubrand2013 h3{ font-size:14px;color:#f00; padding:0 0 10px 0}
+.menubrand2013 h3{ font-size:14px;color:#0564A6; padding:0 0 10px 0}
 .menubrand2013 li{ float:left; width:100%; margin-bottom:6px}
 .menubrand2013 a{ font-size:12px; color:#656565}
 

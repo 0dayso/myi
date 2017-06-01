@@ -16,15 +16,15 @@ class Default_Service_UserService
 	 */
 	public function getUserProfile()
 	{
-		$myinfoarray = $this->_userModel->getBySql("SELECT u.*,up.* 
-				,st.tel as st_tel,st.phone as st_phone,st.ext,st.lastname,st.firstname,
-				app.name as appname,p.province,c.city,a.area FROM user as u
+		$myinfoarray = $this->_userModel->getBySql("SELECT u.*,up.* ,st.tel as st_tel,st.phone as st_phone,st.ext,st.lastname,st.firstname,
+				app.name as appname,ud.department,p.province,c.city,a.area FROM user as u
 				LEFT JOIN user_profile as up ON u.uid = up.uid
 				LEFT JOIN admin_staff as st ON st.staff_id = up.staffid
 				LEFT JOIN province as p ON up.province = p.provinceid
 				LEFT JOIN city as c ON up.city = c.cityid
 				LEFT JOIN area as a ON up.area = a.areaid
 				LEFT JOIN app_category as app ON app.id = up.industry
+				LEFT JOIN user_department as ud ON ud.id = up.department_id
     			WHERE u.uid=:uidtmp",array('uidtmp'=>$_SESSION['userInfo']['uidSession']));
 		return $myinfoarray[0];
 	}
@@ -90,12 +90,9 @@ class Default_Service_UserService
 	 */
 	public function getCenterUserInfo()
 	{
-		return $this->_userModel->getRowBySql("SELECT u.uname,u.lasttime,u.lastip,up.* ,
-				st.head,dep.department,st.level_id,st.email,st.tel,st.phone,st.lastname,st.firstname
+		return $this->_userModel->getRowBySql("SELECT u.uname,u.lasttime,u.lastip,up.* 
 				FROM user as u
 				LEFT JOIN user_profile as up ON u.uid = up.uid
-				LEFT JOIN admin_staff as st ON up.staffid = st.staff_id
-				LEFT JOIN admin_department as dep ON dep.department_id = st.department_id
     			WHERE u.uid=:uidtmp",array('uidtmp'=>$_SESSION['userInfo']['uidSession']));
 	}
 	/**

@@ -115,8 +115,6 @@ class UserController extends Zend_Controller_Action
     				$userService = new Default_Service_UserService();
     				$_SESSION['member_type'] = $userService->checkComapprove();
     				$this->_defaultlogService->addLog(array('log_id'=>'L','temp4'=>'登录成功'));
-    				//添加积分
-    				$this->_scoreService->addScore('login');
     				
     				//记录登陆用户
     				$this->recordLogin($reUser['uid']);
@@ -236,8 +234,6 @@ class UserController extends Zend_Controller_Action
     {
     	if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['approveSession']==1) 
     		$this->_redirect('/');
-    	//查询应用
-    	$appcModel = new Default_Model_DbTable_AppCategory();
     	$userModel = new Default_Model_DbTable_User();
     	
     	$this->view->appLevel1 = $appcModel->getAllByWhere("level = 1 AND status=1","displayorder ASC");
@@ -247,21 +243,14 @@ class UserController extends Zend_Controller_Action
     		$this->view->formData = $formData = $this->getRequest()->getPost();
     		$uname = $this->filter->pregHtmlSql($formData['uname']);
     		$email = $this->filter->pregHtmlSql($formData['email']);
-    		$industry = (int)$formData['industry'];
-    		$industry_tmp = $this->filter->pregHtmlSql($industry==0?'other':$industry);
-    		$industry_other = $this->filter->pregHtmlSql($formData['industry_other']);
     		$password = $this->filter->pregHtmlSql($formData['password']);
-    		$property = $this->filter->pregHtmlSql($formData['property']);
     		$verifycode = $this->filter->pregHtmlSql($formData['verifycode']);
     		$this->view->verifycodeMess ='';
     		$this->view->userMess ='';
     		$this->view->emailMess ='';
     		$error = 0;$description='';
     		$invitekey =$formData['invitekey'];
-    		if(!$formData['agreement']){
-    			$description .= $this->view->checkboxMess = '请首先阅读！';
-    			$error ++;
-    		}
+
     		if(!$uname)
     		{
     			$description .= $this->view->userMess = '用户名不能为空！';
@@ -299,24 +288,6 @@ class UserController extends Zend_Controller_Action
     			//记录日志
     			$this->_defaultlogService->addLog(array('log_id'=>'A','temp1'=>400,'temp4'=>'注册失败','description'=>$description));
     		}else{
-    			   //根据应用领域分配跟进销售
-    			   $admin_staffService = new Icwebadmin_Service_StaffService();
-    			   $xs_staff = $admin_staffService->getXiaoShou();
-    			   
-    			   $xs_staffid = 'alina.shang';
-    			   /*for($i=0;$i<count($xs_staff);$i++)
-    			   {
-    			      $app_rule = explode(",",$xs_staff[$i]['app_rule']);
-    			      if(in_array($industry_tmp,$app_rule))
-    			      {  
-    			   	     $xs_staffid = $xs_staff[$i]['staff_id'];
-    			      }
-    			   }
-    			   //如果是贸易商
-    			   if($property=='merchant')
-    			   {
-    			   	  $xs_staffid ='snowie.zhao';
-    			   }*/
     			   $password = md5(md5($password));
     			   $ip = $this->fun->getIp();
     			   $newid = $userModel->addUser(array('uname'=>$uname,
@@ -328,12 +299,10 @@ class UserController extends Zend_Controller_Action
     	           		'lastip'=>$ip));
     			   $userprofile = new Default_Model_DbTable_UserProfile();
     			   $uparr = array('uid'=>$newid,
-    			   		'property'=>$property,
-    			   		'industry'=>$industry,
-    			   		'staffid'=>$xs_staffid,
+    			   		'property'=>'1',
+    			   		'industry'=>'2',
+    			   		'staffid'=>'3',
     			   		'created'=>time());
-    			   //其他行业
-    			   if($industry_tmp=='other') $uparr['personaldesc']=$industry_other;
     			   $userprofile->addUser($uparr);
     			   //当前时间。产生加密key
     			   $mycommon = new MyCommon();
@@ -358,21 +327,16 @@ class UserController extends Zend_Controller_Action
     			   //建立文件夹
     			   $this->_MyCommon = new MyCommon();
     			   $this->_MyCommon->createUserFolder($newid);
-    			   //添加积分
-    			   $this->_scoreService->addScore('register');
-    			   
     			   //异步请求开始
     			   $this->fun->asynchronousStarts();
     			   //发送验证email
     			   if($invitekey) $hashkey .='&invitekey='.$invitekey;
     			   $emailreturn = $this->fun->sendverification($hashkey,$email,$uname);
-    			   //新注册用户感谢函及IC易站介绍
-    			   //$this->fun->newuserEmail($email,$uname);
     			   //邮件日志
     			   if($emailreturn ){
-    			   	$this->_defaultlogService->addLog(array('log_id'=>'M','temp2'=>$newid,'temp4'=>'发送注册邮件成功'));
+    			   	   $this->_defaultlogService->addLog(array('log_id'=>'M','temp2'=>$newid,'temp4'=>'发送注册邮件成功'));
     			   }else{
-    			   	$this->_defaultlogService->addLog(array('log_id'=>'M','temp1'=>400,'temp2'=>$newid,'temp4'=>'发送注册邮件失败'));
+    			   	   $this->_defaultlogService->addLog(array('log_id'=>'M','temp1'=>400,'temp2'=>$newid,'temp4'=>'发送注册邮件失败'));
     			   }
     			   $this->_redirect('/user/verification');
     			   //异步请求开始
@@ -521,7 +485,7 @@ class UserController extends Zend_Controller_Action
     		}
     		if(!$error){
     			//注册session
-    			$key = md5(rand(111111,999999));
+    			$key = rand(10000,99999);
     			$forgotpass = new Zend_Session_Namespace('forgotpass');//使用SESSION存储数据时要设置命名空间
     			$forgotpass->key   = $key;//设置验证码
     			$forgotpass->email = $reUser['email'];//设置

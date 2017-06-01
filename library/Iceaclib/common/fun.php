@@ -85,11 +85,6 @@ class MyFun
     <td>
         <table cellspacing="0" cellpadding="0" border="0" align="center" width="730" bgcolor="#ffffff" style="font-family:\'微软雅黑\'; font-size:12px;color:#5b5b5b; ">
             <tbody>
-                <tr>
-                    <td valign="middle" align="right" height="30" bgcolor="#f9f9f9" style="font-family:\'微软雅黑\';  background:#f9f9f9" >
-                    <span>温馨提示：</span>为了确保能正常收到IC易站的邮件，请将&nbsp;<a href="#" style="color:#ff6600; margin:0 2px; text-decoration:none"><b>IC易站&lt;iceac@ceacsz.com.cn&gt;</b></a>添加为您的邮件联系人。
-                    </td>
-                </tr>
                 <!--logo-->
                 <tr>
                     <td valign="top" bgcolor="#ffffff" align="center">
@@ -97,34 +92,12 @@ class MyFun
                             <tbody>
                                 <tr>
                                     <td valign="middle" height="80" >
-                                         <a href="http://www.iceasy.com" target="_blank"><img src="http://www.iceasy.com/images/default/brand/logo_t.jpg" height="58" alt="IC易站" style="border:0; font-size:18px; font-weight:bold; color:#fd2323" /></a>
+                                         <a href="http://www.iceasy.com" target="_blank"><img src="http://www.iceasy.com/images/default/brand/logo_t.jpg" height="58" alt="盛芯电子" style="border:0; font-size:18px; font-weight:bold; color:#fd2323" /></a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </td>
-                </tr>
-                <!--menu-->
-                <tr>
-                    <td >
-                        <table align="center" valigh="middle" border="0" cellpadding="0" cellspacing="0" ><tbody>
-                            <tr>
-                                <td align="left" valigh="middle" bgcolor="#f1f1f1" height="34" width="610" style="color:#999999;font-family:\'微软雅黑\';">
-                                    <a href="http://www.iceasy.com" style="text-decoration:none;font-family:\'微软雅黑\';color:#5b5b5b; font-size:14px;" target="_blank">&nbsp;&nbsp;&nbsp;IC易站首页</a>
-                                    │
-                                    <a href="http://www.iceasy.com/category" style="text-decoration:none;font-family:\'微软雅黑\';color:#5b5b5b;font-size:14px;" target="_blank">产品目录</a>
-                                    │
-                                    <a href="http://www.iceasy.com/solutionlist" style="text-decoration:none;font-family:\'微软雅黑\';color:#5b5b5b;font-size:14px;" target="_blank">应用方案</a>
-                                    │
-                                    <a href="http://www.iceasy.com/brand-14.html" style="text-decoration:none;font-family:\'微软雅黑\';color:#5b5b5b;font-size:14px;" target="_blank">热卖品牌</a>
-                                    │
-                                    <a href="http://www.iceasy.com/webinarlist" style="text-decoration:none;font-family:\'微软雅黑\';color:#5b5b5b;font-size:14px;" target="_blank">技术研讨会</a>
-                                </td>
-				                <td align="center" valigh="middle" bgcolor="#fd2323" height="34" width="120" >
-				                    <a href="http://www.iceasy.com/center" style="text-decoration:none;font-family:\'微软雅黑\'; color:#ffffff;font-size:14px;" target="_blank">登录我的易站</a> </td>
-                            </tr>
-                        </tbody></table>
-                    </td>               
                 </tr>
            <tr><td height="10" style="line-height:1px; font-size:10px; margin:0; padding:0 "></td></tr>
 		   <!--hi-->'.$mess;
@@ -132,23 +105,6 @@ class MyFun
 		//底部签名
 		$mess_html .='<!--签名-->
 	<tr><td height="10" style="line-height:1px; font-size:10px; margin:0; padding:0 "></td></tr>
-    <tr>
-      <td valign="top" bgcolor="#ffffff" align="center"><table cellspacing="10" border="0" cellpadding="0" width="730" style="font-size:12px; line-height:20px; font-family:\'微软雅黑\'; border-collapse:separate; border-spacing:10px; border:1px dotted #ddd; border-top:2px solid #fd2323;text-align:left">
-          <tbody>
-            <tr>
-              <td height="30" align="left" valign="middle" style="width:110px;"><img src="http://www.iceasy.com/images/default/brand/logo_f.jpg" height="28" width="100" alt="IC易站"  style="border:0; font-size:14px; font-weight:bold"/> </td>
-              <td style="text-align:left; width:620px; font-size:14px; font-weight:bold; color:#555555; font-family:\'微软雅黑\'; ">中电器材旗下元器件电商平台</td>
-            </tr>
-            <tr>
-              <td colspan="2" ><div style="padding:0px 0 2px 0; margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; line-height:20px"><b>销售代表：'.$foot_name.'</b></div>
-                <div style="padding:2px 0; margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; line-height:20px">Email：<a href="mailto:'.$foot_email.'" style="color:#0055aa">'.$foot_email.'</a></div>
-                <div style="padding:2px 0; margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; line-height:20px">'.$foot_tel.'</div>
-                <div style="padding:2px 0; margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; line-height:20px">地 址：'.$this->commonconfig->email->foot_address.'</div>
-                <div style="padding:2px 0; margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; line-height:20px">IC易站（<a href="'.$this->commonconfig->email->foot_url.'" style="color:#0055aa;font-family:\'微软雅黑\'">www.iceasy.com</a>）'.$this->commonconfig->email->foot_remark.'</div></td>
-            </tr>
-          </tbody>
-        </table></td>
-    </tr>
   </tbody>
 </table>';
 		}else{ //内部邮件
@@ -162,7 +118,7 @@ class MyFun
             <tbody>
                 <tr>
                     <td valign="middle" align="right" height="30" bgcolor="#f9f9f9" style="font-family:\'微软雅黑\';  background:#f9f9f9" >
-                    <span>温馨提示：</span>为了确保能正常收到IC易站的邮件，请将&nbsp;<a href="#" style="color:#ff6600; margin:0 2px; text-decoration:none"><b>IC易站&lt;iceac@ceacsz.com.cn&gt;</b></a>添加为您的邮件联系人。
+                    <span>温馨提示：</span>为了确保能正常收到盛芯电子的邮件，请将&nbsp;<a href="#" style="color:#ff6600; margin:0 2px; text-decoration:none"><b>盛芯电子&lt;iceac@ceacsz.com.cn&gt;</b></a>添加为您的邮件联系人。
                     </td>
                 </tr>
                 <!--logo-->
@@ -172,7 +128,7 @@ class MyFun
                             <tbody>
                                 <tr>
                                     <td valign="middle" height="80" >
-                                         <a href="http://www.iceasy.com" target="_blank"><img src="http://www.iceasy.com/images/default/brand/logo_t.jpg" height="58" alt="IC易站" style="border:0; font-size:18px; font-weight:bold; color:#fd2323" /></a>
+                                         <a href="http://www.iceasy.com" target="_blank"><img src="http://www.iceasy.com/images/default/brand/logo_t.jpg" height="58" alt="盛芯电子" style="border:0; font-size:18px; font-weight:bold; color:#fd2323" /></a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -190,7 +146,7 @@ class MyFun
       <td valign="top" bgcolor="#ffffff" align="center"><table cellspacing="10" border="0" cellpadding="0" width="730" style="font-size:12px; line-height:20px; font-family:\'微软雅黑\'; border-collapse:separate; border-spacing:10px; border:1px dotted #ddd; border-top:2px solid #fd2323;text-align:left">
           <tbody>
             <tr>
-              <td height="30" align="left" valign="middle" style="width:110px;"><img src="http://www.iceasy.com/images/default/brand/logo_f.jpg" height="28" width="100" alt="IC易站"  style="border:0; font-size:14px; font-weight:bold"/> </td>
+              <td height="30" align="left" valign="middle" style="width:110px;"><img src="http://www.iceasy.com/images/default/brand/logo_f.jpg" height="28" width="100" alt="盛芯电子"  style="border:0; font-size:14px; font-weight:bold"/> </td>
               <td style="text-align:left; width:620px; font-size:14px; font-weight:bold; color:#555555; font-family:\'微软雅黑\'; ">中电器材旗下元器件电商平台</td>
             </tr>
 			<tr>
@@ -198,7 +154,7 @@ class MyFun
                     <div style="padding:2px 0; margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; line-height:20px">Email：<a href="mailto:'.$foot_email.'" style="color:#0055aa">'.$foot_email.'</a></div>
                     <div style="padding:2px 0; margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; line-height:20px">'.$foot_tel.'</div>
                     <div style="padding:2px 0; margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; line-height:20px">地 址：'.$this->commonconfig->email->foot_address.'</div>
-                    <div style="padding:2px 0; margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; line-height:20px">IC易站（<a href="'.$this->commonconfig->email->foot_url.'" style="color:#0055aa;font-family:\'微软雅黑\'">www.iceasy.com</a>）'.$this->commonconfig->email->foot_remark.'</div>
+                    <div style="padding:2px 0; margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; line-height:20px">盛芯电子（<a href="'.$this->commonconfig->email->foot_url.'" style="color:#0055aa;font-family:\'微软雅黑\'">www.iceasy.com</a>）'.$this->commonconfig->email->foot_remark.'</div>
                     
                     </td>
             </tr>
@@ -256,9 +212,9 @@ class MyFun
 // 			//发送提醒邮件
 // 			$mail= new Zend_Mail('utf-8');
 // 			$staffService = new Icwebadmin_Service_StaffService();
-// 			$mail->setFrom('iceac@ceacsz.com.cn','IC易站邮件系统');
-// 			$mail->setSubject('IC易站发送邮件失败');
-// 			$errormess = 'IC易站发送邮件出现错误，请及时解决。错误：'.$e->getMessage().'。<br/><br/>邮件内容：<br/>'.$mess_html;
+// 			$mail->setFrom('iceac@ceacsz.com.cn','盛芯电子邮件系统');
+// 			$mail->setSubject('盛芯电子发送邮件失败');
+// 			$errormess = '盛芯电子发送邮件出现错误，请及时解决。错误：'.$e->getMessage().'。<br/><br/>邮件内容：<br/>'.$mess_html;
 // 			$mail->setBodyHtml($errormess);
 // 			$to = $staffService->getStaffInfo('jamie.feng');
 // 			if($to && $to['email']){
@@ -323,7 +279,7 @@ class MyFun
                     <tr>
                       <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                           <tr>
-                            <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您注册IC易站，请点击以下链接激活账号。</div></td>
+                            <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您注册盛芯电子，请点击以下链接激活账号。</div></td>
                           </tr>
                         </table></td>
                     </tr>
@@ -343,24 +299,13 @@ class MyFun
                 </table></td>
             </tr>';
 		
-		$fromname = 'IC易站';
-		$title    = '欢迎注册IC易站，请激活您的账号';
-		$emailarr = $this->_emailService->getEmailAddress('register');
-		$emailto = array('0'=>$toemail);
-		$emailcc = $emailbcc = array();
-		if(!empty($emailarr['to'])){
-			$emailto = array_merge($emailto,$emailarr['to']);
-		}
-		if(!empty($emailarr['cc'])){
-			$emailcc = $emailarr['cc'];
-		}
-		if(!empty($emailarr['bcc'])){
-			$emailbcc = $emailarr['bcc'];
-		}
-		return $this->sendemail($emailto, $mess, $fromname, $title,$emailcc,$emailbcc);
+		$fromname = '盛芯电子';
+		$title    = '欢迎注册盛芯电子，请激活您的账号';
+		
+		return $this->sendemail($toemail, $mess, $fromname, $title);
 	}
 	/*
-	 * 新注册用户感谢函及IC易站介绍
+	 * 新注册用户感谢函及盛芯电子介绍
 	*/
 	function newuserEmail($toemail,$uname){
 		$mess ='</tbody>
@@ -375,11 +320,11 @@ class MyFun
                     <tr>
                       <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                           <tr>
-                            <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您已成功注册为IC易站用户，再次感谢您对IC易站的支持！</div>
+                            <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您已成功注册为盛芯电子用户，再次感谢您对盛芯电子的支持！</div>
                               <div style="height:5px;padding:0; margin:0;font-size:0; line-height:10px ">&nbsp;</div>
-                              <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';"><a href="http://www.iceasy.com" target="_blank" style="color:#0055aa">IC易站</a>&nbsp;是&nbsp;<a href="http://www.ceacsz.com.cn" target="_blank" style="color:#0055aa">中电器材</a>&nbsp;旗下领先的一站式元器件电商平台，专注于服务电子制造企业的设计链和供应链，满足其从产品设计到批量生产的全程需求！无论是小批量样片还是大批量采购,都是您最佳的一站式元器件在线采购平台。</div>
+                              <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';"><a href="http://www.iceasy.com" target="_blank" style="color:#0055aa">盛芯电子</a>&nbsp;是&nbsp;<a href="http://www.ceacsz.com.cn" target="_blank" style="color:#0055aa">中电器材</a>&nbsp;旗下领先的一站式元器件电商平台，专注于服务电子制造企业的设计链和供应链，满足其从产品设计到批量生产的全程需求！无论是小批量样片还是大批量采购,都是您最佳的一站式元器件在线采购平台。</div>
                               <div style="height:5px;padding:0; margin:0;font-size:0; line-height:10px ">&nbsp;</div>
-                              <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">IC易站不仅拥有海量的元器件产品可供您在线采购和询价，还有应用于各个领域的&nbsp;<a href="http://www.iceasy.com/solutionlist" target="_blank" style="color:#0055aa;font-family:\'微软雅黑\';">设计方案</a>&nbsp;和&nbsp;<a href="http://www.iceasy.com/webinarlist" target="_blank" style="color:#0055aa;font-family:\'微软雅黑\';">研讨会</a>&nbsp;信息，同时满足您对产品和技术的需求。IC易站传承中电器材30年品牌价值，汇聚众多国内外领先品牌，100%正品保证，及时的询价响应,便捷的在线下单流程，快速的物流服务，无论是小批量样片还是大批量采购,都是您最佳的一站式元器件在线采购平台。 </div></td>
+                              <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">盛芯电子不仅拥有海量的元器件产品可供您在线采购和询价，还有应用于各个领域的&nbsp;<a href="http://www.iceasy.com/solutionlist" target="_blank" style="color:#0055aa;font-family:\'微软雅黑\';">设计方案</a>&nbsp;和&nbsp;<a href="http://www.iceasy.com/webinarlist" target="_blank" style="color:#0055aa;font-family:\'微软雅黑\';">研讨会</a>&nbsp;信息，同时满足您对产品和技术的需求。盛芯电子传承中电器材30年品牌价值，汇聚众多国内外领先品牌，100%正品保证，及时的询价响应,便捷的在线下单流程，快速的物流服务，无论是小批量样片还是大批量采购,都是您最佳的一站式元器件在线采购平台。 </div></td>
                           </tr>
                         </table></td>
                     </tr>
@@ -404,7 +349,7 @@ class MyFun
                           <tr>
                             <td align="center" colspan="2"><a href="http://www.iceasy.com/brand-14.html"  target="_blank"><img src="http://www.iceasy.com/upload/default/adpice/home/email_02.jpg"  width="730"/></a></td>
                           <tr>
-                            <td width="500"><h4 style="font-size:16px; color:#333; font-family:\'微软雅黑\'; padding:0; margin:0">IC易站 — 您的电子元器件在线服务专家</h4>
+                            <td width="500"><h4 style="font-size:16px; color:#333; font-family:\'微软雅黑\'; padding:0; margin:0">盛芯电子 — 您的电子元器件在线服务专家</h4>
                               <ul style="font-size:14px; line-height:24px; color:#333; font-family:\'微软雅黑\'; list-style-type:disc;">
                                 <li>海量元器件产品，热卖新品，每日更新 </li>
                                 <li>最新技术解决方案及参考设计</li>
@@ -421,11 +366,11 @@ class MyFun
                           <tr>
                             <td align="center" colspan="2" height="60"  valign="middle" width="730px" bgcolor="#f1f1f1" ><table cellpadding="0" cellspacing="0" style="font-family:\'微软雅黑\'; font-size:13px; margin:0 auto; width:730px;">
                                 <tr>
-                                  <td align="left" style="font-family:\'微软雅黑\'; color:#535353; line-height:24px; margin:0; text-align:left">&nbsp;&nbsp;立即登录&nbsp;<a href="http://www.iceasy.com"  target="_blank" style="color:#f00"><strong>www.iceasy.com</strong></a>，寻找您需要的产品和方案，体验IC易站的全方位在线服务！ </td>
+                                  <td align="left" style="font-family:\'微软雅黑\'; color:#535353; line-height:24px; margin:0; text-align:left">&nbsp;&nbsp;立即登录&nbsp;<a href="http://www.iceasy.com"  target="_blank" style="color:#f00"><strong>www.iceasy.com</strong></a>，寻找您需要的产品和方案，体验盛芯电子的全方位在线服务！ </td>
                                   <td valign="bottom" align="right"><a href="http://www.iceasy.com/user/login"  target="_blank" style="background:#fd2323; padding:5px; color:#fff; text-decoration:none; font-size:14px;" >&nbsp;&nbsp;立即登录&nbsp;&nbsp;</a> </td>
                                 </tr>
                                 <tr>
-                                  <td align="left"   valign="top" style="color:#535353;line-height:20px; margin:0;text-align:left">&nbsp;&nbsp;再次感谢您对IC易站的支持！ </td>
+                                  <td align="left"   valign="top" style="color:#535353;line-height:20px; margin:0;text-align:left">&nbsp;&nbsp;再次感谢您对盛芯电子的支持！ </td>
                                 </tr>
                               </table></td>
                           </tr>
@@ -438,8 +383,8 @@ class MyFun
         </table></td>
     </tr>';
 	
-		$fromname = 'IC易站';
-		$title    = 'IC易站账号注册成功，欢迎使用IC易站服务';
+		$fromname = '盛芯电子';
+		$title    = '盛芯电子账号注册成功，欢迎使用盛芯电子服务';
 		$emailarr = $this->_emailService->getEmailAddress('register');
 		$emailto = array('0'=>$toemail);
 		$emailcc = $emailbcc = array();
@@ -458,7 +403,7 @@ class MyFun
 	 * 后台添加用户发邮件
 	 */
 	function senduseremail($toemail,$uname,$pass,$uid){
-		$link = '<a href="http://www.iceasy.com" target="_blank">IC易站</a>';
+		$link = '<a href="http://www.iceasy.com" target="_blank">盛芯电子</a>';
 		$mess ='<table align="center" width="100%" border="0" cellpadding="0" cellspacing="0" style="background:#fff;line-height:20px; font-family:12px; font-family:\'微软雅黑\'">
 	<tr>
     	<td align="left" style="padding-bottom:24px; padding-left:10px">
@@ -473,7 +418,7 @@ class MyFun
                                             <td style=" font-size:14px;padding-bottom:10px; font-weight:bold; color:#f00;">尊敬的'.$uname.'，您好!</td>
                                         </tr>
                                     	<tr>
-                                            <td style="color:#666; padding-bottom:8px;font-size:12px;">感谢注册IC易站，您的用户信息如下（请妥善保管）。请到'.$link.'进行登录。</td>
+                                            <td style="color:#666; padding-bottom:8px;font-size:12px;">感谢注册盛芯电子，您的用户信息如下（请妥善保管）。请到'.$link.'进行登录。</td>
                                         </tr>
                                         <tr>
                                             <td style=" background:#EEF8FF; overflow:hidden; zoom:1; padding:16px; border:1px solid #CEE4F6;font-size:12px;">
@@ -509,8 +454,8 @@ class MyFun
 		if(!empty($emailarr['bcc'])){
 			$emailbcc = $emailarr['bcc'];
 		}
-		$fromname = 'IC易站';
-		$title    = '欢迎注册IC易站[您的账号注册邮件]';
+		$fromname = '盛芯电子';
+		$title    = '欢迎注册盛芯电子[您的账号注册邮件]';
 		return $this->sendemail($emailto, $mess, $fromname, $title,$emailcc,$emailbcc,array(),$sellinfo);
 	}
 	/*
@@ -529,16 +474,16 @@ class MyFun
                     <tr>
                       <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                           <tr>
-                            <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您对IC易站的支持！请您点击以下链接获取验证码，并在密码重置页面设置新密码。</div></td>
+                            <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您对盛芯电子的支持！您的验证码，请复制验证码并在密码重置页面设置新密码。</div></td>
                           </tr>
                         </table></td>
                     </tr>
                     <tr>
                       <td valign="middle" ><table cellpadding="0" cellspacing="10" border="0" width="730" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b; border:1px #c4d1d7 solid;background:#f7fdff;border-collapse:separate;border-spacing:10px;">
                           <tr>
-                            <td><div style="padding:3px 0;margin:0;font-family:\'微软雅黑\';"><span style="color:#0055aa;"><a href="'.$activationLink.'" target="_blank" style="color:#0055aa;">'.$activationLink.'</a></span></div>
+                            <td><div style="padding:3px 0;margin:0;font-family:\'微软雅黑\';">验证码：<span style="color:#0055aa;">'.$key.'</span></div>
                               <div style="height:10px;padding:0; margin:0;font-size:0; line-height:10px ">&nbsp;</div>
-                              <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">如果您无法点击此链接，请将它复制到浏览器地址后访问。</div>
+                              <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">请在重置密码页面输入此验证码。</div>
                               <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">此邮件由系统自动发出，请勿直接回复。</div>
                               <div style="padding:3px 0;margin:0;color:#ff6600;font-family:\'微软雅黑\';"><strong>为了保障您的账号安全，请在1小时内完成密码重设，1小时后链接地址失效。</strong></div></td>
                           </tr>
@@ -547,22 +492,11 @@ class MyFun
                   </tbody>
                 </table></td>
             </tr>';
-		$fromname = 'IC易站';
-		$title    = 'IC易站账号密码重置提示';
+		$fromname = '盛芯电子';
+		$title    = '盛芯电子账号密码重置提示';
 		
-		$emailarr = $this->_emailService->getEmailAddress('register');
-		$emailto = array('0'=>$toemail);
-		$emailcc = $emailbcc = array();
-		if(!empty($emailarr['to'])){
-			$emailto = array_merge($emailto,$emailarr['to']);
-		}
-		if(!empty($emailarr['cc'])){
-			$emailcc = $emailarr['cc'];
-		}
-		if(!empty($emailarr['bcc'])){
-			$emailbcc = $emailarr['bcc'];
-		}
-		return $this->sendemail($emailto, $mess, $fromname, $title,$emailcc,$emailbcc);
+		
+		return $this->sendemail($toemail, $mess, $fromname, $title);
 	}
 	/**
 	 * 获取客户端IP

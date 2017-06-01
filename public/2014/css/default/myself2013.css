@@ -6,9 +6,9 @@
 .col_main h1{ font-weight:bold}
 
 
-/*我的IC易站后台*/
+/*后台*/
 .submenu{float: left;width: 119px; text-align:center; border:1px solid #e9e9e9;border-right:0 }
-.submenu h2 a{font:18px/50px Microsoft Yahei; color:#f00; font-weight:bold}
+.submenu h2 a{font:18px/50px Microsoft Yahei; color:#0564A6; font-weight:bold}
 .submenu_ul{ float:left; width:119px;}
 .submenu_ul li{ float:left; width:119px; text-align:left; position:relative}
 .submenu_ul li a{ float:left; width:83px; padding-left:35px;  height:44px; line-height:42px; border-top:1px solid #f1f1f1; font-size:14px; position:relative; z-index:1}

@@ -8,14 +8,14 @@
 .tipa:hover .bubblebox{ display:block}
 
 .col_side {float: left;width: 110px;}
-.col_side h3.title a{font: normal 18px/34px Microsoft Yahei; color:#f00; font-weight:bold}
+.col_side h3.title a{font: normal 18px/34px Microsoft Yahei; color:#0564A6; font-weight:bold}
 .center_pannel {background-color: #f1edec;border: 1px solid #ddd;border-top: 0 none;padding: 0px;}
 .promotion_cont {margin-top: 15px;}
 .center_pannel .myselfhome {padding: 10px 10px 8px 10px;}
 .center_pannel a {padding: 1px 2px;_padding: 2px 2px 0px;color: #333;}
 .block_wrap {border-top: 1px solid #ddd;margin: 0 10px;}
 .block_wrap a{ padding:2px }
-.block_wrap a.on{ background:#f00; color:#fff;}
+.block_wrap a.on{ background:#0564A6; color:#fff;}
 .center_pannel dl {zoom: 1;overflow: hidden;padding: 5px 0 5px 0;border-top: 1px solid white;}
 .center_pannel dt {height: 30px;font: 700 12px/30px Arial;padding: 0px;color: #666;}
 .center_pannel dd {display: block;line-height: 28px;padding: 0 10px 0 8px;}
@@ -24,7 +24,7 @@
 .Switching li{  float:left; margin-right:5px; color:#999; position:relative;height:30px;}
 .Switching li .emtrianglebottom5px{ bottom:1px; left:35px; display:none}
 .Switching li a{ font-size:14px; color:#666 !important; background:#eee; display:block; padding:2px 4px 4px 4px; float:left;}
-.Switching li.on a{ background:#f00; color:#fff !important;}
+.Switching li.on a{ background:#0564A6; color:#fff !important;}
 .Switching li.on .emtrianglebottom5px{ display:block} 
 .Switching li a:hover{ text-decoration:none}
 
@@ -41,14 +41,14 @@
 /*大表头*/
 .order_tab_head {height: 30px;border:1px solid #ddd;_overflow: hidden;text-align: center; }
 .order_tab_head ul{background: #eee; float:left; width:100%;}
-.order_tab_head li.on a,.order_tab_head li.on span{background: white;padding-bottom: 5px;padding-top:5px;border-top:3px solid #f00;border-left: 0;border-right: 0;border-right: 0;margin: 0 1px 0 0;position: relative;font-weight: 700;margin-top: -1px; color:#555}
+.order_tab_head li.on a,.order_tab_head li.on span{background: white;padding-bottom: 5px;padding-top:5px;border-top:3px solid #0564A6;border-left: 0;border-right: 0;border-right: 0;margin: 0 1px 0 0;position: relative;font-weight: 700;margin-top: -1px; color:#555}
 .order_tab_head li{ float:left;}
 .order_tab_head li a,.order_tab_head li span {color: #666 !important;float: left;overflow: hidden;border-left: 1px solid #e1e1e1;border-right: 1px solid #e1e1e1; font-size:14px;height: 20px;line-height:20px;margin-left: -1px;padding: 5px 10px;_line-height: 23px;}
-.order_tab_head li a:hover,.order_tab_head li.on a{ color:#f00 !important}
+.order_tab_head li a:hover,.order_tab_head li.on a{ color:#0564A6 !important}
 .order_tab_head em{ color:#999}
 /*一级表格*/
 .table_box {border:1px solid #ddd;border-top: 0; }
-.vac_table {width:100%;text-align:center;margin:0 auto; float:none !important; border:0 !important;border-top:2px solid #f00 !important}
+.vac_table {width:100%;text-align:center;margin:0 auto; float:none !important; border:0 !important;border-top:2px solid #0564A6 !important}
 .vac_table th{ background:#fff; border-bottom:1px dotted #ddd; }
 .vac_table td{  border-top:0;  border-bottom:1px dotted #ddd; }
 .vac_table td p{ text-align:left; padding-left:5px; line-height:24px;}
@@ -62,7 +62,7 @@
 
 /*一个订单*/
 .order{ border:0 !important;}
-.A_order{ margin-top:10px;border:1px solid #eee;border-top:2px solid #f00;position:relative;}
+.A_order{ margin-top:10px;border:1px solid #eee;border-top:2px solid #0564A6;position:relative;}
 .A_order .numberbox{ height:36px; line-height:36px;font-size:14px;position:relative; z-index:0; background:#f1f1f1;/*color:#fff*/}
 .A_order .numberbox .emtrianglebottom5px{ bottom:0px; left:90px; border:5px solid #fff; border-color:#fff #f8f8f8;border-width:0 5px 5px 5px; display:none}
 .A_order .numberbox .time{ margin-left:10px; /*color:#fff !important*/}
@@ -77,7 +77,7 @@
 .numberbox .orderbtn{ position:absolute; top:4px; right:0;} 
 .numberbox .orderbtn a{ font-size:12px;/* margin-right:5px;*/ float:left; display:inline; padding:1px 5px; line-height:20px; background:#ddd; color:#666}
 .numberbox .orderbtn a:hover{ background:#333; text-decoration:none; color:#fff;}
-.numberbox .orderbtn .button{ color:#fff; background:#f00;}
+.numberbox .orderbtn .button{ color:#fff; background:#0564A6;}
 
 /*-----------------------------------------------询价-----------------------------------------------*/
 /*我的询价*/
@@ -187,14 +187,14 @@
 .add_address{ padding:10px 0}
 .add_address dl{ float:left; *float:none; width:100%; padding:5px 0; font-size:13px;_font-size:12px; }
 .add_address dt{ float:left; width:120px;  text-align:right; }
-.add_address dt em{ margin-right:5px; color:#f00; font-size:12px;}
+.add_address dt em{ margin-right:5px; color:#0564A6; font-size:12px;}
 .add_address dd{float:left;position:relative; padding-left:10px; text-align:left;}
 .add_address dd select{ margin-right:5px;}
 .add_address dd .input120{ border:1px solid #ddd;margin-right:5px; height:22px; width:200px;}
 .add_address dd b{ font-weight:normal; color:#1a66b3;}
 .add_address dd .btngreen{ height:32px !important; width:88px !important; border:0 !important;}
 .add_address dd .button{ font-size:14px; padding:5px 8px;}
-.dd_p{ border:1px dashed #ff7800; width:100%; padding:5px 8px; color:#f00;}
+.dd_p{ border:1px dashed #ff7800; width:100%; padding:5px 8px; color:#0564A6;}
 .add_address dd label{ margin-left:5px;}
 
 
@@ -208,7 +208,7 @@
 /*发票*/
 .ivcoice{ float:left; width:858px}
 .ivcoice .vac_table{ border-top:0 !important;}
-/*.Order_details{ border-bottom:1px solid #f00 !important}
+/*.Order_details{ border-bottom:1px solid #0564A6 !important}
 .ivcoice .order_info_row_right{ width:700px ;  overflow:hidden}
 .ivcoice .order_info_row_right .mod_pipe .edit{ width:100px;}*/
 

@@ -26,30 +26,6 @@
     </div>
     <div class="RG_mbox fl">
       <div class="item ">
-        <div class="ltext fl"> <em>*</em>行业领域： </div>
-        <div class="fl">
-          <select id="industry" name="industry" onchange="showother(this.value)" style="width:210px;">
-            <?php foreach($this->appLevel1 as $k=>$v){
-			    $sel='';
-			    if($this->formData['industry'] == $v['id']) $sel = 'selected="selected"';
-			    echo "<option value='".$v['id']."' $sel>".$v['name']."</option>";
-		     }?>
-            <option value='other' <?php if($this->formData['industry'] == 'other') echo 'selected="selected"';?>>其它</option>
-          </select>
-          <div id="industry_other_div"></div>
-        </div>
-      </div>
-      
-      <div class="item ">
-        <div class="ltext fl"> <em>*</em>企业性质： </div>
-        <div class="fl">
-           <select name="property" id="property" style="width:210px;">
-                  <option value="enduser" <?=$this->formData['property']=='enduser'?'selected':'';?>>终端用户</option>
-                  <option value="merchant" <?=$this->formData['property']=='merchant'?'selected':'';?>>贸易商</option>
-                </select>
-        </div>
-      </div>
-      <div class="item ">
         <div class="ltext fl"> <em>*</em>用户名： </div>
         <div class="fl">
           <input type="text" class="validate[required,custom[noSpecialCaracters],length[4,20],ajax[ajaxUname]] reinput fl" id="uname" name="uname" value="<?=$this->formData['uname']?>">
@@ -82,13 +58,10 @@
       <div class="item ">
         <div class="ltext fl"> &nbsp; </div>
         <div class="fl">
-          <p><label><input type="checkbox" class="validate[]" name="agreement" id="agreement" value="ok" onclick="checkOk()"/>我已阅读并接受 </label>
-          <a href="javascript:"  onclick="openService()">《盛芯电子用户协议》</a><a href="javascript:"  onclick="openTransaction()">《盛芯电子交易条款》</a></p>
-          <br/>
-          <span id="sub_ok" style="display:none">
+          <span id="sub_ok" >
           <input type="submit" class="button"  value="立即注册"/>
           </span>
-          <span id="sub_no" title="阅读并接受《盛芯电子用户协议》和《盛芯电子交易条款》后才能注册"><input type="submit" class="button" style="background:#aaa;cursor:default"  value="立即注册" disabled="disabled"/></span>
+
         </div>
       </div>
     </div>
