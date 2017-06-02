@@ -732,6 +732,64 @@ class Default_Service_ProductService
 		return false;
 	}
 	/**
+	 * 更新爬取产品
+	 */
+	public function updateSupplierProduct($collection_id,$supplier_id,$part_no,$item,$productId){
+		$frontendOptions = array('lifeTime' => 3600*24,'automatic_serialization' => true);
+		$backendOptions = array('cache_dir' => CACHE_PATH);
+		//$cache 在先前的例子中已经初始化了
+		$cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
+		// 查看一个缓存是否存在:
+		$sqlstr = "SELECT sc.id,sc.g_excode
+					FROM  sx_collection as sc
+					WHERE sc.activation = 1 LIMIT 1";
+		$rateModel = new Default_Model_DbTable_SupplierGrab();
+		$scre = $rateModel->getByOneSql($sqlstr);
+		$cache_key = 'crawler_product_'.$collection_id.'_'.md5($part_no);
+		if($product = $cache->load($cache_key)) {
+			foreach($product['product'] as $supid=>$prodArray){
+				if($supid==$supplier_id){
+					foreach($prodArray as $k=>$prod){
+						if($k==$item){
+							$prodInfo = $prod;break;
+						}
+					}
+				}
+			}
+			
+			if($prodInfo){
+				$productSupplier = new Default_Model_DbTable_ProductSupplier();
+				$productPrice = new Default_Model_DbTable_ProductPrice();
+				
+				if($productId){
+					$datas['stock'] = $prodInfo['stock'];
+					$datas['moq'] = $prodInfo['moq'];
+					$datas['update_time'] = date("Y-m-d");
+					
+					$productSupplier->update($datas, "product_id='{$productId}'");
+					$dataps = [];
+					
+					foreach($prodInfo['bookprice'] as $bp){
+						$tmp = [];
+						$tmp['product_id'] = $productId;
+						$tmp['collection_id'] = $collection_id;
+						$tmp['supplier_id'] = $supplier_id;
+						$tmp['moq'] = $bp['moq'];
+						$tmp['rmbprice'] = $bp['rmbprice'];
+						$tmp['usdprice'] = $bp['usdprice'];
+						$dataps[] = $tmp;
+					}
+					if($dataps){
+						$productPrice->delete("product_id='{$productId}'");
+						$productPrice->addDatas($dataps);
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+	/**
 	 * 获取产品
 	 */
 	public function getProductNew($qstr,$collection_id,$supplier_id){

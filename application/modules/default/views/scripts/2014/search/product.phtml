@@ -57,7 +57,7 @@ data-id='<?php echo $this->productAll['sup'][$supId]['id']?>'><?php echo $this->
 						<td class="tl pl30">
 							<div class="ic-no rel">
 								<a title="<?php echo $pv['pratNo'];?>" 
-								href="/item?scid=<?php echo $this->productAll['sup'][$supId]['scid'];?>&supid=<?php echo $supId;?>&pid=0&kw=<?php echo $this->keyworld;?>&item=<?php echo $k;?>&pn=<?php echo $pv['pratNo'];?>"
+								href="/item?scid=<?php echo $this->productAll['sup'][$supId]['scid'];?>&supid=<?php echo $supId;?>&pid=0&kw=<?php echo $this->keyworld;?>&it=<?php echo $k;?>&pn=<?php echo $pv['pratNo'];?>"
 								target="_blank"> <?php echo $pv['pratNo'];?> </a>
 							</div>
 						</td>
@@ -99,12 +99,12 @@ data-id='<?php echo $this->productAll['sup'][$supId]['id']?>'><?php echo $this->
 		
 							<div class="tabelbtn">
 		<?php if($pv['stock']>0 && $pv['bookprice']){?>
-								<a href="/item?scid=<?php echo $this->productAll['sup'][$supId]['scid'];?>&supid=<?php echo $supId;?>&pid=0&kw=<?php echo $this->keyworld;?>&item=<?php echo $k;?>&pn=<?php echo $pv['pratNo'];?>" 
+								<a href="/item?scid=<?php echo $this->productAll['sup'][$supId]['scid'];?>&supid=<?php echo $supId;?>&pid=0&kw=<?php echo $this->keyworld;?>&it=<?php echo $k;?>&pn=<?php echo $pv['pratNo'];?>" 
 									class="gbqfb logclick" title="购买" rev="prodlist_part_id"
 									rel="37377"><i class="i_buy_s"></i>在线购买</a> <br />
 	<?php }?>
 									 <a
-									href="/item?scid=<?php echo $this->productAll['sup'][$supId]['scid'];?>&supid=<?php echo $supId;?>&pid=0&kw=<?php echo $this->keyworld;?>&item=<?php echo $k;?>&pn=<?php echo $pv['pratNo'];?>"
+									href="/item?scid=<?php echo $this->productAll['sup'][$supId]['scid'];?>&supid=<?php echo $supId;?>&pid=0&kw=<?php echo $this->keyworld;?>&it=<?php echo $k;?>&pn=<?php echo $pv['pratNo'];?>"
 									class="gbqfb logclick" title="询价" rev="prodlist_part_id"
 									rel="37377"><i class="i_xun_s"></i>批量询价</a><br>
 							</div>

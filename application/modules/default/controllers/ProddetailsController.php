@@ -48,7 +48,7 @@ class ProddetailsController extends Zend_Controller_Action {
 			$supplier_id = (int)$this->_getParam('supid');
 			$partid = (int)$this->_getParam('pid');
 			$keyworld  = $this->filter->pregHtmlSql(trim($this->_getParam('kw')));
-			$itemk = (int)$this->_getParam('item');
+			$itemk = (int)$this->_getParam('it');
 			$part_no  = $this->filter->pregHtmlSql(trim($this->_getParam('pn')));
 			//查询是否存在
 			$qstr = " 1 ";
@@ -66,7 +66,7 @@ class ProddetailsController extends Zend_Controller_Action {
 				$product =  $this->_prodService->getProductNew($qstr,$collection_id,$supplier_id);
 			}else{
 				//更新产品库存和价格信息
-				//待开发
+				$this->_prodService->updateSupplierProduct($collection_id,$supplier_id,$keyworld,$itemk,$product['id']);
 			}
 		}else{
 			$this->_redirect('/error');
@@ -75,7 +75,6 @@ class ProddetailsController extends Zend_Controller_Action {
 		//查询产品可销售几个和库存
 		$product['stockInfo'] = $this->_prodService->getStockPrice($product['id'],$collection_id,$supplier_id);
 		$this->view->prodarr = $product;
-		//echo '<pre>';print_r($product);exit;
 	
 		//记录浏览记录
 		$this->_prodhistory->addhistry($id_no);
