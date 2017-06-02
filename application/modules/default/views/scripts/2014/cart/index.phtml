@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="/css/default/buyprocess2014.css" />
 <div id="header" class="w">
-    <div id="logo"><a hidefocus="true" href="/"><img alt="IC易站" src="/images/default/logo.jpg"></a></div>
+    <div id="logo"><a hidefocus="true" href="/"><img src="/images/default/logo.jpg"></a></div>
     <h1>我的购物车</h1>
 </div>
 <!--registerted-->
@@ -18,7 +18,7 @@
 <div class="w lh">
     <div class="Shopping_cart 1h">
     <h1><img src="/images/default/cart.jpg" />我的购物车</h1>
-    <div class="tipfree"><b class="fontgreen">IC易站根据不同交货地，自动为您分开两张不同交货地订单</b></div>
+    <div class="tipfree"><b class="fontgreen">根据不同交货地，自动为您分开两张不同交货地订单</b></div>
     <?php if(empty($this->items)){?>
      <table border="0" cellpadding="0" cellspacing="0" class="listtable boxshadow_h">
       <tr>
@@ -99,8 +99,7 @@
           </td>
         <td class="price"><?=$item['unit']?><label name='<?=$priceid;?>'><?=number_format($item['byprice'],DECIMAL);?></label></td>
         <td class="price"><?=$item['unit']?><label name='<?=$itemtotalid;?>'><?=number_format($item['byprice']*$item['qty'],DECIMAL);?></label></td>
-        <td><a href="javascript:" onclick="delectcart('<?=$rowid;?>')">删除</a><br/>
-        <a href="javascript:" onclick="changeplace('<?=$rowid;?>')">更换交货地</a>
+        <td><a href="javascript:" onclick="delectcart('<?=$rowid;?>')">删除</a>
         </td>
        </tr>
        <?php }?>

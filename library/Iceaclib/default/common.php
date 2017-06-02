@@ -110,9 +110,11 @@ class MyCommon
 	{
 		$actionname = rawurlencode($_SERVER['REQUEST_URI']);
 		$user = new Default_Model_DbTable_User();
-		$sql = "SELECT u.emailapprove,up.companyapprove FROM user as u,user_profile as up 
-    			WHERE u.uid = up.uid AND u.uid=:uidtmp AND u.enable='1'";
+		$sql = "SELECT * FROM user as u
+    			WHERE u.uid=:uidtmp AND u.enable='1'";
+		
 		$reUser = $user->getRowBySql($sql, array('uidtmp'=>$_SESSION['userInfo']['uidSession']));
+
 		if(empty($reUser))
 		{
 			unset($_SESSION['userInfo']);//注销session

@@ -235,6 +235,7 @@ class UserController extends Zend_Controller_Action
     	if(isset($_SESSION['userInfo']) && $_SESSION['userInfo']['approveSession']==1) 
     		$this->_redirect('/');
     	$userModel = new Default_Model_DbTable_User();
+
     	$this->view->invitekey = trim($_GET['invitekey']);
     	if($this->getRequest()->isPost()){
     		$this->view->formData = $formData = $this->getRequest()->getPost();

@@ -55,11 +55,11 @@
         <td>
         	<div class="productinfo">
                 <img src="<?=PRODUCTICON.($item['options']['part_img']==''?'no.gif':$item['options']['part_img']);?>">
-                <div class="productinfop">
-                    <p><a href="/item-0-0-<?=$item['pord_id'];?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank"  class="model"><?=$item['part_no'];?></a></p>
+                
+                    <p><a class="model"><?=$item['part_no'];?></a></p>
                     <p><?=$item['options']['brand'];?></p>
-                    <p><p title="<?=$item['options']['description']?>"><?=$this->fun->utf_substr($item['options']['description'],68)?></p>
-                </div>
+                    
+               
             </div>
            
         </td>
@@ -99,8 +99,7 @@
           </td>
         <td class="price"><?=$item['unit']?><label name='<?=$priceid;?>'><?=number_format($item['byprice'],DECIMAL);?></label></td>
         <td class="price"><?=$item['unit']?><label name='<?=$itemtotalid;?>'><?=number_format($item['byprice']*$item['qty'],DECIMAL);?></label></td>
-        <td><a href="javascript:" onclick="delectcart('<?=$rowid;?>')">删除</a><br/>
-        <a href="javascript:" onclick="changeplace('<?=$rowid;?>')">更换交货地</a>
+        <td><a href="javascript:" onclick="delectcart('<?=$rowid;?>')">删除</a>
         </td>
        </tr>
        <?php }?>

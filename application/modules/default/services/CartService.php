@@ -17,6 +17,7 @@ class Default_Service_CartService
 	//根据ip取购物车寄存并加入购物车
 	public function getCartDeposit()
 	{
+		return true;
 		if(!isset($_SESSION['cartnumber']) && !isset($_SESSION['inquirynumber']))
 		{
 			$cdModel  = new Default_Model_DbTable_CartDeposit();
@@ -54,21 +55,22 @@ class Default_Service_CartService
 	/*
 	 * 插入到购物车
 	 */
-	public function addCartlist($id,$qty,$product,$delivery_place,$bpp_stock_id=0){
-		$product = $this->_fun->filterProduct($product,$bpp_stock_id);
+	public function addCartlist($collection_id,$supplier_id,$id,$qty,$product,$delivery_place,$bpp_stock_id=0){
 		if($delivery_place=='SZ'){
-		  $show_break_price = $product['break_price_rmb'];
-		  $byprice = $this->_fun->getPrice($product['break_price_rmb'], $qty);
+		  $show_break_price = $product['stockInfo']['rmbprice'];
+		  $byprice = $this->_fun->getPrice($product['stockInfo']['rmbprice'], $qty);
 		  $unit = $product['f_rmb'];
-		  $show_bprice = $this->_fun->getbreakprice_notitle($product['break_price_rmb'],$unit);
+		  $show_bprice = $this->_fun->getbreakprice_notitle($product['stockInfo']['rmbprice'],$unit);
 		}elseif($delivery_place=='HK'){
-		  $show_break_price = $product['break_price'];
-		  $byprice = $this->_fun->getPrice($product['break_price'], $qty);
+		  $show_break_price = $product['stockInfo']['usdprice'];
+		  $byprice = $this->_fun->getPrice($product['stockInfo']['usdprice'], $qty);
 		  $unit = $product['f_usd'];
-		  $show_bprice = $this->_fun->getbreakprice_notitle($product['break_price'],$unit);
+		  $show_bprice = $this->_fun->getbreakprice_notitle($product['stockInfo']['usdprice'],$unit);
 		}
 		$items = array(
 				'pord_id'        => $id,
+				'collection_id'  => $collection_id,
+				'supplier_id'    => $supplier_id,
 				'id'             => $id.$delivery_place.$bpp_stock_id,
 				'part_no'        => $product['part_no'],
 				'qty'            => $qty,
@@ -76,20 +78,13 @@ class Default_Service_CartService
 				'break_price'    => $show_break_price,
 				'unit'           => $unit,
 				'byprice'        => $this->_fun->formnum($byprice),
-				'moq'            => $product['moq'],
-				'mpq'            => $product['mpq'],
+				'moq'            => $product['stockInfo']['moq'],
+				'mpq'            => $product['stockInfo']['moq'],
 				'options'        => array(
-						'brand'       => $product['brand'],
-						'integral'    => $product['integral'],
-						'rebate'      => $product['rebate'],
+						'brand'       => $product['manufacturer'],
 						'part_img'    => $product['part_img'],
 						'show_bprice' => $show_bprice,
-						'description' => $product['description'],
-						'staged' => $product['staged'],
-						'bpp_stock_id' => $product['f_bpp_stock_id'], //记录供应商信息
-						'vendor_name' => $product['f_vendor_name'],
-						'location' => $product['f_location'],
-						'location_code' => $product['f_location_code']
+						'description' => $product['description']
 				));
 		//加入购物车
 		return $this->_cart->add($items);

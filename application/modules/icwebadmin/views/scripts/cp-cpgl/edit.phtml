@@ -32,28 +32,25 @@ margin-right:5px;
      <tr>
         <td align="right">型号：</td>
         <td><input type="text" name="part_no" class="input-medium" value="<?=$this->product['part_no'];?>" ></td>
-		<td align="right">系列：</td>
-        <td><input type="text" name="series" class="input-medium" value="<?=$this->product['series'];?>" ></td>	
+		 </tr>
+		 <tr>
+       <td align="right" height="50px">图片：</td>
+        <td>
+        <input type="hidden" id="url1" name="part_img" value="<?=PRODUCTICON.$this->product['part_img'];?>" />
+        <input type="button" id="image1" value="选择图片" />
+        <img src="<?=PRODUCTICON.$this->product['part_img'];?>" id="showimage1"  width="80" height="80" alt="img"/></td>
       </tr>
       <tr>
-        <td align="right">状态：</td>
-        <td><label><input type="radio" name="status" id="status1" value="1" <?=$this->product['status']==1?'checked':'';?>/><font color="#339900"><b>上线</b></font></label>
-        <label><input type="radio" name="status" id="status0" value="0" <?=$this->product['status']==0?'checked':'';?>/><font color="#CC3333"><b>下架</b></font></label>
-        &nbsp;&nbsp;&nbsp;&nbsp;询价：<label><input type="radio" name="noinquiry" id="noinquiry" value="0" checked="checked"/><font color="#339900"><b>可以</b></font></label>
-        <label><input type="radio" name="noinquiry" id="noinquiry" value="1" <?=$this->product['noinquiry']==1?'checked':'';?>/><font color="#CC3333"><b>不可以</b></font></label>
-        </td>
+        <td align="right">制造商：</td>
+        <td><input type="text" name="manufacturer" class="input-medium" value="<?=$this->product['manufacturer'];?>" ></td>
         <td align="right">品牌：</td>
-        <td><select name="manufacturer" id="manufacturer"  class="input-medium">
+        <td><select name="brand_id" id="brand_id"  class="input-medium">
         <?php foreach($this->brand as $bd){?>
         <option value="<?=$bd['id']?>" <?=$bd['id']==$this->product['manufacturer']?'selected':''?>><?=$bd['name']?></option>
         <?php }?>
         </select></td>
       </tr>
-      <tr>
-        <td align="right">样片申请：</td>
-        <td><label><input type="radio" name="samples" value="1" <?=$this->product['samples']==1?'checked':'';?>/><font color="#339900"><b>可以</b></font></label>
-        <label><input type="radio" name="samples" value="0" <?=$this->product['samples']==0?'checked':'';?>/><font color="#CC3333"><b>不可以</b></font></label></td>
-      </tr>
+
        <tr>
         <td align="right">产品分类：</td>
         <td colspan="3">
@@ -68,169 +65,12 @@ margin-right:5px;
          </span>
         </td>
       </tr>
-      <tr>
-        <td align="right">应用分类：</td>
-        <td colspan="3"><span id="app_level1_Span">
-        <select id="app_level1" name="app_level1"><option value="">请选择一级分类</option></select>
-        </span>
-        <span id="app_level2_Span">
-         <select id="app_level2" name="app_level2"><option value="">请选择二级分类</option></select>
-        </span></td>
-      </tr>
-      <tr>
-        <td align="right">香港库存：</td>
-        <td><input type="text" name="hk_stock" class="input-medium" value="<?=$this->product['hk_stock'];?>" ></td>
-        <td align="right">国内库存：</td> 
-        <td><input type="text" name="sz_stock" class="input-medium" value="<?=$this->product['sz_stock'];?>" ></td>
-      </tr>
-      <tr>
-        <td align="right">BPP库存：</td>
-        <td><input type="text" name="bpp_stock" class="input-medium" value="<?=$this->product['bpp_stock'];?>"></td>
-      </tr>
-      <tr>
-        <td align="right">阶梯价格(USD)：</td>
-        <td><textarea  name="break_price" rows="2"  style="width:260px;"><?=$this->product['break_price']?></textarea></td>
-        <td align="right">最小包装价格(USD)：</td>
-        <td><input type="text" name="mpq_price" class="input-medium" value="<?=$this->product['mpq_price'];?>" ></td>
-      </tr>
-      <tr>
-        <td align="right">价格有效期(USD)：</td>
-        <td>
-        <input type="text" name="price_valid" readonly="readonly" onClick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" value="<?=($this->product['price_valid']?date('Y-m-d',$this->product['price_valid']):'')?>" title="点击选择日期" class="input-medium"></td>
-      </tr>
-       <tr>
-        <td align="right">阶梯价格(RMB)：</td>
-        <td><textarea   name="break_price_rmb" rows="2"  style="width:260px;"><?=$this->product['break_price_rmb']?></textarea></td>
-        <td align="right">最小包装价格(RMB)：</td>
-        <td><input type="text" name="mpq_price_rmb" class="input-medium" value="<?=$this->product['mpq_price_rmb'];?>" ></td>
-      </tr>
-      <tr>
-        <td align="right">价格有效期(RMB)：</td>
-        <td>
-        <input type="text" name="price_valid_rmb" readonly="readonly" onClick="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true,lang:'sc'})" value="<?=($this->product['price_valid_rmb']?date('Y-m-d',$this->product['price_valid_rmb']):'')?>" title="点击选择日期" class="input-medium"></td>
-      </tr>
-      <tr height="30">
-        <td align="right">是否显示价格：</td>
-        <td>
-        <label><input type="radio" name="show_price" value="1" <?=$this->product['show_price']==1?'checked':'';?>/><font color="#339900"><b>显示</b></font></label>
-        <label><input type="radio" name="show_price" value="0" <?=$this->product['show_price']==0?'checked':'';?>/><font color="#CC3333"><b>不显示</b></font></label></td>
-        <td align="right">没有库存是否可以销售：</td>
-        <td><label><input type="radio" name="can_sell" value="1" <?=$this->product['can_sell']==1?'checked':'';?>/><font color="#339900"><b>可以</b></font></label>
-        <label><input type="radio" name="can_sell" value="0" <?=$this->product['can_sell']==0?'checked':'';?>/><font color="#CC3333"><b>不可以</b></font></label></td>
-      </tr>
-      <tr height="30">
-        <td align="right">是否将库存设为MOQ：</td>
-        <td>
-        <label><input type="radio" name="surplus_stock_sell" value="1" <?=$this->product['surplus_stock_sell']==1?'checked':'';?>/><font color="#339900"><b>是</b></font></label>
-        <label><input type="radio" name="surplus_stock_sell" value="0" <?=$this->product['surplus_stock_sell']==0?'checked':'';?>/><font color="#CC3333"><b>否</b></font></label></td>
-        <td align="right">特殊MOQ与售价<br/>(MOQ|RMB单价|USD单价)：</td>
-        <td><input type="text" name="special_break_prices" class="input-medium" value="<?=$this->product['special_break_prices'];?>" ></td>
-      </tr>
+      <tr><td align="right">产品参数：</td>
+      <td colspan="3">
+      <textarea name="attribute" id="attribute" style="width: 500px;height: 100px;"><?php echo $this->product['attribute'];?></textarea>
+      </td></tr>
+
       
-       <tr>
-        <td align="right">最小起订量：</td>
-        <td><input type="text" name="moq" class="input-medium" value="<?=$this->product['moq'];?>" ></td>
-        <td align="right">最小包装量：</td>
-        <td><input type="text" name="mpq" class="input-medium" value="<?=$this->product['mpq'];?>" ></td>
-      </tr>
-      <tr>
-        <td align="right">通用交期：</td>
-        <td><input type="text" name="lead_time" class="input-medium" value="<?=$this->product['lead_time'];?>" ></td>
-        <td align="right">香港精确交期：</td>
-        <td><input type="text" name="lead_time_hk" class="input-medium" value="<?=$this->product['lead_time_hk'];?>" ></td>
-      </tr>
-      <tr>
-        <td align="right">国内精确交期：</td>
-        <td><input type="text" name="lead_time_cn" class="input-medium" value="<?=$this->product['lead_time_cn'];?>" ></td>
-        <td align="right">生产时间：</td>
-        <td><input type="text" name="datecode" class="input-medium" value="<?=$this->product['datecode'];?>" ></td>
-      </tr>
-      <tr>
-        <td align="right">封装：</td>
-        <td><input type="text" name="supplier_device_package" class="input-medium" value="<?=$this->product['supplier_device_package'];?>" ></td>
-        <td align="right">包装：</td>
-        <td><input type="text" name="packaging" class="input-medium" value="<?=$this->product['packaging'];?>" ></td>
-      </tr>
-       <tr>
-        <td align="right">无铅情况/ROHS：</td>
-        <td>
-        <label><input type="radio" name="rohs" id="rohs1" value="1" <?=$this->product['rohs']==1?'checked':'';?>/><font color="#339900"><b>符合</b></font></label>
-        <label><input type="radio" name="rohs" id="rohs0" value="0" <?=$this->product['rohs']==0?'checked':'';?>/><font color="#CC3333"><b>不符合</b></font></label></td>
-        <td align="right">限制品：</td>
-        <td><label><input type="radio" name="restricted" id="restricted1" value="1" <?=$this->product['restricted']==1?'checked':'';?>/><font color="#339900"><b>是</b></font></label>
-        <label><input type="radio" name="restricted" id="restricted0" value="0" <?=$this->product['restricted']==0?'checked':'';?>/><font color="#CC3333"><b>不是</b></font></label></td>
-      </tr>
-      <tr>
-        <td align="right">描述：</td>
-        <td><textarea  id="description"  name="description" rows="3"  style="width:260px;"><?=$this->product['description'];?></textarea></td>
-        <td align="right">图片：</td>
-        <td>
-        <input type="hidden" id="url1" name="part_img" value="<?=PRODUCTICON.$this->product['part_img'];?>" />
-        <input type="button" id="image1" value="选择图片" />
-        <img src="<?=PRODUCTICON.$this->product['part_img'];?>" id="showimage1"  width="80" height="80" alt="img"/></td>
-      </tr>
-      <tr><td align="right">数据文档名称：</td><td colspan="3">
-      <input type="text" name="datasheet_name_add" id="datasheet_name_add" />
-       <button class="btn btn-small" type="button" id="insertfile"  style="margin-bottom:5px">选择文档</button>
-       <br/>
-       <div id="datasheet-box" style="width:650px; word-wrap:break-word;word-break:normal;">
-        <?php 
-		//datasheet
-    	if($this->product['datasheet']){
-    		$dsarr = explode('<>',$this->product['datasheet']);
-    		foreach($dsarr as $dsstr){
-			   if($dsstr){
-			     $datasheet_name = $datasheet = '';
-    			 $tmparr = explode('()',$dsstr);
-				 if(count($tmparr)==2){
-				 	$datasheet_name = $tmparr[0];
-					$datasheet      = $tmparr[1];
-				 }else{
-				 	$datasheet_name = '数据文档';
-					$datasheet      = $tmparr[0];
-				 }
-				
-				 ?>
-                 <span class="tag"><span class="tag-label"><?=$datasheet_name?></span><a class="tag-close" href="#" title="删除">x</a>
-                 <input type="hidden" name="datasheet_name[]"  value="<?=$datasheet_name?>" >
-				 <input type="hidden" name="datasheet[]"  value="<?=$datasheet?>" >
-                 </span>
-                 <?php
-    		  }
-    	   }
-		}
-		?> 
-       </div>
-      </td></tr>
-      <tr><td align="right">&nbsp;</td>
-      <td colspan="3"></td></tr>
-      
-      <tr><td align="right">
-      关联型号：
-      </td><td colspan="3"><input  id="related_ic"  class="input-xlarge" name="related_ic"  type="text" value=""> <font color="#999999">请输入型号进行选择</font>
-      </td></tr>
-      <tr><td align="right">&nbsp;</td>
-      <td colspan="3"><div id="ic-box" style="width:650px; word-wrap:break-word;word-break:normal;">
-      <?php foreach($this->relevanceid as $reid){
-         echo '<input type="hidden" name="relevance[]"  value="'.$reid.'" >';}?> 
-      <?php if($this->relevance){
-  			foreach($this->relevance as $val){
-      ?>
-  			<span class="tag"><span class="tag-label"><?=($val['part_no'].' ('.$val['brand'].')')?></span><a href="#" class="tag-close" title="删除">x</a>
-  			<input type="hidden" name="part_id[]"  value="<?=$val['id']?>" >
-  			</span>
-      <?php } 
-	  }?>
-      </div></td></tr>
-      
-      <tr><td colspan="4">
-      参数：
-      <textarea name="parameters" id="parameters" class="kindeditor span9"><?php echo $this->product['parameters'];?></textarea>
-      </td></tr>
-      <tr><td colspan="4">
-      官方描述：
-      <textarea name="overview" id="overview" class="kindeditor span9"><?php echo $this->product['overview'];?></textarea>
-      </td></tr>
     </table>
   <div class="control-group" style="margin-left:280px">
     <div class="controls">
@@ -263,27 +103,12 @@ function onloadlevel(part_level1,part_level2,part_level3)
     if(part_level2 && part_level3)
 	   $("#part_level3_Span").load("/icwebadmin/common/getlevel3?part_level2="+part_level2+"&part_level3="+part_level3);
 }
-
-function selectapp1(){
-	var app_level1=$("#app_level1").val();
-	$("#app_level2_Span").load("/icwebadmin/common/getapp2?app_level1="+app_level1);
-}
-function onloadapp(app_level1,app_level2)
-{
-	$("#app_level1_Span").load("/icwebadmin/common/getapp1?app_level1="+app_level1);
-	if(app_level1 && app_level2)
-	   $("#app_level2_Span").load("/icwebadmin/common/getapp2?app_level1="+app_level1+"&app_level2="+app_level2);
-}
 onloadlevel('<?=$this->product['part_level1']?>','<?=$this->product['part_level2']?>','<?=$this->product['part_level3']?>');
-onloadapp('<?=$this->product['app_level1']?>','<?=$this->product['app_level2']?>')
+
 KindEditor.ready(function(K) {
-				var editorparameters = K.create('#parameters', {
+				var editorparameters = K.create('#attribute', {
 					height:300,
                     items : ['source', '|', 'undo', 'redo']
-                });
-				
-				var editoroverview = K.create('#overview', {
-					height:500
                 });
 			//产品图片
 			var spe_head_editor = K.editor({
@@ -307,59 +132,8 @@ KindEditor.ready(function(K) {
 				allowFileManager : true,
 				uploadJson : '/icwebadmin/common/editoruplod?part=upload/default/datasheet/',
                 fileManagerJson : '/icwebadmin/common/filemanagerjson?part=upload/default/datasheet/'
-		});
-			K('#insertfile').click(function() {
-				editor.loadPlugin('insertfile', function() {
-					editor.plugin.fileDialog({
-						
-						clickFn : function(url, title) {
-							var datasheet_name = $('#datasheet_name_add').val()?$('#datasheet_name_add').val():'数据文档';
-							
-							var button = '<span class="tag"><span class="tag-label">'+datasheet_name+'</span><a class="tag-close" href="#" title="删除">x'+'</a>'
-									+'<input type="hidden" name="datasheet_name[]" value="'+datasheet_name+'" ></span>'
-									+'<input type="hidden" name="datasheet[]" value="'+url+'" ></span>';
-							$('#datasheet-box').append(button);
-							$('#datasheet_name_add').val('');
-							editor.hideDialog();
-						}
-					});
-				});
-			});					
+		});				
 	});
-
-
-$(function(){
-	$('#related_ic').typeahead(
-		{	
-			items:8,
-			minLength:3,			
-		    source: function (query, process) {
-		        return $.getJSON('/icwebadmin/common/getajaxtag', { q: query }, function (data) {
-			        var part =[];
-			        map =[];
-			        $.each(data,function(id,item){
-			        	part.push(item);
-			        	map[item] = id;
-				     });
-		            return process(part);
-		        });
-		    },
-		    updater : function(item)
-		    {
-				var part_id = map[item];
-				var button = '<span class="tag"><span class="tag-label">'+item+'</span><a class="tag-close" href="#" title="删除">x'+'</a>'
-									+'<input type="hidden" name="part_id[]" value="'+part_id+'" ></span>';
-				$('#ic-box').append(button);
-				return '';
-		    }
-		}
-	);
-	$('.tag-close').live('click',function(){
-		$(this).parent().remove();
-		return false;
-	});
-});
-
 <?php if(isset($_SESSION['message'])){?>
 
 	 document.getElementById('message_sess').style.display = "block";

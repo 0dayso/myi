@@ -89,53 +89,12 @@ class Icwebadmin_CpcpglController extends Zend_Controller_Action
     	$this->exportLimit = 1000;
     }
     public function indexAction(){
-    	$typeArr =array('on','off','nstock','hstock','select','staged');
+    	$typeArr =array('on','stock');
     	if(in_array($_GET['type'],$typeArr)) $this->view->type = $type = $_GET['type'];
     	else $this->view->type = $type='on';
     	
     	$wheresql = '';
-    	if($_GET['part_level3'])
-    	{
-    		$this->view->part_level3 = $_GET['part_level3'	];
-    		$wheresql .= " AND part_level3 = ".$_GET['part_level3'];
-    	}
-    	
-    	if($_GET['part_img'])
-    	{
-    		$this->view->part_img = $_GET['part_img'	];
-    		$wheresql .= ($_GET['part_img'	] == 'Y') ? " AND part_img !='' " : " AND part_img ='' " ;
-    	}    	
-    	if($_GET['datasheet'])
-    	{
-    		$this->view->datasheet = $_GET['datasheet'	];
-    		$wheresql .= ($_GET['datasheet'	] == 'Y') ? " AND datasheet !='' " : " AND datasheet ='' " ;
-    	}  
 
-    	if($_GET['params'])
-    	{
-    		$this->view->params = $_GET['params'	];
-    		$wheresql .= ($_GET['params'	] == 'Y') ? " AND parameters !='' " : " AND parameters ='' " ;
-    	}
-    	 //可购买
-    	 $this->view->cansell = $_GET["cansell"];
-    	 if($this->view->cansell){
-    	 	$wheresql .= "  AND (break_price>0 OR break_price_rmb>0) AND ((sz_stock - sz_cover) > 0 OR (hk_stock - hk_cover) > 0)";
-    	 }
-    	//可询价
-    	 $this->view->caninq = $_GET["caninq"];
-    	 if($this->view->caninq){
-    	 	$wheresql .= " AND noinquiry = 0 ";
-    	 }
-    	//可申请样片
-    	 $this->view->cansamp = $_GET["cansamp"];
-    	 if($this->view->cansamp){
-    	 	$wheresql .= " AND samples = 1  AND (sz_stock - sz_cover) > 0";
-    	 }
-    	//ATS
-    	$this->view->ats = $_GET['ats'];
-    	if($this->view->ats){
-    		$wheresql .= " AND ats = 1 AND (hk_stock>0 OR sz_stock>0)";
-    	}
     	//产品线
     	$this->view->selectbrand = $_GET['brand'];
     	if($this->view->selectbrand)
@@ -146,22 +105,10 @@ class Icwebadmin_CpcpglController extends Zend_Controller_Action
     		$this->view->partno = trim($_GET['partno']);
     		$total =$this->view->selectnum = $this->_prodService->getSelectNum($this->view->partno,$wheresql);
     	}else{
-    		$this->view->totalnum = $this->_prodService->getTotalNum($wheresql);
-    		$this->view->onnum = $this->_prodService->getOnNum($wheresql);
-    	    $this->view->offnum = $this->_prodService->getOffNum($wheresql);
-    	    $this->view->stagednum = $this->_prodService->getStagedNum($wheresql);
-    	    $this->view->nstocknum = $this->_prodService->getNstockNum($wheresql);
-    	    $this->view->hstocknum = $this->_prodService->getHstockNum($wheresql);
     		if($type == 'on'){
-    		   $total =$this->view->onnum;
-    	    }elseif($type == 'off'){
-    		    $total =$this->view->offnum;
-    	    }elseif($type == 'nstock'){
-    		    $total =$this->view->nstocknum;
-    	    }elseif($type == 'hstock'){
-    		    $total =$this->view->hstocknum;
-    	    }elseif($type == 'staged'){
-    	    	$total =$this->view->stagednum;
+    			$total = $this->_prodService->getTotalNum($wheresql);
+    	    }elseif($type == 'stock'){
+    	    	$total = $this->_prodService->getHstockNum($wheresql);
     	    }else{
     		    echo '参数错误';exit;
     	    }
@@ -179,28 +126,14 @@ class Icwebadmin_CpcpglController extends Zend_Controller_Action
     		$wheresql .= " ORDER BY id DESC ";
     		if($type == 'on'){
     		    $product =  $this->_prodService->getOn($offset,$perpage,$wheresql);
-    	    }elseif($type == 'off'){
-    		    $product =  $this->_prodService->getOff($offset,$perpage,$wheresql);
-    	    }elseif($type == 'nstock'){
-    		    $product =  $this->_prodService->getNstock($offset,$perpage,$wheresql);
-    	    }elseif($type == 'hstock'){
+    	    }elseif($type == 'stock'){
     		    $product =  $this->_prodService->getHstock($offset,$perpage,$wheresql);
-    	    }elseif($type=='staged'){
-    	    	$product =  $this->_prodService->getStaged($offset,$perpage,$wheresql);
     	    }
     	}
-    	foreach($product as $k=>$parr){
-    		$product[$k]['pdnpcn'] = $this->_prodService->checkpdnpcn($parr['id']);
-    	}
-    	$this->view->exportLimit         = $this->exportLimit;
-    	$this->view->exportPageNum = ($this->view->totalnum) ? ceil($this->view->totalnum/$this->exportLimit) : 1;
     	$this->view->product = $product;
     	//获取品牌
     	$this->_brandMod = new Icwebadmin_Model_DbTable_Brand();
     	$this->view->brand = $this->_brandMod->getAllByWhere("id!=''"," name ASC");
-    	//通用器件
-    	$eventservice = new Icwebadmin_Service_EventService();
-    	$this->view->tongyong = $eventservice->getTongYong();
     }
     /*
      * 编辑页面
@@ -214,56 +147,10 @@ class Icwebadmin_CpcpglController extends Zend_Controller_Action
     			$stnum = strrpos($data['part_img'],'/');
     			$data['part_img'] = substr($data['part_img'],$stnum+1);
     		}else $data['part_img'] = 'no.gif';
-    		//阶梯价
-    		$order   = array("\r\n", "\n", "\r");$replace = ';';
-    		//价格有效期
-    		if($data['price_valid']) $data['price_valid'] = strtotime($data['price_valid']);
-    		if($data['price_valid_rmb']) $data['price_valid_rmb'] = strtotime($data['price_valid_rmb']);
-    		$str=str_replace($order, $replace, $str);
-    		$data['break_price'] = str_replace($order, $replace, $data['break_price']);
+
     		$prodModel = new Icwebadmin_Model_DbTable_Product();
-    		
-    		//相关产品
-    		$relevance = $data['relevance'];
-    		$partarr = $data['part_id']?array_unique($data['part_id']):array();
-    		unset($data['relevance']);
-    		unset($data['part_id']);
-    		unset($data['related_ic']);
-    		if($relevance || $partarr){
-    			$this->_prodService->updateRelevance($id,$partarr,$relevance);
-    		}
-    		//多个数据文档
-    		$datasheet_name = $data['datasheet_name'];
-    		$datasheet = $data['datasheet'];
-    		unset($data['datasheet_name_add']);
-    		unset($data['datasheet_name']);
-    		unset($data['datasheet']);
-    		if(!empty($datasheet)){
-    			$datasheet_str = '';
-    			foreach($datasheet as $k=>$v){
-    				if($v){
-    				$datasheet_str .='<>'.$datasheet_name[$k].'()'.$v;
-    				}
-    			}
-    			$data['datasheet'] = $datasheet_str;
-    		}
-    		//替换 为了处理图片
-    		$data['overview'] = str_replace('\\','',$data['overview']);
     		$prodModel->update($data, "id='{$id}'");
-    		//如果下线，看下是否有推荐此产品
-    		$alertmess ='';
-    		if(!$data['status']){
-    			$rModer = new Default_Model_DbTable_Recommend();
-    			$allhotArr = $rModer->getAllByWhere("comid='".$id."' AND status=1");
-    			if($allhotArr){
-    				$alertmess = '此产品在推荐中使用，请去更新推荐产品。推荐处：';
-    				$rstr='';
-    				foreach($allhotArr as $arr){
-    					$rstr .= '栏目：'.$arr['part'].'，类型：'.$arr['type'].'；';
-    				}
-    				$alertmess .=$rstr;
-    			}
-    		}
+    		
     		$_SESSION['message'] = '更新成功。'.$alertmess;
     		//日志
     		$this->_adminlogService->addLog(array('log_id'=>'E','temp2'=>$id,'temp4'=>'更新产品成功','description'=>$data['break_price'].'<>'.$data['break_price_rmb'].'<>'.$data['special_break_prices']));
@@ -271,14 +158,8 @@ class Icwebadmin_CpcpglController extends Zend_Controller_Action
     	//获取品牌
     	$brandMod = new Icwebadmin_Model_DbTable_Brand();
     	$this->view->brand = $brandMod->getAllByWhere("id!=''");
-    	//应用分类
-    	$brandMod = new Icwebadmin_Model_DbTable_Brand();
-    	$this->view->brand = $brandMod->getAllByWhere("id!=''");
     	//产品信息
     	$this->view->product = $this->_prodService->getProductByID($id);
-    	//相关产品
-    	$this->view->relevanceid = $this->_prodService->getRelevanceId($id);
-    	$this->view->relevance = $this->_prodService->getRelevanceInfo($id);
     	
     }
 	/*

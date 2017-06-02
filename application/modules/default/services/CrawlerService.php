@@ -102,13 +102,13 @@ class Default_Service_CrawlerService
 	                            $titleArray = array();
 	                            $attribute = '';
 	                            foreach($exppdhtml->find('dl',1)->find('dt') as $key=>$element){
-	                                $titleArray[$key] = str_replace(":","",$element->innertext);
+	                                $titleArray[$key] = str_replace(":","",trim(strip_tags($element->innertext)));
 	                            }
 	                            foreach($exppdhtml->find('dl',1)->find('dd') as $key=>$element){
 	                                if(!$attribute){
-	                                    $attribute = $titleArray[$key].'<>'.$element->innertext;
+	                                    $attribute = $titleArray[$key].'||'.trim(strip_tags($element->innertext));
 	                                }else{
-	                                    $attribute .= '[]'.$titleArray[$key].'<>'.$element->innertext;
+	                                    $attribute .= '[]'.$titleArray[$key].'||'.trim(strip_tags($element->innertext));
 	                                }
 	                            }
 	    
@@ -147,9 +147,9 @@ class Default_Service_CrawlerService
 	                                    $attributeTmp = '';
 	                                    foreach($element->find('td') as $k=>$elementTd){
 	                                        if($k==1){
-	                                            $attributeTmp .= $elementTd->innertext;
+	                                            $attributeTmp .= trim(strip_tags($elementTd->innertext));
 	                                        }elseif($k==2){
-	                                            $attributeTmp .= '<>'.$elementTd->innertext;
+	                                            $attributeTmp .= '||'.trim(strip_tags($elementTd->innertext));
 	                                        }
 	                                    }
 	                                    if($attributeTmp){

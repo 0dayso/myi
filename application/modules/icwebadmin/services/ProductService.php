@@ -170,7 +170,7 @@ class Icwebadmin_Service_ProductService
      * 获取有库存产品总数
     */
     public function getHstockNum($wheresql){
-    	return $this->getNum("SELECT count(id) as num FROM product WHERE (sz_stock > 0 OR hk_stock>0 ) AND status=1 $wheresql");
+    	return $this->getNum("SELECT count(id) as num FROM product WHERE status=1 $wheresql");
     }
     /*
      * 获取ats总数
@@ -275,11 +275,10 @@ class Icwebadmin_Service_ProductService
 	 * 获取记录bysql
 	*/
 	public function getProductBySql($where,$arr=array()){
-		$sqlstr ="SELECT po.*,br.name as bname,pc.name as pcname,app.name as appname
+		$sqlstr ="SELECT po.*,br.name as bname,pc.name as pcname
     	FROM product as po 
     	LEFT JOIN brand as br ON po.manufacturer=br.id
     	LEFT JOIN prod_category as pc ON po.part_level3=pc.id
-    	LEFT JOIN app_category as app ON po.app_level1=app.id
     	WHERE {$where} ";
 		return	$this->_prodModer->getBySql($sqlstr, $arr);
 	}

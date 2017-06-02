@@ -27,14 +27,9 @@ else $selectDC = 0;
               <tbody>
               <tr >
                   <td class="tableti">型号：</td>
-                  <td colspan="3"><span class="model"><a href="/item-b<?=$this->product['manufacturer']?>-<?=($this->product['part_level3']?$this->product['part_level3']:$this->product['part_level2'])?>-<?=$this->product['id']?>-<?=$this->fun->filterUrl($this->product['part_no'])?>.html"><?=$this->product['part_no']?></a></span></td>                 
+                  <td colspan="3"><span class="model"><?=$this->product['part_no']?></span></td>                 
               </tr>              
-              <tr>
-                  <td class="tableti">标准包装：</td>
-                  <td ><?=$this->product['mpq']==0?'':$this->product['mpq']?></td>
-                  <td class="tableti">参考交期：</td>
-                  <td><?=$this->product['lead_time']?></td>
-              </tr>
+              
               <?php if($selectDC){?>
               <tr>
                  

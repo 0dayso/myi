@@ -11,8 +11,7 @@
       <tbody>
       <tr>
         <th width="140">型号</th>
-        <th width="35">品牌</th>
-        <th width="90">查考交期</th>
+        <th width="35">制造商</th>
         <th width="100">采购数量</th>
         <th width="70">目标单价</th>
       </tr>
@@ -23,7 +22,6 @@
       <tr>
         <td align="center"><p class="model"><a href="/item-0-0-<?=$item['id'];?>-<?=$this->fun->filterUrl($item['part_no'])?>.html" target="_blank"><?=$item['part_no'];?></a></p></td>
         <td align="center"><?=$item['options']['brand'];?></td>
-        <td align="center"><?=$item['options']['lead_time'];?>&nbsp;</td>
         <td align="center"><?=$item['hope_number'];?>&nbsp;</td>
         <td align="center"><?=$item['hope_price'];?>&nbsp;</td>
       </tr>

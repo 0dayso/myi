@@ -17,15 +17,14 @@
           <li class="on"><a href="/icwebadmin/ReadHome/hotprod">热销产品推荐<b class="blank3"></b></a></li>
         </ul>
         <div class="tab_con mb10">
-        <font color="#FF0000">*</font>产品ID：<input type="text" name="prod_id" id="prod_id" onkeyup="value=value.replace(/[^\d]/g,'')"/>
-        <span title="数字越小排序越前">排序：</span><input type="text" value="0" name="displayorder" id="displayorder" onkeyup="value=value.replace(/[^\d]/g,'')" style="width:50px;"/>
-        <a href="javascript:" onclick="addhotprod('<?=$data['id']?>')" class="btna">添加热销产品+</a>&nbsp;&nbsp;<a href="/icwebadmin/ReadHome/hotprodedit" class="btna">编辑所有</a>
+        <a href="/icwebadmin/ReadHome/hotprodedit" class="btna">编辑</a>
         <table class="table" border="0" style=" margin-top:-1px;">
         	<tr>
                   <?php foreach($this->hot_prod as $key=>$partarr){?>
-                       <td style="padding:10px;"><a href="/proddetails?partid=<?=$partarr['comid']?>" target="_blank">
+                       <td style="padding:10px;">
+                       <a href="/proddetails?partid=<?=$partarr['comid']?>" target="_blank">
                        <img src="<?=PRODUCTICON.($partarr['part_img']==''?'no.gif':$partarr['part_img'])?>" height="50" width="50"/>
-					   <?=$partarr['part_no']?></a>(<?=$partarr['brandname']?>)
+					   <?=$partarr['part_no']?></a>
                  <?php 
 				 if($partarr['status']==1) {?> 
                 <a href="javascript:;" onclick="changestatus(<?=$partarr['id']?>,0)" title="点击下线"><font color="#006600">已上线</font></a>
