@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css"
 	href="/css/default/buyprocess.css" />
 <div id="header" class="w">
-  <div id="logo"> <a hidefocus="true" href="/"><img alt="IC易站"
+  <div id="logo"> <a hidefocus="true" href="/"><img alt="盛芯电子"
 			src="/images/default/logo.jpg"></a> </div>
   <h1>我的购物车</h1>
 </div>
@@ -290,19 +290,19 @@ $annexurl2= $annexur_part.$this->myinfo['annex2'];
         <h2>付款方式：</h2>
         <div class="addresslist" style="display: block">
           <div class="w_100" style="width: 840px;">
-            <?php if($this->delivery=='SZ'){?>
-            <p class="phover">
+            <?php $paymenttype_checked =1; if($this->delivery=='SZ'){?>
+           <!-- <p class="phover">
               <input type="radio" name="paymenttype" id="paymenttype2" value="online" onclick="payshow()" />
               <label for="paymenttype2"><b>在线支付</b></label>
               <span style="color: #878787">&nbsp;&nbsp;您需要预先拥有一张已开通网上支付功能的银行卡</span> </p>
             <div id="online_show" style="display: none;" class="openpayment">
               <p> 为了保证及时处理您的订单，请您于下单后<span style="color: #FF0000">&nbsp;24小时内&nbsp;</span>完成付款，否则订单将被自动取消 </p>
-              <img src="/images/default/online.jpg"> </div>
+              <img src="/images/default/online.jpg"> </div> --> 
             <?php }else {$paymenttype_checked = 'checked="checked"';}?>
             <p class="phover">
-              <input type="radio" name="paymenttype" id="paymenttype1" value="transfer" <?=$paymenttype_checked?> onclick="payshow()" />
+              <input type="radio" name="paymenttype" id="paymenttype1" value="transfer" checked <?=$paymenttype_checked?> onclick="payshow()" />
               <label for="paymenttype1"><b>银行汇款</b></label>
-              <span style="color: #878787">&nbsp;&nbsp;您需要预先去银行转帐，所购商品将在款项到达IC易站帐户后发出</span> </p>
+              <span style="color: #878787">&nbsp;&nbsp;您需要预先去银行转帐，所购商品将在款项到达盛芯电子帐户后发出</span> </p>
             <div class="openpayment" id="transfer_show" style="display:<?=($paymenttype_checked?'block':'none')?>;">
               <p> 请您及时汇款，<span class="fontred">48小时内</span>未完成汇款的订单将被自动取消。 </p>
               <div class="add_address 1h">

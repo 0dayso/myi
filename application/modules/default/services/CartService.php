@@ -17,6 +17,7 @@ class Default_Service_CartService
 	//根据ip取购物车寄存并加入购物车
 	public function getCartDeposit()
 	{
+		return true;
 		if(!isset($_SESSION['cartnumber']) && !isset($_SESSION['inquirynumber']))
 		{
 			$cdModel  = new Default_Model_DbTable_CartDeposit();
