@@ -51,7 +51,7 @@ class Default_Service_BomService
 	public function getDetailedBom($bomid)
 	{
 		$sqlstr = "SELECT bod.*,
-		b.name as brand,pd.part_img,pd.mpq,pd.lead_time
+		b.name as brand,pd.part_img
 		FROM bom_detailed as bod 
 		LEFT JOIN product as pd ON bod.part_id=pd.id 
 		LEFT JOIN brand as b ON b.id=pd.manufacturer
