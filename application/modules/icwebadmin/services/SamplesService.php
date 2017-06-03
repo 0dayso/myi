@@ -163,7 +163,7 @@ class Icwebadmin_Service_SamplesService
 	 * 释放样片订单邮件
 	 */
 	public function emailcse($apply){
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '#样片订单# - 订单号:'.$apply['salesnumber'].'，请处理';
 		$this->_emailService = new Default_Service_EmailtypeService();
 		$emailarr = $this->_emailService->getEmailAddress('samples_order_release',$apply['uid']);
@@ -184,7 +184,7 @@ class Icwebadmin_Service_SamplesService
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; font-size:14px">IC易站样片订单，请使用
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; font-size:14px">盛芯电子样片订单，请使用
                                                 <b style="color:#fd2323; font-size:15px;"> EC SAMPLE CUSTOMER CODE </b>处理。</div>
                                                </td>
                                             </tr>
@@ -214,7 +214,7 @@ class Icwebadmin_Service_SamplesService
 	 * 释放样片订单通知客户邮件
 	 */
 	public function emailuser($apply){
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '样片申请已经处理';
 		$this->_emailService = new Default_Service_EmailtypeService();
 		$emailarr = $this->_emailService->getEmailAddress('samples_order_release_user');
@@ -231,7 +231,7 @@ class Icwebadmin_Service_SamplesService
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; font-size:14px">感谢对IC易站的支持，您在IC易站申请的样片已经处理，我们会尽快安排发货。</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; font-size:14px">感谢对盛芯电子的支持，您在盛芯电子申请的样片已经处理，我们会尽快安排发货。</div>
                                                </td>
                                             </tr>
                                         </table>
@@ -321,7 +321,7 @@ $mess .='<!--订单-->
               <td width="10" style="font-size:10px; width:10px;">&nbsp;&nbsp;&nbsp;</td>
               <td valign="top" align="left" ><table width="710" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" style="line-height:20px; font-size:12px; color:#565656;font-family:\'微软雅黑\'; border:1px solid #d6d6d6; border-collapse:collapse;">
                   <tr  bgcolor="#ffffff">
-                    <td width="100" height="30" style="background:#ffffff;font-family:\'微软雅黑\';border-bottom:1px solid #d6d6d6;border-right:1px solid #d6d6d6 ">&nbsp;&nbsp;IC易站订单号：</td>
+                    <td width="100" height="30" style="background:#ffffff;font-family:\'微软雅黑\';border-bottom:1px solid #d6d6d6;border-right:1px solid #d6d6d6 ">&nbsp;&nbsp;盛芯电子订单号：</td>
                     <td width="300" style="background:#ffffff;font-family:\'微软雅黑\'; border-bottom:1px solid #d6d6d6;border-right:1px solid #d6d6d6"><strong style="color:#ff6600;font-family:\'微软雅黑\'">&nbsp;&nbsp;'.($apply['salesnumber']?$apply['salesnumber']:'--').'</strong></td>
                     <td width="100" style="background:#ffffff;font-family:\'微软雅黑\'; border-bottom:1px solid #d6d6d6;border-right:1px solid #d6d6d6">&nbsp;&nbsp;客户名称：</td>
                     <td style="background:#ffffff;font-family:\'微软雅黑\';border-bottom:1px solid #d6d6d6;"><strong style="color:#000000;font-family:\'微软雅黑\'">&nbsp;&nbsp;'.($apply['companyname']?$apply['companyname']:$apply['uname']).'</strong></td>

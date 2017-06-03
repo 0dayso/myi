@@ -715,8 +715,8 @@ class CommonController extends Zend_Controller_Action
     			echo Zend_Json_Encoder::encode(array("code"=>100,"mess"=>$mess));
     			exit;
     		}else{
-    			$fromname = 'IC易站';
-    			$title    = '您的好友邀请您注册IC易站账号';
+    			$fromname = '盛芯电子';
+    			$title    = '您的好友邀请您注册盛芯电子账号';
     			$ivurl = HTTPHOST."/user/register?invitekey=".$this->fun->encryptVerification($_SESSION['userInfo']['uidSession']);
     			$mess ='</tbody>
               </table><tr>
@@ -725,7 +725,7 @@ class CommonController extends Zend_Controller_Action
                     <tr>
                       <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                           <tr>
-                            <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您的好友('.$_SESSION['userInfo']['unameSession'].')邀请您注册IC易站账号。请点击下面链接进行注册：</div></td>
+                            <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您的好友('.$_SESSION['userInfo']['unameSession'].')邀请您注册盛芯电子账号。请点击下面链接进行注册：</div></td>
                           </tr>
                         </table></td>
                     </tr>

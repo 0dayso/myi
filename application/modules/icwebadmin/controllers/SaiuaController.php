@@ -182,7 +182,7 @@ class Icwebadmin_SaiuaController extends Zend_Controller_Action
     			if($newid){
     $this->_emailService = new Default_Service_EmailtypeService();
     //发送email
-   $link = '<a href="http://'.$_SERVER['HTTP_HOST'].'/icwebadmin/index/login" target="_blank">IC易站后台</a>';		 
+   $link = '<a href="http://'.$_SERVER['HTTP_HOST'].'/icwebadmin/index/login" target="_blank">盛芯电子后台</a>';		 
    $mess ='</tbody>
         </table><tr>
               <td><table align="center" width="100%" border="0" cellpadding="0" cellspacing="0" style="background:#fff; ">
@@ -199,7 +199,7 @@ class Icwebadmin_SaiuaController extends Zend_Controller_Action
                                             <td style=" font-size:14px;padding-bottom:10px; font-weight:bold; color:#f00;">尊敬的'.$LastName.$FirstName.'，您好!</td>
                                         </tr>
                                     	<tr>
-                                            <td style="color:#666; padding-bottom:8px;font-size:12px;">您已经成功在IC易站后台注册成功，您的用户信息如下（请妥善保管）；请到'.$link.'进行登录</td>
+                                            <td style="color:#666; padding-bottom:8px;font-size:12px;">您已经成功在盛芯电子后台注册成功，您的用户信息如下（请妥善保管）；请到'.$link.'进行登录</td>
                                         </tr>
                                         <tr>
                                             <td style=" background:#EEF8FF; overflow:hidden; zoom:1; padding:16px; border:1px solid #CEE4F6;font-size:12px;">
@@ -218,8 +218,8 @@ class Icwebadmin_SaiuaController extends Zend_Controller_Action
         </td>
     </tr>
 </table></td></tr>';
-    			  $fromname = 'IC易站';
-    			  $title    = '欢迎注册IC易站后台';
+    			  $fromname = '盛芯电子';
+    			  $title    = '欢迎注册盛芯电子后台';
     			  $myfun = new MyFun();
     			
     			  $emailarr = $this->_emailService->getEmailAddress('add_staff');

@@ -95,7 +95,7 @@ class Default_Service_LabService
                 </table></td>
             </tr>';
 	   $mess .=$this->getApplyLabTable($applyid);
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '客户开放实验室申请，请处理';
 	
 		$emailtype = 'labapply_user';

@@ -598,7 +598,7 @@ where a.`name` ='$name'";
     			$objExcel = new PHPExcel();
     			$objExcel->createSheet();
     			$objExcel->getSheet(0)->setTitle("break1");
-    			$objExcel->getSheet(0)->setCellValueByColumnAndRow(0,1,"IC易站产品ID");
+    			$objExcel->getSheet(0)->setCellValueByColumnAndRow(0,1,"盛芯电子产品ID");
     			$objExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(1,1,"型号");
     			$objExcel->getActiveSheet()->getColumnDimension('B')->setWidth(25);

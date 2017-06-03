@@ -36,7 +36,7 @@ class Default_Service_OrderService
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您使用IC易站的在线采购服务！</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您使用盛芯电子的在线采购服务！</div>
                                                 <div style="height:5px;padding:0; margin:0;font-size:0; line-height:8px ">&nbsp;</div>
                                         		<div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您于&nbsp;<strong>'.date('Y/m/d H:i',$orderarr['created']).'</strong>&nbsp;提交的订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$orderarr['salesnumber'].'</strong>已确认收到，请您在提交订单后24小时内完成在线支付或2个工作日内完成汇款，否则订单将被取消。我们将在收到您的货款后安排发货。您也可以进入 <a href="http://www.iceasy.com/center/order" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>我的订单</b></a> 随时查看订单的处理情况。</div>
                                                 <div style="height:5px;padding:0; margin:0;font-size:0; line-height:8px ">&nbsp;</div>
@@ -50,8 +50,8 @@ class Default_Service_OrderService
                         </table>';
 		$mess  = $this->getOrderTable($orderarr,$pordarr,$hi_mess);
 		$mess .= $this->getOrderMessTable();
-		$fromname = 'IC易站';
-		$title    = '您的IC易站订单#：'.$orderarr['salesnumber'].'已确认收到，请支付货款';
+		$fromname = '盛芯电子';
+		$title    = '您的盛芯电子订单#：'.$orderarr['salesnumber'].'已确认收到，请支付货款';
 		$emailarr = $this->_emailService->getEmailAddress('online_order',$orderarr['uid']);
 		$emailto = array('0'=>$email);
 		$emailcc = $emailbcc = array();
@@ -118,7 +118,7 @@ class Default_Service_OrderService
 
 <tr valign="top">
     <td valign="bottom"  align="center" height="40">
-        <div style="margin:0; padding:0; font-size:16px; color:#333333; font-weight:bold;font-family:\'微软雅黑\'; ">IC易站订单</div>
+        <div style="margin:0; padding:0; font-size:16px; color:#333333; font-weight:bold;font-family:\'微软雅黑\'; ">盛芯电子订单</div>
     </td>
 </tr>';
 		if($sellinfo){
@@ -558,14 +558,14 @@ $mess .='<!--收货信息-->
             <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
             <tr>
                 <td>
-                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;1. 此邮件仅表明IC易站已经收到您的订单，只有当确认收到您的货款后，IC易站和您之间的订购合同才成立。
+                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;1. 此邮件仅表明盛芯电子已经收到您的订单，只有当确认收到您的货款后，盛芯电子和您之间的订购合同才成立。
                     </p>
                 </td>
             </tr>
             <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
             <tr>
                 <td>
-                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;2. 如果您选择在线支付，须在提交订单后24小时内完成支付，如选择转账，须在提交订单后2个工作日内完成汇款，否则订单将被取<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消。与IC易站之间的合同成立后，您有义务完成与IC易站的交易，但法律或本用户协议禁止的交易除外，未经IC易站书面同意，<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;任何订单都不可被取消。</p>
+                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;2. 如果您选择在线支付，须在提交订单后24小时内完成支付，如选择转账，须在提交订单后2个工作日内完成汇款，否则订单将被取<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消。与盛芯电子之间的合同成立后，您有义务完成与盛芯电子的交易，但法律或本用户协议禁止的交易除外，未经盛芯电子书面同意，<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;任何订单都不可被取消。</p>
                 </td>
             </tr>
             <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
@@ -577,13 +577,13 @@ $mess .='<!--收货信息-->
             <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
             <tr>
                 <td>
-                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;4. 在任何情况下严格禁止将产品使用于杀伤人员地雷、或用于与生物类、化学类或核类武器或运送该类武器的导弹相关的任何用途。产<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品不得被用于航天或航空飞行器或其他空中运输应用、生命维持或供给设备、外科移植设备、或如货品发生故障将有理由认为会导致<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人身伤害、死亡、环境破坏或财产严重损失的任何其他用途。同时严格禁止在此类设备、系统或应用中使用或加入任何产品。IC易站<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在法律允许的最大限度内不对因产品用于该等用途而直接或间接地引致的任何损失和损害承担任何责任。 </p>
+                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;4. 在任何情况下严格禁止将产品使用于杀伤人员地雷、或用于与生物类、化学类或核类武器或运送该类武器的导弹相关的任何用途。产<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品不得被用于航天或航空飞行器或其他空中运输应用、生命维持或供给设备、外科移植设备、或如货品发生故障将有理由认为会导致<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人身伤害、死亡、环境破坏或财产严重损失的任何其他用途。同时严格禁止在此类设备、系统或应用中使用或加入任何产品。盛芯电子<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在法律允许的最大限度内不对因产品用于该等用途而直接或间接地引致的任何损失和损害承担任何责任。 </p>
                 </td>
             </tr>
             <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
             <tr>
                 <td>
-                   <p  style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更多条款内容请见&nbsp;<a href="http://www.iceasy.com/help/index/type/clause" style="color:#0055aa">IC易站交易条款</a>，我们建议您定期阅读以获取最新条款信息。</p>
+                   <p  style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更多条款内容请见&nbsp;<a href="http://www.iceasy.com/help/index/type/clause" style="color:#0055aa">盛芯电子交易条款</a>，我们建议您定期阅读以获取最新条款信息。</p>
                 </td>
             </tr>
          </table>
@@ -613,7 +613,7 @@ $mess .='<!--收货信息-->
                                             <tr>
                                                 <td>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">有客户新提交了在线订单，订单号#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$orderarr['salesnumber'].' </strong>请在24小时之内跟进客户付款情况。</div>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">详细资料和订单信息请登录 <a href="http://www.iceasy.com/icwebadmin/OrOrgl"  target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>IC易站后台</b></a> 查看。</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">详细资料和订单信息请登录 <a href="http://www.iceasy.com/icwebadmin/OrOrgl"  target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>盛芯电子后台</b></a> 查看。</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -622,7 +622,7 @@ $mess .='<!--收货信息-->
                             </tbody>
                         </table>';
 		$mess  = $this->getOrderTable($orderarr,$pordarr,$hi_mess);
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '客户新建在线订单，订单号#：'.$orderarr['salesnumber'].'，请跟进付款 ';
 		
 		$emailarr = $this->_emailService->getEmailAddress('online_order',$orderarr['uid']);
@@ -670,7 +670,7 @@ $mess .='<!--收货信息-->
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                        		 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您在IC易站的订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;"> '.$orderarr['salesnumber'].' </strong>已完成。再次感谢您对IC易站的支持！</div>
+                                        		 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您在盛芯电子的订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;"> '.$orderarr['salesnumber'].' </strong>已完成。再次感谢您对盛芯电子的支持！</div>
                                         		</td>
                                             </tr>
                                         </table>
@@ -679,8 +679,8 @@ $mess .='<!--收货信息-->
                             </tbody>
                         </table>';
 		$mess  = $this->getOrderTable($orderarr,$pordarr,$hi_mess);
-		$fromname = 'IC易站';
-		$title    = '您的IC易站订单#：'.$orderarr['salesnumber'].'已完成';
+		$fromname = '盛芯电子';
+		$title    = '您的盛芯电子订单#：'.$orderarr['salesnumber'].'已完成';
 		$emailarr = $this->_emailService->getEmailAddress('online_order',$orderarr['uid']);
 		$emailto = array('0'=>$email);
 		$emailcc = $emailbcc = array();

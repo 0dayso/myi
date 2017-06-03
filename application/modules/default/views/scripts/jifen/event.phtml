@@ -60,7 +60,7 @@
                 <ul>
                     <li>1. 登录后可在此页面查看您的专属邀请链接，被邀请人必须点击该链接<br />&nbsp;&nbsp;&nbsp;&nbsp;注册并完成邮箱验证，才算邀请成功。</li>
                     <li>2. 邀请的好友必须是电子行业相关人员。</li>
-                    <li>3. 活跃度评比指标：注册后必须每天签到，浏览页面≥6，分享内容≥5<br />&nbsp;&nbsp;&nbsp;&nbsp;篇。在此基础上结合总浏览页面、分享内容总篇数、在IC易站停留<br />&nbsp;&nbsp;&nbsp;&nbsp;总时间、总访问次数综合评估。</li>
+                    <li>3. 活跃度评比指标：注册后必须每天签到，浏览页面≥6，分享内容≥5<br />&nbsp;&nbsp;&nbsp;&nbsp;篇。在此基础上结合总浏览页面、分享内容总篇数、在盛芯电子停留<br />&nbsp;&nbsp;&nbsp;&nbsp;总时间、总访问次数综合评估。</li>
                     <li>4. 请到<a href="/center/info" target="_blank">个人资料</a>填写手机号码，此号码为成功邀请5位好友完成注册<br />&nbsp;&nbsp;&nbsp;&nbsp;后，需充值的手机号码。每日统一充值时间为下午5-6点。 
                     </li>
                 </ul>
@@ -87,7 +87,7 @@
                         <div class="yq pos-re yqlogin "> 
                         <b class="font20">登录后，就可以邀请您的好友了！
                         <a href="javascript:void(0);" title="登录" onclick="openlogin()" class="yqbtnlogin">现在就登录</a>
-                        还没IC易站账号？<a href="/user/register" target="_blank" title="注册" style="color:#FFFFFF">快速注册</a></b>
+                        还没盛芯电子账号？<a href="/user/register" target="_blank" title="注册" style="color:#FFFFFF">快速注册</a></b>
                         </div>
                         <?php }?>
                       <div>
@@ -117,11 +117,11 @@
                   	</div>
                 </div>
                 <div class="fl yqbox yqmailbox">
-                	<h4>方式2：通过邮件邀请好友</h4><em>（如果您记得好友邮箱可以直接输入，IC易站帮您发送；您也可以登录邮箱，群发给您的好友。）<?php if(isset($_SESSION['userInfo']['unameSession'])){?><a  href="javascript:;" onclick="openbox('/jifen/inviterecords')" style="color:#2970fe; margin-left:5px">查看您的邀请记录</a><?php }?></em>
+                	<h4>方式2：通过邮件邀请好友</h4><em>（如果您记得好友邮箱可以直接输入，盛芯电子帮您发送；您也可以登录邮箱，群发给您的好友。）<?php if(isset($_SESSION['userInfo']['unameSession'])){?><a  href="javascript:;" onclick="openbox('/jifen/inviterecords')" style="color:#2970fe; margin-left:5px">查看您的邀请记录</a><?php }?></em>
                     <div class="yqbox_c">
                         <div class="yqbox_in">
                             <p><input type="text" name="friendemail" id="friendemail" value="在此输入好友邮箱地址，每个邮箱之间用分号隔开" onfocus="inputFocus($(this),'在此输入好友邮箱地址，每个邮箱之间用分号隔开');" onblur="inputBlur($(this),'在此输入好友邮箱地址，每个邮箱之间用分号隔开')" class="input-invite input-invite-m " /></p>
-                            <p><textarea rows="4" name="invitecon" id="invitecon" class="input-invite input-invite-textarea ">#IC易站#惊喜来袭，邀请好友注册即可赚积分，抽大奖，您还在等什么，快呼朋唤友来参加吧！ <?php echo HTTPHOST."/user/register?invitekey=".$_SESSION['userInfo']['uidSession'];?>  </textarea></p>
+                            <p><textarea rows="4" name="invitecon" id="invitecon" class="input-invite input-invite-textarea ">#盛芯电子#惊喜来袭，邀请好友注册即可赚积分，抽大奖，您还在等什么，快呼朋唤友来参加吧！ <?php echo HTTPHOST."/user/register?invitekey=".$_SESSION['userInfo']['uidSession'];?>  </textarea></p>
                             <p><input type="text" class="input-invite input-invite-s " placeholder="验证码" name="verifycode" id="verifycode" maxlength="4" value="" autocomplete="off" onkeydown="eventemail(event)">
                          <img src="" id="verify" onClick="getVerify()">
                          <a href="javascript:void(0);" class="refresh" onClick="getVerify()">看不清<br>换一张</a></p>

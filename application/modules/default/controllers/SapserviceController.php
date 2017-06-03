@@ -22,7 +22,7 @@ class SapserviceController extends Zend_Controller_Action {
 	}
 	
 	/**
-	 * 从sap获取到库存，更新IC易站库存
+	 * 从sap获取到库存，更新盛芯电子库存
 	 */
 	public function updatestockAction() {
 		$this->_helper->layout->disableLayout();

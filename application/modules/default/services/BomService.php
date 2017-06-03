@@ -90,7 +90,7 @@ class Default_Service_BomService
               <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                   <tr>
                     <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">有客户提交了BOM采购单，单号#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$inqinfo['bom_number'].'</strong>。请在24小时之内与客户联系，了解客户需求并根据具体情况跟进。</div>
-                      <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">详细资料和采购信息请登录&nbsp;<a "http://www.iceasy.com/icwebadmin/QuoBom" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>IC易站后台</b></a>&nbsp;查看。</div></td>
+                      <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">详细资料和采购信息请登录&nbsp;<a "http://www.iceasy.com/icwebadmin/QuoBom" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>盛芯电子后台</b></a>&nbsp;查看。</div></td>
                   </tr>
                 </table></td>
             </tr>
@@ -102,7 +102,7 @@ class Default_Service_BomService
 	
 		$mess .= $this->getBomTable($user,$inqinfo,$hi_mess,1);
 	
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '客户新建BOM采购，单号#'.$inqinfo['bom_number'].'#，请及时处理';
 		
 		$emailarr = $this->_emailService->getEmailAddress('new_bom');
@@ -134,7 +134,7 @@ class Default_Service_BomService
             <tr>
               <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                   <tr>
-                    <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您对IC易站的惠顾！确认收到您的BOM采购单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$inqinfo['bom_number'].'</strong>，我们会尽快处理。</div>
+                    <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您对盛芯电子的惠顾！确认收到您的BOM采购单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$inqinfo['bom_number'].'</strong>，我们会尽快处理。</div>
                       <!--<div style="height:5px;padding:0; margin:0;font-size:0; line-height:10px ">&nbsp;</div>-->
                       <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">如有任何不明之处，请根据单号与我们确认相关细节。您可以进入&nbsp;<a href="http://www.iceasy.com/center/bom" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>BOM采购</b></a>&nbsp;随时查看处理情况。</div>
                       </td>
@@ -149,8 +149,8 @@ class Default_Service_BomService
 		$currencyArr = array('RMB'=>'人民币 RMB','USD'=>'美元 USD','HKD'=>'港币 HKD');
 		
 		$mess .= $this->getBomTable($user,$inqinfo,$hi_mess);
-		$fromname = 'IC易站';
-		$title    = 'IC易站已收到您的BOM采购单，会尽快处理';
+		$fromname = '盛芯电子';
+		$title    = '盛芯电子已收到您的BOM采购单，会尽快处理';
 		$emailarr = $this->_emailService->getEmailAddress('new_bom',$user['uid']);
 		$emailcc  = $emailbcc = array();
 		if(!empty($emailarr['bcc'])){
@@ -221,7 +221,7 @@ class Default_Service_BomService
        $buttitle  = '<tr>
       <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; margin:0; padding:0">
           <tr>
-            <td><p style="padding:0; margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">&nbsp;再次感谢您对IC易站的支持!欲了解更多产品信息，请登录&nbsp;<a href="http://www.iceasy.com" style="color:#0055aa"><strong>www.iceasy.com</strong></a>。</p></td>
+            <td><p style="padding:0; margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">&nbsp;再次感谢您对盛芯电子的支持!欲了解更多产品信息，请登录&nbsp;<a href="http://www.iceasy.com" style="color:#0055aa"><strong>www.iceasy.com</strong></a>。</p></td>
           </tr>
         </table></td>
     </tr>';

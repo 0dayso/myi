@@ -144,7 +144,7 @@ public function sendAlertEmail($id){
             <tr>
               <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                   <tr>
-                    <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您好，IC易站为您提供一张优惠券，请在 <strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px; ">'.date('Y/m/d',$data['start_date']).' 至 '.date('Y/m/d',$data['end_date']).'</strong> 期间使用，谢谢。</div>
+                    <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您好，盛芯电子为您提供一张优惠券，请在 <strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px; ">'.date('Y/m/d',$data['start_date']).' 至 '.date('Y/m/d',$data['end_date']).'</strong> 期间使用，谢谢。</div>
                       <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">优惠券信息如下：(仅供参考，具体优惠券信息请进入&nbsp;<a href="http://www.iceasy.com/center/coupon" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>我的优惠券</b></a>&nbsp;查看)</div></td>
                   </tr>
                 </table></td>
@@ -254,8 +254,8 @@ public function sendAlertEmail($id){
         </table></td>
     </tr>';
      }
-    	$fromname = 'IC易站';
-    	$title    = 'IC易站为您提供一张新优惠券，请及时使用';
+    	$fromname = '盛芯电子';
+    	$title    = '盛芯电子为您提供一张新优惠券，请及时使用';
     
     	$emailarr = $this->_emailService->getEmailAddress('new_coupon',$data['uid']);
     	$emailto = array($data['email']);

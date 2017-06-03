@@ -100,8 +100,8 @@ class IndexController extends Zend_Controller_Action {
 		$this->_helper->layout->disableLayout();
 		$this->view->html ='<?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-  <ShortName>IC易站</ShortName>
-  <Description>IC易站 - 为您提供电子元器件设计链、供应链全程服务，行业领先的一站式电子元器件电子商务交易平台！</Description>
+  <ShortName>盛芯电子</ShortName>
+  <Description>盛芯电子 - 为您提供电子元器件设计链、供应链全程服务，行业领先的一站式电子元器件电子商务交易平台！</Description>
   <Url type="text/html" template="http://www.iceasy.com/search?keyword={searchTerms}"/>
   <Language>zh</Language>
   <OutputEncoding>utf-8</OutputEncoding>

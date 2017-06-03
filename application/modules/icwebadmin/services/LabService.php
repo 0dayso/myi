@@ -186,7 +186,7 @@ class Icwebadmin_Service_LabService
         </table>
     </td>
 </tr>';
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '客户开放实验室申请已通过，请跟进';
 	
 		$emailtype = 'labapply_user_app';
@@ -260,7 +260,7 @@ class Icwebadmin_Service_LabService
 		}
 		$dflab = new Default_Service_LabService();
 		$mess .=$dflab->getApplyLabTable($applyid);
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		
 		
 		$emailtype = 'labapply_to_user';

@@ -232,7 +232,7 @@ RMB5~RMB20            5pcs
 		$apply = $this->_samplesservice->getApplyById($re);
 		$mess .= $this->samples->getTable($apply,$hi_mess);
 
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '客户新样片申请，请处理，编号：'.$re;
 		$this->_emailService = new Default_Service_EmailtypeService();
 		$emailarr = $this->_emailService->getEmailAddress('new_samples');
@@ -284,7 +284,7 @@ RMB5~RMB20            5pcs
     </td>
 </tr>';
 	
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '客户提交选型资料申请，请处理';
 		$this->_emailService = new Default_Service_EmailtypeService();
 		$emailarr = $this->_emailService->getEmailAddress('new_dataapply');

@@ -478,7 +478,7 @@ FROM `brand` WHERE status=1 AND id IN(
     				'created'=>time()));
     		if($id){
     			$this->_defaultlogService->addLog(array('log_id'=>'A','temp2'=>$id,'temp4'=>'提交申请应用方案访问权限成功'));
-    			echo Zend_Json_Encoder::encode(array("code"=>0, "message"=>'提交申请成功，请耐心等待IC易站审批。'));
+    			echo Zend_Json_Encoder::encode(array("code"=>0, "message"=>'提交申请成功，请耐心等待盛芯电子审批。'));
     			exit;
     		}else{
     			$this->_defaultlogService->addLog(array('log_id'=>'A','temp1'=>400,'temp2'=>$id,'temp4'=>'提交申请应用方案访问权限失败'));

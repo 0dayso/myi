@@ -111,7 +111,7 @@ class Icwebadmin_Service_GiftService
                     <tr>
                       <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                           <tr>
-                            <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您提交的兑换礼品申请已经处理，详细处理结果请到 我的IC易站-》<a herf="http://www.iceasy.com/center/exchange">礼品兑换</a> 查看。</div></td>
+                            <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您提交的兑换礼品申请已经处理，详细处理结果请到 我的盛芯电子-》<a herf="http://www.iceasy.com/center/exchange">礼品兑换</a> 查看。</div></td>
                           </tr>
                         </table></td>
                     </tr>
@@ -120,7 +120,7 @@ class Icwebadmin_Service_GiftService
                 </table></td>
             </tr>';
 	
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '您提交的兑换礼品申请已经处理';
 	
 		$this->_emailService = new Default_Service_EmailtypeService();

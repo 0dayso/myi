@@ -372,7 +372,7 @@ class Icwebadmin_QuoinqController extends Zend_Controller_Action
     			
     			//日志
     			$this->_adminlogService->addLog(array('log_id'=>'E','temp2'=>$id,'temp4'=>'编辑向OA询价'));
-    		    echo Zend_Json_Encoder::encode(array("code"=>0, "message"=>'提示：此操作只是在IC易站保存成功，你还需要进行下步操作：“向OA提交询价”，才是真的向PMSC提交询价。'));
+    		    echo Zend_Json_Encoder::encode(array("code"=>0, "message"=>'提示：此操作只是在盛芯电子保存成功，你还需要进行下步操作：“向OA提交询价”，才是真的向PMSC提交询价。'));
     		    exit;
     		}
 
@@ -528,7 +528,7 @@ class Icwebadmin_QuoinqController extends Zend_Controller_Action
     			
     				$ClientListID = $ClientResult['SubmitClientListInfoResult'];
     			}
-    			//将OA客户ID更新到IC易站
+    			//将OA客户ID更新到盛芯电子
     			if($ClientListID){
     				$this->_usService->updateOaCode($ClientListID,$formData['oa_apply']['uid']);
     				//日志
@@ -734,7 +734,7 @@ class Icwebadmin_QuoinqController extends Zend_Controller_Action
     				$ClientListID = $ClientResult['SubmitClientListInfoResult'];
     	
     			}
-    			//将OA客户ID更新到IC易站
+    			//将OA客户ID更新到盛芯电子
     			if($ClientListID){
     			    $this->_usService->updateOaCode($ClientListID,$uid);
     			    $model->commit();
@@ -831,7 +831,7 @@ class Icwebadmin_QuoinqController extends Zend_Controller_Action
     					$oa_rfq_id = $ClientResult[0]['ProductRFQID'];
     				}
     			}
-    			//将OA询价ID更新到IC易站
+    			//将OA询价ID更新到盛芯电子
     			if($oa_rfq_id){
     				//更新
     				$this->_inqservice->upInqByid(array('oa_rfq'=>$oa_rfq_id,

@@ -6,7 +6,7 @@ return array(
 'Menu_Bom'=>'BOM采购',
 'Menu_News'=>'产品资讯',
 'Menu_Seminar'=>'技术研讨会',
-'Menu_Center'=>'我的IC易站',
+'Menu_Center'=>'我的盛芯电子',
 'Menu_CurrentPosition'=>'您当前的位置：',
 'Menu_MyOrder'=>'我的订单',
 'Menu_MyInquiry'=>'我的询价',

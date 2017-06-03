@@ -600,7 +600,7 @@ class Icwebadmin_OrorglController extends Zend_Controller_Action
 		$this->_staffService=new Icwebadmin_Service_StaffService();
 		$sellinfo = $this->_staffService->sellbyuid($this->orderarr['uid']);
 		
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$prompt_invoice = '';
 		$imp_item = 1;
 		//如果需要开发票的 或者 银行转账的
@@ -628,7 +628,7 @@ class Icwebadmin_OrorglController extends Zend_Controller_Action
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; font-size:14px">IC易站内部订单，请使用
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; font-size:14px">盛芯电子内部订单，请使用
                                                 <b style="color:#fd2323; font-size:15px;"> SQS Customer Code </b>处理。
        											</div>'.$prompt_invoice.'
                                                 </td>
@@ -652,7 +652,7 @@ class Icwebadmin_OrorglController extends Zend_Controller_Action
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; font-size:14px">IC易站在线订单，请使用
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; font-size:14px">盛芯电子在线订单，请使用
                                                 <b style="color:#fd2323; font-size:15px;"> SQS Customer Code </b>处理。
        											</div>'.$prompt_invoice.'
                                                 </td>
@@ -753,7 +753,7 @@ class Icwebadmin_OrorglController extends Zend_Controller_Action
 		$this->_staffService=new Icwebadmin_Service_StaffService();
 		$sellinfo = $this->_staffService->sellbyuid($this->orderarr['uid']);
 		
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$prompt_invoice = '';
 		$imp_item = 1;
 

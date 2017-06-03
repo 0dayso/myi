@@ -783,7 +783,7 @@ class PaymentController extends Zend_Controller_Action {
                                                 <td>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">
                                                 在线订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$salesnumer.'</strong>，客户已经在线支付了货款，支付金额：<strong style="color:#fd2323;font-family:\'微软雅黑\'"><span style="color:#000000">RMB</span>'.$total.'</strong>。</div>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">请到IC易站后台 <b style="font-size:14px; color:#fd2323">释放订单</b>，谢谢！</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">请到盛芯电子后台 <b style="font-size:14px; color:#fd2323">释放订单</b>，谢谢！</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -792,7 +792,7 @@ class PaymentController extends Zend_Controller_Action {
                             </tbody>
                         </table>';
 			$mess .= $orderService->getOrderTable($orderarr,$orderarr['pordarr'],$hi_mess);
-			$fromname = 'IC易站';
+			$fromname = '盛芯电子';
 			$title    = '在线订单#：'.$salesnumer.'的货款已支付，请确认是否到账';
 		}elseif($ordertype=='inq'){
 			$orderService = new Default_Service_InqOrderService();
@@ -812,7 +812,7 @@ class PaymentController extends Zend_Controller_Action {
                                                 <td>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">
                                                 询价订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$salesnumer.'</strong>，客户已经在线支付了货款，支付金额：<strong style="color:#fd2323;font-family:\'微软雅黑\'"><span style="color:#000000">RMB</span>'.$total.'</strong>。</div>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">请到IC易站后台 <b style="font-size:14px; color:#fd2323">释放订单</b>，谢谢！</div></td>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">请到盛芯电子后台 <b style="font-size:14px; color:#fd2323">释放订单</b>，谢谢！</div></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -820,7 +820,7 @@ class PaymentController extends Zend_Controller_Action {
                             </tbody>
                         </table>';
 			$mess .= $orderService->getInqOrderTable($orderarr,$orderarr['pordarr'],$hi_mess);
-			$fromname = 'IC易站';
+			$fromname = '盛芯电子';
 			$title    = '询价订单#：'.$salesnumer.'的货款已支付，请确认是否到账';
 		}
 		$emailarr = $this->emailService->getEmailAddress('online_pay_alert',$orderarr['uid']);
@@ -868,7 +868,7 @@ class PaymentController extends Zend_Controller_Action {
                                             <tr>
                                                 <td>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">
-                                                感谢您对IC易站的惠顾！在线订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;"> '.$salesnumer.' </strong>，我们已收到您在线支付的货款，支付金额：<strong style="color:#fd2323;font-family:\'微软雅黑\'"><span style="color:#000000">RMB</span> '.$total.'</strong>。<br />我们会尽快安排发货。</div>
+                                                感谢您对盛芯电子的惠顾！在线订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;"> '.$salesnumer.' </strong>，我们已收到您在线支付的货款，支付金额：<strong style="color:#fd2323;font-family:\'微软雅黑\'"><span style="color:#000000">RMB</span> '.$total.'</strong>。<br />我们会尽快安排发货。</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -877,8 +877,8 @@ class PaymentController extends Zend_Controller_Action {
                             </tbody>
                         </table>';
 			$mess .= $orderService->getOrderTable($orderarr,$orderarr['pordarr'],$hi_mess);
-			$fromname = 'IC易站';
-			$title    = '您的IC易站订单#：'.$salesnumer.'的货款已确认收到';
+			$fromname = '盛芯电子';
+			$title    = '您的盛芯电子订单#：'.$salesnumer.'的货款已确认收到';
 		}elseif($ordertype=='inq'){
 			$orderarr = $orderService->geSoinfo($salesnumer,1);
 			$userinfo = $userService->getUserProfileByUid($orderarr['uid']);
@@ -895,7 +895,7 @@ class PaymentController extends Zend_Controller_Action {
                                             <tr>
                                                 <td>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">
-                                                感谢您对IC易站的惠顾！询价订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;"> '.$salesnumer.' </strong>，我们已收到您在线支付的货款，支付金额：<strong style="color:#fd2323;font-family:\'微软雅黑\'"><span style="color:#000000">RMB</span> '.$total.'</strong>。<br />我们会尽快安排发货。</div>
+                                                感谢您对盛芯电子的惠顾！询价订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;"> '.$salesnumer.' </strong>，我们已收到您在线支付的货款，支付金额：<strong style="color:#fd2323;font-family:\'微软雅黑\'"><span style="color:#000000">RMB</span> '.$total.'</strong>。<br />我们会尽快安排发货。</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -904,8 +904,8 @@ class PaymentController extends Zend_Controller_Action {
                             </tbody>
                         </table>';
 			$mess .= $orderService->getInqOrderTable($orderarr,$orderarr['pordarr'],$hi_mess);
-			$fromname = 'IC易站';
-			$title    = '您的IC易站订单#：'.$salesnumer.'的货款已确认收到';
+			$fromname = '盛芯电子';
+			$title    = '您的盛芯电子订单#：'.$salesnumer.'的货款已确认收到';
 		}
 		$emailarr = $this->emailService->getEmailAddress('online_order',$orderarr['uid']);
 		$emailto = array('0'=>$userinfo['email']);

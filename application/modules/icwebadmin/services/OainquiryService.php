@@ -380,7 +380,7 @@ public function sendEmail($inqinfo,$inqdArray,$rfqnumber)
             <tr>
               <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                   <tr>
-                    <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">PMSC已经通过OA报价成功，请登录 <a href="http://www.iceasy.com/icwebadmin/QuoInq" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>IC易站后台</b></a> 查看详情。</div>
+                    <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">PMSC已经通过OA报价成功，请登录 <a href="http://www.iceasy.com/icwebadmin/QuoInq" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>盛芯电子后台</b></a> 查看详情。</div>
                       <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">为了确保您的客户能以所报的优惠价格购买，请引导客户在报价有效期内下单。</div></td>
                   </tr>
                 </table></td>
@@ -409,7 +409,7 @@ public function sendEmail($inqinfo,$inqdArray,$rfqnumber)
                         <td colspan="3" style="background:#ffffff;font-family:\'微软雅黑\';border-bottom:1px solid #d6d6d6;"><strong style="color:#000000;font-family:\'微软雅黑\'">&nbsp;&nbsp;'.$inqinfo['companyname'].'</strong><span style="color:#ff6600">（贸易商）</span></td>
                       </tr>
                       <tr  bgcolor="#ffffff">
-                        <td height="30" style="background:#ffffff;font-family:\'微软雅黑\';border-bottom:1px solid #d6d6d6;border-right:1px solid #d6d6d6 ">&nbsp;&nbsp;IC易站询价编号#：</td>
+                        <td height="30" style="background:#ffffff;font-family:\'微软雅黑\';border-bottom:1px solid #d6d6d6;border-right:1px solid #d6d6d6 ">&nbsp;&nbsp;盛芯电子询价编号#：</td>
                         <td colspan="3" style="background:#ffffff;font-family:\'微软雅黑\';border-bottom:1px solid #d6d6d6;"><strong style="color:#ff6600;font-family:\'微软雅黑\';font-size:14px;">&nbsp;&nbsp;'.$inqinfo['inq_number'].'</strong></td>
                       </tr>
                       <tr>
@@ -467,7 +467,7 @@ public function sendEmail($inqinfo,$inqdArray,$rfqnumber)
       </td>
     </tr>';
 		
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$emailarr = $this->_emailService->getEmailAddress('oa_inquiry_back');
 		
 		$emailto = $sellinfo['email'];

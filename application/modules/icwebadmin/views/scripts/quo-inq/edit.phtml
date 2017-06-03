@@ -157,8 +157,8 @@ $paytypearr = ($this->inqhistory[0]['paytype']?explode('|',$this->inqhistory[0][
         <?php 
 		if($vd['book_price_usd'] && $vd['pdbstatus']) echo '<br/>书本价：<br/>'.$this->fun->getbreakprice($vd['book_price_usd'],'$');
 		if($vd['book_price_rmb'] && $vd['pdbstatus']) echo '<br/>书本价：<br/>'.$this->fun->getbreakprice($vd['book_price_rmb'],'￥');
-		//if($vd['break_price']) echo '<br/>IC易站阶梯价：<br/>'.$this->fun->getbreakprice($vd['break_price'],'$');
-		//if($vd['break_price_rmb']) echo '<br/>IC易站阶梯价：<br/>'.$this->fun->getbreakprice($vd['break_price_rmb'],'￥');
+		//if($vd['break_price']) echo '<br/>盛芯电子阶梯价：<br/>'.$this->fun->getbreakprice($vd['break_price'],'$');
+		//if($vd['break_price_rmb']) echo '<br/>盛芯电子阶梯价：<br/>'.$this->fun->getbreakprice($vd['break_price_rmb'],'￥');
 		?>
         </td>
         <!--<td><?php if($vd['break_price']){ echo 'USD:<br/>'.str_replace(";", "<br/>", $vd['break_price']);}

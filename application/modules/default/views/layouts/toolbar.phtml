@@ -7,7 +7,7 @@
        <span><a href="/center" title="<?=$this->translate('Menu_Center')?>" class="user_name"><b style="color:red; font-family:Arial; margin-left:5px" title="<?=$_SESSION['userInfo']['unameSession'];?>"><?=($_SESSION['userInfo']['unameSession'])?></b></a> 
        <a href="/user/logout" style="cursor:pointer;" title="点击退出登录" class="user_act">退出</a></span>
       <?php }else{?>
-      <span>您好，欢迎来到IC易站！
+      <span>您好，欢迎来到盛芯电子！
       <a href="/user/login?url=<?=rawurlencode($_SERVER['REQUEST_URI'])?>" class="user_act">登录</a>
       <a href="/user/register" class="user_act">注册</a></span>
       <?php }?>

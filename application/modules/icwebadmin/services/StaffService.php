@@ -239,7 +239,7 @@ public function emailResetxs($tomail,$xsname,$userinfo)
             <tr>
               <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                   <tr>
-                    <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">IC易站已经将客户<strong style="color:000000">“'.$compname.'”</strong>分配给您负责，请跟进。您可以进入 <a href="http://www.iceasy.com/icwebadmin/UsUsgl" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>IC易站后台</b></a> 查看。</div></td>
+                    <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">盛芯电子已经将客户<strong style="color:000000">“'.$compname.'”</strong>分配给您负责，请跟进。您可以进入 <a href="http://www.iceasy.com/icwebadmin/UsUsgl" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>盛芯电子后台</b></a> 查看。</div></td>
                   </tr>
                 </table></td>
             </tr>
@@ -287,7 +287,7 @@ public function emailResetxs($tomail,$xsname,$userinfo)
           </tr>
         </table></td>
     </tr>';
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '销售负责客户分配';
 		$emailarr = $this->_emailService->getEmailAddress('email_resetxs');
 		$emailto = array('0'=>$tomail);
@@ -311,11 +311,11 @@ public function emailResetxs($tomail,$xsname,$userinfo)
 	{
 		$emailFun = new MyFun();
 		$mess = '尊敬的'.$superior['lastname'].$superior['firstname'].',您好！<br/>';
-		$mess .= $staff_sess['lastname'].$staff_sess['firstname'].'已经在IC易站提交新客户注册OA申请，请及时去审核。公司名称：“'.$formData['oa_apply']['client_cname'].'”。';
-		$mess .= '<br/>详情，请登录<a href="http://'.$_SERVER['HTTP_HOST'].'/icwebadmin" target="_blank">IC易站后台</a>查看。谢谢！';
+		$mess .= $staff_sess['lastname'].$staff_sess['firstname'].'已经在盛芯电子提交新客户注册OA申请，请及时去审核。公司名称：“'.$formData['oa_apply']['client_cname'].'”。';
+		$mess .= '<br/>详情，请登录<a href="http://'.$_SERVER['HTTP_HOST'].'/icwebadmin" target="_blank">盛芯电子后台</a>查看。谢谢！';
 	
-		$fromname = 'IC易站';
-		$title    = 'IC易站新客户注册OA申请';
+		$fromname = '盛芯电子';
+		$title    = '盛芯电子新客户注册OA申请';
 		$emailarr = $this->_emailService->getEmailAddress('email_oaclient');
 		$emailto = array('0'=>$superior['email']);
 		$emailcc = array('0'=>$staff_sess['email']);
@@ -339,10 +339,10 @@ public function emailResetxs($tomail,$xsname,$userinfo)
 		$emailFun = new MyFun();
 		$mess = '尊敬的'.$userapply['lastname'].$userapply['firstname'].',您好！<br/>';
 		$mess .= $userapply['applastname'].$userapply['appfirstname'].'已经对你提交新客户注册OA的申请进行了审核，审核结果：'.($status==101?'通过':'不通过').'。公司名称：“'.$userapply['client_cname'].'”。';
-		$mess .= '<br/>详情，请登录<a href="http://'.$_SERVER['HTTP_HOST'].'/icwebadmin" target="_blank">IC易站后台</a>查看。谢谢！';
+		$mess .= '<br/>详情，请登录<a href="http://'.$_SERVER['HTTP_HOST'].'/icwebadmin" target="_blank">盛芯电子后台</a>查看。谢谢！';
 	
-		$fromname = 'IC易站';
-		$title    = 'IC易站新客户注册OA审核结果';
+		$fromname = '盛芯电子';
+		$title    = '盛芯电子新客户注册OA审核结果';
 		$emailarr = $this->_emailService->getEmailAddress('email_oaclientfeedback');
 		$emailto = array('0'=>$userapply['applyemail']);
 		$emailcc = array('0'=>$userapply['applastemail']);
@@ -379,7 +379,7 @@ public function emailResetxs($tomail,$xsname,$userinfo)
             <tr>
               <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                   <tr>
-                    <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">IC易站为您添加了一个新账号。密码由IC易站自动生成，你随时可以进入<a href="http://www.iceasy.com/center/info" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>个人资料</b></a>进行修改，谢谢。</div></td>
+                    <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">盛芯电子为您添加了一个新账号。密码由盛芯电子自动生成，你随时可以进入<a href="http://www.iceasy.com/center/info" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>个人资料</b></a>进行修改，谢谢。</div></td>
                   </tr>
                 </table></td>
             </tr>
@@ -428,8 +428,8 @@ public function emailResetxs($tomail,$xsname,$userinfo)
           </tr>
         </table></td>
     </tr>';
-		$fromname = 'IC易站';
-		$title    = '新IC易站账号创建成功';
+		$fromname = '盛芯电子';
+		$title    = '新盛芯电子账号创建成功';
 		$emailarr = $this->_emailService->getEmailAddress('register');
 		$emailto = array('0'=>$userarr['email']);
 		$emailcc = $emailbcc = array();

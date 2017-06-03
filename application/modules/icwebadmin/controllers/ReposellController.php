@@ -147,7 +147,7 @@ class Icwebadmin_RepoSellController extends Zend_Controller_Action
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(4,1,"客户名称");
     			$objExcel->getActiveSheet()->getColumnDimension('E')->setWidth(25);
    
-    			$objExcel->getSheet(0)->setCellValueByColumnAndRow(5,1,"IC易站订单号");
+    			$objExcel->getSheet(0)->setCellValueByColumnAndRow(5,1,"盛芯电子订单号");
     			$objExcel->getActiveSheet()->getColumnDimension('F')->setWidth(18);
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(6,1,"产品线");
     			$objExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);

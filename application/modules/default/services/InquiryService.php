@@ -273,7 +273,7 @@ class Default_Service_InquiryService
                                             <tr>
                                                 <td>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">有客户新提交了询价单，询价单号#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$inqinfo['inq_number'].'</strong>&nbsp;，请在24小时之内完成报价。</div>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">详细资料和询价信息请登录&nbsp;<a href="http://www.iceasy.com/icwebadmin" target="_blank"><b>IC易站后台</b></a>&nbsp;查看。</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">详细资料和询价信息请登录&nbsp;<a href="http://www.iceasy.com/icwebadmin" target="_blank"><b>盛芯电子后台</b></a>&nbsp;查看。</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -283,7 +283,7 @@ class Default_Service_InquiryService
                         </table>';
 		$mess =$this->getInqXsTable($inqinfo,$user,$hi_mess);
 		
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '客户新建询价，询价单号#：'.$inqinfo['inq_number'].'，请处理';
 		
 		$emailarr = $this->_emailService->getEmailAddress('new_inquiry');
@@ -318,7 +318,7 @@ class Default_Service_InquiryService
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">感谢您对IC易站的垂询！已确认收到您的如下询价，我们会尽快提供报价给您。</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">感谢您对盛芯电子的垂询！已确认收到您的如下询价，我们会尽快提供报价给您。</div>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">如有任何不明之处，请根据询价编号#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$inqinfo['inq_number'].'</strong>，与我们确认相关细节。</div>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">您也可以进入&nbsp;<a href="http://www.iceasy.com/center/inquiry"  target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>我的询价</b></a>&nbsp;随时查看询价处理情况。</div>
                                                 </td>
@@ -329,8 +329,8 @@ class Default_Service_InquiryService
                             </tbody>
                         </table>';
 		$mess =$this->getInqTable($inqinfo,$user,$hi_mess);
-		$fromname = 'IC易站';
-		$title    = '您的IC易站询价单#：'.$inqinfo['inq_number'].'已确认收到';
+		$fromname = '盛芯电子';
+		$title    = '您的盛芯电子询价单#：'.$inqinfo['inq_number'].'已确认收到';
 		$emailarr = $this->_emailService->getEmailAddress('inquiry_order',$user['uid']);
 		$emailcc  = $emailbcc = array();
 		if(!empty($emailarr['bcc'])){
@@ -353,7 +353,7 @@ public function getInqXsTable($inqinfo,$user,$hi_mess){
 <!--订单信息-->
 <tr valign="top">
     <td valign="bottom"  align="center" height="40">
-        <div style="margin:0; padding:0; font-size:16px; color:#333333; font-weight:bold;font-family:\'微软雅黑\'; ">IC易站询价单</div>
+        <div style="margin:0; padding:0; font-size:16px; color:#333333; font-weight:bold;font-family:\'微软雅黑\'; ">盛芯电子询价单</div>
     </td>
 </tr>
 <!--用户信息-->';
@@ -408,7 +408,7 @@ public function getInqXsTable($inqinfo,$user,$hi_mess){
 <!--订单信息-->
 <tr valign="top">
     <td valign="bottom"  align="center" height="40">
-        <div style="margin:0; padding:0; font-size:16px; color:#333333; font-weight:bold;font-family:\'微软雅黑\'; ">IC易站询价单</div>
+        <div style="margin:0; padding:0; font-size:16px; color:#333333; font-weight:bold;font-family:\'微软雅黑\'; ">盛芯电子询价单</div>
     </td>
 </tr>';
  $mess .=$this->getInqInfoTable($inqinfo,$user);

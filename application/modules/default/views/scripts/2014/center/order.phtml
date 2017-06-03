@@ -91,9 +91,7 @@ center_css();
                <?php }
 			    }?>
                 
-                 <?php if(!in_array($sodata['status'],array(401,501,502)) && $sodata['back_status']!=102){?>
-                                <a href="<?php echo $this->url(array('controller'=>'order', 'action'=>'digitalcontract', 'key'=>md5(session_id()),'item'=>$this->fun->encryptVerification($sodata['salesnumber'])))?>" target="_blank"  class="button">合同</a>
-                <?php }?>
+   
                 
                 <?php if($sodata['status']=='201' && $sodata['back_status']!=102 && $sodata['paytype']=='transfer' ){?>
                 <a href="javascript:" onClick="transfer('<?=$sodata['salesnumber']?>')" class="button"> 

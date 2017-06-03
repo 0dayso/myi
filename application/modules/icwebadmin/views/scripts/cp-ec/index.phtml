@@ -6,7 +6,7 @@
           <div id="alert_message"></div> 
           </div>
 <form id="myform"  class="form-search" name="myform" action="" method="get">
-<label>在IC易站上没有找到的型号：	<input type = "checkbox" name="part_id" value="-1"  <?php echo ($this->part_id ==-1) ? "checked" : "";?>></label>
+<label>在盛芯电子上没有找到的型号：	<input type = "checkbox" name="part_id" value="-1"  <?php echo ($this->part_id ==-1) ? "checked" : "";?>></label>
 <?php echo $this->ECBrandSelect('brand',$this->brand,'',$this->part_id); ?> 
 <input type="submit" class="btn" value="查 找"/>
 </form>          
@@ -34,7 +34,7 @@
             <tr>
                 <td><?=$data['oa_mfr']?></td>
                 <td><?=$data['part_id']?></td>
-                <td><a href="#"  id="ic_part_no" class="bedit" data-type="text" data-pk="<?php echo $data['id'];?>" data-url="<?php echo $this->editurl;?>" data-title="输入IC易站型号"><?php echo $data['ic_part_no'];?></a></td>
+                <td><a href="#"  id="ic_part_no" class="bedit" data-type="text" data-pk="<?php echo $data['id'];?>" data-url="<?php echo $this->editurl;?>" data-title="输入盛芯电子型号"><?php echo $data['ic_part_no'];?></a></td>
                 <td><?=$data['sap_part_no']?></td>
                 <td><?=$data['sap_factory']?></td>
                 <td><?=$data['sap_warehouse']?></td>

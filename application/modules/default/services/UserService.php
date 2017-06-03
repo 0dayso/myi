@@ -217,7 +217,7 @@ class Default_Service_UserService
 			$ordertitle = '询价';
 		}
 		if($tablerow == 2){
-			$fromname = 'IC易站';
+			$fromname = '盛芯电子';
 			$title    = $ordertitle.'订单#：'.$orderarr['salesnumber'].'的余款银行汇款凭证上传成功，请确认是否到账';
 			$hi_mess = '<table cellspacing="0" border="0" cellpadding="0" width="730" style="font-family:\'微软雅黑\';">
                             <tbody>
@@ -233,7 +233,7 @@ class Default_Service_UserService
                                                 <td>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">
                                                '.$ordertitle.'订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$orderarr['salesnumber'].'</strong>，客户已经上传余款转账凭证。详细见附件。</div>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">请确认凭证是否真实并到到IC易站后台 <b style="font-size:14px; color:#fd2323">进行下步处理</b>，谢谢！</div></td>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">请确认凭证是否真实并到到盛芯电子后台 <b style="font-size:14px; color:#fd2323">进行下步处理</b>，谢谢！</div></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -241,7 +241,7 @@ class Default_Service_UserService
                             </tbody>
                         </table>';
 		}else{
-			$fromname = 'IC易站';
+			$fromname = '盛芯电子';
 			$title    = $ordertitle.'订单#：'.$orderarr['salesnumber'].'的银行汇款凭证上传成功，请确认是否到账';
 			$hi_mess = '<table cellspacing="0" border="0" cellpadding="0" width="730" style="font-family:\'微软雅黑\';">
                             <tbody>
@@ -257,7 +257,7 @@ class Default_Service_UserService
                                                 <td>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">
                                                '.$ordertitle.'订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$orderarr['salesnumber'].'</strong>，客户已经上传转账凭证。详细见附件。</div>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">请确认凭证是否真实并到到IC易站后台 <b style="font-size:14px; color:#fd2323">进行下步处理</b>，谢谢！</div></td>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">请确认凭证是否真实并到到盛芯电子后台 <b style="font-size:14px; color:#fd2323">进行下步处理</b>，谢谢！</div></td>
                                             </tr>
                                         </table>
                                     </td>

@@ -156,7 +156,7 @@ class MyCommon
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<title>IC易站 - 为您提供电子元器件设计链、供应链全程服务，行业领先的一站式电子元器件电子商务交易平台！</title><link rel="shortcut icon" href="/images/default/favicon.ico" />
+<title>盛芯电子 - 为您提供电子元器件设计链、供应链全程服务，行业领先的一站式电子元器件电子商务交易平台！</title><link rel="shortcut icon" href="/images/default/favicon.ico" />
 <meta http-equiv="X-UA-Compatible" content="IE=7" />
 <link rel="stylesheet" type="text/css" href="/css/default/base.css"/>
 <script language="javascript">
@@ -190,7 +190,7 @@ window.location.href ="/";
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<title>IC易站 - 为您提供电子元器件设计链、供应链全程服务，行业领先的一站式电子元器件电子商务交易平台！</title><link rel="shortcut icon" href="/images/default/favicon.ico" />
+<title>盛芯电子 - 为您提供电子元器件设计链、供应链全程服务，行业领先的一站式电子元器件电子商务交易平台！</title><link rel="shortcut icon" href="/images/default/favicon.ico" />
 <meta http-equiv="X-UA-Compatible" content="IE=7" />
 <link rel="stylesheet" type="text/css" href="/css/default/base.css"/>
 <script language="javascript">

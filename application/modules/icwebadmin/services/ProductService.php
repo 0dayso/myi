@@ -372,8 +372,8 @@ class Icwebadmin_Service_ProductService
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您好，感谢您对IC易站的惠顾！</div>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您之前在IC易站上搜索的产品&nbsp;<strong style="color:#0055aa;font-family:\'微软雅黑\';">'.$prodinfo['part_no'].'</strong>&nbsp;已上线，&nbsp;<a href="http://www.iceasy.com'.$prodinfo['f_produrl'].'" target="_blank" style="color:#fd2323;font-size:13px;"><b>查看详情</b></a>&nbsp;。</div>     
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您好，感谢您对盛芯电子的惠顾！</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您之前在盛芯电子上搜索的产品&nbsp;<strong style="color:#0055aa;font-family:\'微软雅黑\';">'.$prodinfo['part_no'].'</strong>&nbsp;已上线，&nbsp;<a href="http://www.iceasy.com'.$prodinfo['f_produrl'].'" target="_blank" style="color:#fd2323;font-size:13px;"><b>查看详情</b></a>&nbsp;。</div>     
                                                 </td>
                                             </tr>
                                         </table>
@@ -454,8 +454,8 @@ $mess .='<!--新上线产品 无价格-->
 </td>
 </tr>';
 }
-		$fromname = 'IC易站';
-		$title    = '您在IC易站寻找的产品#'.$prodinfo['part_no'].'#已上线，请查看';
+		$fromname = '盛芯电子';
+		$title    = '您在盛芯电子寻找的产品#'.$prodinfo['part_no'].'#已上线，请查看';
 		$this->_emailService = new Default_Service_EmailtypeService();
 		$emailarr = $this->_emailService->getEmailAddress('new_product',$serchinfo['uid']);
 		$emailcc = $emailbcc = array();

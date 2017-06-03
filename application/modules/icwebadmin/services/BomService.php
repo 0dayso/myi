@@ -266,7 +266,7 @@ class Icwebadmin_Service_BomService
 
 <tr valign="top">
     <td valign="bottom"  align="center" height="40">
-        <div style="margin:0; padding:0; font-size:16px; color:#333333; font-weight:bold;font-family:\'微软雅黑\'; ">IC易站订单</div>
+        <div style="margin:0; padding:0; font-size:16px; color:#333333; font-weight:bold;font-family:\'微软雅黑\'; ">盛芯电子订单</div>
     </td>
 </tr>';
 		if($sellinfo){
@@ -340,7 +340,7 @@ class Icwebadmin_Service_BomService
         </td>     
     </td>
 </tr>';
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = 'BOM采购转询价单，单号#'.$bom['bom_number'].'#，请及时处理';
 		
 		$emailto = $emailcc = $emailbcc = array();
@@ -374,7 +374,7 @@ class Icwebadmin_Service_BomService
                                             <tr>
                                                 <td>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">你提交的BOM采购#：'.$bom['bom_number'].' 转询价单已经生成，询价单号#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$inqinfo['inq_number'].'</strong>&nbsp;，请在进入客户询价模块继续处理。</div>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">详细资料请登录&nbsp;<a href="http://www.iceasy.com/icwebadmin" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;" target="_blank"><b>IC易站后台</b></a>&nbsp;查看。</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">详细资料请登录&nbsp;<a href="http://www.iceasy.com/icwebadmin" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;" target="_blank"><b>盛芯电子后台</b></a>&nbsp;查看。</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -383,7 +383,7 @@ class Icwebadmin_Service_BomService
                             </tbody>
                         </table>';
 		$mess = $inqService->getInqXsTable($inqinfo,$user,$hi_mess);
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = 'BOM采购转询价已经产生，询价单号#：'.$inqinfo['inq_number'].'，请处理';
 		
 		$emailarr = $this->_emailService->getEmailAddress('new_inquiry');

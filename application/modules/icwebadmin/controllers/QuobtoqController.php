@@ -127,7 +127,7 @@ class Icwebadmin_QuoBtoqController extends Zend_Controller_Action
     	    	//更新
     	    	$bomdModel = new Icwebadmin_Model_DbTable_BomDetailed();
     	    	$re = $bomdModel->updateBomdet($did, array('part_id'=>$part_brand['id']));
-    	    	echo Zend_Json_Encoder::encode(array("code"=>0,"part_id"=>$part_brand['id'],"brand"=>$part_brand['brand'],"message"=>"型号：".$part_no."，已经存在IC易站上"));
+    	    	echo Zend_Json_Encoder::encode(array("code"=>0,"part_id"=>$part_brand['id'],"brand"=>$part_brand['brand'],"message"=>"型号：".$part_no."，已经存在盛芯电子上"));
     	    	exit;
     	    }else{
     	    	echo Zend_Json_Encoder::encode(array("code"=>100, "message"=>'没有匹配到'));
@@ -168,7 +168,7 @@ class Icwebadmin_QuoBtoqController extends Zend_Controller_Action
     		foreach($bom['detaile'] as $k=>$v){
     		   if(in_array($v[id],$lastchangeinq)){
     		   	   if(!$v['part_id']){
-    		   	   	   $message ='操作失败，BOM单中有型号不在IC易站上，请添加型号。';
+    		   	   	   $message ='操作失败，BOM单中有型号不在盛芯电子上，请添加型号。';
     		   	   	   $error++;
     		   	   }
     		   }

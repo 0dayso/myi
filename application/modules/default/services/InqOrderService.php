@@ -58,7 +58,7 @@ class Default_Service_InqOrderService
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您使用IC易站的在线采购服务！</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您使用盛芯电子的在线采购服务！</div>
                                                 <div style="height:5px;padding:0; margin:0;font-size:0; line-height:8px ">&nbsp;</div>
                                         		<div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您于&nbsp;<strong>'.date('Y/m/d H:i',$orderarr['created']).'</strong>&nbsp;提交的订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$orderarr['salesnumber'].'</strong>已确认收到，为保证您的货期，请您尽快支付货款，我们将在收到您的货款后尽快处理该订单。您也可以进入 <a href="http://www.iceasy.com/center/inqorder" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>我的订单</b></a> 随时查看订单的处理情况。</div>
                                                 <div style="height:5px;padding:0; margin:0;font-size:0; line-height:8px ">&nbsp;</div>
@@ -73,8 +73,8 @@ class Default_Service_InqOrderService
 		$mess = $this->getInqOrderTable($orderarr,$pordarr,$hi_mess);
 	
 		$mess .= $this->getOrderMessTable();
-		$fromname = 'IC易站';
-		$title    = '您的IC易站订单#：'.$orderarr['salesnumber'].'已确认收到，请支付货款';
+		$fromname = '盛芯电子';
+		$title    = '您的盛芯电子订单#：'.$orderarr['salesnumber'].'已确认收到，请支付货款';
 	
 		$emailarr = $this->_emailService->getEmailAddress('inquiry_order',$orderarr['uid']);
 	
@@ -173,7 +173,7 @@ public function getInqOrderTable($orderarr,$pordarr,$hi_mess,$sellinfo=array(),$
 
 <tr valign="top">
     <td valign="bottom"  align="center" height="40">
-        <div style="margin:0; padding:0; font-size:16px; color:#333333; font-weight:bold;font-family:\'微软雅黑\'; ">IC易站订单</div>
+        <div style="margin:0; padding:0; font-size:16px; color:#333333; font-weight:bold;font-family:\'微软雅黑\'; ">盛芯电子订单</div>
     </td>
 </tr>';
 		if($sellinfo){
@@ -615,25 +615,25 @@ $mess .='<!--订单详情-->
              <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
             <tr>
                     	<td>
-                        	<p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;1. 此邮件仅表明IC易站已经收到您的订单，只有当IC易站收到您的全款或按约定支付的定金时，IC易站和您之间的订购合同才成立。</p>
+                        	<p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;1. 此邮件仅表明盛芯电子已经收到您的订单，只有当盛芯电子收到您的全款或按约定支付的定金时，盛芯电子和您之间的订购合同才成立。</p>
                         </td>
                     </tr>
                      <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
                     <tr>
                     	<td>
-                            <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;2. 如果您选择在线支付，须在提交订单后24小时内完成支付，如选择转账，须在提交订单后2个工作日内完成汇款，否则订单将被取<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消。与IC易站之间的合同成立后，您有义务完成与IC易站的交易，但法律或本用户协议禁止的交易除外，未经IC易站书面同意，<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;任何订单都不可被取消。</p>
+                            <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;2. 如果您选择在线支付，须在提交订单后24小时内完成支付，如选择转账，须在提交订单后2个工作日内完成汇款，否则订单将被取<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消。与盛芯电子之间的合同成立后，您有义务完成与盛芯电子的交易，但法律或本用户协议禁止的交易除外，未经盛芯电子书面同意，<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;任何订单都不可被取消。</p>
                         </td>
                     </tr>
                      <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
                     <tr>
                     	<td>
-                            <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;3. 如在人民币与美元汇率发生重大波动和/或原厂价格有所调整，和/或其他不可控因素引发价格变化时，IC易站保留改变已确定价格<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;的权利。最终价格以收到货款或定金当天的产品价格为准。</p>
+                            <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;3. 如在人民币与美元汇率发生重大波动和/或原厂价格有所调整，和/或其他不可控因素引发价格变化时，盛芯电子保留改变已确定价格<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;的权利。最终价格以收到货款或定金当天的产品价格为准。</p>
                         </td>
                     </tr>
                      <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
                     <tr>
                     	<td>
-                            <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;4. 货物交期以IC易站合同中的标准交期为准。您提交的需求时间仅作为IC易站为您备货的参考日期。如果因原厂原因和/或不可控的<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;突发状况（应包括但不限于政府行为、战争、火灾、广泛流行性疾病、爆炸、洪水、灾害性气候、进出口管制或禁运、劳动争议、<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;货品或劳动力无法得到供给等）造成交期延后，IC易站不应就该等迟延履行或未能履行而承担任何形式的责任或被视作违约行为，<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;且您不得因此而取消订单。</p>
+                            <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;4. 货物交期以盛芯电子合同中的标准交期为准。您提交的需求时间仅作为盛芯电子为您备货的参考日期。如果因原厂原因和/或不可控的<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;突发状况（应包括但不限于政府行为、战争、火灾、广泛流行性疾病、爆炸、洪水、灾害性气候、进出口管制或禁运、劳动争议、<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;货品或劳动力无法得到供给等）造成交期延后，盛芯电子不应就该等迟延履行或未能履行而承担任何形式的责任或被视作违约行为，<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;且您不得因此而取消订单。</p>
                         </td>
                     </tr>
                      <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
@@ -645,13 +645,13 @@ $mess .='<!--订单详情-->
                      <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
                     <tr>
                     	<td>
-                            <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;6. 在任何情况下严格禁止将产品使用于杀伤人员地雷、或用于与生物类、化学类或核类武器或运送该类武器的导弹相关的任何用途。产<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品不得被用于航天或航空飞行器或其他空中运输应用、生命维持或供给设备、外科移植设备、或如货品发生故障将有理由认为会导致<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人身伤害、死亡、环境破坏或财产严重损失的任何其他用途。同时严格禁止在此类设备、系统或应用中使用或加入任何产品。IC易站<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在法律允许的最大限度内不对因产品用于该等用途而直接或间接地引致的任何损失和损害承担任何责任。</p>
+                            <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;6. 在任何情况下严格禁止将产品使用于杀伤人员地雷、或用于与生物类、化学类或核类武器或运送该类武器的导弹相关的任何用途。产<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品不得被用于航天或航空飞行器或其他空中运输应用、生命维持或供给设备、外科移植设备、或如货品发生故障将有理由认为会导致<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人身伤害、死亡、环境破坏或财产严重损失的任何其他用途。同时严格禁止在此类设备、系统或应用中使用或加入任何产品。盛芯电子<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在法律允许的最大限度内不对因产品用于该等用途而直接或间接地引致的任何损失和损害承担任何责任。</p>
                         </td>
                     </tr>
                      <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
                     <tr>
                     	<td>
-                           <p  style=" padding:3px 0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更多条款内容请见&nbsp;<a href="http://www.iceasy.com/help/index/type/clause" style="color:#0055aa">IC易站交易条款</a>，我们建议您定期阅读以获取最新条款信息。</p>
+                           <p  style=" padding:3px 0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更多条款内容请见&nbsp;<a href="http://www.iceasy.com/help/index/type/clause" style="color:#0055aa">盛芯电子交易条款</a>，我们建议您定期阅读以获取最新条款信息。</p>
                         </td>
                     </tr>
          </table>
@@ -681,7 +681,7 @@ $mess .='<!--订单详情-->
                                             <tr>
                                                 <td>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">有客户新提交了在线订单，订单号#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$orderarr['salesnumber'].' </strong>请在24小时之内跟进客户付款情况。</div>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">详细资料和订单信息请登录 <a href="http://www.iceasy.com/icwebadmin/OrInqo"  target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>IC易站后台</b></a> 查看。</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">详细资料和订单信息请登录 <a href="http://www.iceasy.com/icwebadmin/OrInqo"  target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>盛芯电子后台</b></a> 查看。</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -690,7 +690,7 @@ $mess .='<!--订单详情-->
                             </tbody>
                         </table>';
 		$mess  = $this->getInqOrderTable($orderarr,$pordarr,$hi_mess);
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '客户新建订单，订单号#：'.$orderarr['salesnumber'].'，请跟进付款 ';
 	
 		$emailarr = $this->_emailService->getEmailAddress('inquiry_order',$orderarr['uid']);
@@ -728,7 +728,7 @@ $mess .='<!--订单详情-->
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                        		 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您在IC易站的订单<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;"> #'.$orderarr['salesnumber'].' </strong>已完成。再次感谢您对IC易站的支持！</div>
+                                        		 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您在盛芯电子的订单<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;"> #'.$orderarr['salesnumber'].' </strong>已完成。再次感谢您对盛芯电子的支持！</div>
                                         		</td>
                                             </tr>
                                         </table>
@@ -738,8 +738,8 @@ $mess .='<!--订单详情-->
                         </table>';
 		$mess = $this->getInqOrderTable($orderarr,$pordarr,$hi_mess);
 		
-		$fromname = 'IC易站';
-		$title    = '您的IC易站订单#：'.$orderarr['salesnumber'].'已完成';
+		$fromname = '盛芯电子';
+		$title    = '您的盛芯电子订单#：'.$orderarr['salesnumber'].'已完成';
 		
 		$emailarr = $this->_emailService->getEmailAddress('inquiry_order',$orderarr['uid']);
 		
@@ -1183,8 +1183,8 @@ $mess .='<!--订单详情-->
 		 1. 如果以人民币结算, 则报价为含税价格。<br/>			
          2. 报价单中的标准交期仅供参考，实际交期应在您下单之后，以原厂反馈的交期为准。<br/>								
          3. 报价默认有效期为一个月，具体有效期请以报价单中的日期为准。<br/>
-		 4. 如人民币与美元汇率发生重大波动和/或原厂价格有所调整，和/或其他不可控因素引发价格变化时，IC易站保留改变已确定价格的权利。下单时的最终价格以下单当天的产品价格为准。	<br/>								
-         5. 未尽事项请访问 <a href="http://www.iceasy.com" target="_blank">www.iceasy.com</a> 查看IC易站交易条款。';
+		 4. 如人民币与美元汇率发生重大波动和/或原厂价格有所调整，和/或其他不可控因素引发价格变化时，盛芯电子保留改变已确定价格的权利。下单时的最终价格以下单当天的产品价格为准。	<br/>								
+         5. 未尽事项请访问 <a href="http://www.iceasy.com" target="_blank">www.iceasy.com</a> 查看盛芯电子交易条款。';
 		$pdf->writeHTML($html, true, false, true, false, '');
 		$pdf->Output ();
 		exit ();
@@ -1314,8 +1314,8 @@ $mess .='<!--订单详情-->
 		$html = '<font color="#FF0000">※※ 重要声明 ※※</font><br/>
 		 1. 如果以人民币结算, 则报价为含税价格。<br/>			
          2. 报价单中的标准交期仅供参考，实际交期应在您下单之后，以原厂反馈的交期为准。<br/>								
-		 3. 如人民币与美元汇率发生重大波动和/或原厂价格有所调整，和/或其他不可控因素引发价格变化时，IC易站保留改变已确定价格的权利。下单时的最终价格以下单当天的产品价格为准。	<br/>								
-         4. 未尽事项请访问 <a href="http://www.iceasy.com" target="_blank">www.iceasy.com</a> 查看IC易站交易条款。';
+		 3. 如人民币与美元汇率发生重大波动和/或原厂价格有所调整，和/或其他不可控因素引发价格变化时，盛芯电子保留改变已确定价格的权利。下单时的最终价格以下单当天的产品价格为准。	<br/>								
+         4. 未尽事项请访问 <a href="http://www.iceasy.com" target="_blank">www.iceasy.com</a> 查看盛芯电子交易条款。';
 		$pdf->writeHTML($html, true, false, true, false, '');
 		$pdf->Output (ORDER_INQPDF.md5('inq'.$orderarr['salesnumber']).'.pdf','F');
 		return true;
@@ -1585,9 +1585,9 @@ $mess .='<!--订单详情-->
 		$title9='九.在合同执行之过程中，若遇不可抗力之因素，致使合同不能继续执行，双方协商解决。';
 		$pdf->Cell (200,$hight,  $title9 ,'', 1,1);
 			
-		$title10='十.未尽事项，请登录WWW.ICEASY.COM 详阅《销售条款与条件》。合同内容和IC易站交易条款共同构成本合同之要约，需方确认在合同成立之前，已经完全理解并接受交易条款和IC易站用户协议。';
+		$title10='十.未尽事项，请登录WWW.ICEASY.COM 详阅《销售条款与条件》。合同内容和盛芯电子交易条款共同构成本合同之要约，需方确认在合同成立之前，已经完全理解并接受交易条款和盛芯电子用户协议。';
 		$pdf->Cell (200,$hight,  $title10 ,'', 1,1);
-		$pdf->Cell ( 4, $hight, "");$title10='本销售条款及条件在公示于IC易站网站，供方在法律允许的范围内保留对本条款及条件的修改及解释的权利，如有修改直接于IC易站网站发布并适用，恕不另行通知。';
+		$pdf->Cell ( 4, $hight, "");$title10='本销售条款及条件在公示于盛芯电子网站，供方在法律允许的范围内保留对本条款及条件的修改及解释的权利，如有修改直接于盛芯电子网站发布并适用，恕不另行通知。';
 		$pdf->Cell (200,$hight, $title10 ,'', 1,1);
 	
 	
@@ -1813,9 +1813,9 @@ $mess .='<!--订单详情-->
 		$title8='八.在合同执行之过程中，若遇不可抗力之因素，致使合同不能继续执行，双方协商解决。';
 		$pdf->Cell (200,$hight, $title8 ,'', 1,1);
 			
-		$title9='九.未尽事项，请登录WWW.ICEASY.COM 详阅《销售条款与条件》。合同内容和IC易站交易条款共同构成本合同之要约，需方确认在合同成立之前，已经完全理解并接受交易条款和IC易站用户协议。';
+		$title9='九.未尽事项，请登录WWW.ICEASY.COM 详阅《销售条款与条件》。合同内容和盛芯电子交易条款共同构成本合同之要约，需方确认在合同成立之前，已经完全理解并接受交易条款和盛芯电子用户协议。';
 		$pdf->Cell (200,$hight,  $title9 ,'', 1,1);
-		$pdf->Cell ( 4, $hight, "");$title9='本销售条款及条件在公示于IC易站网站，供方在法律允许的范围内保留对本条款及条件的修改及解释的权利，如有修改直接于IC易站网站发布并适用，恕不另行通知。';
+		$pdf->Cell ( 4, $hight, "");$title9='本销售条款及条件在公示于盛芯电子网站，供方在法律允许的范围内保留对本条款及条件的修改及解释的权利，如有修改直接于盛芯电子网站发布并适用，恕不另行通知。';
 		$pdf->Cell (200,$hight, $title9 ,'', 1,1);
 	
 	
@@ -2064,9 +2064,9 @@ $mess .='<!--订单详情-->
 		$title9='九.在合同执行之过程中，若遇不可抗力之因素，致使合同不能继续执行，双方协商解决。';
 		$pdf->Cell (200,$hight, $title9 ,'', 1,1);
 			
-		$title10='十.未尽事项，请登录WWW.ICEASY.COM 详阅《销售条款与条件》。合同内容和IC易站交易条款共同构成本合同之要约，需方确认在合同成立之前，已经完全理解并接受交易条款和IC易站用户协议。';
+		$title10='十.未尽事项，请登录WWW.ICEASY.COM 详阅《销售条款与条件》。合同内容和盛芯电子交易条款共同构成本合同之要约，需方确认在合同成立之前，已经完全理解并接受交易条款和盛芯电子用户协议。';
 		$pdf->Cell (200,$hight, $title10 ,'', 1,1);
-		$pdf->Cell ( 4, $hight, "");$title10='本销售条款及条件在公示于IC易站网站，供方在法律允许的范围内保留对本条款及条件的修改及解释的权利，如有修改直接于IC易站网站发布并适用，恕不另行通知。';
+		$pdf->Cell ( 4, $hight, "");$title10='本销售条款及条件在公示于盛芯电子网站，供方在法律允许的范围内保留对本条款及条件的修改及解释的权利，如有修改直接于盛芯电子网站发布并适用，恕不另行通知。';
 		$pdf->Cell (200,$hight, $title10 ,'', 1,1);
 	
 	
@@ -2301,9 +2301,9 @@ $mess .='<!--订单详情-->
 		$title8='八.在合同执行之过程中，若遇不可抗力之因素，致使合同不能继续执行，双方协商解决。';
 		$pdf->Cell (200,$hight, $title8 ,'', 1,1);
 			
-		$title9='九.未尽事项，请登录WWW.ICEASY.COM 详阅《销售条款与条件》。合同内容和IC易站交易条款共同构成本合同之要约，需方确认在合同成立之前，已经完全理解并接受交易条款和IC易站用户协议。';
+		$title9='九.未尽事项，请登录WWW.ICEASY.COM 详阅《销售条款与条件》。合同内容和盛芯电子交易条款共同构成本合同之要约，需方确认在合同成立之前，已经完全理解并接受交易条款和盛芯电子用户协议。';
 		$pdf->Cell (200,$hight,$title9 ,'', 1,1);
-		$pdf->Cell ( 4, $hight, "");$title9='本销售条款及条件在公示于IC易站网站，供方在法律允许的范围内保留对本条款及条件的修改及解释的权利，如有修改直接于IC易站网站发布并适用，恕不另行通知。';
+		$pdf->Cell ( 4, $hight, "");$title9='本销售条款及条件在公示于盛芯电子网站，供方在法律允许的范围内保留对本条款及条件的修改及解释的权利，如有修改直接于盛芯电子网站发布并适用，恕不另行通知。';
 		$pdf->Cell (200,$hight, $title9 ,'', 1,1);
 	
 	
@@ -2346,7 +2346,7 @@ $mess .='<!--订单详情-->
 		$pdf->Cell ( 120, 8, '现货查询 400-626-1616','',0,'R');
 		$pdf->Ln ( 10 );
 		$pdf->Cell ( 180, 8, '');
-		$pdf->Cell ( 52, 8, 'IC易站订单号：'.$soarray['salesnumber']);
+		$pdf->Cell ( 52, 8, '盛芯电子订单号：'.$soarray['salesnumber']);
 		$pdf->Cell ( 40, 8, '下单时间：'.date('Y/n/j H:i:s',$soarray['created']));
 			
 		//双方资料
@@ -2586,7 +2586,7 @@ $mess .='<!--订单详情-->
 		$pdf->Cell ( 120, 8, '现货查询 400-626-1616','',0,'R');
 		$pdf->Ln ( 10 );
 		$pdf->Cell ( 180, 8, '');
-		$pdf->Cell ( 52, 8, 'IC易站订单号：'.$soarray['salesnumber']);
+		$pdf->Cell ( 52, 8, '盛芯电子订单号：'.$soarray['salesnumber']);
 		$pdf->Cell ( 40, 8, '下单时间：'.date('Y/n/j H:i:s',$soarray['created']));
 			
 		//双方资料
@@ -2840,7 +2840,7 @@ $mess .='<!--订单详情-->
 		$pdf->Cell ( 120, 8, '现货查询 400-626-1616','',0,'R');
 		$pdf->Ln ( 10 );
 		$pdf->Cell ( 180, 8, '');
-		$pdf->Cell ( 52, 8, 'IC易站订单号：'.$soarray['salesnumber']);
+		$pdf->Cell ( 52, 8, '盛芯电子订单号：'.$soarray['salesnumber']);
 		$pdf->Cell ( 40, 8, '下单时间：'.date('Y/n/j H:i:s',$soarray['created']));
 	
 		//双方资料
@@ -3026,9 +3026,9 @@ $mess .='<!--订单详情-->
 		$title9='九.在合同执行之过程中，若遇不可抗力之因素，致使合同不能继续执行，双方协商解决。';
 		$pdf->Cell (200,$hight, $title9 ,'', 1,1);
 			
-		$title10='十.未尽事项，请登录WWW.ICEASY.COM 详阅《销售条款与条件》。合同内容和IC易站交易条款共同构成本合同之要约，需方确认在合同成立之前，已经完全理解并接受交易条款和IC易站用户协议。';
+		$title10='十.未尽事项，请登录WWW.ICEASY.COM 详阅《销售条款与条件》。合同内容和盛芯电子交易条款共同构成本合同之要约，需方确认在合同成立之前，已经完全理解并接受交易条款和盛芯电子用户协议。';
 		$pdf->Cell (200,$hight, $title10 ,'', 1,1);
-		$pdf->Cell ( 4, $hight, "");$title10='本销售条款及条件在公示于IC易站网站，供方在法律允许的范围内保留对本条款及条件的修改及解释的权利，如有修改直接于IC易站网站发布并适用，恕不另行通知。';
+		$pdf->Cell ( 4, $hight, "");$title10='本销售条款及条件在公示于盛芯电子网站，供方在法律允许的范围内保留对本条款及条件的修改及解释的权利，如有修改直接于盛芯电子网站发布并适用，恕不另行通知。';
 		$pdf->Cell (200,$hight, $title10 ,'', 1,1);
 	
 	
@@ -3088,7 +3088,7 @@ $mess .='<!--订单详情-->
 		$pdf->Cell ( 120, 8, '现货查询 400-626-1616','',0,'R');
 		$pdf->Ln ( 10 );
 		$pdf->Cell ( 180, 8, '');
-		$pdf->Cell ( 52, 8, 'IC易站订单号：'.$soarray['salesnumber']);
+		$pdf->Cell ( 52, 8, '盛芯电子订单号：'.$soarray['salesnumber']);
 		$pdf->Cell ( 40, 8, '下单时间：'.date('Y/n/j H:i:s',$soarray['created']));
 			
 		//双方资料
@@ -3264,9 +3264,9 @@ $mess .='<!--订单详情-->
 		$title8='八.在合同执行之过程中，若遇不可抗力之因素，致使合同不能继续执行，双方协商解决。';
 		$pdf->Cell (200,$hight, $title8 ,'', 1,1);
 			
-		$title9='九.未尽事项，请登录WWW.ICEASY.COM 详阅《销售条款与条件》。合同内容和IC易站交易条款共同构成本合同之要约，需方确认在合同成立之前，已经完全理解并接受交易条款和IC易站用户协议。';
+		$title9='九.未尽事项，请登录WWW.ICEASY.COM 详阅《销售条款与条件》。合同内容和盛芯电子交易条款共同构成本合同之要约，需方确认在合同成立之前，已经完全理解并接受交易条款和盛芯电子用户协议。';
 		$pdf->Cell (200,$hight,$title9 ,'', 1,1);
-		$pdf->Cell ( 4, $hight, "");$title9='本销售条款及条件在公示于IC易站网站，供方在法律允许的范围内保留对本条款及条件的修改及解释的权利，如有修改直接于IC易站网站发布并适用，恕不另行通知。';
+		$pdf->Cell ( 4, $hight, "");$title9='本销售条款及条件在公示于盛芯电子网站，供方在法律允许的范围内保留对本条款及条件的修改及解释的权利，如有修改直接于盛芯电子网站发布并适用，恕不另行通知。';
 		$pdf->Cell (200,$hight, $title9 ,'', 1,1);
 	
 	
@@ -3307,7 +3307,7 @@ $mess .='<!--订单详情-->
 		$pdf->Cell ( 120, 8, '现货查询 400-626-1616','',0,'R');
 		$pdf->Ln ( 10 );
 		$pdf->Cell ( 180, 8, '');
-		$pdf->Cell ( 52, 8, 'IC易站订单号：'.$soarray['salesnumber']);
+		$pdf->Cell ( 52, 8, '盛芯电子订单号：'.$soarray['salesnumber']);
 		$pdf->Cell ( 40, 8, '下单时间：'.date('Y/n/j H:i:s',$soarray['created']));
 			
 		//双方资料
@@ -3530,7 +3530,7 @@ $mess .='<!--订单详情-->
 		$pdf->Cell ( 120, 8, '现货查询 400-626-1616','',0,'R');
 		$pdf->Ln ( 10 );
 		$pdf->Cell ( 180, 8, '');
-		$pdf->Cell ( 52, 8, 'IC易站订单号：'.$soarray['salesnumber']);
+		$pdf->Cell ( 52, 8, '盛芯电子订单号：'.$soarray['salesnumber']);
 		$pdf->Cell ( 40, 8, '下单时间：'.date('Y/n/j H:i:s',$soarray['created']));
 			
 		//双方资料

@@ -45,9 +45,9 @@ class SamplesController extends Zend_Controller_Action {
 		//自定义标题、关键字和描述
 		$layout = $this->_helper->layout();
 		$viewobj = $layout->getView();;
-		$viewobj->headTitle('IC易站，样片申请！','SET');
-		$viewobj->headMeta()->setName('description','IC易站样片申请！');
-		$viewobj->headMeta()->setName('keywords','IC易站,样片,样片申请,IC样片,IC样片申请,免费样片,免费IC样片');
+		$viewobj->headTitle('盛芯电子，样片申请！','SET');
+		$viewobj->headMeta()->setName('description','盛芯电子样片申请！');
+		$viewobj->headMeta()->setName('keywords','盛芯电子,样片,样片申请,IC样片,IC样片申请,免费样片,免费IC样片');
 	}
 	/**
 	 * 申请成功弹出框

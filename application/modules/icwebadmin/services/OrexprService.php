@@ -134,8 +134,8 @@ class Icwebadmin_Service_OrexprService
 	 */
 	public function shipmentsEmail($orderarr,$pordarr,$sotype)
 	{
-		$fromname = 'IC易站';
-	    $title = 'IC易站订单#：'.$orderarr['salesnumber'].'已发货，请注意查收';
+		$fromname = '盛芯电子';
+	    $title = '盛芯电子订单#：'.$orderarr['salesnumber'].'已发货，请注意查收';
 	    $hi_mess = '<table cellspacing="0" border="0" cellpadding="0" width="730" style="font-family:\'微软雅黑\';">
                             <tbody>
                                 <tr>
@@ -148,7 +148,7 @@ class Icwebadmin_Service_OrexprService
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您对IC易站的惠顾！您于&nbsp;<strong>'.date('Y-m-d H:i',$orderarr['created']).'</strong>&nbsp;提交的订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;"> '.$orderarr['salesnumber'].' </strong>，已经发货，请注意查收。</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您对盛芯电子的惠顾！您于&nbsp;<strong>'.date('Y-m-d H:i',$orderarr['created']).'</strong>&nbsp;提交的订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;"> '.$orderarr['salesnumber'].' </strong>，已经发货，请注意查收。</div>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您可以随时进入&nbsp;<a href="http://www.iceasy.com/center/order" style="color:#fd2323;font-family:\'微软雅黑\'"><b>我的订单</b></a>&nbsp;查看订单的后续处理情况和物流跟踪情况。</div>
                                                 </td>
                                             </tr>
@@ -208,7 +208,7 @@ class Icwebadmin_Service_OrexprService
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; font-size:14px">您在IC易站申请的样片已经发货，快递信息可到<a href="http://www.iceasy.com/center/samples" target="_blank"> 我的样片申请</a>查看。</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\'; font-size:14px">您在盛芯电子申请的样片已经发货，快递信息可到<a href="http://www.iceasy.com/center/samples" target="_blank"> 我的样片申请</a>查看。</div>
                                                </td>
                                             </tr>
                                         </table>
@@ -219,7 +219,7 @@ class Icwebadmin_Service_OrexprService
 
 		$mess .= $this->_samplesservice->getTable($apply,$hi_mess,1);
 		
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '样片申请已经发货';
 		$this->_emailService = new Default_Service_EmailtypeService();
 		$emailarr = $this->_emailService->getEmailAddress('samples_order_touser');
@@ -252,32 +252,32 @@ class Icwebadmin_Service_OrexprService
             <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
             <tr>
                     	<td>
-                        	<p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;1. IC易站交货后，您须登录我的IC易站确认收到并在尽可能合理的时间内检验产品，如果产品在合理检验中发现显著瑕疵及不合其用<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;途，或与订单列明产品的种类、规格或数量不符，或客户有与产品相关的任何其它异议，应在交货后一周内给予IC易站详细的书面通<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;知并须随附交货单。如果您未给予此类通知，则产品应被最终认为各方面均符合合同规定，不存在任何经合理检验即能发现的瑕疵，<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而您因此被视为已完全接受产品。
+                        	<p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;1. 盛芯电子交货后，您须登录我的盛芯电子确认收到并在尽可能合理的时间内检验产品，如果产品在合理检验中发现显著瑕疵及不合其用<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;途，或与订单列明产品的种类、规格或数量不符，或客户有与产品相关的任何其它异议，应在交货后一周内给予盛芯电子详细的书面通<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;知并须随附交货单。如果您未给予此类通知，则产品应被最终认为各方面均符合合同规定，不存在任何经合理检验即能发现的瑕疵，<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;而您因此被视为已完全接受产品。
                     </p>
                         </td>
                     </tr>
                     <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
                     <tr>
                     	<td>
-                            <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;2. 如果您接收了损坏的包裹，应对该包裹拍照以确认损坏并在打开包裹前立即通知IC易站。</p>
+                            <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;2. 如果您接收了损坏的包裹，应对该包裹拍照以确认损坏并在打开包裹前立即通知盛芯电子。</p>
                         </td>
                     </tr>
                     <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
                     <tr>
                     	<td>
-                            <p style=" padding:0;margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;3. 在您能令IC易站合理满意地充分证明产品与合同不符或有瑕疵的情况下，IC易站有权在合理的时间内酌情选择替换产品、补发产品<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或退还就该等产品当时已支付的价款。</p>
+                            <p style=" padding:0;margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;3. 在您能令盛芯电子合理满意地充分证明产品与合同不符或有瑕疵的情况下，盛芯电子有权在合理的时间内酌情选择替换产品、补发产品<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或退还就该等产品当时已支付的价款。</p>
                         </td>
                     </tr>
                     <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
 				    <tr>
                     	<td>
-                            <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;4. 货品损坏或灭失的风险将在货品从IC易站之承运人处卸载到您的场所时转移至您。IC易站自产品交付后不再对产品的毁损、灭失<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;承担任何责任。</p>
+                            <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;4. 货品损坏或灭失的风险将在货品从盛芯电子之承运人处卸载到您的场所时转移至您。盛芯电子自产品交付后不再对产品的毁损、灭失<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;承担任何责任。</p>
                         </td>
                     </tr>
                     <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
                     <tr>
                     	<td>
-                           <p  style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更多条款内容请见&nbsp;<a href="http://www.iceasy.com/help/index/type/clause" target="_blank" style="color:#0055aa">IC易站交易条款</a>，我们建议您定期阅读以获取最新条款信息。</p>
+                           <p  style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更多条款内容请见&nbsp;<a href="http://www.iceasy.com/help/index/type/clause" target="_blank" style="color:#0055aa">盛芯电子交易条款</a>，我们建议您定期阅读以获取最新条款信息。</p>
                         </td>
                     </tr>
          </table>

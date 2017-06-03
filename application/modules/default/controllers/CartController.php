@@ -531,7 +531,7 @@ class CartController extends Zend_Controller_Action
 		
 		$pdf->Ln ();
 		$pdf->SetTextColor ( 0 );
-		$des = iconv ( "UTF-8", "GB2312", '由IC易站提供。' );
+		$des = iconv ( "UTF-8", "GB2312", '由盛芯电子提供。' );
 		$pdf->WriteHTML ( "$des<a href='".$this->config->email->foot_url."'>".$this->config->email->foot_url."</a>." );
 		$pdf->Output ();
 		exit ();

@@ -5,7 +5,7 @@ class Icwebadmin_Service_TencentweiboService
 	public function __construct($token=array())
 	{
 		if(empty($token)){
-		//IC易站token
+		//盛芯电子token
 		$token = array('t_access_token' => 'bf8e6f0049560257ea1f2457d89e2ea5',
 				't_openid' => '665A9D850AF8F260153D4E135ACA8838',
 				't_openkey' => '5EEDC4C926E792A5C565B8A619BA9B65');

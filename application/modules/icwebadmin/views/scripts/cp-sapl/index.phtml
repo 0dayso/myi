@@ -31,7 +31,7 @@
  				 ?>
             <tr>
                 <td><?=$data['oa_name']?></td>
-                 <td><a href="#"  id="ic_brand_id" class="bedit" data-type="select" data-pk="<?php echo $data['id'];?>" data-url="<?php echo $this->editurl;?>" data-title="输入IC易站品牌名称"><?php echo $data['ic_brand'];?></a></td>
+                 <td><a href="#"  id="ic_brand_id" class="bedit" data-type="select" data-pk="<?php echo $data['id'];?>" data-url="<?php echo $this->editurl;?>" data-title="输入盛芯电子品牌名称"><?php echo $data['ic_brand'];?></a></td>
                 <td><?=$data['brand_id']?></td>
                 <td><?=$data['oa_id']?></td>
                 <td><?=$data['updated_at']?></td> 
@@ -50,7 +50,7 @@
 //$.fn.editable.defaults.mode = 'inline'; 				 
 $(document).ready(function() {
     $('.bedit').editable({
-        prepend: "选中IC易站品牌",
+        prepend: "选中盛芯电子品牌",
         source: <?php echo $this->brand_json;?>
     });  
 });

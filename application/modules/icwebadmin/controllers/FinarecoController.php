@@ -147,7 +147,7 @@ class Icwebadmin_FinaRecoController extends Zend_Controller_Action
     			$objExcel->getSheet(0)->setTitle("break1");
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(0,1,"订单号");
     			$objExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
-    			$objExcel->getSheet(0)->setCellValueByColumnAndRow(1,1,"IC易站客户名称");
+    			$objExcel->getSheet(0)->setCellValueByColumnAndRow(1,1,"盛芯电子客户名称");
     			$objExcel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(2,1,"货币");
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(3,1,"订单总金额");

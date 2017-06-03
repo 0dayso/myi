@@ -41,15 +41,15 @@ class JifenController extends Zend_Controller_Action {
 		//自定义标题、关键字和描述
 		$layout = $this->_helper->layout();
 		$this->viewobj = $layout->getView();;
-		$this->viewobj->headTitle('积分商城 - IC易站，行业领先的一站式元器件电子商务平台。','SET');
-		$this->viewobj->headMeta()->setName('description','IC易站是行业领先的一站式元器件电商平台，拥有海量的产品数据、设计方案、在线技术研讨会、产品资讯等，能满足客户从产品设计到批量生产的全程需求。IC易站提供便捷的在线订购、批量采购询价及难寻器件现货供应、样片申请，技术支持等服务，为你带来全新采购体验！IC易站传承中电器材30年品牌价值，100%正品保证，是您最佳的元器件在线采购平台。');
-		$this->viewobj->headMeta()->setName('keywords','积分商城,积分活动,礼品兑换,积分换礼,元器件供应商,IC元器件电商平台,元器件网上商城,元器件交易网,电子商城,IC芯片网上采购,网上买元器件,IC,元器件,芯片,小批量采购,元器件询价,元器件在线购买,IC样片申请,免费样片,难寻器件,开发板,技术方案,在线研讨会,产品资讯,IC易站,飞思卡尔,Freescale代理,IDT代理,Intersil代理,AOS代理,Qualcomm代理,高通代理,CSR代理,EPSON代理,Microchip代理');
+		$this->viewobj->headTitle('积分商城 - 盛芯电子，行业领先的一站式元器件电子商务平台。','SET');
+		$this->viewobj->headMeta()->setName('description','盛芯电子是行业领先的一站式元器件电商平台，拥有海量的产品数据、设计方案、在线技术研讨会、产品资讯等，能满足客户从产品设计到批量生产的全程需求。盛芯电子提供便捷的在线订购、批量采购询价及难寻器件现货供应、样片申请，技术支持等服务，为你带来全新采购体验！盛芯电子传承中电器材30年品牌价值，100%正品保证，是您最佳的元器件在线采购平台。');
+		$this->viewobj->headMeta()->setName('keywords','积分商城,积分活动,礼品兑换,积分换礼,元器件供应商,IC元器件电商平台,元器件网上商城,元器件交易网,电子商城,IC芯片网上采购,网上买元器件,IC,元器件,芯片,小批量采购,元器件询价,元器件在线购买,IC样片申请,免费样片,难寻器件,开发板,技术方案,在线研讨会,产品资讯,盛芯电子,飞思卡尔,Freescale代理,IDT代理,Intersil代理,AOS代理,Qualcomm代理,高通代理,CSR代理,EPSON代理,Microchip代理');
 	}
 	public function indexAction() {
 		//自定义头部
 		$_SESSION['no_logbar_event'] = 0;
 		$_SESSION['no_menu_event']   = 1;
-		$_SESSION['change_logo'] = '<div id="logo" ><a href="/" hidefocus="true"><img src="/images/default/logono.jpg"  alt="IC易站"></a></div>
+		$_SESSION['change_logo'] = '<div id="logo" ><a href="/" hidefocus="true"><img src="/images/default/logono.jpg"  alt="盛芯电子"></a></div>
         <div class="jflogo"><a href="/jifen"><img src="/css/jifen/img/ji_logo.jpg" class="png_ie6"/></a></div>';
 		
 		$_SESSION['jifenmenu']='index';
@@ -92,10 +92,10 @@ class JifenController extends Zend_Controller_Action {
 		//自定义头部
 		$_SESSION['no_logbar_event'] = 0;
 		$_SESSION['no_menu_event']   = 1;
-		$_SESSION['change_logo'] = '<div id="logo" ><a href="/" hidefocus="true"><img src="/images/default/logono.jpg"  alt="IC易站"></a></div>
+		$_SESSION['change_logo'] = '<div id="logo" ><a href="/" hidefocus="true"><img src="/images/default/logono.jpg"  alt="盛芯电子"></a></div>
         <div class="jflogo"><a href="/jifen"><img src="/css/jifen/img/ji_logo.jpg" class="png_ie6"/></a></div>';
 		
-		$this->viewobj->headTitle('积分礼品 - 积分商城 - IC易站，行业领先的一站式元器件电子商务平台。','SET');
+		$this->viewobj->headTitle('积分礼品 - 积分商城 - 盛芯电子，行业领先的一站式元器件电子商务平台。','SET');
 		$_SESSION['jifenmenu']='list';
 		$typestr = $orderby = "";
 		//分值区间
@@ -147,10 +147,10 @@ class JifenController extends Zend_Controller_Action {
 		//自定义头部
 		$_SESSION['no_logbar_event'] = 0;
 		$_SESSION['no_menu_event']   = 1;
-		$_SESSION['change_logo'] = '<div id="logo" ><a href="/" hidefocus="true"><img src="/images/default/logono.jpg"  alt="IC易站"></a></div>
+		$_SESSION['change_logo'] = '<div id="logo" ><a href="/" hidefocus="true"><img src="/images/default/logono.jpg"  alt="盛芯电子"></a></div>
         <div class="jflogo"><a href="/jifen"><img src="/css/jifen/img/ji_logo.jpg" class="png_ie6"/></a></div>';
 		
-		$this->viewobj->headTitle('积分活动 - 积分商城 - IC易站，行业领先的一站式元器件电子商务平台。','SET');
+		$this->viewobj->headTitle('积分活动 - 积分商城 - 盛芯电子，行业领先的一站式元器件电子商务平台。','SET');
 		$_SESSION['jifenmenu']='event';
 		//获取当前奖品
 		$this->_prizeModel = new Default_Model_DbTable_Model("prize");
@@ -272,10 +272,10 @@ class JifenController extends Zend_Controller_Action {
     	//自定义头部
     	$_SESSION['no_logbar_event'] = 0;
     	$_SESSION['no_menu_event']   = 1;
-    	$_SESSION['change_logo'] = '<div id="logo" ><a href="/" hidefocus="true"><img src="/images/default/logono.jpg"  alt="IC易站"></a></div>
+    	$_SESSION['change_logo'] = '<div id="logo" ><a href="/" hidefocus="true"><img src="/images/default/logono.jpg"  alt="盛芯电子"></a></div>
         <div class="jflogo"><a href="/jifen"><img src="/css/jifen/img/ji_logo.jpg" class="png_ie6"/></a></div>';
     	
-    	$this->viewobj->headTitle('积分规则 - 积分商城 - IC易站，行业领先的一站式元器件电子商务平台。','SET');
+    	$this->viewobj->headTitle('积分规则 - 积分商城 - 盛芯电子，行业领先的一站式元器件电子商务平台。','SET');
 		$_SESSION['jifenmenu']='rule';
 	}
 	
@@ -504,7 +504,7 @@ class JifenController extends Zend_Controller_Action {
 		//自定义头部
 		$_SESSION['no_logbar_event'] = 0;
 		$_SESSION['no_menu_event']   = 1;
-		$_SESSION['change_logo'] = '<div id="logo" ><a href="/" hidefocus="true"><img src="/images/default/logono.jpg"  alt="IC易站"></a></div>
+		$_SESSION['change_logo'] = '<div id="logo" ><a href="/" hidefocus="true"><img src="/images/default/logono.jpg"  alt="盛芯电子"></a></div>
         <div class="jflogo"><a href="/jifen"><img src="/css/jifen/img/ji_logo.jpg" class="png_ie6"/></a></div>';
 		//获取当前奖品
 		$this->_prizeModel = new Default_Model_DbTable_Model("prize");

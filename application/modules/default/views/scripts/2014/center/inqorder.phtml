@@ -100,11 +100,7 @@ $type = array('spot'=>'现货','order'=>'订货');
               
                 <?php if(!in_array($sodata['status'],array(401,501,502)) && $sodata['back_status']!=102){?>
                
-                 <?php if($sodata['paper_contract']){?>
-                <a href="<?php echo $this->url(array('controller'=>'inquiryorder', 'action'=>'iccontract', 'key'=>md5(session_id()),'item'=>$this->fun->encryptVerification($sodata['salesnumber'])))?>" target="_blank" title="查看合同"  class="button">合同</a>
-                <?php }else{?>
-                <a href="<?php echo $this->url(array('controller'=>'inquiryorder', 'action'=>'digitalcontract', 'key'=>md5(session_id()),'item'=>$this->fun->encryptVerification($sodata['salesnumber'])))?>" target="_blank" title="查看合同" class="button">合同</a>
-                <?php }?>
+ 
 
                 <?php }?>
                 

@@ -177,8 +177,8 @@ class Icwebadmin_Service_OrderService
 	 */
 	public function leadtimeEmail($orderarr,$pordarr)
 	{
-			$fromname = 'IC易站';
-			$title    = 'IC易站订单#：'.$orderarr['salesnumber'].' 的交期已确认，请查看';
+			$fromname = '盛芯电子';
+			$title    = '盛芯电子订单#：'.$orderarr['salesnumber'].' 的交期已确认，请查看';
 			$hi_mess ='<table cellspacing="0" border="0" cellpadding="0" width="730" style="font-family:\'微软雅黑\';">
                             <tbody>
                                 <tr>
@@ -191,7 +191,7 @@ class Icwebadmin_Service_OrderService
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您对IC易站的惠顾！</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您对盛芯电子的惠顾！</div>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您于&nbsp;<strong>'.date('Y/m/d H:i',$orderarr['created']).'</strong>&nbsp;提交的订单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$orderarr['salesnumber'].' </strong>已经确认交货时间。我们将于&nbsp;<strong style="color:#000000;font-family:\'微软雅黑\'; font-size:13px;">'.date('Y-m-d',$orderarr['delivery_time']).'</strong>&nbsp;为您发货。</div>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">您可以随时进入 <a href="http://www.iceasy.com/center/order" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>我的订单</b></a> 查看订单的后续处理情况。</div>
                                                 </td>
@@ -242,25 +242,25 @@ class Icwebadmin_Service_OrderService
             <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
             <tr>
                 <td>
-                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;1. 如果因原厂原因和/或不可控的突发状况造成交期延后，IC易站不对您承担责任，您不得因此而取消订单。如因您未及时支付余款，<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或因您的其他原因造成货物发送延误和/或产生其他风险，后果由您承担。</p>
+                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;1. 如果因原厂原因和/或不可控的突发状况造成交期延后，盛芯电子不对您承担责任，您不得因此而取消订单。如因您未及时支付余款，<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或因您的其他原因造成货物发送延误和/或产生其他风险，后果由您承担。</p>
                 </td>
             </tr>
             <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
             <tr>
                 <td>
-                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;2. 如果由于超出IC易站合理控制的任何原因（应包括但不限于政府行为、战争、火灾、广泛流行性疾病、爆炸、洪水、灾害性气候、进<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出口管制或禁运、劳动争议、货品或劳动力无法得到供给等），IC易站不应就该等迟延履行或未能履行而对客户承担任何形式的责任<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或被视作违约行为。</p>
+                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;2. 如果由于超出盛芯电子合理控制的任何原因（应包括但不限于政府行为、战争、火灾、广泛流行性疾病、爆炸、洪水、灾害性气候、进<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出口管制或禁运、劳动争议、货品或劳动力无法得到供给等），盛芯电子不应就该等迟延履行或未能履行而对客户承担任何形式的责任<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或被视作违约行为。</p>
                 </td>
             </tr>
             <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
             <tr>
                 <td>
-                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;3. 因上述原因而使IC易站履行合同受阻，IC易站可以自主决定迟延履行或撤销合同的全部或部分，且不对此迟延、撤销或任何不能交<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;货承担责任。</p>
+                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;3. 因上述原因而使盛芯电子履行合同受阻，盛芯电子可以自主决定迟延履行或撤销合同的全部或部分，且不对此迟延、撤销或任何不能交<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;货承担责任。</p>
                 </td>
             </tr>
             <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
             <tr>
                 <td>
-                    <p  style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更多条款内容请见&nbsp;<a href="http://www.iceasy.com/help/index/type/clause" target="_blank" style="color:#0055aa">IC易站交易条款</a>，我们建议您定期阅读以获取最新条款信息。</p>
+                    <p  style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更多条款内容请见&nbsp;<a href="http://www.iceasy.com/help/index/type/clause" target="_blank" style="color:#0055aa">盛芯电子交易条款</a>，我们建议您定期阅读以获取最新条款信息。</p>
                 </td>
             </tr>
          </table>

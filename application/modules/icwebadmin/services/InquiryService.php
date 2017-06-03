@@ -391,9 +391,9 @@ class Icwebadmin_Service_InquiryService
             <tr>
               <td valign="middle" ><table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                   <tr>
-                    <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您对IC易站的垂询！已确认收到您的询价单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$inqinfo['inq_number'].'</strong>。</div>
+                    <td><div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">感谢您对盛芯电子的垂询！已确认收到您的询价单#：<strong style="color:#fd2323;font-family:\'微软雅黑\'; font-size:13px;">'.$inqinfo['inq_number'].'</strong>。</div>
                       <div style="height:5px;padding:0; margin:0;font-size:0; line-height:10px ">&nbsp;</div>
-                      <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">IC易站致力于为每位客户提供最优惠的价格和最完善的服务，销售代表在报价前需要与您沟通以获得更多信息。</div>
+                      <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">盛芯电子致力于为每位客户提供最优惠的价格和最完善的服务，销售代表在报价前需要与您沟通以获得更多信息。</div>
                       <div style="height:5px;padding:0; margin:0;font-size:0; line-height:10px ">&nbsp;</div>
                       <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';">非常抱歉我们无法按照您提供的信息联系上您，请您尽快与我们的销售代表联系，以便我们为您提供最佳的报价。</div>
                       <div style="height:5px;padding:0; margin:0;font-size:0; line-height:10px ">&nbsp;</div>
@@ -540,8 +540,8 @@ $mess .='<tr valign="top">
 </tr>';
 };
 	
-		$fromname = 'IC易站';
-		$title    = '您在IC易站的提交的询价单#：'.$inqinfo['inq_number'].'，提供的信息无法联系';
+		$fromname = '盛芯电子';
+		$title    = '您在盛芯电子的提交的询价单#：'.$inqinfo['inq_number'].'，提供的信息无法联系';
 		$emailarr = $this->_emailService->getEmailAddress('quoted_price',$user['uid']);
 		$emailto = array('0'=>$user['email']);
 		$emailcc = $emailbcc = array();
@@ -574,7 +574,7 @@ $mess .='<tr valign="top">
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">感谢您使用IC易站询价！很抱歉您的询价我们未通过审核，详细信息如下。您可以进入 <a href="http://www.iceasy.com/center/inquiry" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>我的询价</b></a> 查看详情。</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">感谢您使用盛芯电子询价！很抱歉您的询价我们未通过审核，详细信息如下。您可以进入 <a href="http://www.iceasy.com/center/inquiry" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>我的询价</b></a> 查看详情。</div>
                                         		</td>
                                             </tr>
                                         </table>
@@ -619,7 +619,7 @@ $mess .='<tr valign="top">
                                         <table cellpadding="0" cellspacing="0" border="0" style="text-align:left; font-size:12px; line-height:20px; font-family:\'微软雅黑\';color:#5b5b5b;">
                                             <tr>
                                                 <td>
-                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">感谢您使用IC易站询价！您的询价我们已经处理，报价信息如下。您可以进入 <a href="http://www.iceasy.com/center/inquiry" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>我的询价</b></a> 查看详情并直接下单。</div>
+                                                <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">感谢您使用盛芯电子询价！您的询价我们已经处理，报价信息如下。您可以进入 <a href="http://www.iceasy.com/center/inquiry" target="_blank" style="color:#fd2323;font-family:\'微软雅黑\';font-size:13px;"><b>我的询价</b></a> 查看详情并直接下单。</div>
                                                 <div style="padding:3px 0;margin:0;color:#5b5b5b;font-family:\'微软雅黑\';line-height:20px;">为了确保您能以所报的优惠价格购买，请您在报价有效期内下单。</div>
                                         		</td>
                                             </tr>
@@ -631,8 +631,8 @@ $mess .='<tr valign="top">
 		}
 		$mess = $this->getInqBackTable($inqinfo,$user,$hi_mess);
 	
-		$fromname = 'IC易站';
-		$title    = '您在IC易站的询价单#：'.$inqinfo['inq_number'].'已处理，请查看报价';
+		$fromname = '盛芯电子';
+		$title    = '您在盛芯电子的询价单#：'.$inqinfo['inq_number'].'已处理，请查看报价';
 		$emailarr = $this->_emailService->getEmailAddress('quoted_price',$user['uid']);
 		$emailto = array('0'=>$user['email']);
 		$emailcc = $emailbcc = array();
@@ -678,7 +678,7 @@ public function getInqBackTable($inqinfo,$user,$hi_mess){
 <!--订单信息-->
 <tr valign="top">
     <td valign="bottom"  align="center" height="40">
-        <div style="margin:0; padding:0; font-size:16px; color:#333333; font-weight:bold;font-family:\'微软雅黑\'; ">IC易站报价单</div>
+        <div style="margin:0; padding:0; font-size:16px; color:#333333; font-weight:bold;font-family:\'微软雅黑\'; ">盛芯电子报价单</div>
     </td>
 </tr>
   
@@ -863,13 +863,13 @@ $mess .='<!--重要信息-->
             <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
             <tr>
                 <td>
-                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;3. 报价默认有效期为一个月，具体有效期请以报价单中的日期为准。如人民币与美元汇率发生重大波动和/或原厂价格有所调整，<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;和/或其他不可控因素引发价格变化时，IC易站保留改变已确定价格的权利。下单时的最终价格以下单当天的产品价格为准。</p>
+                    <p style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;3. 报价默认有效期为一个月，具体有效期请以报价单中的日期为准。如人民币与美元汇率发生重大波动和/或原厂价格有所调整，<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;和/或其他不可控因素引发价格变化时，盛芯电子保留改变已确定价格的权利。下单时的最终价格以下单当天的产品价格为准。</p>
                 </td>
             </tr>
             <tr><td height="10" style="font-size:0; line-height:0; padding:0; margin:0">&nbsp;</td></tr>
             <tr>
                 <td>
-                    <p  style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更多条款内容请见&nbsp;<a href="http://www.iceasy.com/help/index/type/clause" style="color:#0055aa">IC易站交易条款</a>，我们建议您定期阅读以获取最新条款信息。</p>
+                    <p  style=" padding:0; margin:0;font-family:\'微软雅黑\';line-height:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更多条款内容请见&nbsp;<a href="http://www.iceasy.com/help/index/type/clause" style="color:#0055aa">盛芯电子交易条款</a>，我们建议您定期阅读以获取最新条款信息。</p>
                 </td>
             </tr>
             

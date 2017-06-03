@@ -35,11 +35,11 @@
                   	</div>
                 </div>
                 <div class="fl yqbox yqmailbox">
-                	<h4>方式2：通过邮件邀请好友</h4><em>（如果您记得好友邮箱可以直接输入，IC易站帮您发送；您也可以登录邮箱，群发给您的好友。）</em>
+                	<h4>方式2：通过邮件邀请好友</h4><em>（如果您记得好友邮箱可以直接输入，盛芯电子帮您发送；您也可以登录邮箱，群发给您的好友。）</em>
                     <div class="yqbox_c">
                         <div class="yqbox_in">
                             <p><input type="text" name="friendemail2" id="friendemail2" value="<?php if($this->emailstr) echo $this->emailstr;else echo '在此输入好友邮箱地址，每个邮箱之间用分号隔开';?>" onfocus="inputFocus($(this),'在此输入好友邮箱地址，每个邮箱之间用分号隔开');" onblur="inputBlur($(this),'在此输入好友邮箱地址，每个邮箱之间用分号隔开')" class="input-invite input-invite-m " /></p>
-                            <p><textarea rows="4" name="invitecon2" id="invitecon2" class="input-invite input-invite-textarea ">#IC易站#惊喜来袭，邀请好友注册即可赚积分，抽大奖，您还在等什么，快呼朋唤友来参加吧！ <?php echo HTTPHOST."/user/register?invitekey=".$_SESSION['userInfo']['uidSession'];?>  </textarea></p>
+                            <p><textarea rows="4" name="invitecon2" id="invitecon2" class="input-invite input-invite-textarea ">#盛芯电子#惊喜来袭，邀请好友注册即可赚积分，抽大奖，您还在等什么，快呼朋唤友来参加吧！ <?php echo HTTPHOST."/user/register?invitekey=".$_SESSION['userInfo']['uidSession'];?>  </textarea></p>
                             <p><input type="text" class="input-invite input-invite-s " placeholder="验证码" name="verifycode2" id="verifycode2" maxlength="4" value="" autocomplete="off" onkeydown="eventemail2(event)">
                          <img src="" id="verify2" onClick="getVerify2()">
                          <a href="javascript:void(0);" class="refresh" onClick="getVerify2()">看不清<br>换一张</a></p>

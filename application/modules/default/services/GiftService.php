@@ -154,7 +154,7 @@ class Default_Service_GiftService
                 </table></td>
             </tr>';
 	
-		$fromname = 'IC易站';
+		$fromname = '盛芯电子';
 		$title    = '客户提交了礼品申请，请处理';
 	
 		$this->_emailService = new Default_Service_EmailtypeService();

@@ -5,7 +5,7 @@ class Icwebadmin_Service_SinaweiboService
 	public function __construct($token=array())
 	{
 		if(empty($token)){
-		//IC易站token
+		//盛芯电子token
 		$token = array('access_token' => '2.00CBo4PD0Wwdo69fe98cb0a7X194DD',
 				'remind_in' => 157679999,
 				'expires_in' => 157679999,

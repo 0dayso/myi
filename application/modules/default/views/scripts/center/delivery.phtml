@@ -46,7 +46,7 @@ $type = array('spot'=>'现货','order'=>'订货');
      <div class="<?php if(isset($_SESSION['postsess']['code'])){if($_SESSION['postsess']['code']>0) echo "error";else echo "ok";}?>" id="message"> <?php if(isset($_SESSION['postsess']['message'])){echo $_SESSION['postsess']['message'];unset($_SESSION['postsess']);}?></div>
      <div class="col_main" id="onlineorder">
      <h1><?=$this->translate('Menu_MyDelivery')?></h1>
-     <div class="tiporder fontorange">注意：交期变更申请要在离IC易站返回的预计交期前<strong class="fontred">28天</strong>提出。</div>
+     <div class="tiporder fontorange">注意：交期变更申请要在离盛芯电子返回的预计交期前<strong class="fontred">28天</strong>提出。</div>
 
             <div class="order_tab_head">
                 <ul>

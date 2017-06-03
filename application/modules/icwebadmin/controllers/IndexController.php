@@ -312,9 +312,9 @@ class Icwebadmin_IndexController extends Zend_Controller_Action
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(0,2,"1");		
     			$objExcel->getActiveSheet()->mergeCells('B2:B5');
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(1,2,"Revenue
-（通过IC易站进来的新客户新订单，
+（通过盛芯电子进来的新客户新订单，
 包含SQS Customer及SAP 注册的
-Alina名下的客户订单，以IC易站&财务
+Alina名下的客户订单，以盛芯电子&财务
 每月提供的月度跟踪报表为准）");	
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(2,2,"Fcst");
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(3,2,$this->quarterly['new'][1]);
@@ -348,9 +348,9 @@ Alina名下的客户订单，以IC易站&财务
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(0,6,"2");
     			$objExcel->getActiveSheet()->mergeCells('B6:B9');
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(1,6,"Revenue
-（公司原有客户转移至IC易站进行交易，
+（公司原有客户转移至盛芯电子进行交易，
 此交易额与销售人员Double count,
-以IC易站&财务每月提供的月度跟踪报表为准）");
+以盛芯电子&财务每月提供的月度跟踪报表为准）");
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(2,6,"Fcst");
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(3,6,$this->quarterly['line'][1]);
     			$objExcel->getSheet(0)->setCellValueByColumnAndRow(4,6,$this->quarterly['line'][2]);
