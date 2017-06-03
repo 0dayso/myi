@@ -48,9 +48,8 @@ class IndexController extends Zend_Controller_Action {
 		
 		//热推产品
 		$sqlstr ="SELECT pro.*
-		FROM recommend as re
-		LEFT JOIN product as pro ON re.comid=pro.id
-		WHERE re.type='hot_prod' AND re.part='home' AND re.status=1 ORDER BY re.displayorder ASC LIMIT 0 , 5";
+		FROM  product as pro
+		WHERE pro.status=1 ORDER BY pro.viewnumber DESC LIMIT 0 , 5";
 		$this->view->hot_prod = $rModer->getBySql($sqlstr, array());
 		
 		$listnum = 5;

@@ -680,16 +680,12 @@ class Default_Service_ProductService
 					WHERE sc.activation = 1 LIMIT 1";
 		$rateModel = new Default_Model_DbTable_SupplierGrab();
 		$scre = $rateModel->getByOneSql($sqlstr);
-		$cache_key = 'crawler_product_'.$collection_id.'_'.md5($part_no);
+		$cache_key = 'crawler_product_'.$supplier_id.'_'.md5($part_no);
 	   if($product = $cache->load($cache_key)) {
 			$prodInfo = [];
-			foreach($product['product'] as $supid=>$prodArray){
-				if($supid==$supplier_id){
-					foreach($prodArray as $k=>$prod){
-						if($k==$item){
-							$prodInfo = $prod;break;
-						}
-					}
+	       foreach($product as $k=>$prod){
+				if($k==$item){
+					$prodInfo = $prod;break;
 				}
 			}
 			if($prodInfo){
@@ -745,15 +741,11 @@ class Default_Service_ProductService
 					WHERE sc.activation = 1 LIMIT 1";
 		$rateModel = new Default_Model_DbTable_SupplierGrab();
 		$scre = $rateModel->getByOneSql($sqlstr);
-		$cache_key = 'crawler_product_'.$collection_id.'_'.md5($part_no);
+		$cache_key = 'crawler_product_'.$supplier_id.'_'.md5($part_no);
 		if($product = $cache->load($cache_key)) {
-			foreach($product['product'] as $supid=>$prodArray){
-				if($supid==$supplier_id){
-					foreach($prodArray as $k=>$prod){
-						if($k==$item){
-							$prodInfo = $prod;break;
-						}
-					}
+			foreach($product as $k=>$prod){
+				if($k==$item){
+					$prodInfo = $prod;break;
 				}
 			}
 			
@@ -843,5 +835,16 @@ class Default_Service_ProductService
     	$stockInfo['supplierInfo'] =  $productSupplierModel->getByOneSql($sqlstr);
     	
     	return $stockInfo;
+    }
+    
+    /**
+     * 更新查看次数
+     */
+    public function addView($product_id){
+        $pInfo = $this->getInqProd($product_id);
+        if($pInfo){
+            $viewNumber = $pInfo['viewnumber']+1;
+            $this->_proModer->updateById(array('viewnumber'=>$viewNumber), $product_id);
+        }
     }
 }

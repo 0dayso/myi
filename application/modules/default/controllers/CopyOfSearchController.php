@@ -65,25 +65,20 @@ class SearchController extends Zend_Controller_Action {
 	 * 搜索型号
 	 */
 	public function productAction(){
-	   $this->_helper->layout->disableLayout();
+		$this->_helper->layout->disableLayout();
 		//新版本
 		if(isset($_SESSION['new_version'])){
 			$this->fun->changeView($this->view,$_SESSION['new_version']);
 		}
-		$sup = intval($this->_getParam('sup'));
-		if($sup==1){
-			$this->_helper->viewRenderer->setNoRender();
-			echo Zend_Json_Encoder::encode('no');
-    		exit;
-		}
-		if($sup>0){
+		$allid = $this->_getParam('allid');
+	
+		if($allid){
 			$this->view->keyworld = $keyworld = trim($this->filter->pregHtmlSql($this->_getParam('keyworld')));
-			//获取供应商
-			$this->_supplierCrabService = new Default_Service_SupplierGrabService();
-			$this->view->supplierCrab = $this->_supplierCrabService->getOneSupplierGrab($sup);
+			
 			$crawlerService = new Default_Service_CrawlerService();
-			$this->view->product = $crawlerService->getProduct($sup,$keyworld);
-			if(empty($this->view->product)){
+			$this->view->productAll = $crawlerService->getProduct($allid,$keyworld);
+
+			if(empty($this->view->productAll)){
 				$this->_helper->viewRenderer->setNoRender();
 				echo Zend_Json_Encoder::encode('no');
 				exit;

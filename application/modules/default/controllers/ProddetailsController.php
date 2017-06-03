@@ -77,7 +77,7 @@ class ProddetailsController extends Zend_Controller_Action {
 		$this->view->prodarr = $product;
 	
 		//记录浏览记录
-		$this->_prodhistory->addhistry($id_no);
+		$this->_prodService->addView($product['id']);
 		
 		//重新设置headtitle 、 description和keywords等
 		$part_no = $this->view->prodarr['part_no'];
@@ -187,19 +187,10 @@ class ProddetailsController extends Zend_Controller_Action {
 			
 			//获取品牌信息
 			$this->view->brandinfo = $this->_prodService->getBrandInfoById($brandid);
-			//获取品牌所有系列
-			$this->view->series = $this->_prodService->getSeriesByBrand($brandid);
-				
-			if($this->view->brandinfo['show']==1){
-				//品牌应用分类
-				$this->view->app = $this->_prodService->getAppByBrandId($brandid,$this->view->brandinfo['apporder']);
-			}
+			
+		
 			$strwhere ='';
-			//库存
-			/*$stock = $this->view->stock = $this->_getParam('stock');
-			if($stock=='spot') $strwhere =" (po.sz_stock- po.sz_cover)>0 AND ";
-			elseif($stock=='order') $strwhere =" (po.sz_stock- po.sz_cover)<=0 AND ";
-			*/
+			
 			//筛选
 			$app2 = $_GET['app2'];
 			$app3 = $_GET['app3'];
@@ -232,9 +223,7 @@ class ProddetailsController extends Zend_Controller_Action {
 			if($p){
 				$strwhere .=" po.part_no LIKE '%{$p}%' AND ";
 			}
-			//系列
-			$this->view->s = $this->_getParam('s');
-			if($this->view->s) $strwhere .=" po.series='{$this->view->s}' AND ";
+
 
 			//查询产品
 			$strwhere .= "manufacturer='{$brandid}'";
@@ -259,15 +248,7 @@ class ProddetailsController extends Zend_Controller_Action {
 			$viewobj->headMeta()->setName('description',str_ireplace(array("<brand_name>"),array($brandname),$this->seoconfig->general->brand_description));
 			$viewobj->headMeta()->setName('keywords',str_ireplace(array("<brand_name>"),array($brandname),$this->seoconfig->general->brand_keywords));
 
-			//查询方案列表
-			$solModel = new Default_Model_DbTable_Solution();
-			$sqlstr = "SELECT count(s.id) as num
-			FROM solution as s
-			LEFT JOIN solution_product  as sp ON s.id = sp.solution_id
-			LEFT JOIN product as p ON sp.prod_id = p.id
-			WHERE p.manufacturer='{$brandid}' AND sp.type='core' AND s.status=1 AND sp.status=1 ";
-			$allcan = $solModel->getBySql($sqlstr,array());
-			$this->view->bsNum = $allcan[0]['num'];
+			
 			
 		}else $this->_redirect('/brand');
 	}

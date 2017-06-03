@@ -1,0 +1,80 @@
+<link rel="stylesheet" type="text/css"
+	href="/<?=$_SESSION['new_version']?>/css/default/list.css" />
+<div class="w">
+	<div class="breadcrumbs">
+		<span>
+    <?=$this->translate('Menu_CurrentPosition')?>
+    </span><a href="/">
+    <?=$this->translate('Menu_Home');?>
+    </a>&nbsp;&nbsp;»&nbsp;&nbsp;<span><b><?=$this->keyword?></b> 搜索结果</span>
+	</div>
+</div>
+<div class="searchresult">
+	<div class="w">
+		<div class="wrap filter-box">
+			<div data-type="search" id="filterNav" class="bd">
+				<div class="filter-items" id='supplierGrabTab'>
+					<dl>
+					<dt>供应商：</dt>
+					<dd>
+					<div id='searchprdDiv'></div>	
+					</dd>
+				</dl>
+				</div>
+			</div>
+		</div>
+		
+		<div id='suppProduct'>
+			<div style=" margin:20px;"><img src="/images/admin/ajax-loader.gif" /></div>
+		</div>
+
+<div id="filter-null" style="display: none;">
+	<div class="filter-null l-box">
+	        很抱歉，我们没有找到与"<strong class="corg"><?=$this->keyword?></strong>"相关的制造商型号
+	</div>
+</div>
+    
+<script type="text/javascript">
+$(function(){
+	var keyword = '<?=$this->keyword?>';
+	
+	var allsupid = [];
+	<?php foreach($this->supplierCrab as $v){?>
+		if(keyword.length >= 3){
+			allsupid[<?php echo $v['id']?>] = <?php echo $v['id']?>;
+		}else{
+			$(".pro-list").html('');
+			alert('型号最小字符必须为3个字符以上');
+			return;
+		}
+	<?php }?>
+	
+    //查询
+	seachprd(allsupid,'<?=$this->keyword?>');
+})
+
+
+function seachprd(allsupid,keyworld){
+	$.ajax({
+	       type: 'post',
+	       url: "/search/product",
+	       dataType: 'html',
+	       data: {keyworld:keyworld,allid:allsupid},
+	       success: function(result){
+		       if(result=='"no"'){
+		    	   $("#filter-null").css('display','block');
+		    	   $(".filter-box").css('display','none');
+		    	   $("#suppProduct").html('');
+		       }else{
+		    	   var resultArray =result.split("||");
+		    	   $("#searchprdDiv").html(resultArray[0]);
+	    	   	   $("#suppProduct").html(resultArray[1]);
+		       }
+	       }
+	   }); 	
+}
+
+</script>
+		<div class="clr"></div>
+	</div>
+</div>

@@ -14,8 +14,8 @@ class Default_Service_CrawlerService
 	/**
 	 * 获取搜索到的型号
 	 */
-	public function getProduct($allid,$keyworld){
-		$productArrayAll = array();
+    public function getProduct($supId,$keyworld){
+		$productArray = array();
 		if(empty($keyworld)){
 			return $productArray;
 		}
@@ -24,59 +24,30 @@ class Default_Service_CrawlerService
 		//$cache 在先前的例子中已经初始化了
 		$cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
 		// 查看一个缓存是否存在:
-		$sqlstr = "SELECT sc.id,sc.g_excode
-					FROM  sx_collection as sc
-					WHERE sc.activation = 1 LIMIT 1";
-		$rateModel = new Default_Model_DbTable_SupplierGrab();
-		$scre = $rateModel->getByOneSql($sqlstr);
-		$cache_key = 'crawler_product_'.$scre['id'].'_'.md5($keyworld);
-		if(!$productArrayAll = $cache->load($cache_key)) {
-			$isnonull = false;
-			if($allid){
-				if($scre['g_excode']){
-					eval($scre['g_excode']);
-				}
-				foreach($allid as $supId){
-					if($supId>0){
-						$productArray = array();
-						$sqlstr = "SELECT ssg.id,ssg.name,ssg.img,ssg.delivery_cn,ssg.delivery_hk,sc.g_excode,scs.excode
-						FROM sx_collection_supplier as scs
-						LEFT JOIN sx_collection as sc ON sc.id=scs.collection_id
-						LEFT JOIN sx_supplier_grab as ssg ON ssg.id=scs.supplier_id
-						WHERE sc.activation = 1 AND ssg.state = 1 AND ssg.id='{$supId}' LIMIT 1";
-			
-						$reexcode = $rateModel->getByOneSql($sqlstr);
-			
-						if($reexcode['excode']){
-							eval($reexcode['excode']);
-						}
-						if(!$isnonull && !empty($productArray)){
-							$isnonull = true;
-						}
-						$productArrayAll['product'][$supId] = $productArray;
-						$productArrayAll['sup'][$supId]['id'] = $reexcode['id'];
-						$productArrayAll['sup'][$supId]['scid'] = $scre['id'];
-						$productArrayAll['sup'][$supId]['name'] = $reexcode['name'];
-						$productArrayAll['sup'][$supId]['img'] = $reexcode['img'];
-						$productArrayAll['sup'][$supId]['delivery_cn'] = $reexcode['delivery_cn'];
-						$productArrayAll['sup'][$supId]['delivery_hk'] = $reexcode['delivery_hk'];
-					}
-				}
-			}
-			$cache->save($productArrayAll,$cache_key);
-		}else{
-			foreach($productArrayAll['product'] as $v){
-				if(!empty($v)){
-					$isnonull = true;
-					break;
-				}
-			}
+		$cache_key = 'crawler_product_'.$supId.'_'.md5($keyworld);
+		if(!$productArray = $cache->load($cache_key)) {
+		    $sqlstr = "SELECT sc.id AS scid,sc.g_excode,scs.excode
+		    FROM sx_collection_supplier as scs
+		    LEFT JOIN sx_collection as sc ON sc.id=scs.collection_id
+		    LEFT JOIN sx_supplier_grab as ssg ON ssg.id=scs.supplier_id
+		    WHERE sc.activation = 1 AND ssg.state = 1 AND ssg.id='{$supId}' LIMIT 1";
+		    $rateModel = new Default_Model_DbTable_SupplierGrab();
+		    $excode = $rateModel->getByOneSql($sqlstr);
+		    
+		    $code = $excode['g_excode'].$excode['excode'];
+		    if($code){
+		        eval($code);
+		    }
+		    if($productArray){
+		      $productArray['scid'] = $excode['scid'];
+		      $productArray['supid'] = $supId;
+		      $cache->save($productArray,$cache_key);
+		    }else{
+		        $cache->save(1,$cache_key);
+		    }
 		}
-		if($isnonull){
-			return $productArrayAll;
-		}else{
-			return [];
-		}
+		return $productArray==1?'':$productArray;
+		
 	}
 	/**
 	 * 获取e洛盟网站的产品参数

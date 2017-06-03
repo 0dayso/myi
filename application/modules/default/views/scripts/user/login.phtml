@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/js/jsplug/formvalidator/css/validationEngine.jquery.css" media="screen" type="text/css"/>
 <link rel="stylesheet" href="/js/jsplug/formvalidator/css/template.css" media="screen" type="text/css"/>
-<link rel="stylesheet" href="/css/default/login.css" media="screen" type="text/css"/>
+<link rel="stylesheet" href="/css/default/loginbase.css" media="screen" type="text/css"/>
 <script src="/js/jsplug/formvalidator/js/jquery.validationEngine-en.js" type="text/javascript"></script>
 <script src="/js/jsplug/formvalidator/js/jquery.validationEngine.js" type="text/javascript"></script>
 
@@ -9,39 +9,58 @@
 			$("#formID").validationEngine()
 		});
 </script>
-<div id="header" class="w">
-  <div id="logo"><a hidefocus="true" href="/"><img alt="盛芯电子" src="/images/default/logo.jpg"></a></div>
-  <h1>会员登录</h1>
-</div>
-<form id="formID" name="formID" method="post" action="">
-  <!--content-->
-  <div class="w">
-    <div class="line"></div>
-    <div class="fl loginad">
-      	<img src="/images/default/ad/welcom.jpg" />
+<style>
+	.wrap-login{width:100%; min-height: 370px;padding-top: 10px; overflow: hidden;background-color: #9dcf88;}
+	.login-wrap{padding-top:50px; background:url('/images/default/loginbg.png') no-repeat; height: 400px;}
+	.login-form2{padding: 0px 20px 20px 20px; background-color: #ffffff;min-height:294px;}
+	.cart-footer{margin-top:0px;}
+</style>
+
+<div class="s-bd e-bd2">
+
+<div class="uc-hd2">
+    <div class="wrap clearfix" style="padding-top: 10px;">
+       <h1 class="hd-logo">
+            <a hidefocus="true" href="/"><img alt="盛芯电子" src="/images/default/logo.jpg"></a>
+            <em>会员登录</em>
+        </h1>
+        <span class="fr mr5 mt40">
+        还没有账号？现在 <a href="/user/register" class="cblue"><strong>注册</strong></a>
+    </span>
     </div>
-    <div class="login fr" >
-      <div class="f-box">
-        <label class="f-label"> 账户名：</label>
-        <div class="f-input">
-          <input class="validate[required] f-txt" type="text" name="loginname" id="loginname" value="<?=$this->loginname==''?'用户名/邮箱':$this->loginname;?>" onfocus="inputFocus($(this),'用户名/邮箱');" onblur="inputBlur($(this),'用户名/邮箱')"/>
-        </div>
-      </div>
-      <div class="f-box">
-        <label class="f-label"> 密&nbsp;&nbsp;&nbsp;码：</label>
-        <div class="f-input">
-          <input type="password" class="validate[required,length[6,25]] f-txt pass-txt" value="" id="password" name="password">
-        </div>
-      </div>
-      <?php if(isset($_SESSION['needcode']) && $_SESSION['needcode']>$this->needcodenum){?>
-      <div class="f-box">
-        <label class="f-label"> 验证码：</label>
-        <div class="f-input">
-          <input class="validate[required]" style=" width:50px; margin-right:5px;" type="text" name="verifycode" id="verifycode" />
+</div>
+
+
+
+<div class="wrap-login">
+<div class="wrap clearfix login-wrap g-b-box">
+    <div class="login-form2 fr">
+        <form id="formID" name="formID" method="post" action="">
+        	<div class="mt15 h2">盛芯电子会员登录</div>
+            <div class="dl-tbl login-tbl jsClearCont" style="padding-top: 10px;">
+                <div class="error-tips hide" id="errorTips" style="width:262px;">
+                    <i></i>请输入账号和密码
+                </div>
+                <dl style="margin-top:5px;">
+                    <dd class="ipt-user rel">
+                    <input class="validate[required] ipt ipt-user jsinput" type="text" name="loginname" id="loginname" value="<?=$this->loginname==''?'用户名/邮箱':$this->loginname;?>" onfocus="inputFocus($(this),'用户名/邮箱');" onblur="inputBlur($(this),'用户名/邮箱')"/>
+                    <i></i>
+                    </dd>
+                </dl>
+                <dl>
+                    <dd class="ipt-pwd rel">
+                    <input type="password" class="validate[required,length[6,25]] ipt ipt-pwd jsinput" value="" id="password" name="password">
+                    <i></i>
+                </dd>
+                </dl>
+                <?php if(isset($_SESSION['needcode']) && $_SESSION['needcode']>$this->needcodenum){?>
+                <dl id="loginCode">
+                    <dd>
+                        <input class="validate[required] ipt verify-code-ipt" style=" width:50px;" type="text" name="verifycode" id="verifycode" />
           <div class="f-vcode"> <a onclick="getVerify()" href="javascript:;" title="看不清？换一张"><img src="" id="verify"/>&nbsp;看不清？换一张</a> </div>
-        </div>
-      </div>
-<script language="javascript">
+                    </dd>
+                </dl>
+                <script language="javascript">
 function getVerify(){
  var d = new Date();
  document.getElementById('verify').src="<?php echo $this->url(array('controller'=>'common','action'=>'createcode'));?>?t="+d.toTimeString();
@@ -56,17 +75,24 @@ verifycode.focus();
 <?php }?>
 </script>
       <?php }?>
-      <div class="login-btn">
-      <input type="submit" value="登  录" class="button" onclick="loginaction()"/>
-      <a href="/user/forgotpass">忘记密码？</a> </div>
-      
-      <div class="reg-box">
-        <p>还不是盛芯电子会员？马上加入吧~~~</p>
-        <div class="reg-btn"> <a class="buttongray" href="/user/register">免费注册 &raquo;</a> </div>
-      </div>
+                <dl style="margin-top:15px;">
+                    <dd style="display:block;">
+                        <div class="clearfix">
+                            <a class="cblue mr5 fr" href="/user/forgotpass">忘记密码?</a>
+                        </div>
+                    </dd>
+                </dl>
+                <dl style="margin-top:20px;">
+                    <dd>
+                        <input type="submit" value="登 录" class="login-btn-blue"  onclick="loginaction()"/>
+                    </dd>
+                </dl>
+            </div>
+        </form>
     </div>
-  </div>
-</form>
+</div>
+</div>
+</div>
 <script language="javascript">
 function loginaction(){
 	var uname   =document.getElementById("loginname");
