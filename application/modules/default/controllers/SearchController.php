@@ -71,18 +71,19 @@ class SearchController extends Zend_Controller_Action {
 			$this->fun->changeView($this->view,$_SESSION['new_version']);
 		}
 		$sup = intval($this->_getParam('sup'));
-		if($sup==1){
-			$this->_helper->viewRenderer->setNoRender();
-			echo Zend_Json_Encoder::encode('no');
-    		exit;
-		}
+		$this->view->keyworld = $keyworld = trim($this->filter->pregHtmlSql($this->_getParam('keyworld')));
+		
 		if($sup>0){
-			$this->view->keyworld = $keyworld = trim($this->filter->pregHtmlSql($this->_getParam('keyworld')));
-			//获取供应商
-			$this->_supplierCrabService = new Default_Service_SupplierGrabService();
-			$this->view->supplierCrab = $this->_supplierCrabService->getOneSupplierGrab($sup);
-			$crawlerService = new Default_Service_CrawlerService();
-			$this->view->product = $crawlerService->getProduct($sup,$keyworld);
+		    //获取供应商
+		    $this->_supplierCrabService = new Default_Service_SupplierGrabService();
+		    $this->view->supplierCrab = $this->_supplierCrabService->getOneSupplierGrab($sup);
+		    //自营
+		    if($sup==1){
+		        $this->view->product = $this->_prodService->getSxProduct($sup,$keyworld);
+		    }else{
+		        $crawlerService = new Default_Service_CrawlerService();
+		        $this->view->product = $crawlerService->getProduct($sup,$keyworld);
+		    }
 			if(empty($this->view->product)){
 				$this->_helper->viewRenderer->setNoRender();
 				echo Zend_Json_Encoder::encode('no');

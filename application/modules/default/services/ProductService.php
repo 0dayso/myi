@@ -742,6 +742,7 @@ class Default_Service_ProductService
 		$rateModel = new Default_Model_DbTable_SupplierGrab();
 		$scre = $rateModel->getByOneSql($sqlstr);
 		$cache_key = 'crawler_product_'.$supplier_id.'_'.md5($part_no);
+		
 		if($product = $cache->load($cache_key)) {
 			foreach($product as $k=>$prod){
 				if($k==$item){
@@ -772,7 +773,7 @@ class Default_Service_ProductService
 						$dataps[] = $tmp;
 					}
 					if($dataps){
-						$productPrice->delete("product_id='{$productId}'");
+						$productPrice->delete("product_id='{$productId}' AND supplier_id = '{$supplier_id}'");
 						$productPrice->addDatas($dataps);
 					}
 				}
@@ -785,7 +786,6 @@ class Default_Service_ProductService
 	 * 获取产品
 	 */
 	public function getProductNew($qstr,$collection_id,$supplier_id){
-		$prodModel = new Default_Model_DbTable_Product();
 		$sqlstr ="SELECT po.*,pc1.name as cname1,pc2.name as cname2,pc3.name as cname3
 		FROM product as po
 		LEFT JOIN product_supplier as ps ON ps.product_id=po.id
@@ -793,7 +793,7 @@ class Default_Service_ProductService
 		LEFT JOIN prod_category as pc2 ON po.part_level2=pc2.id
 		LEFT JOIN prod_category as pc1 ON po.part_level1=pc1.id
 		WHERE {$qstr} AND po.status='1' AND ps.collection_id='$collection_id' AND ps.supplier_id='$supplier_id'";
-		$product =  $prodModel->getByOneSql($sqlstr);
+		$product =  $this->_proModer->getByOneSql($sqlstr);
 		return $product;
 	}
 	/**
@@ -846,5 +846,29 @@ class Default_Service_ProductService
             $viewNumber = $pInfo['viewnumber']+1;
             $this->_proModer->updateById(array('viewnumber'=>$viewNumber), $product_id);
         }
+    }
+    /**
+     * 查询自营产品
+     * @param unknown $keyworld
+     */
+    public function getSxProduct($sup,$keyworld){
+        $sqlstr ="SELECT po.manufacturer AS brand,ps.part_no AS pratNo,ps.product_id,
+        ps.moq,ps.stock
+        FROM product as po
+        LEFT JOIN product_supplier as ps ON ps.product_id=po.id
+        WHERE po.status='1' AND po.part_no LIKE '%$keyworld%' AND ps.supplier_id='$sup'";
+        $product =  $this->_proModer->getBySql($sqlstr);
+        if($product){
+            //查询阶梯价
+            foreach($product as &$v){
+                $sqlstr ="SELECT pp.moq,pp.rmbprice,pp.usdprice
+                FROM product_price as pp
+                WHERE pp.product_id='".$v['product_id']."' AND pp.supplier_id='$sup' ORDER BY pp.moq ASC";
+                $v['bookprice'] =  $this->_proModer->getBySql($sqlstr);
+            }
+            $product['scid'] = 0;
+            $product['supid'] = $sup;
+        }
+        return $product;
     }
 }

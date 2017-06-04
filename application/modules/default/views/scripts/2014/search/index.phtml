@@ -19,19 +19,20 @@
 					<dd>
 						<ul>
 							<li><span><a id='searchprd-all' href="javascript:;"
-									class='searchprd curr' data-id='all'>不限</a></span></li>
-										                    <?php foreach($this->supplierCrab as $v){?>
-									            <li><span><a id='searchprd-<?php echo $v['id']?>'
-									href="javascript:;" class="searchprd cblue"
-									data-id='<?php echo $v['id']?>'><?php echo $v['name'];?></a></span></li>
-										                    <?php }?>
-										    </ul>
+									class='searchprd curr' data-id='all'>不限</a></span>
+						    </li>
+							<?php foreach($this->supplierCrab as $v){?>
+							<li class="none" id="gysli<?php echo $v['id']?>"><span><a id='searchprd-<?php echo $v['id']?>'
+								href="javascript:;" class="searchprd cblue"
+								data-id='<?php echo $v['id']?>'><?php echo $v['name'];?></a></span></li>
+							<?php }?>
+						</ul>
 					</dd>
 				</dl>
 				</div>
 			</div>
 		</div>
-
+		
 <?php foreach($this->supplierCrab as $k=>$v){?>
 		<!-- 供应商 -->
 		<div id="product<?php echo $v['id']?>" class="wrap pro-list clearfix ">
@@ -119,8 +120,10 @@ function seachprd(sup,keyworld){
 		    	   $("#searchprd-"+sup).remove();
 		    	   $("#product"+sup).html('');
 		       }else{
+		    	   var resultArray =result.split("||");
+		    	   $("#gysli"+resultArray[0]).show();
 		    	   $("#filter-null").css('display','none');
-	    	   	   $("#product"+sup).html(result);
+	    	   	   $("#product"+sup).html(resultArray[1]);
 		       }
 	       }
 	   }); 	

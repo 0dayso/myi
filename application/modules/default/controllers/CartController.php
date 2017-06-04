@@ -34,7 +34,7 @@ class CartController extends Zend_Controller_Action
     	$this->view->items = $this->cart->contents_by_delivery();
     	$this->view->pdfkey = md5(session_id());
     	//$this->cart->destroy();
-    	//echo '<pre>';
+    	//cho '<pre>';
     	//print_r($this->view->items);
     	//print_r($_SESSION['cart_subtract']);
     }

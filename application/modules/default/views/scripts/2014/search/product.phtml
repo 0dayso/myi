@@ -1,3 +1,5 @@
+<?php echo $this->supplierCrab['id'];?>
+||
 <div class="product-list rel jsDataInfoParent jsTabMore">
 <div class="hd clearfix">
 	<div class="fl pro-title">
@@ -37,12 +39,17 @@
 		<tbody>
 			<?php foreach($this->product as $k=>$pv){
 			    if(is_array($pv)){
+			        if($this->supplierCrab['id']==1){
+			            $url = "/item?scid=".$this->product['scid']."&supid=".$this->supplierCrab['id']."&pid=".$pv['product_id'];
+			        }else{
+			            $url = "/item?scid=".$this->product['scid']."&supid=".$this->supplierCrab['id']."&pid=0&kw=".$this->keyworld."&it=".$k."&pn=".$pv['pratNo'];
+			        }
 			    ?>
 			<tr <?php if($k>2) echo 'class="productTr'.$this->supplierCrab['id'].' none"';?>>
 				<td class="tl pl30">
 					<div class="ic-no rel">
 						<a title="<?php echo $pv['pratNo'];?>" 
-								href="/item?scid=<?php echo $this->product['scid'];?>&supid=<?php echo $this->supplierCrab['id'];?>&pid=0&kw=<?php echo $this->keyworld;?>&it=<?php echo $k;?>&pn=<?php echo $pv['pratNo'];?>"
+								href="<?php echo $url;?>"
 								target="_blank"> <?php echo $pv['pratNo'];?> </a>
 					</div>
 				</td>
@@ -84,12 +91,12 @@
 
 					<div class="tabelbtn">
 		<?php if($pv['stock']>0 && $pv['bookprice']){?>
-								<a href="/item?scid=<?php echo $this->product['scid'];?>&supid=<?php echo $this->supplierCrab['id'];?>&pid=0&kw=<?php echo $this->keyworld;?>&it=<?php echo $k;?>&pn=<?php echo $pv['pratNo'];?>" 
+								<a href="<?php echo $url;?>" 
 									class="gbqfb logclick" title="购买" rev="prodlist_part_id"
 									target="_blank"><i class="i_buy_s"></i>在线购买</a> <br />
 	<?php }?>
 									 <a
-									href="/item?scid=<?php echo $this->product['scid'];?>&supid=<?php echo $this->supplierCrab['id'];?>&pid=0&kw=<?php echo $this->keyworld;?>&it=<?php echo $k;?>&pn=<?php echo $pv['pratNo'];?>"
+									href="<?php echo $url;?>"
 									class="gbqfb logclick" title="询价" rev="prodlist_part_id"
 									target="_blank"><i class="i_xun_s"></i>批量询价</a><br>
 							</div>

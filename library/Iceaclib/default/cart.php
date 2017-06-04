@@ -352,7 +352,8 @@ class Cart {
 		}
 		
 		//生成物品的唯一id
-		$rowid = md5($items['id']);
+		
+		$rowid = md5($items['id'].$items['supplier_id']);
 		
 		//加入物品到购物车
 		unset($this->_cart_contents[$rowid]);

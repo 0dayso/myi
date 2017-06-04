@@ -18,18 +18,10 @@ class PublicboxController extends Zend_Controller_Action {
 	 */
 	public function hotpordAction() {
 		$this->_helper->layout->disableLayout();
-		$rModer = new Default_Model_DbTable_Recommend();
-		$sqlstr ="SELECT *
-		FROM product
-		
-		WHERE status = 1 ORDER BY Rand() LIMIT 5";
-		$allhotArr = $rModer->getBySql($sqlstr, array());
-		$bandhotArr = array();
-		for($i=0;$i<count($allhotArr);$i++)
-		{
-		   $bandhotArr[$allhotArr[$i]['cat_id']][] = $allhotArr[$i];
-		}
-		//随机取出品牌
+		$sqlstr ="SELECT pro.*
+		FROM  product as pro
+		WHERE pro.status=1 ORDER BY pro.viewnumber DESC LIMIT 0 , 5";
+		$allhotArr = $this->semModer->getBySql($sqlstr, array());
 		$this->view->hotArr    = $allhotArr;
 		//新版本
 		if(isset($_SESSION['new_version'])){

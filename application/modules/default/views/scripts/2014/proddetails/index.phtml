@@ -1,4 +1,4 @@
-
+   
 <link rel="stylesheet" type="text/css"
 	href="/<?=$_SESSION['new_version']?>/css/default/dir2013.css" />
 <link rel="stylesheet" href="/js/jsplug/lightbox/css/lightbox.css"
@@ -97,7 +97,7 @@ if($prodarr['part_img']=='' || $prodarr['part_img']=='no.gif') {
 			<div class="proinfo fl">
 				<div class="proinfo_m fl">
 					<h1 class="model" title="<?=$prodarr['part_no'];?>"><?=$prodarr['part_no'];?></h1>
-					<img src="<?=$prodarr['stockInfo']['supplierInfo']['img']?>"
+					<img alt="<?php echo $prodarr['stockInfo']['supplierInfo']['name']?>" src="<?=$prodarr['stockInfo']['supplierInfo']['img']?>"
 						height="36"
 						title="<?=$prodarr['stockInfo']['supplierInfo']['name']?>"
 						class="png_ie6" />

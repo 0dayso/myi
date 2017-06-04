@@ -71,7 +71,7 @@ class Default_Service_CartService
 				'pord_id'        => $id,
 				'collection_id'  => $collection_id,
 				'supplier_id'    => $supplier_id,
-				'id'             => $id.$delivery_place.$bpp_stock_id,
+				'id'             => $id.$delivery_place.$supplier_id,
 				'part_no'        => $product['part_no'],
 				'qty'            => $qty,
 				'delivery_place' => $delivery_place,
